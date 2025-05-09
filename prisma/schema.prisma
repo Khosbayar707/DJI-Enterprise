@@ -14,4 +14,5 @@ model User {
   password String
   isAdmin Boolean @default(false)
   sub_news Boolean @default(false)
+  isActive Boolean @default(true)
 }
