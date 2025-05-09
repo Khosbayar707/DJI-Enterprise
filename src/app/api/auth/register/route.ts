@@ -24,7 +24,15 @@ export async function POST(req: NextRequest) {
         return CustomResponse(
           false,
           "USER_EXISTS",
-          "Хэрэглэгч бүртгэлтэй байна",
+          "Хэрэглэгч бүртгэлтэй ч нууц үг буруу байна!",
+          null
+        );
+      }
+      if (!user.isActive) {
+        return CustomResponse(
+          false,
+          "ACCOUNT_BLOCKED",
+          "Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!",
           null
         );
       }

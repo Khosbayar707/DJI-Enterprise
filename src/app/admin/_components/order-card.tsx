@@ -33,7 +33,7 @@ const orders = [
 
 const OrderSection = () => {
   return (
-    <Card>
+    <Card className=" shadow-2xl">
       <CardHeader>
         <CardTitle>Захиалгын хэсэг</CardTitle>
       </CardHeader>
