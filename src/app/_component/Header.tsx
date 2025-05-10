@@ -40,7 +40,6 @@ const navItems = [
   },
 ];
 
-// Animation variants for mobile menu
 const mobileMenuVariants = {
   hidden: { opacity: 0, height: 0 },
   visible: { opacity: 1, height: "auto", transition: { duration: 0.3 } },
@@ -54,7 +53,6 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  // Mock logged-in state (replace with actual auth logic)
   const isLoggedIn = true;
   const userInfo = {
     name: "John Doe",
@@ -69,7 +67,6 @@ const Header = () => {
   };
 
   const logout = () => {
-    // Replace with actual signOut logic (e.g., next-auth)
     console.log("Logging out");
     setIsMobileMenuOpen(false);
   };
@@ -174,7 +171,6 @@ const Header = () => {
             initial="hidden"
             animate="visible"
           >
-            {console.log("Mobile menu is rendering")}
             <div className="flex flex-col gap-4">
               {navItems.map((nav, idx) => (
                 <Disclosure key={idx} as="div" className="py-2">
@@ -193,7 +189,6 @@ const Header = () => {
                     <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
                   </DisclosureButton>
                   <DisclosurePanel className="pl-4 pt-2">
-                    {console.log(`Rendering DisclosurePanel for ${nav.label}`)}
                     {nav.items.map((item, i) => (
                       <Link
                         key={i}
