@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Dispatch, SetStateAction } from "react";
-
+import { Boxes, Package, Users } from "lucide-react";
 const Sidebar = ({
   activeSection,
   setActiveSection,
@@ -14,23 +14,23 @@ const Sidebar = ({
       <Button
         variant={activeSection === "products" ? "default" : "outline"}
         onClick={() => setActiveSection("products")}
-        className="justify-start cursor-pointer"
+        className="justify-start cursor-pointer shadow-2xl"
       >
-        🛸 Бүтээгдэхүүн
+        <Boxes size={20} /> Бүтээгдэхүүн
       </Button>
       <Button
         variant={activeSection === "orders" ? "default" : "outline"}
         onClick={() => setActiveSection("orders")}
-        className="justify-start cursor-pointer"
+        className="justify-start cursor-pointer shadow-2xl"
       >
-        📦 Захиалгууд
+        <Package size={20} /> Захиалгууд
       </Button>
       <Button
         variant={activeSection === "users" ? "default" : "outline"}
         onClick={() => setActiveSection("users")}
-        className="justify-start cursor-pointer"
+        className="justify-start cursor-pointer shadow-2xl"
       >
-        👥 Хэрэглэгчид
+        <Users size={20} /> Хэрэглэгчид
       </Button>
     </aside>
   );
