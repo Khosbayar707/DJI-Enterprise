@@ -16,6 +16,7 @@ import { CustomDrone } from "@/lib/types";
 const ProductCard = () => {
   const [products, setProducts] = useState<CustomDrone[]>();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -36,7 +37,7 @@ const ProductCard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <Card className="shadow-2xl">
@@ -44,7 +45,7 @@ const ProductCard = () => {
         <CardTitle>
           <div className=" flex justify-between">
             <div>Бүтээгдэхүүн хэсэг</div>
-            <AddProductDialog />
+            <AddProductDialog refresh={refresh} setRefresh={setRefresh} />
           </div>
         </CardTitle>
       </CardHeader>
@@ -107,7 +108,7 @@ const ProductCard = () => {
                         <h4 className="text-sm font-semibold mb-2">
                           Онцлох Видео:
                         </h4>
-                        {product.featuredVideo.url ? (
+                        {product.featuredVideo ? (
                           <div className="flex justify-center">
                             <div className="aspect-video w-full max-w-md rounded-lg overflow-hidden shadow ">
                               <iframe
@@ -121,7 +122,9 @@ const ProductCard = () => {
                             </div>
                           </div>
                         ) : (
-                          <div>Онцлох видео алга</div>
+                          <div className="flex justify-center">
+                            Онцлох видео алга
+                          </div>
                         )}
                       </div>
                       <div className=" flex overflow-hidden">

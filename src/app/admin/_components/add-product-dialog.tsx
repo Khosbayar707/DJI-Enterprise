@@ -21,11 +21,17 @@ import z from "zod";
 import LoadingText from "./loading";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponseType } from "@/lib/types";
 import { CustomSnackbar } from "./snackbar";
 
-const AddProductDialog = () => {
+const AddProductDialog = ({
+  refresh,
+  setRefresh,
+}: {
+  refresh: boolean;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof AddProductSchema>>({
     resolver: zodResolver(AddProductSchema),
@@ -42,6 +48,7 @@ const AddProductDialog = () => {
       if (res.data) {
         setResponse(res.data);
         form.reset();
+        setRefresh(!refresh);
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -50,11 +57,6 @@ const AddProductDialog = () => {
         console.error(err);
       }
     }
-  };
-
-  const TestOnSubmit = async (values: z.infer<typeof AddProductSchema>) => {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    console.log(values);
   };
 
   useEffect(() => {
