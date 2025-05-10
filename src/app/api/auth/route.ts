@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 // this is for checking role of Admin, User - Админ, Хэрэглэгчийн эрхийг шалгах хэсэг
 // this SHOULD NOT try to connect to database - Датабазтай холбогдох код бичиж болохгүй!
-// this will act as middleware
+// this will act as a middleware
 
 export async function GET(req: NextRequest) {
   try {
@@ -28,7 +28,6 @@ export async function GET(req: NextRequest) {
       return NextResponse_NoToken();
     }
     const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as {
-      id: string;
       isAdmin: boolean;
     };
     if (!verify.isAdmin) {

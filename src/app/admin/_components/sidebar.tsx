@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Boxes, GalleryHorizontal, Images, Package, Users } from "lucide-react";
+import { Boxes, Images, Package, Users } from "lucide-react";
 import { Button } from "@mui/material";
 import { AdminSideBarOptions } from "@/lib/types";
 const Sidebar = ({
@@ -15,7 +15,7 @@ const Sidebar = ({
       <Button
         sx={{ justifyContent: "flex-start" }}
         color={
-          activeSection === AdminSideBarOptions.products ? "success" : "inherit"
+          activeSection === AdminSideBarOptions.products ? "primary" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.products)}
         className="justify-start cursor-pointer shadow-2xl flex gap-3"
@@ -25,7 +25,7 @@ const Sidebar = ({
       <Button
         sx={{ justifyContent: "flex-start" }}
         color={
-          activeSection === AdminSideBarOptions.images ? "success" : "inherit"
+          activeSection === AdminSideBarOptions.images ? "primary" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.images)}
         className="justify-start cursor-pointer shadow-2xl flex gap-3"
@@ -35,7 +35,7 @@ const Sidebar = ({
       <Button
         sx={{ justifyContent: "flex-start" }}
         color={
-          activeSection === AdminSideBarOptions.orders ? "success" : "inherit"
+          activeSection === AdminSideBarOptions.orders ? "primary" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.orders)}
         className="justify-start cursor-pointer shadow-2xl flex gap-3"
@@ -45,7 +45,7 @@ const Sidebar = ({
       <Button
         sx={{ justifyContent: "flex-start" }}
         color={
-          activeSection === AdminSideBarOptions.users ? "success" : "inherit"
+          activeSection === AdminSideBarOptions.users ? "primary" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.users)}
         className="justify-start cursor-pointer shadow-2xl flex gap-3"

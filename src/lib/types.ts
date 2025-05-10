@@ -1,4 +1,6 @@
 import { Drone, Image, Spec, Video } from "@/generated/prisma";
+import z from "zod";
+import { AddCategorySchema } from "./zod-schemas/add-category-schema";
 
 export type ResponseType = {
   success: boolean;

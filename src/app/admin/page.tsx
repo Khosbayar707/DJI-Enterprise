@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Sidebar from "./_components/sidebar";
 import { AdminSideBarOptions } from "@/lib/types";
-import { sectionComponents } from "./_components/sections";
+import { sectionComponents } from "./_components/_sections/sections";
 
 const AdminPage = () => {
   const [activeSection, setActiveSection] = useState<AdminSideBarOptions>(
