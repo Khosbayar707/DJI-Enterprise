@@ -1,3 +1,5 @@
+import { Drone, Image, Spec, Video } from "@/generated/prisma";
+
 export type response = {
   success: boolean;
   code: string;
@@ -12,3 +14,8 @@ export enum AdminSideBarOptions {
   images,
   categories,
 }
+export type CustomDrone = Drone & {
+  images: Image[];
+  videos: Video[];
+  specs: Spec[];
+};

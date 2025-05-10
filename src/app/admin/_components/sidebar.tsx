@@ -25,6 +25,16 @@ const Sidebar = ({
       <Button
         sx={{ justifyContent: "flex-start" }}
         color={
+          activeSection === AdminSideBarOptions.images ? "success" : "inherit"
+        }
+        onClick={() => setActiveSection(AdminSideBarOptions.images)}
+        className="justify-start cursor-pointer shadow-2x flex gap-3"
+      >
+        <Images size={20} /> <div>Зурагнууд</div>
+      </Button>
+      <Button
+        sx={{ justifyContent: "flex-start" }}
+        color={
           activeSection === AdminSideBarOptions.orders ? "success" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.orders)}
@@ -41,16 +51,6 @@ const Sidebar = ({
         className="justify-start cursor-pointer shadow-2x flex gap-3"
       >
         <Users size={20} /> <div>Хэрэглэгчид</div>
-      </Button>
-      <Button
-        sx={{ justifyContent: "flex-start" }}
-        color={
-          activeSection === AdminSideBarOptions.images ? "success" : "inherit"
-        }
-        onClick={() => setActiveSection(AdminSideBarOptions.images)}
-        className="justify-start cursor-pointer shadow-2x flex gap-3"
-      >
-        <Images size={20} /> <div>Зурагнууд</div>
       </Button>
     </aside>
   );
