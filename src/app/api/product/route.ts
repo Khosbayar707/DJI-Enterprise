@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     };
     const user = await prisma.user.findUnique({ where: { id: verify.id } });
     if (!user?.isActive) {
-      return NextResponse_DeactivatedUser;
+      return NextResponse_DeactivatedUser();
     }
     if (!user.isAdmin) {
       return NextResponse_NotAnAdmin();
