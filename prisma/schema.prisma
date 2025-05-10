@@ -15,4 +15,58 @@ model User {
   isAdmin Boolean @default(false)
   sub_news Boolean @default(false)
   isActive Boolean @default(true)
+  drones Drone[]
+}
+
+model Drone {
+  id String @id @default(nanoid()) @unique
+  name String
+  categories DroneCategory[]
+  featuredVideo Video? @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id]) 
+  featuredVideoId String @unique
+  images Image[]
+  videos Video[] @relation("videos")
+  admin User @relation(fields: [adminId], references: [id])
+  adminId String
+  visible Boolean @default(false)
+  specs Spec[]
+}
+
+model Spec {
+  id String @id @unique @default(nanoid())
+  name String
+  detail String
+  specCategories SpecCategory[]
+  droneId String
+  drone Drone @relation(fields: [droneId], references: [id])
+  image Image[]
+}
+
+model DroneCategory {
+  id String @id @default(nanoid()) @unique
+  name String
+  drones Drone[]
+}
+
+model SpecCategory {
+  id String @id @default(nanoid()) @unique
+  name String
+  specs Spec[]
+}
+
+model Image {
+  id String @id @default(nanoid()) @unique
+  url String
+  drone Drone? @relation(references: [id], fields: [droneId])
+  droneId String?
+  spec Spec? @relation(references: [id], fields: [specId])
+  specId String?
+}
+
+model Video {
+  id String @id @default(nanoid()) @unique
+  url String
+  droneFeaturedIn Drone? @relation("DroneFeaturedVideo") 
+  drone Drone @relation("videos",references: [id], fields: [droneId])
+  droneId String
 }

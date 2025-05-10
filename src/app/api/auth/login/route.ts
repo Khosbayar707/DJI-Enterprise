@@ -34,6 +34,14 @@ export async function POST(req: NextRequest) {
         null
       );
     }
+    if (!user.isActive) {
+      return CustomResponse(
+        false,
+        "ACCOUNT_BLOCKED",
+        "Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!",
+        null
+      );
+    }
     const accessToken = jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin },
       process.env.JWT_SECRET,

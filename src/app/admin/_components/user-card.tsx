@@ -12,7 +12,7 @@ import {
 
 const UserCard = () => {
   return (
-    <Card>
+    <Card className=" shadow-2xl">
       <CardHeader>
         <CardTitle>Хэрэглэгчийн хэсэг</CardTitle>
       </CardHeader>
