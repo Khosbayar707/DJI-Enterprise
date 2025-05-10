@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       });
       const accessToken = jwt.sign(
         {
-          id: user,
+          id: user.id,
           email: user.email,
           isAdmin: user.isAdmin,
         },
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       );
       const refreshToken = jwt.sign(
         {
-          id: user,
+          id: user.id,
           email: user.email,
           isAdmin: user.isAdmin,
         },
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
     });
     const accessToken = jwt.sign(
       {
-        id: newUser,
+        id: newUser.id,
         email: newUser.email,
         isAdmin: newUser.isAdmin,
       },
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     );
     const refreshToken = jwt.sign(
       {
-        id: newUser,
+        id: newUser.id,
         email: newUser.email,
         isAdmin: newUser.isAdmin,
       },

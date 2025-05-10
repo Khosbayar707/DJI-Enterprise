@@ -13,19 +13,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { AddProductSchema } from "@/lib/zod-schemas/add-product-schema";
+import { AddDroneSchema } from "@/lib/zod-schemas/add-drone-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import LoadingText from "./loading";
+import LoadingText from "../loading";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "./snackbar";
+import { CustomSnackbar } from "../snackbar";
 
-const AddProductDialog = ({
+const AddDroneDialog = ({
   refresh,
   setRefresh,
 }: {
@@ -33,8 +33,8 @@ const AddProductDialog = ({
   setRefresh: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [response, setResponse] = useState<ResponseType>();
-  const form = useForm<z.infer<typeof AddProductSchema>>({
-    resolver: zodResolver(AddProductSchema),
+  const form = useForm<z.infer<typeof AddDroneSchema>>({
+    resolver: zodResolver(AddDroneSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -42,7 +42,7 @@ const AddProductDialog = ({
     mode: "onChange",
   });
 
-  const onSubmit = async (values: z.infer<typeof AddProductSchema>) => {
+  const onSubmit = async (values: z.infer<typeof AddDroneSchema>) => {
     try {
       const res = await axios.post("/api/product", values);
       if (res.data) {
@@ -123,4 +123,4 @@ const AddProductDialog = ({
     </Dialog>
   );
 };
-export default AddProductDialog;
+export default AddDroneDialog;

@@ -1,3 +1,4 @@
+"use client";
 import {
   Accordion,
   AccordionContent,
@@ -7,14 +8,14 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@mui/material";
 import Image from "next/image";
-import AddProductDialog from "../add-product-dialog";
+import AddDroneDialog from "../_dialogs/add-drone-dialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingText from "../loading";
 import { CustomDrone } from "@/lib/types";
 
-const ProductCard = () => {
-  const [products, setProducts] = useState<CustomDrone[]>();
+const DroneCard = () => {
+  const [drones, setProducts] = useState<CustomDrone[]>([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
@@ -40,32 +41,32 @@ const ProductCard = () => {
   }, [refresh]);
 
   return (
-    <Card className="shadow-2xl">
-      <CardHeader>
-        <CardTitle>
-          <div className=" flex justify-between">
-            <div>Бүтээгдэхүүн хэсэг</div>
-            <AddProductDialog refresh={refresh} setRefresh={setRefresh} />
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Accordion type="multiple" className="w-full">
-          {loading ? (
-            <div className="w-full flex justify-center">
-              <LoadingText />
+    <div className=" flex flex-col gap-10">
+      <Card className="shadow-2xl">
+        <CardHeader>
+          <CardTitle>
+            <div className=" flex justify-between">
+              <div>Дрон хэсэг</div>
+              <AddDroneDialog refresh={refresh} setRefresh={setRefresh} />
             </div>
-          ) : products ? (
-            products.length > 0 ? (
-              products.map((product) => (
-                <AccordionItem key={product.id} value={`product-${product.id}`}>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Accordion type="multiple" className="w-full">
+            {loading ? (
+              <div className="w-full flex justify-center">
+                <LoadingText />
+              </div>
+            ) : drones.length > 0 ? (
+              drones.map((drone) => (
+                <AccordionItem key={drone.id} value={`product-${drone.id}`}>
                   <AccordionTrigger className="cursor-pointer flex justify-between items-center">
-                    <span>{product.name}</span>
+                    <span>{drone.name}</span>
                     <div className="flex gap-2 text-xs text-muted-foreground w-1/2 justify-between">
-                      <span>Зурагнууд: {product.images.length}</span>
-                      <span>Бичлэгнүүд: {product.videos.length}</span>
+                      <span>Зурагнууд: {drone.images.length}</span>
+                      <span>Бичлэгнүүд: {drone.videos.length}</span>
                       <span>
-                        {product.visible ? (
+                        {drone.visible ? (
                           <span className="text-green-500">Нийтлэгдсэн</span>
                         ) : (
                           <span className="text-red-500">Нийтлэгдээгүй</span>
@@ -76,14 +77,14 @@ const ProductCard = () => {
 
                   <AccordionContent>
                     <p className="text-sm text-muted-foreground mb-4">
-                      {product.description}
+                      {drone.description}
                     </p>
                     {/* zuragnuud */}
                     <div className="mb-4">
                       <h4 className="text-sm font-semibold mb-2">Зурагнууд:</h4>
                       <div className="flex flex-wrap justify-center gap-4">
-                        {product.images.length > 0 ? (
-                          product.images.map((imgSrc) => (
+                        {drone.images.length > 0 ? (
+                          drone.images.map((imgSrc) => (
                             <div
                               key={imgSrc.id}
                               className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow"
@@ -108,13 +109,13 @@ const ProductCard = () => {
                         <h4 className="text-sm font-semibold mb-2">
                           Онцлох Видео:
                         </h4>
-                        {product.featuredVideo ? (
+                        {drone.featuredVideo ? (
                           <div className="flex justify-center">
                             <div className="aspect-video w-full max-w-md rounded-lg overflow-hidden shadow ">
                               <iframe
                                 width="100%"
                                 height="100%"
-                                src={product.featuredVideo.url}
+                                src={drone.featuredVideo.url}
                                 title={`featured video`}
                                 allowFullScreen
                                 className="rounded-lg"
@@ -133,8 +134,8 @@ const ProductCard = () => {
                             Видеонууд:
                           </h4>
                           <div className="flex flex-wrap justify-center gap-4">
-                            {product.videos.length > 0 ? (
-                              product.videos.map((videoSrc) => (
+                            {drone.videos.length > 0 ? (
+                              drone.videos.map((videoSrc) => (
                                 <div
                                   key={videoSrc.id}
                                   className="aspect-video w-full max-w-md rounded-lg overflow-hidden shadow"
@@ -157,14 +158,14 @@ const ProductCard = () => {
                       </div>
                     </div>
                     <Accordion type="single" collapsible>
-                      <AccordionItem value={`spec-${product.id}`}>
+                      <AccordionItem value={`spec-${drone.id}`}>
                         <AccordionTrigger className="cursor-pointer">
                           Эд анги
                         </AccordionTrigger>
                         <AccordionContent>
                           <ul className="list-disc list-inside text-sm space-y-2">
-                            {product.specs.length > 0 ? (
-                              product.specs.map((spec) => (
+                            {drone.specs.length > 0 ? (
+                              drone.specs.map((spec) => (
                                 <li key={spec.id}>
                                   Нэр: {spec.name}
                                   Тайлбар: {spec.detail}
@@ -192,7 +193,7 @@ const ProductCard = () => {
                         </Button>
                       </div>
                       <div className="mt-4 flex gap-2 items-center">
-                        {product.visible ? (
+                        {drone.visible ? (
                           <>
                             <div className=" text-green-600">
                               Уг бүтээгдэхүүн нийтлэгдсэн байна!
@@ -226,14 +227,12 @@ const ProductCard = () => {
               ))
             ) : (
               <div>Бүтээгдэхүүн алга</div>
-            )
-          ) : (
-            <div>Бүтээгдэхүүнүүдийг татаж авч чадсангүй!</div>
-          )}
-        </Accordion>
-      </CardContent>
-    </Card>
+            )}
+          </Accordion>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
-export default ProductCard;
+export default DroneCard;

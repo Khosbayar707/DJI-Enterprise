@@ -16,6 +16,8 @@ model User {
   sub_news Boolean @default(false)
   isActive Boolean @default(true)
   drones Drone[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Drone {
@@ -31,6 +33,8 @@ model Drone {
   adminId String
   visible Boolean @default(false)
   specs Spec[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Spec {
@@ -41,18 +45,24 @@ model Spec {
   droneId String
   drone Drone @relation(fields: [droneId], references: [id])
   image Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model DroneCategory {
   id String @id @default(nanoid()) @unique
   name String
   drones Drone[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model SpecCategory {
   id String @id @default(nanoid()) @unique
   name String
   specs Spec[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model Image {
@@ -64,6 +74,9 @@ model Image {
   droneId String?
   spec Spec? @relation(references: [id], fields: [specId])
   specId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
 }
 
 model Video {
@@ -72,4 +85,6 @@ model Video {
   droneFeaturedIn Drone? @relation("DroneFeaturedVideo") 
   drone Drone @relation("videos",references: [id], fields: [droneId])
   droneId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
