@@ -21,9 +21,10 @@ model User {
 model Drone {
   id String @id @default(nanoid()) @unique
   name String
+  description String @default("Дэлгэрэнгүй мэдээлэл алга!")
   categories DroneCategory[]
   featuredVideo Video? @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id]) 
-  featuredVideoId String @unique
+  featuredVideoId String? @unique
   images Image[]
   videos Video[] @relation("videos")
   admin User @relation(fields: [adminId], references: [id])
@@ -56,6 +57,8 @@ model SpecCategory {
 
 model Image {
   id String @id @default(nanoid()) @unique
+  name String @default("Нэр өгөөгүй!")
+  description String @default("Дэлгэрэнгүй мэдээлэл оруулаагүй байна!")
   url String
   drone Drone? @relation(references: [id], fields: [droneId])
   droneId String?
