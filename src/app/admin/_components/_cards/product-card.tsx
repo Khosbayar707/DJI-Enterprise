@@ -107,7 +107,7 @@ const ProductCard = () => {
                         <h4 className="text-sm font-semibold mb-2">
                           Онцлох Видео:
                         </h4>
-                        {product.featuredVideoId ? (
+                        {product.featuredVideo.url ? (
                           <div className="flex justify-center">
                             <div className="aspect-video w-full max-w-md rounded-lg overflow-hidden shadow ">
                               <iframe
