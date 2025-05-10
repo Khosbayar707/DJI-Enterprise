@@ -4,3 +4,11 @@ export type response = {
   message: string;
   data: any;
 };
+
+export enum AdminSideBarOptions {
+  products,
+  users,
+  orders,
+  images,
+  categories,
+}
