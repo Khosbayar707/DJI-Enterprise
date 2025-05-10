@@ -56,9 +56,9 @@ const ProductCard = () => {
                 </p>
                 {/* zuragnuud */}
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold mb-2">Зураг:</h4>
+                  <h4 className="text-sm font-semibold mb-2">Зурагнууд:</h4>
                   <div className=" flex flex-wrap justify-center">
-                    <div className="relative w-full max-w-md h-64 rounded-lg overflow-hidden shadow">
+                    <div className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow">
                       <Image
                         src={
                           product.image
@@ -71,7 +71,7 @@ const ProductCard = () => {
                         priority
                       />
                     </div>
-                    <div className="relative w-full max-w-md h-64 rounded-lg overflow-hidden shadow">
+                    <div className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow">
                       <Image
                         src={
                           product.image
@@ -84,7 +84,7 @@ const ProductCard = () => {
                         priority
                       />
                     </div>
-                    <div className="relative w-full max-w-md h-64 rounded-lg overflow-hidden shadow">
+                    <div className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow">
                       <Image
                         src={
                           product.image
@@ -97,7 +97,7 @@ const ProductCard = () => {
                         priority
                       />
                     </div>
-                    <div className="relative w-full max-w-md h-64 rounded-lg overflow-hidden shadow">
+                    <div className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow">
                       <Image
                         src={
                           product.image
@@ -110,7 +110,7 @@ const ProductCard = () => {
                         priority
                       />
                     </div>
-                    <div className="relative w-full max-w-md h-64 rounded-lg overflow-hidden shadow">
+                    <div className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow">
                       <Image
                         src={
                           product.image
@@ -123,7 +123,7 @@ const ProductCard = () => {
                         priority
                       />
                     </div>
-                    <div className="relative w-full max-w-md h-64 rounded-lg overflow-hidden shadow">
+                    <div className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow">
                       <Image
                         src={
                           product.image
@@ -159,7 +159,7 @@ const ProductCard = () => {
                   </div>
                   <div className=" flex overflow-hidden">
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold mb-2">Видео:</h4>
+                      <h4 className="text-sm font-semibold mb-2">Видеонууд:</h4>
                       <div className=" flex justify-center flex-wrap gap-4">
                         <div className="aspect-video w-full max-w-md rounded-lg overflow-hidden shadow">
                           <iframe
