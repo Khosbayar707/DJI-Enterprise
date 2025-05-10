@@ -16,6 +16,7 @@ model User {
   sub_news Boolean @default(false)
   isActive Boolean @default(true)
   drones Drone[]
+  specs Spec[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 }
@@ -43,6 +44,8 @@ model Spec {
   detail String
   specCategories SpecCategory[]
   droneId String
+  admin User @relation(fields: [adminId], references: [id])
+  adminId String
   drone Drone @relation(fields: [droneId], references: [id])
   image Image[]
   createdAt DateTime @default(now())
