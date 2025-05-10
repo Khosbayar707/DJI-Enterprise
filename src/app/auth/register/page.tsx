@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { response } from "@/lib/types";
+import { ResponseType } from "@/lib/types";
 import { RegisterSchema } from "@/lib/zod-schemas/register-schema";
 import { Checkbox } from "@mui/material";
 import Link from "next/link";
@@ -25,7 +25,7 @@ import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<response>();
+  const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {

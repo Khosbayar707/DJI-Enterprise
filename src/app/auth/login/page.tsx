@@ -17,14 +17,14 @@ import z from "zod";
 import { FaGoogle } from "react-icons/fa";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { response } from "@/lib/types";
+import { ResponseType } from "@/lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<response>();
+  const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {

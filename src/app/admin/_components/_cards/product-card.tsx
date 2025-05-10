@@ -5,8 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { theme } from "@/lib/theme";
-import { Button, ThemeProvider } from "@mui/material";
+import { Button } from "@mui/material";
 import Image from "next/image";
 import AddProductDialog from "../add-product-dialog";
 import { useEffect, useState } from "react";
@@ -25,7 +24,11 @@ const ProductCard = () => {
         setProducts(res.data.data.drones);
       }
     } catch (err) {
-      console.error(err, "Серверийн алдаа!");
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data || err.message);
+      } else {
+        console.error(err);
+      }
     } finally {
       setLoading(false);
     }
@@ -53,8 +56,8 @@ const ProductCard = () => {
             </div>
           ) : products ? (
             products.length > 0 ? (
-              products.map((product, idx) => (
-                <AccordionItem key={idx} value={`product-${idx}`}>
+              products.map((product) => (
+                <AccordionItem key={product.id} value={`product-${product.id}`}>
                   <AccordionTrigger className="cursor-pointer flex justify-between items-center">
                     <span>{product.name}</span>
                     <div className="flex gap-2 text-xs text-muted-foreground w-1/2 justify-between">
@@ -79,14 +82,14 @@ const ProductCard = () => {
                       <h4 className="text-sm font-semibold mb-2">Зурагнууд:</h4>
                       <div className="flex flex-wrap justify-center gap-4">
                         {product.images.length > 0 ? (
-                          product.images.map((imgSrc, imgIdx) => (
+                          product.images.map((imgSrc) => (
                             <div
-                              key={imgIdx}
+                              key={imgSrc.id}
                               className="relative w-full max-w-sm h-36 rounded-lg overflow-hidden shadow"
                             >
                               <Image
-                                src={"/image/placeholder.jpg"}
-                                alt={`${product.name} image ${imgIdx + 1}`}
+                                src={imgSrc.url}
+                                alt={`${imgSrc.name}`}
                                 fill
                                 style={{ objectFit: "cover" }}
                                 priority
@@ -111,7 +114,7 @@ const ProductCard = () => {
                                 width="100%"
                                 height="100%"
                                 src={product.videos[0].url}
-                                title={`${product.name} featured video`}
+                                title={`featured video`}
                                 allowFullScreen
                                 className="rounded-lg"
                               />
@@ -128,16 +131,16 @@ const ProductCard = () => {
                           </h4>
                           <div className="flex flex-wrap justify-center gap-4">
                             {product.videos.length > 0 ? (
-                              product.videos.map((videoSrc, vidIdx) => (
+                              product.videos.map((videoSrc) => (
                                 <div
-                                  key={vidIdx}
+                                  key={videoSrc.id}
                                   className="aspect-video w-full max-w-md rounded-lg overflow-hidden shadow"
                                 >
                                   <iframe
                                     width="100%"
                                     height="100%"
                                     src={videoSrc.url}
-                                    title={`${product.name} video ${vidIdx + 1}`}
+                                    title={`${videoSrc.id}`}
                                     allowFullScreen
                                     className="rounded-lg"
                                   />
@@ -151,15 +154,15 @@ const ProductCard = () => {
                       </div>
                     </div>
                     <Accordion type="single" collapsible>
-                      <AccordionItem value={`spec-${idx}`}>
+                      <AccordionItem value={`spec-${product.id}`}>
                         <AccordionTrigger className="cursor-pointer">
                           Эд анги
                         </AccordionTrigger>
                         <AccordionContent>
                           <ul className="list-disc list-inside text-sm space-y-2">
                             {product.specs.length > 0 ? (
-                              product.specs.map((spec, i) => (
-                                <li key={i}>
+                              product.specs.map((spec) => (
+                                <li key={spec.id}>
                                   Нэр: {spec.name}
                                   Тайлбар: {spec.detail}
                                 </li>

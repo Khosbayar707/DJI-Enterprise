@@ -1,6 +1,6 @@
 import { Drone, Image, Spec, Video } from "@/generated/prisma";
 
-export type response = {
+export type ResponseType = {
   success: boolean;
   code: string;
   message: string;

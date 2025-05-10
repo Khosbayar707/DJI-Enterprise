@@ -22,11 +22,11 @@ import LoadingText from "./loading";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { response } from "@/lib/types";
+import { ResponseType } from "@/lib/types";
 import { CustomSnackbar } from "./snackbar";
 
 const AddProductDialog = () => {
-  const [response, setResponse] = useState<response>();
+  const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof AddProductSchema>>({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
@@ -43,7 +43,11 @@ const AddProductDialog = () => {
         setResponse(res.data);
       }
     } catch (err) {
-      console.error(err, "Сервер дээр асуудал гарлаа!");
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data || err.message);
+      } else {
+        console.error(err);
+      }
     }
   };
 
