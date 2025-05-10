@@ -13,7 +13,7 @@ import jwt from "jsonwebtoken";
 export async function GET() {
   try {
     const drones = await prisma.drone.findMany({
-      include: { images: true, videos: true, specs: true },
+      include: { images: true, videos: true, specs: true, featuredVideo: true },
     });
     return CustomResponse(true, "REQUEST_SUCCESS", "Бүх дронууд", { drones });
   } catch (err) {

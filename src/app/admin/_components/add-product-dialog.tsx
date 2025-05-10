@@ -41,6 +41,7 @@ const AddProductDialog = () => {
       const res = await axios.post("/api/product", values);
       if (res.data) {
         setResponse(res.data);
+        form.reset();
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {

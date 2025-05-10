@@ -18,4 +18,5 @@ export type CustomDrone = Drone & {
   images: Image[];
   videos: Video[];
   specs: Spec[];
+  featuredVideo: Video;
 };

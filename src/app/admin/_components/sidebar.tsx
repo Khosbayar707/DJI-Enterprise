@@ -28,7 +28,7 @@ const Sidebar = ({
           activeSection === AdminSideBarOptions.images ? "success" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.images)}
-        className="justify-start cursor-pointer shadow-2x flex gap-3"
+        className="justify-start cursor-pointer shadow-2xl flex gap-3"
       >
         <Images size={20} /> <div>Зурагнууд</div>
       </Button>
@@ -48,7 +48,7 @@ const Sidebar = ({
           activeSection === AdminSideBarOptions.users ? "success" : "inherit"
         }
         onClick={() => setActiveSection(AdminSideBarOptions.users)}
-        className="justify-start cursor-pointer shadow-2x flex gap-3"
+        className="justify-start cursor-pointer shadow-2xl flex gap-3"
       >
         <Users size={20} /> <div>Хэрэглэгчид</div>
       </Button>

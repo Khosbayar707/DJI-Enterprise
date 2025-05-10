@@ -113,7 +113,7 @@ const ProductCard = () => {
                               <iframe
                                 width="100%"
                                 height="100%"
-                                src={product.videos[0].url}
+                                src={product.featuredVideo.url}
                                 title={`featured video`}
                                 allowFullScreen
                                 className="rounded-lg"
