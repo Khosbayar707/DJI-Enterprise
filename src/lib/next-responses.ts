@@ -15,15 +15,13 @@ export const CustomResponse = (
 };
 
 export const NextResponse_CatchError = (error: unknown): NextResponse => {
-  const response = NextResponse.json({
+  return NextResponse.json({
     success: false,
+    code: "SERVER_ERROR",
     message:
       error instanceof Error ? error.message : "Сервер дээр алдаа гарлаа!",
     data: null,
   });
-  response.cookies.delete("accessToken");
-  response.cookies.delete("refreshToken");
-  return response;
 };
 
 export const NextResponse_NoToken = (): NextResponse => {
@@ -51,24 +49,19 @@ export const NextResponse_NoEnv = (): NextResponse => {
 };
 
 export const NextResponse_DeactivatedUser = (): NextResponse => {
-  const response = NextResponse.json({
+  return NextResponse.json({
     success: false,
     code: "ACCOUNT_BLOCKED",
     message: "Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!",
     data: null,
   });
-  response.cookies.delete("accessToken");
-  response.cookies.delete("refreshToken");
-  return response;
 };
 
 export const NextResponse_NotAnAdmin = (): NextResponse => {
-  const response = NextResponse.json({
+  return NextResponse.json({
     success: false,
     code: "UNAUTHORIZED",
     message: "Админ биш байна!",
     data: null,
   });
-
-  return response;
 };

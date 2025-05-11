@@ -30,7 +30,7 @@ const Sidebar = ({
         onClick={() => setActiveSection(AdminSideBarOptions.images)}
         className="justify-start cursor-pointer shadow-2xl flex gap-3"
       >
-        <Images size={20} /> <div>Зурагнууд</div>
+        <Images size={20} /> <div>Медиа</div>
       </Button>
       <Button
         sx={{ justifyContent: "flex-start" }}
