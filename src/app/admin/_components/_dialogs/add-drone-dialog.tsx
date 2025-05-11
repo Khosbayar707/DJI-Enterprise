@@ -44,7 +44,7 @@ const AddDroneDialog = ({
 
   const onSubmit = async (values: z.infer<typeof AddDroneSchema>) => {
     try {
-      const res = await axios.post("/api/product", values);
+      const res = await axios.post("/api/product/drones", values);
       if (res.data) {
         setResponse(res.data);
         form.reset();

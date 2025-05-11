@@ -1,4 +1,5 @@
 import z from "zod";
+
 export const AddDroneSchema = z.object({
   name: z
     .string()

@@ -1,4 +1,4 @@
-const ImageSecton = () => {
+const ImageCard = () => {
   return <div>buh zuragnuud end</div>;
 };
-export default ImageSecton;
+export default ImageCard;

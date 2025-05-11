@@ -14,7 +14,6 @@ export enum AdminSideBarOptions {
   users,
   orders,
   images,
-  categories,
 }
 export type CustomDrone = Drone & {
   images: Image[];

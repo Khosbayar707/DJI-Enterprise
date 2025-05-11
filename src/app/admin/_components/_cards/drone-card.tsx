@@ -21,7 +21,7 @@ const DroneCard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("/api/product");
+      const res = await axios.get("/api/product/drones");
       if (res.data.success) {
         setProducts(res.data.data.drones);
       }
