@@ -1,14 +1,13 @@
 "use client";
 import { useState } from "react";
-import UserCard from "./_components/user-card";
-import ProductCard from "./_components/product-card";
 import Sidebar from "./_components/sidebar";
-import OrderSection from "./_components/order-card";
+import { AdminSideBarOptions } from "@/lib/types";
+import { sectionComponents } from "./_components/_sections/sections";
 
 const AdminPage = () => {
-  const [activeSection, setActiveSection] = useState<
-    "products" | "users" | "orders"
-  >("products");
+  const [activeSection, setActiveSection] = useState<AdminSideBarOptions>(
+    AdminSideBarOptions.products
+  );
 
   return (
     <div className="flex h-screen">
@@ -17,9 +16,7 @@ const AdminPage = () => {
         setActiveSection={setActiveSection}
       />
       <main className="flex-1 p-6 overflow-y-auto">
-        {activeSection === "products" && <ProductCard />}
-        {activeSection === "users" && <UserCard />}
-        {activeSection === "orders" && <OrderSection />}
+        {sectionComponents[activeSection]}
       </main>
     </div>
   );

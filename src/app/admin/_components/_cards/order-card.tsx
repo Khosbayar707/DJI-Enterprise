@@ -31,7 +31,7 @@ const orders = [
   },
 ];
 
-const OrderSection = () => {
+const OrderCard = () => {
   return (
     <Card className=" shadow-2xl">
       <CardHeader>
@@ -85,4 +85,4 @@ const OrderSection = () => {
   );
 };
 
-export default OrderSection;
+export default OrderCard;

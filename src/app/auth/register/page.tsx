@@ -15,16 +15,17 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { response } from "@/lib/types";
+import { ResponseType } from "@/lib/types";
 import { RegisterSchema } from "@/lib/zod-schemas/register-schema";
 import { Checkbox } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<response>();
+  const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -59,11 +60,7 @@ const Login = () => {
 
   return (
     <div className=" text-xs sm:text-sm rounded-sm p-18 bg-background sm:fixed sm:w-[450px] shadow-4xl min-h-screen flex flex-col items-center gap-7 justify-center  sm:min-h-auto sm:top-24 sm:right-24">
-      <Snackbar
-        open={!!response}
-        message={response?.message}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      />
+      {response && <CustomSnackbar value={response} />}
       <div className="flex justify-center flex-col items-center gap-6 shadow-2xl p-12 sm:shadow-none sm:p-4 sm:whitespace-nowrap">
         <div className="text-2xl font-semibold text-center">Бүртгүүлэх</div>
         <div className="w-full border-t border-border"></div>

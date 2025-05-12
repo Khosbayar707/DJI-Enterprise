@@ -1,4 +1,5 @@
 import z from "zod";
+
 export const LoginSchema = z.object({
   email: z.string().email({ message: "Зөв майл хаяг оруулна уу!" }),
   password: z
