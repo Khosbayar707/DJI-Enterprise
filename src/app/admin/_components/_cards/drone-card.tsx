@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingText from "../loading";
 import { CustomDrone } from "@/lib/types";
+import Link from "next/link";
 
 const DroneCard = () => {
   const [drones, setProducts] = useState<CustomDrone[]>([]);
@@ -181,9 +182,17 @@ const DroneCard = () => {
 
                     <div className=" flex justify-between">
                       <div className="mt-4 flex gap-2 items-center">
-                        <Button variant="contained" className="cursor-pointer">
-                          Засах
-                        </Button>
+                        <Link
+                          target="_blank"
+                          href={`/admin/drones/${drone.id}`}
+                        >
+                          <Button
+                            variant="contained"
+                            className="cursor-pointer"
+                          >
+                            Засах
+                          </Button>
+                        </Link>
                         <Button
                           color="error"
                           variant="contained"

@@ -15,9 +15,15 @@ export enum AdminSideBarOptions {
   orders,
   images,
 }
+
 export type CustomDrone = Drone & {
   images: Image[];
   videos: Video[];
   specs: Spec[];
   featuredVideo: Video;
+};
+
+export type CustomSpec = Spec & {
+  image: Image[];
+  drone: Drone;
 };

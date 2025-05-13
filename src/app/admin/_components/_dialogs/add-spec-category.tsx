@@ -13,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { AddDroneSchema } from "@/lib/zod-schemas/add-drone-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -24,8 +23,9 @@ import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponseType } from "@/lib/types";
 import { CustomSnackbar } from "../snackbar";
+import { AddNewSchema } from "@/lib/zod-schemas/add-new-spec-schema";
 
-const AddDroneDialog = ({
+const AddSpecDialog = ({
   refresh,
   setRefresh,
 }: {
@@ -33,18 +33,18 @@ const AddDroneDialog = ({
   setRefresh: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [response, setResponse] = useState<ResponseType>();
-  const form = useForm<z.infer<typeof AddDroneSchema>>({
-    resolver: zodResolver(AddDroneSchema),
+  const form = useForm<z.infer<typeof AddNewSchema>>({
+    resolver: zodResolver(AddNewSchema),
     defaultValues: {
       name: "",
-      description: "",
+      detail: "",
     },
     mode: "onChange",
   });
 
-  const onSubmit = async (values: z.infer<typeof AddDroneSchema>) => {
+  const onSubmit = async (values: z.infer<typeof AddNewSchema>) => {
     try {
-      const res = await axios.post("/api/product/drones", values);
+      const res = await axios.post("/api/product/specs", values);
       if (res.data) {
         setResponse(res.data);
         form.reset();
@@ -70,10 +70,10 @@ const AddDroneDialog = ({
     <Dialog>
       {response && <CustomSnackbar value={response} />}
       <DialogTrigger asChild>
-        <Button variant="contained">Дрон нэмэх</Button>
+        <Button variant="contained">Эд анги нэмэх</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Шинэ дрон нэмэх хэсэг</DialogTitle>
+        <DialogTitle>Шинэ эд анги нэмэх хэсэг</DialogTitle>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-4">
@@ -87,7 +87,7 @@ const AddDroneDialog = ({
                         {...field}
                         color={form.formState.isValid ? "primary" : "error"}
                         variant="standard"
-                        label="Дроны нэр"
+                        label="Эд ангийн нэр"
                       />
                     </FormControl>
                     <FormMessage />
@@ -95,11 +95,11 @@ const AddDroneDialog = ({
                 )}
               />
               <FormField
-                name="description"
+                name="detail"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Дроны талаар</FormLabel>
+                    <FormLabel>Эд ангийн талаар</FormLabel>
                     <FormControl>
                       <Textarea {...field} />
                     </FormControl>
@@ -123,4 +123,4 @@ const AddDroneDialog = ({
     </Dialog>
   );
 };
-export default AddDroneDialog;
+export default AddSpecDialog;
