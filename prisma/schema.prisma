@@ -43,10 +43,10 @@ model Spec {
   name String
   detail String
   specCategories SpecCategory[]
-  droneId String
+  droneId String?
   admin User @relation(fields: [adminId], references: [id])
   adminId String
-  drone Drone @relation(fields: [droneId], references: [id])
+  drone Drone? @relation(fields: [droneId], references: [id])
   visible Boolean @default(false)
   image Image[]
   createdAt DateTime @default(now())
@@ -80,7 +80,6 @@ model Image {
   specId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
-
 }
 
 model Video {

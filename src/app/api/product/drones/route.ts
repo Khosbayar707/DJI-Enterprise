@@ -47,6 +47,7 @@ export async function POST(req: NextRequest) {
     }
     const newDrone = await prisma.drone.create({
       data: { name, adminId: user.id, description },
+      include: { images: true, videos: true, specs: true, featuredVideo: true },
     });
     return CustomResponse(
       true,

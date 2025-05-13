@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode", // Prettier formatter
+    "Prisma.prisma", // Prisma language support
+    "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense
+    "christian-kohler.path-intellisense", // Path Intellisense
+    "wix.vscode-import-cost", // Import Cost
+    "alefragnani.project-manager", // Project Manager
+    "alefragnani.bookmarks", // Bookmarks
+    "xabikos.javascriptsnippets", // JavaScript (ES6) code snippets
+    "aaron-bond.better-comments" // Better Comments
+  ]
+}

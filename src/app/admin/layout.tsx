@@ -15,8 +15,6 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         if (res.data.success) {
           if (res.data.code === "USER") {
             router.push("/");
-          } else {
-            router.push("/admin");
           }
         } else {
           router.push("/auth/login");

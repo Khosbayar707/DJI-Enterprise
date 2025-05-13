@@ -76,7 +76,7 @@ const CategoriesSection = () => {
             <AccordionItem key={`drone-categories`} value={`drone-categories`}>
               <AccordionTrigger className="cursor-pointer flex justify-between items-center font-extrabold">
                 <div className="flex items-center justify-between w-full gap-7">
-                  <div>Бүтээгдэхүүний категори</div>
+                  <div>Дроны категори</div>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
