@@ -22,10 +22,10 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm i
+        run: yarn
 
       - name: Generate Prisma client
-        run: npx prisma generate
+        run: yarn prisma generate
 
       - name: Build Next.js app
-        run: npm run build
+        run: yarn run build
