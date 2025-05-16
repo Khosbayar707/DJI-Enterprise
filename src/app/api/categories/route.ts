@@ -33,6 +33,15 @@ export async function POST(req: NextRequest) {
         { new: newCategory }
       );
     }
+    if (type === "model") {
+      const newCategory = await prisma.droneModel.create({ data: { name } });
+      return CustomResponse(
+        true,
+        "REQUEST_SUCCESS",
+        "Модел амжилттай нэмэгдлээ!",
+        { new: newCategory }
+      );
+    }
     const newCategory = await prisma.droneCategory.create({ data: { name } });
     return CustomResponse(
       true,

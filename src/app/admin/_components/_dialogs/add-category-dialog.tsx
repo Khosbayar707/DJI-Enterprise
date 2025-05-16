@@ -119,6 +119,11 @@ const AddCategoryDialog = ({
                             value="spec"
                             control={<Radio color="primary" />}
                           />
+                          <FormControlLabel
+                            label="Модел"
+                            value="model"
+                            control={<Radio color="primary" />}
+                          />
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />

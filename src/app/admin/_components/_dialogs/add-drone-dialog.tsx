@@ -101,7 +101,7 @@ const AddDroneDialog = ({
                   <FormItem>
                     <FormLabel>Дроны талаар</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea rows={50} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

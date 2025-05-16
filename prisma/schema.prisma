@@ -24,8 +24,14 @@ model User {
 model Drone {
   id String @id @default(nanoid()) @unique
   name String
+  weight String @default("Жин оруулаагүй.")
+  model DroneModel? @relation(fields: [modelId], references: [id])
+  modelId String?
+  Price Int?
   description String @default("Дэлгэрэнгүй мэдээлэл алга!")
   categories DroneCategory[]
+  featuredImage Image? @relation("DroneFeaturedImage", fields: [featuredImageId], references: [id]) 
+  featuredImageId String? @unique
   featuredVideo Video? @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id]) 
   featuredVideoId String? @unique
   images Image[]
@@ -36,6 +42,12 @@ model Drone {
   specs Spec[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
+}
+
+model DroneModel {
+  id String @default(nanoid()) @unique @id
+  name String
+  drones Drone[]
 }
 
 model Spec {
@@ -78,6 +90,7 @@ model Image {
   droneId String?
   spec Spec? @relation(references: [id], fields: [specId])
   specId String?
+  DroneFeaturedImage Drone? @relation("DroneFeaturedImage") 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 }
@@ -85,7 +98,7 @@ model Image {
 model Video {
   id String @id @default(nanoid()) @unique
   url String
-  droneFeaturedIn Drone? @relation("DroneFeaturedVideo") 
+  droneFeaturedVideo Drone? @relation("DroneFeaturedVideo") 
   drone Drone @relation("videos",references: [id], fields: [droneId])
   droneId String
   createdAt DateTime @default(now())

@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DroneCategory, SpecCategory } from "@/generated/prisma";
+import { DroneCategory, DroneModel, SpecCategory } from "@/generated/prisma";
 import { Button, Chip } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -17,8 +17,12 @@ import AddCategoryDialog from "../_dialogs/add-category-dialog";
 const CategoriesSection = () => {
   const [droneCategories, setDroneCategories] = useState<DroneCategory[]>([]);
   const [specCategories, setSpecCategories] = useState<SpecCategory[]>([]);
+  const [models, setModels] = useState<DroneModel[]>([]);
+
   const [waitingDrones, setWaitingD] = useState(true);
   const [waitingSpecs, setWaitingS] = useState(true);
+  const [waitingModels, setWaitingM] = useState(true);
+
   const [refresh, setRefresh] = useState(false);
 
   const fetchDroneCategories = async () => {
@@ -53,11 +57,26 @@ const CategoriesSection = () => {
       setWaitingS(false);
     }
   };
+  const fetchDroneModels = async () => {
+    try {
+      const res = await axios.get("/api/categories/models");
+      if (res.data) {
+        setModels(res.data.data.models);
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data || err.message);
+      } else {
+        console.error(err);
+      }
+    } finally {
+      setWaitingM(false);
+    }
+  };
   useEffect(() => {
     fetchDroneCategories();
-  }, [refresh]);
-  useEffect(() => {
     fetchSpecCategories();
+    fetchDroneModels();
   }, [refresh]);
 
   return (
@@ -93,6 +112,32 @@ const CategoriesSection = () => {
                     ))
                   ) : (
                     <div>Категори алга</div>
+                  )}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <Accordion type="multiple" className="w-full">
+            <AccordionItem key={`drone-categories`} value={`drone-categories`}>
+              <AccordionTrigger className="cursor-pointer flex justify-between items-center font-extrabold">
+                <div className="flex items-center justify-between w-full gap-7">
+                  <div>Дроны моделүүд</div>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className=" flex flex-wrap gap-4 items-center justify-center">
+                  {waitingModels ? (
+                    <LoadingText />
+                  ) : models.length > 0 ? (
+                    models.map((category) => (
+                      <Chip
+                        key={category.id}
+                        variant="filled"
+                        label={category.name}
+                      />
+                    ))
+                  ) : (
+                    <div>Модел алга</div>
                   )}
                 </div>
               </AccordionContent>

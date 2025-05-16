@@ -101,7 +101,7 @@ const AddSpecDialog = ({
                   <FormItem>
                     <FormLabel>Эд ангийн талаар</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea rows={50} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
