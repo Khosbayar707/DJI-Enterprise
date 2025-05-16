@@ -1,4 +1,11 @@
-import { Drone, Image, Spec, Video } from "@/generated/prisma";
+import {
+  Drone,
+  DroneCategory,
+  Image,
+  Spec,
+  SpecCategory,
+  Video,
+} from "@/generated/prisma";
 import z from "zod";
 import { AddCategorySchema } from "./zod-schemas/add-category-schema";
 
@@ -32,9 +39,11 @@ export type CustomDrone = Drone & {
   videos: Video[];
   specs: Spec[];
   featuredVideo: Video;
+  categories: DroneCategory[];
 };
 
 export type CustomSpec = Spec & {
   image: Image[];
   drone: Drone;
+  specCategories: SpecCategory[];
 };

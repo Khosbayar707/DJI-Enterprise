@@ -66,14 +66,8 @@ const SpecCard = () => {
                   <AccordionTrigger className="cursor-pointer flex justify-between items-center">
                     <span>{spec.name}</span>
                     <div className="flex gap-2 text-xs text-muted-foreground w-1/2 justify-between">
-                      <span>Зурагнууд: {spec.image.length}</span>
-                      <span>
-                        {spec.visible ? (
-                          <span className="text-green-500">Нийтлэгдсэн</span>
-                        ) : (
-                          <span className="text-red-500">Нийтлэгдээгүй</span>
-                        )}
-                      </span>
+                      <span>[{spec.detail}]</span>
+                      <span>Зургийн тоо: {spec.image.length}</span>
                     </div>
                   </AccordionTrigger>
 

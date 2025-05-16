@@ -1,15 +1,14 @@
 "use client";
-import AddCategoryDialog from "@/app/admin/_components/_dialogs/add-category-dialog";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Drone, Spec, SpecCategory } from "@/generated/prisma";
 import { Input } from "@mui/material";
 
-const SpecInfoCard = () => {
+type Props = {
+  spec: Spec;
+  specCategories: SpecCategory[];
+  drones: Drone[];
+};
+const SpecInfoCard = ({ spec }: Props) => {
   return (
     <Card className="shadow-2xl">
       <CardHeader>

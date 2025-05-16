@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { ResponseType } from "@/lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
 const Login = () => {
   const router = useRouter();
@@ -56,12 +57,8 @@ const Login = () => {
   }, [response]);
 
   return (
-    <div className="rounded-sm p-9 text-xs sm:text-sm bg-background sm:fixed min-h-screen sm:w-[450px] shadow-4xl flex flex-col items-center gap-7 justify-center  sm:min-h-auto sm:top-24 sm:right-24">
-      <Snackbar
-        open={!!response}
-        message={response?.message}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      />
+    <div className="rounded-sm p-9 text-xs sm:text-sm bg-background sm:fixed min-h-screen sm:w-[450px] shadow-4xl flex flex-col items-center gap-7 justify-center z-51  sm:min-h-auto sm:top-24 sm:right-24">
+      {response && <CustomSnackbar value={response} />}
       <div className="flex flex-col items-center gap-6 justify-center shadow-2xl p-10 sm:shadow-none sm:p-0 w-full">
         <div className="flex flex-col gap-4">
           <div className=" flex flex-col justify-center  gap-5 items-center">

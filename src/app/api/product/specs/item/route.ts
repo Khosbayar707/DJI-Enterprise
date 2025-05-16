@@ -13,17 +13,11 @@ export async function GET(req: NextRequest) {
         null
       );
     }
-    const drone = await prisma.drone.findUnique({
+    const spec = await prisma.spec.findUnique({
       where: { id },
-      include: {
-        images: true,
-        videos: true,
-        specs: true,
-        featuredVideo: true,
-        categories: true,
-      },
+      include: { specCategories: true, drone: true, image: true },
     });
-    if (!drone) {
+    if (!spec) {
       return CustomResponse(
         false,
         "ITEM_NOT_FOUND",
@@ -31,7 +25,7 @@ export async function GET(req: NextRequest) {
         null
       );
     }
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай", { drone });
+    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай", { spec });
   } catch (err) {
     return NextResponse_CatchError(err);
   }
