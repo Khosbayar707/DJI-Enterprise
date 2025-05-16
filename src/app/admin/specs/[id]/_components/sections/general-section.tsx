@@ -9,20 +9,28 @@ import axios from "axios";
 import LoadingText from "@/app/_component/LoadingText";
 
 const GeneralSection = () => {
-  const { id } = useParams();
+  const params = useParams();
+  const { id } = params as { id: string };
   const [spec, setSpec] = useState<CustomSpec>();
   const [loading, setLoading] = useState(true);
   const [specCategories, setSpecCategories] = useState<SpecCategory[]>([]);
   const [drones, setDrones] = useState<Drone[]>([]);
-  console.log({ id, spec, specCategories });
+  const [waitingCategories, setWaitingCategories] = useState(true);
+
   const fetchCategories = async () => {
-    const speccat = await axios.get("/api/product/specs");
-    const drones = await axios.get("/api/product/drones");
-    if (speccat.data.success) {
-      setSpecCategories(speccat.data.data.categories);
-    }
-    if (drones.data.success) {
-      setDrones(drones.data.data.drones);
+    try {
+      const speccat = await axios.get("/api/categories/specs");
+      const drones = await axios.get("/api/product/drones");
+      if (speccat.data.success) {
+        setSpecCategories(speccat.data.data.categories);
+      }
+      if (drones.data.success) {
+        setDrones(drones.data.data.drones);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setWaitingCategories(false);
     }
   };
   const fetchData = async () => {
@@ -52,6 +60,8 @@ const GeneralSection = () => {
         <LoadingText />
       ) : spec ? (
         <SpecInfoCard
+          waitingCategories={waitingCategories}
+          id={id}
           spec={spec}
           specCategories={specCategories}
           drones={drones}

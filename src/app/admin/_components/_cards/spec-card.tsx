@@ -26,7 +26,6 @@ const SpecCard = () => {
       const res = await axios.get("/api/product/specs");
       if (res.data.success) {
         setSpecs(res.data.data.specs);
-        console.log(res.data);
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {

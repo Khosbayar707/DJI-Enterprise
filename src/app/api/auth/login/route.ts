@@ -74,7 +74,6 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err) {
-    console.log(err);
     return NextResponse_CatchError(err);
   }
 }
