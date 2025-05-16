@@ -5,6 +5,7 @@ import {
 } from "@/lib/next-responses";
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
+import { prisma } from "@/lib/prisma";
 
 // this is for checking role of Admin, User - Админ, Хэрэглэгчийн эрхийг шалгах хэсэг
 // this SHOULD NOT try to connect to database - Датабазтай холбогдох код бичиж болохгүй!

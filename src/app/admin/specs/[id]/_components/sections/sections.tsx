@@ -1,0 +1,11 @@
+import { SpecSideBarOptions } from "@/lib/types";
+import GeneralSection from "./general-section";
+import ImagesSection from "./images-section";
+
+export const SpecSectionComponents: Record<
+  SpecSideBarOptions,
+  React.ReactNode
+> = {
+  [SpecSideBarOptions.GENERAL]: <GeneralSection />,
+  [SpecSideBarOptions.IMAGES]: <ImagesSection />,
+};

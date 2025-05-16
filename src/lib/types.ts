@@ -16,6 +16,17 @@ export enum AdminSideBarOptions {
   images,
 }
 
+export enum SpecSideBarOptions {
+  GENERAL,
+  IMAGES,
+}
+
+export enum DroneSideBarOptions {
+  GENERAL,
+  IMAGES,
+  VIDEOS,
+}
+
 export type CustomDrone = Drone & {
   images: Image[];
   videos: Video[];
