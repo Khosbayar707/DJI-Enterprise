@@ -115,13 +115,13 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
 
   return (
     <Accordion type="multiple">
+      {response && <CustomSnackbar value={response} />}
       <AccordionItem key={`imageUpload`} value="imageupload">
         <AccordionTrigger className=" cursor-pointer">
           Зураг оруулах
         </AccordionTrigger>
         <AccordionContent>
           <div className="flex flex-col items-center justify-center gap-4 py-6 bg-secondary p-7">
-            {response && <CustomSnackbar value={response} />}
             <div
               onClick={() => inputRef.current?.click()}
               className="w-full max-w-md h-40 cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 hover:border-blue-500 bg-white hover:bg-blue-50 flex flex-col items-center justify-center transition-all"
