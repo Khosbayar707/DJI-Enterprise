@@ -16,11 +16,15 @@ export async function GET(req: NextRequest) {
     const drone = await prisma.drone.findUnique({
       where: { id },
       include: {
-        images: true,
-        videos: true,
+        images: {
+          include: { drone: true, spec: true },
+          orderBy: { priority: "desc" },
+        },
+        videos: { include: { drone: true }, orderBy: { createdAt: "desc" } },
         specs: true,
         featuredVideo: true,
         categories: true,
+        featuredImage: true,
       },
     });
     if (!drone) {

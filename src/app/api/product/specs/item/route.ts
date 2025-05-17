@@ -15,7 +15,11 @@ export async function GET(req: NextRequest) {
     }
     const spec = await prisma.spec.findUnique({
       where: { id },
-      include: { specCategories: true, drone: true, image: true },
+      include: {
+        specCategories: true,
+        drone: true,
+        image: { orderBy: { priority: "desc" } },
+      },
     });
     if (!spec) {
       return CustomResponse(

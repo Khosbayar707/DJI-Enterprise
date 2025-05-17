@@ -86,6 +86,8 @@ model Image {
   name String @default("Нэр өгөөгүй!")
   description String @default("Дэлгэрэнгүй мэдээлэл оруулаагүй байна!")
   url String
+  public_id String
+  priority Int @default(0)
   drone Drone? @relation(references: [id], fields: [droneId])
   droneId String?
   spec Spec? @relation(references: [id], fields: [specId])
