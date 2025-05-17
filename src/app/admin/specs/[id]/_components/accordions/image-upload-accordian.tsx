@@ -88,7 +88,9 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
   return (
     <Accordion type="multiple">
       <AccordionItem key={`imageUpload`} value="imageupload">
-        <AccordionTrigger>Зураг оруулах</AccordionTrigger>
+        <AccordionTrigger className=" cursor-pointer">
+          Зураг оруулах
+        </AccordionTrigger>
         <AccordionContent>
           <div className="flex flex-col items-center justify-center gap-4 py-6 bg-secondary p-7">
             <div
