@@ -179,7 +179,7 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                         <FormLabel>
                           Хэр чухал вэ?{" "}
                           <span className="text-xs italic">
-                            *их тоотой хамгийн эхэнд харагдана
+                            *их тоотой нь хамгийн эхэнд харагдана
                           </span>
                         </FormLabel>
                         <FormControl>
@@ -192,36 +192,14 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                             }
                             className=" flex justify-center gap-4"
                           >
-                            <FormControlLabel
-                              label="0"
-                              value={0}
-                              control={<Radio color="primary" />}
-                            />
-                            <FormControlLabel
-                              label="1"
-                              value={1}
-                              control={<Radio color="primary" />}
-                            />
-                            <FormControlLabel
-                              label="2"
-                              value={2}
-                              control={<Radio color="primary" />}
-                            />
-                            <FormControlLabel
-                              label="3"
-                              value={3}
-                              control={<Radio color="primary" />}
-                            />
-                            <FormControlLabel
-                              label="4"
-                              value={4}
-                              control={<Radio color="primary" />}
-                            />
-                            <FormControlLabel
-                              label="5"
-                              value={5}
-                              control={<Radio color="primary" />}
-                            />
+                            {[0, 1, 2, 3, 4, 5].map((val) => (
+                              <FormControlLabel
+                                key={val}
+                                label={val.toString()}
+                                value={val}
+                                control={<Radio color="primary" />}
+                              />
+                            ))}
                           </RadioGroup>
                         </FormControl>
                       </FormItem>
