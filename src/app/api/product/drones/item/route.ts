@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       include: {
         images: {
           include: { drone: true, spec: true },
-          orderBy: { createdAt: "desc" },
+          orderBy: { priority: "desc" },
         },
         videos: { include: { drone: true }, orderBy: { createdAt: "desc" } },
         specs: true,

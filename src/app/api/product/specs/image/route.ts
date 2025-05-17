@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     const data = url.map((u, i) => ({
       url: u,
       public_id: public_id[i],
-      droneId: id,
+      specId: id,
     }));
     const newImages = await prisma.image.createMany({
       data,

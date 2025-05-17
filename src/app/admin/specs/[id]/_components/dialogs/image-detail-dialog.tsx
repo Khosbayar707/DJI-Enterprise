@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Dialog,
   DialogContent,
@@ -17,11 +18,11 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { EditDroneImageDetailSchema } from "../../utils/edit-drone-image-detail-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import axios from "axios";
 import { Dispatch, SetStateAction, useState } from "react";
+import { EditSpecImageDetailSchema } from "../../utils/edit-spec-image-detail-schema";
 import LoadingText from "@/app/_component/LoadingText";
 
 type Props = {
@@ -32,9 +33,8 @@ type Props = {
 
 const ImageDetailDialog = ({ image, setRefresh }: Props) => {
   const [waiting, setWaiting] = useState(false);
-
-  const form = useForm<z.infer<typeof EditDroneImageDetailSchema>>({
-    resolver: zodResolver(EditDroneImageDetailSchema),
+  const form = useForm<z.infer<typeof EditSpecImageDetailSchema>>({
+    resolver: zodResolver(EditSpecImageDetailSchema),
     defaultValues: {
       name: image.name || "",
       description: image.description || "",
@@ -43,19 +43,19 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
   });
 
   const onSubmit = async (
-    values: z.infer<typeof EditDroneImageDetailSchema>
+    values: z.infer<typeof EditSpecImageDetailSchema>
   ) => {
     try {
       setWaiting(true);
-      const res = await axios.patch("/api/product/drones/image", {
+      const res = await axios.patch("/api/product/specs/image", {
         ...values,
         id: image.id,
       });
       if (res.data.success) {
         setRefresh((prev) => !prev);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (Err) {
+      console.error(Err);
     } finally {
       setWaiting(false);
     }
@@ -81,12 +81,15 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
               📄 <span className="font-semibold">Дэлгэрэнгүй:</span>{" "}
               {image.description}
             </p>
-            <p className="text-gray-400 text-xs mt-2">
-              Нэмэгдсэн: {new Date(image.createdAt).toLocaleString("mn-MN")}
-            </p>
-            <p className="text-gray-400 text-xs">
-              Засагдсан: {new Date(image.updatedAt).toLocaleString("mn-MN")}
-            </p>
+            <div>
+              <p className="text-gray-400 text-xs mt-2">
+                Нэмэгдсэн: {new Date(image.createdAt).toLocaleString("mn-MN")}
+              </p>
+              <p className="text-gray-400 text-xs">
+                Засагдсан: {new Date(image.updatedAt).toLocaleString("mn-MN")}
+              </p>
+            </div>
+            {image.priority}
           </div>
         </div>
       </DialogTrigger>
@@ -212,15 +215,20 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                 </div>
               </form>
             </Form>
-            <div className="text-xs text-gray-500 space-y-1">
-              <p>
-                📅 <span className="font-medium">Үүсгэсэн:</span>{" "}
-                {new Date(image.createdAt).toLocaleString("mn-MN")}
-              </p>
-              <p>
-                🔄 <span className="font-medium">Шинэчилсэн:</span>{" "}
-                {new Date(image.updatedAt).toLocaleString("mn-MN")}
-              </p>
+            <div className="text-xs text-gray-500 space-y-1 flex justify-between">
+              <div>
+                <p>
+                  📅 <span className="font-medium">Үүсгэсэн:</span>{" "}
+                  {new Date(image.createdAt).toLocaleString("mn-MN")}
+                </p>
+                <p>
+                  🔄 <span className="font-medium">Шинэчилсэн:</span>{" "}
+                  {new Date(image.updatedAt).toLocaleString("mn-MN")}
+                </p>
+              </div>
+              <div>
+                <Button color="warning">Устгах</Button>
+              </div>
             </div>
           </div>
         </div>

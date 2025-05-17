@@ -1,5 +1,4 @@
 "use client";
-import { Image as imageType } from "@/generated/prisma";
 import { Dispatch, SetStateAction } from "react";
 import LoadingText from "@/app/_component/LoadingText";
 import ImageDetailDialog from "../dialogs/image-detail-dialog";
