@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CustomImage } from "@/lib/types";
+import { CustomImage, ResponseType } from "@/lib/types";
 import Image from "next/image";
 import {
   TextField,
@@ -21,8 +21,9 @@ import { EditDroneImageDetailSchema } from "../../utils/edit-drone-image-detail-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import LoadingText from "@/app/_component/LoadingText";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
 type Props = {
   image: CustomImage;
@@ -32,6 +33,9 @@ type Props = {
 
 const ImageDetailDialog = ({ image, setRefresh }: Props) => {
   const [waiting, setWaiting] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [deletingImage, setDeletingImage] = useState(false);
+  const [response, setResponse] = useState<ResponseType>();
 
   const form = useForm<z.infer<typeof EditDroneImageDetailSchema>>({
     resolver: zodResolver(EditDroneImageDetailSchema),
@@ -54,6 +58,7 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
       if (res.data.success) {
         setRefresh((prev) => !prev);
       }
+      setResponse(res.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -61,10 +66,33 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
     }
   };
 
+  const handleDeleteImage = async () => {
+    try {
+      setDeletingImage(true);
+      const res = await axios.delete(`/api/product/images?id=${image.id}`);
+      setResponse(res.data);
+      if (res.data.success) {
+        setRefresh((prev) => !prev);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeletingImage(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setConfirm(false);
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [confirm, response]);
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div className="bg-white hover:bg-gray-50 p-4 rounded-lg border shadow-sm cursor-pointer transition-all flex gap-4 items-start">
+          {response && <CustomSnackbar value={response} />}
           <div className="relative w-32 h-32 rounded-md overflow-hidden border border-gray-200">
             <Image
               src={image.url ?? "/auth/banner.webp"}
@@ -212,15 +240,28 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                 </div>
               </form>
             </Form>
-            <div className="text-xs text-gray-500 space-y-1">
-              <p>
-                📅 <span className="font-medium">Үүсгэсэн:</span>{" "}
-                {new Date(image.createdAt).toLocaleString("mn-MN")}
-              </p>
-              <p>
-                🔄 <span className="font-medium">Шинэчилсэн:</span>{" "}
-                {new Date(image.updatedAt).toLocaleString("mn-MN")}
-              </p>
+            <div className="text-xs text-gray-500 space-y-1 flex justify-between">
+              <div>
+                <p>
+                  📅 <span className="font-medium">Үүсгэсэн:</span>{" "}
+                  {new Date(image.createdAt).toLocaleString("mn-MN")}
+                </p>
+                <p>
+                  🔄 <span className="font-medium">Шинэчилсэн:</span>{" "}
+                  {new Date(image.updatedAt).toLocaleString("mn-MN")}
+                </p>
+              </div>
+              <div>
+                {confirm ? (
+                  <Button color="warning" onClick={handleDeleteImage}>
+                    {deletingImage ? <LoadingText /> : "Баталгаажуулах!"}
+                  </Button>
+                ) : (
+                  <Button onClick={() => setConfirm(true)} color="warning">
+                    {deletingImage ? <LoadingText /> : "Устгах"}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

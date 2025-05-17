@@ -1,5 +1,6 @@
 "use client";
 import LinearDeterminate from "@/app/_component/LinearProgress";
+import LoadingText from "@/app/_component/LoadingText";
 import {
   Accordion,
   AccordionContent,
@@ -74,15 +75,22 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
   };
 
   const handleSubmit = async () => {
-    const res = await axios.post("/api/product/drones/image", {
-      url: ImagePreview,
-      public_id: publicIds,
-      id,
-    });
-    if (res.data.success) {
-      setImagePreview([]);
-      setPublicIds([]);
-      setRefresh((p) => !p);
+    try {
+      setImageUploading(true);
+      const res = await axios.post("/api/product/drones/image", {
+        url: ImagePreview,
+        public_id: publicIds,
+        id,
+      });
+      if (res.data.success) {
+        setImagePreview([]);
+        setPublicIds([]);
+        setRefresh((p) => !p);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setImageUploading(false);
     }
   };
   return (
@@ -132,8 +140,12 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
                 ))}
               </div>
             )}
-            <Button onClick={handleSubmit} className=" w-full">
-              Нэмэх
+            <Button
+              disabled={imageUploading}
+              onClick={handleSubmit}
+              className=" w-full"
+            >
+              {imageUploading ? <LoadingText /> : "Нэмэх"}
             </Button>
             <input
               ref={inputRef}

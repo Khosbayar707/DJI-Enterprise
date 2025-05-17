@@ -1,12 +1,11 @@
 "use client";
-
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CustomImage } from "@/lib/types";
+import { CustomImage, ResponseType } from "@/lib/types";
 import Image from "next/image";
 import {
   TextField,
@@ -21,9 +20,10 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditSpecImageDetailSchema } from "../../utils/edit-spec-image-detail-schema";
 import LoadingText from "@/app/_component/LoadingText";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
 type Props = {
   image: CustomImage;
@@ -32,6 +32,9 @@ type Props = {
 };
 
 const ImageDetailDialog = ({ image, setRefresh }: Props) => {
+  const [confirm, setConfirm] = useState(false);
+  const [deletingImage, setDeletingImage] = useState(false);
+  const [response, setResponse] = useState<ResponseType>();
   const [waiting, setWaiting] = useState(false);
   const form = useForm<z.infer<typeof EditSpecImageDetailSchema>>({
     resolver: zodResolver(EditSpecImageDetailSchema),
@@ -61,10 +64,33 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
     }
   };
 
+  const handleDeleteImage = async () => {
+    try {
+      setDeletingImage(true);
+      const res = await axios.delete(`/api/product/images?id=${image.id}`);
+      setResponse(res.data);
+      if (res.data.success) {
+        setRefresh((prev) => !prev);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeletingImage(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setConfirm(false);
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [confirm, response]);
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div className="bg-white hover:bg-gray-50 p-4 rounded-lg border shadow-sm cursor-pointer transition-all flex gap-4 items-start">
+          {response && <CustomSnackbar value={response} />}
           <div className="relative w-32 h-32 rounded-md overflow-hidden border border-gray-200">
             <Image
               src={image.url ?? "/auth/banner.webp"}
@@ -89,7 +115,6 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                 Засагдсан: {new Date(image.updatedAt).toLocaleString("mn-MN")}
               </p>
             </div>
-            {image.priority}
           </div>
         </div>
       </DialogTrigger>
@@ -227,7 +252,15 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                 </p>
               </div>
               <div>
-                <Button color="warning">Устгах</Button>
+                {confirm ? (
+                  <Button color="warning" onClick={handleDeleteImage}>
+                    {deletingImage ? <LoadingText /> : "Баталгаажуулах!"}
+                  </Button>
+                ) : (
+                  <Button onClick={() => setConfirm(true)} color="warning">
+                    {deletingImage ? <LoadingText /> : "Устгах"}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
