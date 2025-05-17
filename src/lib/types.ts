@@ -47,3 +47,11 @@ export type CustomSpec = Spec & {
   drone: Drone;
   specCategories: SpecCategory[];
 };
+
+export type CustomImage = Image & {
+  drone: Drone;
+  spec: Spec;
+  DroneFeaturedImage: Drone;
+  createdAt: string;
+  updatedAt: string;
+};
