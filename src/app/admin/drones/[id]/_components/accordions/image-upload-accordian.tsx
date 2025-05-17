@@ -7,9 +7,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button, Input } from "@mui/material";
+import { ResponseType } from "@/lib/types";
+import { Button } from "@mui/material";
 import axios from "axios";
-import { assert } from "console";
 import Image from "next/image";
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 import { GrUploadOption } from "react-icons/gr";
@@ -23,7 +23,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
   const [progress, setProgress] = useState(0);
   const [ImagePreview, setImagePreview] = useState<string[]>([]);
   const [publicIds, setPublicIds] = useState<string[]>([]);
-
+  const [response, setResponse] = useState<ResponseType>();
   const [imageUploading, setImageUploading] = useState(false);
 
   const imageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,8 +31,11 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
     setImageUploading(true);
     try {
       const files = Array.from(event.target.files);
-      const response1 = await fetch(`/api/auth/cloudinary-sign`);
-      const { timestamp, signature, api_key } = await response1.json();
+      const response1 = await axios.get(`/api/auth/cloudinary-sign`);
+      if (!response1.data.success) {
+        return;
+      }
+      const { timestamp, signature, api_key } = response1.data.data;
 
       const uploadedImageUrls: string[] = [];
       const uploadedImagePublicIds: string[] = [];
