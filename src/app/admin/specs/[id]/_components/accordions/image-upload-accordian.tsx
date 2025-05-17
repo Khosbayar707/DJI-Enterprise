@@ -1,6 +1,7 @@
 "use client";
 import LinearDeterminate from "@/app/_component/LinearProgress";
 import LoadingText from "@/app/_component/LoadingText";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 import {
   Accordion,
   AccordionContent,
@@ -11,7 +12,14 @@ import { ResponseType } from "@/lib/types";
 import { Button } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { GrUploadOption } from "react-icons/gr";
 
 type Props = {
@@ -90,12 +98,19 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
         setPublicIds([]);
         setRefresh((p) => !p);
       }
+      setResponse(res.data);
     } catch (err) {
       console.error(err);
     } finally {
       setImageUploading(false);
     }
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [response]);
   return (
     <Accordion type="multiple">
       <AccordionItem key={`imageUpload`} value="imageupload">
@@ -104,6 +119,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
         </AccordionTrigger>
         <AccordionContent>
           <div className="flex flex-col items-center justify-center gap-4 py-6 bg-secondary p-7">
+            {response && <CustomSnackbar value={response} />}
             <div
               onClick={() => inputRef.current?.click()}
               className="w-full max-w-md h-40 cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 hover:border-blue-500 bg-white hover:bg-blue-50 flex flex-col items-center justify-center transition-all"
