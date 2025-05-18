@@ -1,4 +1,5 @@
 import { CheckCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 interface ProductInfoProps {
   name: string;
@@ -100,9 +101,11 @@ export default function ProductInfo({
           )}
         </button>
 
-        <button className="w-full px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:bg-blue-50 active:scale-[0.98] flex items-center justify-center">
-          Картны хуваарьтай авах
-        </button>
+        <Link href={"/preview/12"}>
+          <button className="w-full px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:bg-blue-50 active:scale-[0.98] flex items-center justify-center">
+            Дэлгэрэнгүй
+          </button>
+        </Link>
       </div>
 
       <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
