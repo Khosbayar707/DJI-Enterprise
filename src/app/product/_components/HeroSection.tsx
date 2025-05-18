@@ -31,7 +31,7 @@ export default function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
         >
-          Powerful aerial tools for commercial use
+          Мэргэжлийн зориулалттай хүчирхэг нисгэгчгүй нисэх төхөөрөмж
         </motion.p>
       </div>
     </section>

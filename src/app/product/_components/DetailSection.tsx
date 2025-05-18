@@ -1,3 +1,6 @@
+"use client";
+import { motion } from "framer-motion";
+
 export default function DetailSection() {
   const droneDetails = [
     {
@@ -54,11 +57,15 @@ export default function DetailSection() {
         {droneDetails.map((item, idx) => {
           const isEven = idx % 2 === 0;
           return (
-            <div
+            <motion.div
               key={idx}
               className={`grid md:grid-cols-2 gap-12 items-center ${
                 !isEven ? "md:flex-row-reverse" : ""
               }`}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
             >
               <div className={isEven ? "" : "order-last md:order-first"}>
                 {item.link.endsWith(".mp4") ? (
@@ -88,20 +95,26 @@ export default function DetailSection() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
+
       <h1 className="text-center text-4xl font-bold py-16">
         Тогтвортой дохио, тасралтгүй дүрс дамжуулалт
       </h1>
+
       <div className="bg-black text-white px-6 md:px-20 py-24 space-y-32 max-w-7xl mx-auto">
         {items.map(({ text, video, reverse }, index) => (
-          <div
+          <motion.div
             key={index}
             className={`flex flex-col md:flex-row ${
               reverse ? "md:flex-row-reverse" : ""
             } items-center justify-center gap-12 text-center md:text-left`}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
           >
             <div className="md:w-1/2 text-lg leading-relaxed">{text}</div>
             <div className="md:w-1/2">
@@ -114,7 +127,7 @@ export default function DetailSection() {
                 className="rounded-xl w-full object-cover"
               />
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
