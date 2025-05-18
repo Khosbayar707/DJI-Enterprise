@@ -77,7 +77,7 @@ const Header = () => {
         <div className="flex items-center justify-between px-4 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="flex items-center space-x-2">
             <img
-              src="/dji-logo.png"
+              src="/image/dji-3.svg"
               alt="DJI Logo"
               className="h-5 transition-transform duration-300 hover:scale-105"
             />

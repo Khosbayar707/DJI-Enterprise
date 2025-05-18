@@ -42,9 +42,9 @@ const socialLinks = [
     icon: "/icons/facebook.svg",
   },
   {
-    name: "LinkedIn",
-    href: "https://linkedin.com",
-    icon: "/icons/linkedin.svg",
+    name: "Phone",
+    href: "90005889",
+    icon: "/icons/phone.svg",
   },
 ];
 

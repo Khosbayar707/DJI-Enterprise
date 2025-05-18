@@ -1,0 +1,39 @@
+import { motion } from "framer-motion";
+
+export default function HeroSection() {
+  return (
+    <section className="relative h-screen w-full overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover"
+      >
+        <source
+          src="https://www-cdn.djiits.com/reactor/assets/_next/static/videos/c75a5a56-9455-4783-9ea5-eff9835beee5.mp4"
+          type="video/mp4"
+        />
+      </video>
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent"></div>
+      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center bg-black/50">
+        <motion.h1
+          className="text-4xl md:text-6xl font-bold"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          DJI Mavic 3 Enterprise
+        </motion.h1>
+        <motion.p
+          className="mt-4 text-lg md:text-xl text-gray-300"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
+          Powerful aerial tools for commercial use
+        </motion.p>
+      </div>
+    </section>
+  );
+}
