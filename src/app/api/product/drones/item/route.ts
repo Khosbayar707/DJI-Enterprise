@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
           include: { drone: true, spec: true },
           orderBy: { priority: "desc" },
         },
-        videos: { include: { drone: true }, orderBy: { createdAt: "desc" } },
+        videos: { include: { drone: true }, orderBy: { priority: "desc" } },
         specs: true,
         featuredVideo: true,
         categories: true,

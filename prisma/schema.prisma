@@ -99,6 +99,10 @@ model Image {
 
 model Video {
   id                 String   @id @unique @default(nanoid())
+  priority Int @default(0)
+  public_id String
+  name String @default("Нэр өгөөгүй!")
+  detail String @default("Тайлбар алга!")
   url                String
   droneId            String
   createdAt          DateTime @default(now())
