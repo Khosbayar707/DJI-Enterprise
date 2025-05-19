@@ -11,7 +11,14 @@ import { ResponseType } from "@/lib/types";
 import { Button } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { GrUploadOption } from "react-icons/gr";
 
 type Props = {
@@ -26,17 +33,42 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
   const [response, setResponse] = useState<ResponseType>();
   const [VideoUploading, setVideoUploading] = useState(false);
 
+  const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
+
   const VideoUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
+    if (!event.target.files || event.target.files.length === 0) return;
+
+    const file = event.target.files[0];
+    const isMP4 = file.type === "video/mp4";
+    const isUnderSizeLimit = file.size <= MAX_VIDEO_SIZE;
+
+    if (!isMP4) {
+      setResponse({
+        success: false,
+        code: "",
+        message: "Зөвхөн .mp4 өргөтгөлтэй бичлэг зөвшөөрнө.",
+        data: null,
+      });
+      return;
+    }
+
+    if (!isUnderSizeLimit) {
+      setResponse({
+        success: false,
+        code: "",
+        message: "Бичлэгийн хэмжээ 100MB-с бага байх ёстой!",
+        data: null,
+      });
+      return;
+    }
+
     setVideoUploading(true);
     try {
-      const file = event.target.files[0];
       const response1 = await axios.get(
         `/api/auth/cloudinary-sign?folder=Drone/Videos`
       );
-      if (!response1.data.success) {
-        return;
-      }
+      if (!response1.data.success) return;
+
       const { timestamp, signature, api_key } = response1.data.data;
 
       const data = new FormData();
@@ -51,10 +83,10 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
         `https://api.cloudinary.com/v1_1/doluiuzq8/video/upload`,
         data,
         {
-          onUploadProgress: (progress) => {
-            if (progress.total) {
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
               const percent = Math.round(
-                (progress.loaded * 100) / progress.total
+                (progressEvent.loaded * 100) / progressEvent.total
               );
               setProgress(percent);
             }
@@ -67,7 +99,13 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
         setPublicId(response2.data.public_id);
       }
     } catch (err) {
-      console.error(err, "server error");
+      console.error(err, "Upload error");
+      setResponse({
+        success: false,
+        code: "",
+        message: "Сервер дээр алдаа гарлаа!",
+        data: null,
+      });
     } finally {
       setVideoUploading(false);
     }
@@ -93,6 +131,13 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
       setVideoUploading(false);
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [response]);
 
   return (
     <Accordion type="multiple">
@@ -125,7 +170,11 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
               </div>
             )}
             {VideoPreview && (
-              <video className="relative w-48 h-48 rounded-lg overflow-hidden shadow-sm border border-gray-200"></video>
+              <video
+                src={VideoPreview}
+                controls
+                className="relative w-128 h-64 rounded-lg overflow-hidden shadow-sm border border-gray-200"
+              />
             )}
 
             <Button
@@ -140,7 +189,6 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
               onChange={VideoUpload}
               accept="video/mp4"
               type="file"
-              multiple
               className="hidden"
             />
           </div>

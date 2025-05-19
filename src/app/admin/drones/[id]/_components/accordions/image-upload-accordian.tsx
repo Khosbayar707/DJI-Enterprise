@@ -43,6 +43,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
         `/api/auth/cloudinary-sign?folder=Drone/Images`
       );
       if (!response1.data.success) {
+        setResponse(response1.data);
         return;
       }
       const { timestamp, signature, api_key } = response1.data.data;

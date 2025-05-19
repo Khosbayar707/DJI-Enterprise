@@ -14,6 +14,7 @@ type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
   id: string;
 };
+
 const ImagesCard = ({ loading, images, setRefresh, id }: Props) => {
   return (
     <div>
