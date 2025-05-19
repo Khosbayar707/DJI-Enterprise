@@ -39,7 +39,9 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
     setImageUploading(true);
     try {
       const files = Array.from(event.target.files);
-      const response1 = await axios.get(`/api/auth/cloudinary-sign`);
+      const response1 = await axios.get(
+        `/api/auth/cloudinary-sign?folder=Drone/Images`
+      );
       if (!response1.data.success) {
         return;
       }
@@ -55,6 +57,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
         data.append("signature", signature);
         data.append("api_key", api_key);
         data.append("resource_type", "image");
+        data.append("folder", "Drone/Images");
 
         const response2 = await axios.post(
           `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,

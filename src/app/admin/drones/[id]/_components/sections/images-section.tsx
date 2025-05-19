@@ -31,7 +31,7 @@ const ImagesSection = () => {
   useEffect(() => {
     fetchImages();
   }, [refresh]);
-  console.log(images);
+
   return (
     <div className=" flex flex-col gap-6">
       {!loading && drone && <div>{drone.name}</div>}

@@ -72,7 +72,7 @@ export default function ContactForm() {
                 <textarea
                   id="message"
                   name="message"
-                  rows="4"
+                  rows={4}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
                 ></textarea>
               </div>
@@ -108,7 +108,7 @@ export default function ContactForm() {
                 width="100%"
                 height="200"
                 style={{ border: 0 }}
-                allowFullScreen=""
+                allowFullScreen
                 loading="lazy"
                 className="rounded-lg shadow"
               ></iframe>

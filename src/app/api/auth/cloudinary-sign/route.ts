@@ -27,9 +27,10 @@ export async function GET(req: NextRequest) {
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
+  const folder = req.nextUrl.searchParams.get("folder") || "";
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = v2.utils.api_sign_request(
-    { timestamp },
+    { timestamp, folder },
     process.env.CLOUDINARY_API_SECRET as string
   );
   return CustomResponse(true, "SUCCESS", "Амжилттай", {

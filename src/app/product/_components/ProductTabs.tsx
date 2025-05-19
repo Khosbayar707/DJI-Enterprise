@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { PlayCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Drone } from "@/app/_types/types";
+import { ProductTabOptions } from "@/lib/types";
 
 interface ProductTabsProps {
   description: Drone["description"];
@@ -16,9 +17,9 @@ export default function ProductTabs({
   accessories,
   videoUrl,
 }: ProductTabsProps) {
-  const [activeTab, setActiveTab] = useState<
-    "features" | "specs" | "accessories" | "reviews"
-  >("features");
+  const [activeTab, setActiveTab] = useState<ProductTabOptions>(
+    ProductTabOptions.features
+  );
 
   return (
     <div className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -32,7 +33,7 @@ export default function ProductTabs({
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => setActiveTab(tab.id as ProductTabOptions)}
               className={`py-4 px-6 text-center border-b-2 font-medium text-sm ${
                 activeTab === tab.id
                   ? "border-blue-500 text-blue-600"
@@ -103,7 +104,7 @@ const SpecsTab = ({ specifications }: TabContentProps) => {
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">Техникийн үзүүлэлт</h2>
       <div className="grid md:grid-cols-2 gap-6">
-        {Object.entries(specifications).map(([key, value]) => (
+        {Object.entries(specifications || {}).map(([key, value]) => (
           <div key={key} className="border-b border-gray-100 pb-2">
             <dt className="text-sm font-medium text-gray-500 capitalize">
               {key.replace(/([A-Z])/g, " $1").trim()}

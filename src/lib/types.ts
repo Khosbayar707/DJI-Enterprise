@@ -23,6 +23,13 @@ export enum AdminSideBarOptions {
   images,
 }
 
+export enum ProductTabOptions {
+  features = "features",
+  specs = "specs",
+  accessories = "accessories",
+  reviews = "reviews",
+}
+
 export enum SpecSideBarOptions {
   GENERAL,
   IMAGES,
