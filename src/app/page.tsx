@@ -1,19 +1,23 @@
 "use client";
 
+import AboutCompanySection from "./_component/AboutCompanySection";
 import CaseStudiesSection from "./_component/CaseStudiesSection";
-import DiscoverSection from "./_component/DiscoverSection";
+import ContactSection from "./_component/ContactSection";
+import DJIProductsSection from "./_component/DJIProductsSection";
+import DroneServiceTrainingSection from "./_component/DroneServiceTrainingSection ";
 import HeroSection from "./_component/HeroSection";
-import IndustriesSection from "./_component/IndustriesSection";
-import LatestUpdatesSection from "./_component/LatestUpdatesSection";
+import ServicesSection from "./_component/ServicesSection";
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-white">
       <HeroSection />
-      <IndustriesSection />
+      <ServicesSection />
+      <DJIProductsSection />
+      <DroneServiceTrainingSection />
       <CaseStudiesSection />
-      <LatestUpdatesSection />
-      <DiscoverSection />
+      <AboutCompanySection />
+      <ContactSection />
     </main>
   );
 }
