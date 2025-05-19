@@ -63,3 +63,44 @@ export async function POST(req: NextRequest) {
     return NextResponse_CatchError(err);
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { name, detail, id, priority } = await req.json();
+    if (!id) {
+      return CustomResponse(
+        false,
+        "REQUEST_FAILED",
+        "Таних тэмдэг алга!",
+        null
+      );
+    }
+    if (!process.env.JWT_SECRET) {
+      return NextResponse_NoEnv();
+    }
+    const accessToken = req.cookies.get("accessToken")?.value;
+    if (!accessToken) {
+      return NextResponse_NoToken();
+    }
+    const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as {
+      isAdmin: boolean;
+    };
+    if (!verify.isAdmin) {
+      return NextResponse_NotAnAdmin();
+    }
+    const updateVideo = await prisma.video.update({
+      where: { id },
+      data: {
+        ...(name ? { name } : {}),
+        ...(detail ? { detail } : {}),
+        priority,
+      },
+    });
+
+    return CustomResponse(true, "REQUEST_SUCCESS", "Хүсэлт амжилттай!", {
+      new: updateVideo,
+    });
+  } catch (err) {
+    return NextResponse_CatchError(err);
+  }
+}
