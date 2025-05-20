@@ -12,6 +12,7 @@ model User {
   id        String   @id @unique @default(nanoid())
   email     String   @unique
   password  String
+  reviewee Review[]
   isAdmin   Boolean  @default(false)
   sub_news  Boolean  @default(false)
   isActive  Boolean  @default(true)
@@ -30,6 +31,7 @@ model Drone {
   featuredImageId String?         @unique
   featuredVideoId String?         @unique
   adminId         String
+  reviews Review[]
   visible         Boolean         @default(false)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -117,4 +119,8 @@ model Video {
 model Review {
   id String @id @unique @default(nanoid())
   rating Int 
+  userId String
+  reviewee User @relation(references: [id], fields: [userId])
+  droneId String
+  drone Drone @relation(references: [id], fields: [droneId])
 }
