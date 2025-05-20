@@ -25,6 +25,7 @@ model Drone {
   id              String          @id @unique @default(nanoid())
   name            String
   Price           Int?
+  discount Int @default(0)
   description     String          @default("Дэлгэрэнгүй мэдээлэл алга!")
   featuredImageId String?         @unique
   featuredVideoId String?         @unique
@@ -53,6 +54,8 @@ model DroneModel {
 model Spec {
   id             String         @id @unique @default(nanoid())
   name           String
+  price Int @default(0)
+  discount Int @default(0)
   detail         String
   droneId        String?
   adminId        String
