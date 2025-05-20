@@ -119,6 +119,7 @@ model Video {
 model Review {
   id String @id @unique @default(nanoid())
   rating Int 
+  description String
   userId String
   reviewee User @relation(references: [id], fields: [userId])
   droneId String
