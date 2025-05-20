@@ -113,3 +113,8 @@ model Video {
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
   drone              Drone    @relation("videos", fields: [droneId], references: [id])
 }
+
+model Review {
+  id String @id @unique @default(nanoid())
+  rating Int 
+}
