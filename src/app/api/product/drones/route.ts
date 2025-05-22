@@ -61,3 +61,36 @@ export async function POST(req: NextRequest) {
     return NextResponse_CatchError(err);
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const id = req.nextUrl.searchParams.get("id");
+    if (!id) {
+      return CustomResponse(
+        false,
+        "REQUEST_FAILED",
+        "Таних тэмдэг алга!",
+        null
+      );
+    }
+    if (!process.env.JWT_SECRET) {
+      return NextResponse_NoEnv();
+    }
+    const accessToken = req.cookies.get("accessToken")?.value;
+    if (!accessToken) {
+      return NextResponse_NoToken();
+    }
+    const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as {
+      isAdmin: boolean;
+    };
+    if (!verify.isAdmin) {
+      return NextResponse_NotAnAdmin();
+    }
+    const deleteDrone = await prisma.drone.delete({ where: { id } });
+    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай устгалаа!", {
+      new: deleteDrone,
+    });
+  } catch (err) {
+    return NextResponse_CatchError(err);
+  }
+}

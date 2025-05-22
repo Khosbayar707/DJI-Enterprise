@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const { name, description, id, cat1, cat2, currentModel } =
+    const { name, description, id, cat1, cat2, currentModel, price, discount } =
       await req.json();
     const accessToken = req.cookies.get("accessToken")?.value;
     if (!accessToken) {
@@ -39,6 +39,8 @@ export async function POST(req: NextRequest) {
           set: cat2.map((s: Spec) => ({ id: s.id })),
         },
         ...(currentModel ? { modelId: currentModel } : {}),
+        Price: price,
+        discount,
       },
     });
 

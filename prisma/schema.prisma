@@ -12,6 +12,7 @@ model User {
   id        String   @id @unique @default(nanoid())
   email     String   @unique
   password  String
+  reviewee Review[]
   isAdmin   Boolean  @default(false)
   sub_news  Boolean  @default(false)
   isActive  Boolean  @default(true)
@@ -25,10 +26,12 @@ model Drone {
   id              String          @id @unique @default(nanoid())
   name            String
   Price           Int?
+  discount Int @default(0)
   description     String          @default("Дэлгэрэнгүй мэдээлэл алга!")
   featuredImageId String?         @unique
   featuredVideoId String?         @unique
   adminId         String
+  reviews Review[]
   visible         Boolean         @default(false)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -53,6 +56,8 @@ model DroneModel {
 model Spec {
   id             String         @id @unique @default(nanoid())
   name           String
+  price Int @default(0)
+  discount Int @default(0)
   detail         String
   droneId        String?
   adminId        String
@@ -109,4 +114,14 @@ model Video {
   updatedAt          DateTime @updatedAt
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
   drone              Drone    @relation("videos", fields: [droneId], references: [id])
+}
+
+model Review {
+  id String @id @unique @default(nanoid())
+  rating Int 
+  description String
+  userId String
+  reviewee User @relation(references: [id], fields: [userId])
+  droneId String
+  drone Drone @relation(references: [id], fields: [droneId])
 }
