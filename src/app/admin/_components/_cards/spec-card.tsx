@@ -8,18 +8,20 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@mui/material";
 import Image from "next/image";
-import AddDroneDialog from "../_dialogs/add-drone-dialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingText from "../loading";
-import { CustomSpec } from "@/lib/types";
+import { CustomSpec, ResponseType } from "@/lib/types";
 import AddSpecDialog from "../_dialogs/add-spec-category";
 import Link from "next/link";
+import { CustomSnackbar } from "../snackbar";
 
 const SpecCard = () => {
   const [specs, setSpecs] = useState<CustomSpec[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [response, setResponse] = useState<ResponseType>();
 
   const fetchData = async () => {
     try {
@@ -38,12 +40,33 @@ const SpecCard = () => {
     }
   };
 
+  const deleteItem = async (id: string) => {
+    setDeleting(true);
+    try {
+      const res = await axios.delete(`/api/product/specs?id=${id}`);
+      if (res.data.success) {
+        setResponse(res.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [response]);
   useEffect(() => {
     fetchData();
   }, [refresh]);
 
   return (
     <div className=" flex flex-col gap-10">
+      {response && <CustomSnackbar value={response} />}
       <Card className="shadow-2xl">
         <CardHeader>
           <CardTitle>
@@ -98,29 +121,6 @@ const SpecCard = () => {
                         )}
                       </div>
                     </div>
-
-                    {/* <Accordion type="single" collapsible>
-                      <AccordionItem value={`spec-${spec.id}`}>
-                        <AccordionTrigger className="cursor-pointer">
-                          Эд анги
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <ul className="list-disc list-inside text-sm space-y-2">
-                            {spec.drone.length > 0 ? (
-                              drone.specs.map((spec) => (
-                                <li key={spec.id}>
-                                  Нэр: {spec.name}
-                                  Тайлбар: {spec.detail}
-                                </li>
-                              ))
-                            ) : (
-                              <div>Эд анги алга</div>
-                            )}
-                          </ul>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion> */}
-
                     <div className=" flex justify-between">
                       <div className="mt-4 flex gap-2 items-center">
                         <Link target="_blank" href={`/admin/specs/${spec.id}`}>
@@ -132,11 +132,13 @@ const SpecCard = () => {
                           </Button>
                         </Link>
                         <Button
+                          disabled={deleting}
+                          onClick={() => deleteItem(spec.id)}
                           color="error"
                           variant="contained"
                           className="cursor-pointer"
                         >
-                          Устгах
+                          {deleting ? <LoadingText /> : "Устгах"}
                         </Button>
                       </div>
                       <div className="mt-4 flex gap-2 items-center">

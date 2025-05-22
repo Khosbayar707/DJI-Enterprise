@@ -41,6 +41,8 @@ const DroneInfoCard = ({
     defaultValues: {
       name: drone?.name,
       description: drone?.description,
+      price: drone?.Price ? String(drone?.Price) : "0",
+      discount: String(drone?.discount) || "0",
     },
     mode: "onChange",
   });
@@ -53,6 +55,8 @@ const DroneInfoCard = ({
         cat1,
         cat2,
         currentModel,
+        price: Number(values.price),
+        discount: Number(values.discount),
       });
       setResponse(res.data);
     } catch (err) {
@@ -113,6 +117,42 @@ const DroneInfoCard = ({
                   </FormItem>
                 )}
               />
+              <div className=" flex gap-4 items-center">
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Үнэ</FormLabel>
+                      <FormControl>
+                        <TextField {...field} variant="standard" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="discount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Хямдрал</FormLabel>
+                      <FormControl>
+                        <TextField {...field} variant="standard" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className=" text-md">
+                  Одоо зарагдаж байгаа үнэ(хямдралыг хасаад):{" "}
+                  <span className=" text-green-500 text-2xl">
+                    {(drone?.Price
+                      ? drone.Price - drone.discount
+                      : 0
+                    ).toLocaleString()}
+                    ₮
+                  </span>
+                </div>
+              </div>
               {waitingCategories ? (
                 <LoadingText />
               ) : (

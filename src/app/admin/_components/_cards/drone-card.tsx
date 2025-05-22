@@ -12,13 +12,16 @@ import AddDroneDialog from "../_dialogs/add-drone-dialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingText from "../loading";
-import { CustomDrone } from "@/lib/types";
+import { CustomDrone, ResponseType } from "@/lib/types";
 import Link from "next/link";
+import { CustomSnackbar } from "../snackbar";
 
 const DroneCard = () => {
   const [drones, setProducts] = useState<CustomDrone[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [response, setResponse] = useState<ResponseType>();
 
   const fetchData = async () => {
     try {
@@ -37,12 +40,35 @@ const DroneCard = () => {
     }
   };
 
+  const deleteItem = async (id: string) => {
+    setDeleting(true);
+    try {
+      const res = await axios.delete(`/api/product/drones?id=${id}`);
+      if (res.data.success) {
+        setRefresh((prev) => !prev);
+      }
+      setResponse(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [refresh]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [response]);
+
   return (
     <div className=" flex flex-col gap-10">
+      {response && <CustomSnackbar value={response} />}
       <Card className="shadow-2xl">
         <CardHeader>
           <CardTitle>
@@ -194,11 +220,13 @@ const DroneCard = () => {
                           </Button>
                         </Link>
                         <Button
+                          disabled={deleting}
+                          onClick={() => deleteItem(drone.id)}
                           color="error"
                           variant="contained"
                           className="cursor-pointer"
                         >
-                          Устгах
+                          {deleting ? <LoadingText /> : "Устгах"}
                         </Button>
                       </div>
                       <div className="mt-4 flex gap-2 items-center">
