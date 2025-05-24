@@ -65,7 +65,7 @@ const relatedProducts: Product[] = [
     price: "3,999,000₮",
     description: "Гялалзсан 4K HDR видео, 34 минут нислэг",
     image:
-      "https://www-cdn.djiits.com/dps/f4e2d8e9132b4014972ee29d5b49c364.jpg",
+      "https://www-cdn.djiits.com/dps/45196aac8f231fe2ae211c76a473212b.jpg",
   },
   {
     id: "dji-air-2s",

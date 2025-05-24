@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
-import ProductCard from "./ProductCard";
+"use client";
 import Link from "next/link";
+import ProductCard from "../_component/ProductCard";
 
 export interface Product {
   id: number;
@@ -10,7 +10,6 @@ export interface Product {
   features: string[];
   fullDescription?: string;
 }
-
 export const products: Product[] = [
   {
     id: 1,
@@ -73,53 +72,27 @@ export const products: Product[] = [
   },
 ];
 
-export default function DJIProductsSection() {
+export default function ProductListPage() {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl font-bold mb-4">
-            <span className="text-blue-600">DJI Enterprise</span>{" "}
-            Бүтээгдэхүүнүүд
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Дэлхийд тэргүүлэгч DJI Enterprise бүтээгдэхүүнүүдийн жагсаалт
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {products.slice(0, 3).map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Link href={`/dji/${product.id}`}>
-                <ProductCard
-                  product={product}
-                  index={index}
-                  buttonText="Дэлгэрэнгүй"
-                  buttonClassName="bg-blue-600 hover:bg-blue-700"
-                />
-              </Link>
-            </motion.div>
-          ))}
+    <div className="bg-white">
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {products.map((product, index) => (
+              <div key={index}>
+                <Link href={`/dji/${product.id}`}>
+                  <ProductCard
+                    product={product}
+                    index={index}
+                    buttonText="Дэлгэрэнгүй"
+                    buttonClassName="bg-blue-600 hover:bg-blue-700"
+                  />
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="text-center mt-12">
-        <Link href="/dji">
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            Бүх бүтээгдэхүүнүүдийг харах
-          </button>
-        </Link>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

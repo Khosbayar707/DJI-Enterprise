@@ -12,13 +12,13 @@ model User {
   id        String   @id @unique @default(nanoid())
   email     String   @unique
   password  String
-  reviewee Review[]
   isAdmin   Boolean  @default(false)
   sub_news  Boolean  @default(false)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   drones    Drone[]
+  reviewee  Review[]
   specs     Spec[]
 }
 
@@ -26,22 +26,22 @@ model Drone {
   id              String          @id @unique @default(nanoid())
   name            String
   Price           Int?
-  discount Int @default(0)
   description     String          @default("Дэлгэрэнгүй мэдээлэл алга!")
   featuredImageId String?         @unique
   featuredVideoId String?         @unique
   adminId         String
-  reviews Review[]
   visible         Boolean         @default(false)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
   modelId         String?
   weight          String          @default("Жин оруулаагүй.")
+  discount        Int             @default(0)
   admin           User            @relation(fields: [adminId], references: [id])
   featuredImage   Image?          @relation("DroneFeaturedImage", fields: [featuredImageId], references: [id])
   featuredVideo   Video?          @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id])
   model           DroneModel?     @relation(fields: [modelId], references: [id])
   images          Image[]
+  reviews         Review[]
   specs           Spec[]
   videos          Video[]         @relation("videos")
   categories      DroneCategory[] @relation("DroneToDroneCategory")
@@ -56,14 +56,14 @@ model DroneModel {
 model Spec {
   id             String         @id @unique @default(nanoid())
   name           String
-  price Int @default(0)
-  discount Int @default(0)
   detail         String
   droneId        String?
   adminId        String
   visible        Boolean        @default(false)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
+  discount       Int            @default(0)
+  price          Int            @default(0)
   image          Image[]
   admin          User           @relation(fields: [adminId], references: [id])
   drone          Drone?         @relation(fields: [droneId], references: [id])
@@ -104,24 +104,24 @@ model Image {
 
 model Video {
   id                 String   @id @unique @default(nanoid())
-  priority Int @default(0)
-  public_id String
-  name String @default("Нэр өгөөгүй!")
-  detail String @default("Тайлбар алга!")
   url                String
   droneId            String
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  priority           Int      @default(0)
+  public_id          String
+  detail             String   @default("Тайлбар алга!")
+  name               String   @default("Нэр өгөөгүй!")
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
   drone              Drone    @relation("videos", fields: [droneId], references: [id])
 }
 
 model Review {
-  id String @id @unique @default(nanoid())
-  rating Int 
+  id          String @id @unique @default(nanoid())
+  rating      Int
+  userId      String
+  droneId     String
   description String
-  userId String
-  reviewee User @relation(references: [id], fields: [userId])
-  droneId String
-  drone Drone @relation(references: [id], fields: [droneId])
+  drone       Drone  @relation(fields: [droneId], references: [id])
+  reviewee    User   @relation(fields: [userId], references: [id])
 }

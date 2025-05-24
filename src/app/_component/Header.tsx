@@ -17,7 +17,6 @@ import {
   MagnifyingGlassIcon,
   Bars3Icon,
   XMarkIcon,
-  UserCircleIcon,
   ArrowRightStartOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
@@ -25,12 +24,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const navItems = [
-  {
-    href: "/activity",
-    label: "Үйл ажиллагаа",
-    items: ["Option 1", "Option 2"],
-  },
-  { href: "/dji", label: "DJI", items: ["DJI Enterprise", "DJI Agriculture"] },
+  { href: "/dji", label: "DJI", items: ["DJI Enterprise"] },
   { href: "/autel", label: "Autel", items: ["Autel EVO", "Autel Robotics"] },
   { href: "/garmin", label: "Garmin", items: ["Aviation", "Marine"] },
   {
@@ -75,16 +69,18 @@ const Header = () => {
     <>
       <header className="sticky top-0 z-50 bg-white shadow-sm">
         <div className="flex items-center justify-between px-4 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="flex items-center space-x-2">
-            <img
-              src="/image/dji-3.svg"
-              alt="DJI Logo"
-              className="h-5 transition-transform duration-300 hover:scale-105"
-            />
-            <span className="text-base font-bold tracking-tight text-gray-900 uppercase">
-              Enterprise
-            </span>
-          </div>
+          <Link href="/">
+            <div className="flex items-center space-x-2">
+              <img
+                src="/image/dji-3.svg"
+                alt="DJI Logo"
+                className="h-5 transition-transform duration-300 hover:scale-105"
+              />
+              <span className="text-base font-bold tracking-tight text-gray-900 uppercase">
+                Enterprise
+              </span>
+            </div>
+          </Link>
 
           <nav className="hidden lg:flex flex-1 justify-center space-x-6">
             {navItems.map((nav, idx) => (
@@ -116,7 +112,7 @@ const Header = () => {
                         <MenuItem key={i}>
                           {({ active }) => (
                             <Link
-                              href={`#${item.toLowerCase().replace(" ", "-")}`}
+                              href={nav.href}
                               className={`${
                                 active
                                   ? "bg-gray-50 text-blue-600"
@@ -136,12 +132,12 @@ const Header = () => {
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <button className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none">
+            <div className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none">
               <GlobeAltIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
-            <button className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none">
+            </div>
+            <div className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none">
               <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
-            </button>
+            </div>
             <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
               Where to Buy
             </button>
@@ -192,7 +188,7 @@ const Header = () => {
                     {nav.items.map((item, i) => (
                       <Link
                         key={i}
-                        href={`#${item.toLowerCase().replace(" ", "-")}`}
+                        href={nav.href}
                         className="block px-3 py-2 text-sm text-gray-700 hover:text-blue-600"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
