@@ -27,11 +27,6 @@ const navItems = [
   { href: "/dji", label: "DJI", items: ["DJI Enterprise"] },
   { href: "/autel", label: "Autel", items: ["Autel EVO", "Autel Robotics"] },
   { href: "/garmin", label: "Garmin", items: ["Aviation", "Marine"] },
-  {
-    href: "/contact",
-    label: "Холбоо барих",
-    items: ["Contact Form", "Support"],
-  },
 ];
 
 const mobileMenuVariants = {
@@ -139,7 +134,7 @@ const Header = () => {
               <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
             </div>
             <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              Where to Buy
+              Холбоо барих
             </button>
           </div>
 
@@ -252,7 +247,7 @@ const Header = () => {
                       whileHover="hover"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Where to Buy
+                      Холбоо барих
                     </motion.div>
                   </Link>
                 </div>
