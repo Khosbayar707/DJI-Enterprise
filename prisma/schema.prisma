@@ -57,6 +57,7 @@ model Spec {
   id             String         @id @unique @default(nanoid())
   name           String
   detail         String
+  descriptions SpecDescription[]
   droneId        String?
   adminId        String
   visible        Boolean        @default(false)
@@ -68,6 +69,14 @@ model Spec {
   admin          User           @relation(fields: [adminId], references: [id])
   drone          Drone?         @relation(fields: [droneId], references: [id])
   specCategories SpecCategory[] @relation("SpecToSpecCategory")
+}
+
+model SpecDescription {
+  id String @id @unique @default(nanoid())
+  title String
+  description String
+  spec Spec @relation(references: [id], fields: [specId])
+  specId String
 }
 
 model DroneCategory {
