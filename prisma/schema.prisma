@@ -17,9 +17,18 @@ model User {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Otps OTP[]
   drones    Drone[]
   reviewee  Review[]
   specs     Spec[]
+}
+
+model OTP {
+  id String @id @unique @default(nanoid())
+  otp String @unique
+  user User @relation(references: [id], fields: [userId])
+  userId String
+  createdAt DateTime @default(now())
 }
 
 model Drone {

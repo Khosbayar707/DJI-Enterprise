@@ -105,14 +105,23 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   name="password"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs sm:text-sm">
-                        Нууц үг
-                      </FormLabel>
+                      <div className=" flex justify-between items-end">
+                        <FormLabel className="text-xs sm:text-sm">
+                          Нууц үг
+                        </FormLabel>
+                        <Link
+                          href={`/auth/reset-password`}
+                          className=" text-xs text-gray-500"
+                        >
+                          Нууц үгээ мартсан уу?
+                        </Link>
+                      </div>
                       <FormControl>
                         <Input
                           className="text-xs sm:text-sm"
@@ -125,6 +134,7 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
+
                 <Button
                   type="submit"
                   disabled={
