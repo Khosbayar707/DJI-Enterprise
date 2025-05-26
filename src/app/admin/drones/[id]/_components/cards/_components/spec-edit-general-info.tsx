@@ -61,7 +61,14 @@ const SpecEditGeneralInfo = ({
     <TabsContent value="general">
       {response && <CustomSnackbar value={response} />}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit(onSubmit)(e);
+          }}
+        >
           <div className=" flex flex-col gap-4">
             <FormField
               control={form.control}

@@ -25,9 +25,10 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SpecEditInfo from "./_components/spec-edit-general-info";
-import SpecEditdescrtiption from "./_components/spec-edit-descriptions";
+import SpecAddDescription from "./_components/spec-edit-descriptions";
 import { ImNewTab } from "react-icons/im";
 import Link from "next/link";
+import SpecAllDescriptions from "./_components/spec-all-descriptions";
 
 type Props = {
   drone: CustomDrone | undefined;
@@ -314,16 +315,29 @@ const DroneInfoCard = ({
                                           </TabsTrigger>
                                           <TabsTrigger
                                             className=" cursor-pointer"
+                                            value="add-description"
+                                          >
+                                            Дэлгэрэнгүй мэдээлэл нэмэх
+                                          </TabsTrigger>
+                                          <TabsTrigger
+                                            className=" cursor-pointer"
                                             value="descriptions"
                                           >
-                                            Тайлбарууд
+                                            Бүх дэлгэрэнгүй мэдээлэл
                                           </TabsTrigger>
                                         </TabsList>
                                         <SpecEditInfo
                                           setRefresh={setRefresh}
                                           spec={spec}
                                         />
-                                        <SpecEditdescrtiption spec={spec} />
+                                        <SpecAddDescription
+                                          spec={spec}
+                                          setRefresh={setRefresh}
+                                        />
+                                        <SpecAllDescriptions
+                                          spec={spec}
+                                          setRefresh={setRefresh}
+                                        />
                                       </Tabs>
                                     </div>
                                   </DialogContent>

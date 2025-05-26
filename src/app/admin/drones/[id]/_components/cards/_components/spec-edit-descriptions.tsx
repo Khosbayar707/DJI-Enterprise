@@ -4,24 +4,29 @@ import { TabsContent } from "@/components/ui/tabs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { useForm } from "react-hook-form";
-import { CustomSpec } from "@/lib/types";
+import { CustomSpec, ResponseType } from "@/lib/types";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import {
-  Button,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import PriorityForm from "@/app/_component/priority-form";
+import axios from "axios";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
-const SpecEditdescription = ({ spec }: { spec: CustomSpec }) => {
+const SpecAddDescription = ({
+  spec,
+  setRefresh,
+}: {
+  spec: CustomSpec;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof SpecDescriptionSchema>>({
     resolver: zodResolver(SpecDescriptionSchema),
     defaultValues: {
@@ -31,18 +36,41 @@ const SpecEditdescription = ({ spec }: { spec: CustomSpec }) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof SpecDescriptionSchema>) => {
-    console.log({ id: spec.id, ...values });
+  const onSubmit = async (values: z.infer<typeof SpecDescriptionSchema>) => {
+    try {
+      const res = await axios.post("/api/product/specs/item/spec-desc", {
+        id: spec.id,
+        ...values,
+      });
+      setResponse(res.data);
+      if (res.data.success) {
+        setRefresh((prev) => !prev);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }, [response]);
+
   return (
-    <TabsContent value="descriptions">
+    <TabsContent value="add-description">
+      {response && <CustomSnackbar value={response} />}
       <Form {...form}>
         <form
           className=" flex flex-col gap-2"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit(onSubmit)(e);
+          }}
         >
           <div className=" flex justify-around">
-            {" "}
             <FormField
               control={form.control}
               name="highlight"
@@ -51,6 +79,7 @@ const SpecEditdescription = ({ spec }: { spec: CustomSpec }) => {
                   <FormControl>
                     <TextField variant="standard" label="Гарчиг" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -62,6 +91,7 @@ const SpecEditdescription = ({ spec }: { spec: CustomSpec }) => {
                   <FormControl>
                     <TextField variant="standard" label="Инфо" {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -74,4 +104,4 @@ const SpecEditdescription = ({ spec }: { spec: CustomSpec }) => {
   );
 };
 
-export default SpecEditdescription;
+export default SpecAddDescription;

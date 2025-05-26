@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import DroneInfoCard from "../cards/general-card";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import { CustomDrone } from "@/lib/types";
+import { CustomDrone, CustomSpec } from "@/lib/types";
 import LoadingText from "@/app/_component/LoadingText";
 import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
+import { Snackbar } from "@mui/material";
 
 const GeneralSection = () => {
   const { id } = useParams();
@@ -14,11 +15,13 @@ const GeneralSection = () => {
   const [refresh, setRefresh] = useState(false);
   const [waitingCategories, setWaitingCategories] = useState(true);
   const [droneCategories, setDroneCategories] = useState<DroneCategory[]>([]);
-  const [specs, setSpecs] = useState<Spec[]>([]);
+  const [specs, setSpecs] = useState<CustomSpec[]>([]);
   const [droneModels, setDroneModels] = useState<DroneModel[]>([]);
+  const [waiting, setWaiting] = useState(false);
 
   const fetchCategories = async () => {
     try {
+      setWaiting(true);
       const drone = await axios.get("/api/categories/drones");
       const model = await axios.get("/api/categories/models");
       const specs = await axios.get("/api/product/specs");
@@ -39,6 +42,7 @@ const GeneralSection = () => {
       }
     } finally {
       setWaitingCategories(false);
+      setWaiting(false);
     }
   };
   const fetchData = async () => {
@@ -54,8 +58,8 @@ const GeneralSection = () => {
         console.error(err);
       }
     } finally {
-      fetchCategories();
       setLoading(false);
+      fetchCategories();
     }
   };
   useEffect(() => {
@@ -64,6 +68,13 @@ const GeneralSection = () => {
 
   return (
     <div className=" flex flex-col gap-6">
+      {waiting && (
+        <Snackbar
+          open={waiting}
+          message={"Мэдээлэл шинэчилж байна!"}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        />
+      )}
       {loading ? (
         <LoadingText />
       ) : drone ? (

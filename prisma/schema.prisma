@@ -57,7 +57,7 @@ model Spec {
   id             String         @id @unique @default(nanoid())
   name           String
   detail         String
-  previewText String @default("Nothing")
+  previewText String @default("")
   descriptions SpecDescription[]
   droneId        String?
   adminId        String

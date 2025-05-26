@@ -54,7 +54,7 @@ export type CustomSpec = Spec & {
   image: Image[];
   drone: Drone;
   specCategories: SpecCategory[];
-  SpecDescription: SpecDescription[];
+  descriptions: SpecDescription[];
 };
 
 export type CustomImage = Image & {

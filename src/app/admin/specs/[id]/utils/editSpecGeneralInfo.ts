@@ -7,11 +7,11 @@ export const EditSpecGeneralInfo = z.object({
     .optional(),
   detail: z
     .string()
-    .min(2, { message: "Дор хаяж 10 үсэг оруулна уу!" })
+    .min(2, { message: "Дор хаяж 2 үсэг оруулна уу!" })
     .optional(),
   previewText: z
     .string()
-    .min(3, { message: "Дор хаяж 10 үсэг оруулна уу!" })
+    .min(3, { message: "Дор хаяж 3 үсэг оруулна уу!" })
     .optional(),
 });
 
