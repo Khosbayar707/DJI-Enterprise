@@ -45,8 +45,9 @@ const SpecCard = () => {
     try {
       const res = await axios.delete(`/api/product/specs?id=${id}`);
       if (res.data.success) {
-        setResponse(res.data);
+        setRefresh((prev) => !prev);
       }
+      setResponse(res.data);
     } catch (err) {
       console.error(err);
     } finally {

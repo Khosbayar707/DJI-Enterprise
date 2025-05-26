@@ -16,7 +16,7 @@ import { EditSpecGeneralInfo } from "../../utils/editSpecGeneralInfo";
 import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
 import LoadingText from "@/app/_component/LoadingText";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CustomSpec, ResponseType } from "@/lib/types";
 import { CustomSnackbar } from "@/app/admin/_components/snackbar";
@@ -26,12 +26,14 @@ type Props = {
   drones: Drone[];
   id: string;
   waitingCategories: boolean;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
 };
 const SpecInfoCard = ({
   id,
   spec,
   specCategories,
   drones,
+  setRefresh,
   waitingCategories,
 }: Props) => {
   const [cat, setCat] = useState<SpecCategory[]>(spec.specCategories || []);
@@ -55,6 +57,9 @@ const SpecInfoCard = ({
         id,
       });
       setResponse(res.data);
+      if (res.data.success) {
+        setRefresh((prev) => !prev);
+      }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.error(err.response?.data || err.message);

@@ -4,6 +4,7 @@ import {
   Image,
   Spec,
   SpecCategory,
+  SpecDescription,
   Video,
 } from "@/generated/prisma";
 import z from "zod";
@@ -53,6 +54,7 @@ export type CustomSpec = Spec & {
   image: Image[];
   drone: Drone;
   specCategories: SpecCategory[];
+  descriptions: SpecDescription[];
 };
 
 export type CustomImage = Image & {

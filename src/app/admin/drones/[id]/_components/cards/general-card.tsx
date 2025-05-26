@@ -4,24 +4,40 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, FormControl, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { EditDroneGeneralInfo } from "../../utils/edit-drone-form";
-import { CustomDrone, ResponseType } from "@/lib/types";
+import { CustomDrone, CustomSpec, ResponseType } from "@/lib/types";
 import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import z from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import LoadingText from "@/app/_component/LoadingText";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
 import { Badge } from "@/components/ui/badge";
+import AddSpecDialog from "@/app/admin/_components/_dialogs/add-spec-category";
+import { FaRegEdit } from "react-icons/fa";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SpecEditInfo from "./_components/spec-edit-general-info";
+import SpecAddDescription from "./_components/spec-edit-descriptions";
+import { ImNewTab } from "react-icons/im";
+import Link from "next/link";
+import SpecAllDescriptions from "./_components/spec-all-descriptions";
 
 type Props = {
   drone: CustomDrone | undefined;
   droneCategories: DroneCategory[];
-  specs: Spec[];
+  specs: CustomSpec[];
   droneModels: DroneModel[];
   waitingCategories: boolean;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+  refresh: boolean;
 };
 const DroneInfoCard = ({
   drone,
@@ -29,6 +45,8 @@ const DroneInfoCard = ({
   droneModels,
   waitingCategories,
   specs,
+  refresh,
+  setRefresh,
 }: Props) => {
   const [response, setResponse] = useState<ResponseType>();
   const [cat1, setcat1] = useState<DroneCategory[]>(drone?.categories || []);
@@ -59,6 +77,9 @@ const DroneInfoCard = ({
         discount: Number(values.discount),
       });
       setResponse(res.data);
+      if (res.data.success) {
+        setRefresh((prev) => !prev);
+      }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.error(err.response?.data || err.message);
@@ -234,43 +255,113 @@ const DroneInfoCard = ({
                     </div>
                   </div>
                   <div className=" flex flex-col gap-3">
-                    <div>
-                      Эд ангиуд{" "}
-                      <span className=" text-xs text-gray-500 italic">
-                        *олныг сонгох боломжтой
-                      </span>
+                    <div className=" flex justify-between">
+                      {" "}
+                      <div>
+                        Эд ангиуд{" "}
+                        <span className=" text-xs text-gray-500 italic">
+                          *олныг сонгох боломжтой
+                        </span>
+                      </div>
+                      <div className="text-xs">
+                        <AddSpecDialog
+                          refresh={refresh}
+                          setRefresh={setRefresh}
+                        />
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-5">
                       {specs.length > 0 ? (
                         specs.map((spec) => {
                           const isSelected = cat2.some(
                             (item) => item.id === spec.id
                           );
                           return (
-                            <Badge
-                              onClick={() => {
-                                setcat2((prev) => {
-                                  const exists = prev.some(
-                                    (item) => item.id === spec.id
-                                  );
-                                  if (exists) {
-                                    return prev.filter(
-                                      (item) => item.id !== spec.id
-                                    );
-                                  } else {
-                                    return [...prev, spec];
-                                  }
-                                });
-                              }}
+                            <div
                               key={spec.id}
-                              className={`text-xs cursor-pointer transition-all duration-200 ${
-                                isSelected
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                              }`}
+                              className={`text-xs items-center cursor-pointer transition-all duration-200 flex justify-center`}
                             >
-                              {spec.name}: {spec.detail}
-                            </Badge>
+                              <Badge
+                                className={`flex items-center justify-center ${
+                                  isSelected
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                }`}
+                              >
+                                <Dialog>
+                                  <DialogTrigger>
+                                    <FaRegEdit className=" text-lg cursor-pointer -top-1" />
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogTitle className="flex">
+                                      <div className="truncate">
+                                        Эд анги {spec.name} -г засах гэж байна!
+                                      </div>
+                                      <Link
+                                        target="_blank"
+                                        href={`/admin/specs/${spec.id}`}
+                                      >
+                                        <ImNewTab className="text-xs" />
+                                      </Link>
+                                    </DialogTitle>
+                                    <div className="relative">
+                                      <Tabs>
+                                        <TabsList className=" w-full ">
+                                          <TabsTrigger
+                                            className=" cursor-pointer"
+                                            value="general"
+                                          >
+                                            Ерөнхий
+                                          </TabsTrigger>
+                                          <TabsTrigger
+                                            className=" cursor-pointer"
+                                            value="add-description"
+                                          >
+                                            Дэлгэрэнгүй мэдээлэл нэмэх
+                                          </TabsTrigger>
+                                          <TabsTrigger
+                                            className=" cursor-pointer"
+                                            value="descriptions"
+                                          >
+                                            Бүх дэлгэрэнгүй мэдээлэл
+                                          </TabsTrigger>
+                                        </TabsList>
+                                        <SpecEditInfo
+                                          setRefresh={setRefresh}
+                                          spec={spec}
+                                        />
+                                        <SpecAddDescription
+                                          spec={spec}
+                                          setRefresh={setRefresh}
+                                        />
+                                        <SpecAllDescriptions
+                                          spec={spec}
+                                          setRefresh={setRefresh}
+                                        />
+                                      </Tabs>
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                                <div
+                                  onClick={() => {
+                                    setcat2((prev) => {
+                                      const exists = prev.some(
+                                        (item) => item.id === spec.id
+                                      );
+                                      if (exists) {
+                                        return prev.filter(
+                                          (item) => item.id !== spec.id
+                                        );
+                                      } else {
+                                        return [...prev, spec];
+                                      }
+                                    });
+                                  }}
+                                >
+                                  {spec.name}: {spec.detail}
+                                </div>
+                              </Badge>
+                            </div>
                           );
                         })
                       ) : (
