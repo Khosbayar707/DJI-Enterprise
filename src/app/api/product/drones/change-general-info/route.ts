@@ -32,15 +32,25 @@ export async function POST(req: NextRequest) {
       data: {
         ...(name ? { name } : {}),
         ...(description ? { description } : {}),
-        categories: {
-          set: cat1.map((c: DroneCategory) => ({ id: c.id })),
-        },
-        specs: {
-          set: cat2.map((s: Spec) => ({ id: s.id })),
-        },
+
+        ...(cat2
+          ? {
+              specs: {
+                set: cat2.map((s: Spec) => ({ id: s.id })),
+              },
+            }
+          : {}),
         ...(currentModel ? { modelId: currentModel } : {}),
-        Price: price,
-        discount,
+        ...(price !== undefined ? { Price: price } : {}),
+        ...(discount !== undefined ? { discount } : {}),
+
+        ...(cat1
+          ? {
+              categories: {
+                set: cat1.map((c: DroneCategory) => ({ id: c.id })),
+              },
+            }
+          : {}),
       },
     });
 

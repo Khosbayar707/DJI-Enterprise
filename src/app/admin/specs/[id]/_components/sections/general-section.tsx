@@ -13,6 +13,8 @@ const GeneralSection = () => {
   const { id } = params as { id: string };
   const [spec, setSpec] = useState<CustomSpec>();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(true);
+
   const [specCategories, setSpecCategories] = useState<SpecCategory[]>([]);
   const [drones, setDrones] = useState<Drone[]>([]);
   const [waitingCategories, setWaitingCategories] = useState(true);
@@ -52,7 +54,7 @@ const GeneralSection = () => {
   useEffect(() => {
     fetchData();
     fetchCategories();
-  }, []);
+  }, [refresh]);
 
   return (
     <div className=" flex flex-col gap-6">
@@ -63,6 +65,7 @@ const GeneralSection = () => {
           waitingCategories={waitingCategories}
           id={id}
           spec={spec}
+          setRefresh={setRefresh}
           specCategories={specCategories}
           drones={drones}
         />

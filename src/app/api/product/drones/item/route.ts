@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
           orderBy: { priority: "desc" },
         },
         videos: { include: { drone: true }, orderBy: { priority: "desc" } },
-        specs: true,
+        specs: { include: { descriptions: true } },
         featuredVideo: true,
         categories: true,
         featuredImage: true,

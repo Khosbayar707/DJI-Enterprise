@@ -11,6 +11,7 @@ const GeneralSection = () => {
   const { id } = useParams();
   const [drone, setDrone] = useState<CustomDrone>();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [waitingCategories, setWaitingCategories] = useState(true);
   const [droneCategories, setDroneCategories] = useState<DroneCategory[]>([]);
   const [specs, setSpecs] = useState<Spec[]>([]);
@@ -59,7 +60,7 @@ const GeneralSection = () => {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <div className=" flex flex-col gap-6">
@@ -67,6 +68,8 @@ const GeneralSection = () => {
         <LoadingText />
       ) : drone ? (
         <DroneInfoCard
+          setRefresh={setRefresh}
+          refresh={refresh}
           waitingCategories={waitingCategories}
           drone={drone}
           droneCategories={droneCategories}

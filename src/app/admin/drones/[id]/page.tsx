@@ -6,7 +6,7 @@ import DroneSidebar from "./_components/DroneSidebar";
 
 const AdminDronePage = () => {
   const [activeSection, setActiveSection] = useState<DroneSideBarOptions>(
-    DroneSideBarOptions.IMAGES
+    DroneSideBarOptions.GENERAL
   );
   return (
     <div className="flex h-screen">
