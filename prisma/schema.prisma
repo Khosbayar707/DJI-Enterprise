@@ -36,9 +36,11 @@ model Drone {
   name            String
   Price           Int?
   description     String          @default("Дэлгэрэнгүй мэдээлэл алга!")
+  description2 String @default("")
   featuredImageId String?         @unique
   featuredVideoId String?         @unique
   adminId         String
+    descriptions DroneDescription[]
   visible         Boolean         @default(false)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -54,7 +56,39 @@ model Drone {
   specs           Spec[]
   videos          Video[]         @relation("videos")
   categories      DroneCategory[] @relation("DroneToDroneCategory")
+  tech DroneTech[]
+  inTheBox DroneInTheBox[]
+  stock Int @default(0)
 }
+
+model DroneTech {
+  id String @default(nanoid()) @unique @id
+  weight String @default("")
+  maxSpeed String @default("")
+  operatingTemperature String @default("")
+  dimensions String @default("")
+  maxWindResistance String @default("")
+  Battery String @default("")
+  drone Drone @relation(references: [id], fields: [droneId])
+  droneId String
+}
+
+model DroneInTheBox {
+  id String @id @unique @default(nanoid())
+  name String
+  drone Drone @relation(references: [id], fields: [droneId])
+  droneId String
+}
+
+model DroneDescription {
+  id String @id @unique @default(nanoid())
+  highlight String
+  description String
+  priority Int @default(0)
+  drone Drone @relation(references: [id], fields: [droneId], onDelete: Cascade)
+  droneId String
+}
+
 
 model DroneModel {
   id     String  @id @unique @default(nanoid())
@@ -66,6 +100,7 @@ model Spec {
   id             String         @id @unique @default(nanoid())
   name           String
   detail         String
+  priority Int @default(0)
   previewText String @default("")
   descriptions SpecDescription[]
   droneId        String?
@@ -76,6 +111,7 @@ model Spec {
   discount       Int            @default(0)
   price          Int            @default(0)
   image          Image[]
+  videos          Video[]
   admin          User           @relation(fields: [adminId], references: [id])
   drone          Drone?         @relation(fields: [droneId], references: [id])
   specCategories SpecCategory[] @relation("SpecToSpecCategory")
@@ -134,6 +170,8 @@ model Video {
   name               String   @default("Нэр өгөөгүй!")
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
   drone              Drone    @relation("videos", fields: [droneId], references: [id])
+  spec              Spec?    @relation(fields: [specId], references: [id])
+  specId String?
 }
 
 model Review {
