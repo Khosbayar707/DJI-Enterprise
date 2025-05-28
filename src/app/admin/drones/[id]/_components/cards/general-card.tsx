@@ -1,11 +1,18 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, FormControl, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { EditDroneGeneralInfo } from "../../utils/edit-drone-form";
 import { CustomDrone, CustomSpec, ResponseType } from "@/lib/types";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import z from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
@@ -62,6 +69,8 @@ const DroneInfoCard = ({
       price: drone?.Price ? String(drone?.Price) : "0",
       discount: String(drone?.discount) || "0",
       previewText: drone?.PreviewDescription,
+      briefDescription: drone?.briefDescription,
+      stock: String(drone?.stock),
     },
     mode: "onChange",
   });
@@ -76,6 +85,7 @@ const DroneInfoCard = ({
         currentModel,
         price: Number(values.price),
         discount: Number(values.discount),
+        stock: Number(values.stock),
       });
       setResponse(res.data);
       if (res.data.success) {
@@ -124,6 +134,23 @@ const DroneInfoCard = ({
                         type="text"
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="briefDescription"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <TextField
+                        label="Богино тайлбар"
+                        {...field}
+                        variant="standard"
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -136,6 +163,7 @@ const DroneInfoCard = ({
                     <FormControl>
                       <Textarea {...field} rows={50} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -148,6 +176,7 @@ const DroneInfoCard = ({
                     <FormControl>
                       <Textarea {...field} rows={50} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -161,6 +190,7 @@ const DroneInfoCard = ({
                       <FormControl>
                         <TextField {...field} variant="standard" />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -173,6 +203,7 @@ const DroneInfoCard = ({
                       <FormControl>
                         <TextField {...field} variant="standard" />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -186,6 +217,22 @@ const DroneInfoCard = ({
                     ₮
                   </span>
                 </div>
+                <FormField
+                  control={form.control}
+                  name="stock"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextField
+                          {...field}
+                          variant="standard"
+                          label="Барааны үлдэгдэл"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               {waitingCategories ? (
                 <LoadingText />

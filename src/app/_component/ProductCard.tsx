@@ -32,7 +32,7 @@ export default function ProductCard({ drone, index }: ProductCardProps) {
       </div>
       <div className="p-6">
         <h3 className="text-xl font-bold mb-2">{drone.name}</h3>
-        <p className="text-gray-600 mb-4 truncate">{drone.description}</p>
+        <p className="text-gray-600 mb-4 truncate">{drone.briefDescription}</p>
         <ul className="space-y-2 mb-6">
           {drone.advantages.map((advantage) => (
             <li key={advantage.id} className="flex items-center">
