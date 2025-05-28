@@ -13,6 +13,7 @@ export const EditSpecGeneralInfo = z.object({
     .string()
     .min(3, { message: "Дор хаяж 3 үсэг оруулна уу!" })
     .optional(),
+  priority: z.number().optional(),
 });
 
 export const SpecDescriptionSchema = z.object({

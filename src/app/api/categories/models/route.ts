@@ -5,6 +5,7 @@ export async function GET() {
   try {
     const models = await prisma.droneModel.findMany({
       include: { drones: true },
+      orderBy: { createdAt: "desc" },
     });
     return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай", { models });
   } catch (err) {

@@ -3,7 +3,9 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const droneCat = await prisma.droneCategory.findMany();
+    const droneCat = await prisma.droneCategory.findMany({
+      orderBy: { createdAt: "desc" },
+    });
     return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай!", {
       categories: droneCat,
     });

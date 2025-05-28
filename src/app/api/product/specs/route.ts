@@ -15,9 +15,10 @@ export async function GET() {
     include: {
       image: true,
       drone: true,
-      descriptions: { orderBy: { priority: "desc" } },
+      descriptions: { orderBy: { createdAt: "desc" } },
     },
   });
+
   return CustomResponse(true, "REQUEST_SUCCESS", "Хүсэлт амжилттай!", {
     specs,
   });
@@ -25,7 +26,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, detail } = await req.json();
+    const { name, detail, priority } = await req.json();
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
       return NextResponse_NotAnAdmin();
     }
     const newSpec = await prisma.spec.create({
-      data: { name, adminId: user.id, detail },
+      data: { name, adminId: user.id, detail, priority },
       include: { image: true, drone: true },
     });
     return CustomResponse(
