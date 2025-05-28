@@ -1,15 +1,16 @@
 import {
   Drone,
+  DroneAdvantage,
   DroneCategory,
   DroneDescription,
+  DroneInTheBox,
+  DroneTech,
   Image,
   Spec,
   SpecCategory,
   SpecDescription,
   Video,
 } from "@/generated/prisma";
-import z from "zod";
-import { AddCategorySchema } from "./zod-schemas/add-category-schema";
 
 export type ResponseType = {
   success: boolean;
@@ -65,4 +66,18 @@ export type CustomImage = Image & {
   DroneFeaturedImage: Drone;
   createdAt: string;
   updatedAt: string;
+};
+
+// client side types
+
+export type CustomDroneClient = Drone & {
+  images: Image[];
+  videos: Video[];
+  specs: Spec[];
+  featuredVideo: Video;
+  categories: DroneCategory[];
+  descriptions: DroneDescription[];
+  advantages: DroneAdvantage[];
+  tech: DroneTech;
+  inTheBox: DroneInTheBox[];
 };

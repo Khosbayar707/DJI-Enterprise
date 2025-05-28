@@ -1,36 +1,15 @@
+import { CustomDroneClient } from "@/lib/types";
 import { CheckCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { calculateSavings } from "../utils/calculate-saving";
 
-interface ProductInfoProps {
-  name: string;
-  price: string;
-  discountPrice?: string;
-  description: string;
-  features: string[];
+type ProductInfoProps = {
   onContactClick: () => void;
   isLoading: boolean;
-}
-
-const calculateSavings = (
-  originalPrice: string,
-  discountPrice: string
-): string => {
-  const extractNumber = (priceStr: string): number =>
-    parseInt(priceStr.replace(/[^0-9]/g, ""), 10);
-
-  const original = extractNumber(originalPrice);
-  const discount = extractNumber(discountPrice);
-  const savings = original - discount;
-
-  return savings.toLocaleString() + "₮";
+  drone: CustomDroneClient;
 };
-
 export default function ProductInfo({
-  name,
-  price,
-  discountPrice,
-  description,
-  features,
+  drone,
   onContactClick,
   isLoading,
 }: ProductInfoProps) {
@@ -38,7 +17,7 @@ export default function ProductInfo({
     <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg space-y-6 sticky top-4">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
-          {name}
+          {drone.name}
         </h1>
         <div className="flex items-center mt-2">
           <div className="flex items-center">
@@ -56,35 +35,38 @@ export default function ProductInfo({
           </div>
         </div>
       </div>
-
       <div className="space-y-2">
-        {discountPrice ? (
+        {drone.discount > 0 ? (
           <>
-            <p className="text-3xl font-bold text-red-600">{discountPrice}</p>
-            <p className="text-xl text-gray-500 line-through">{price}</p>
+            <p className="text-3xl font-bold text-red-600">{drone.discount}</p>
+            <p className="text-xl text-gray-500 line-through">{drone.Price}</p>
             <p className="text-green-600 font-medium">
-              Та {calculateSavings(price, discountPrice)} хэмнэж байна!
+              Та {calculateSavings(String(drone.Price), String(drone.discount))}{" "}
+              хэмнэж байна!
             </p>
           </>
         ) : (
-          <p className="text-3xl font-semibold text-green-600">{price}</p>
+          <p className="text-3xl font-semibold text-green-600">{drone.Price}</p>
         )}
       </div>
-
-      <p className="text-gray-700 leading-relaxed">{description}</p>
-
+      <p className="text-gray-700 leading-relaxed">
+        {drone.briefDescription ?? "Мэдээлэл одоогоор алга!"}
+      </p>
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Үндсэн онцлогууд:</h3>
         <ul className="space-y-3">
-          {features.slice(0, 5).map((feature, idx) => (
-            <li key={idx} className="flex items-start">
-              <CheckCircleIcon className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-              <span className="ml-2 text-gray-800">{feature}</span>
-            </li>
-          ))}
+          {drone.advantages.length > 0 ? (
+            drone.advantages.slice(0, 5).map((advantage) => (
+              <li key={advantage.id} className="flex items-start">
+                <CheckCircleIcon className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <span className="ml-2 text-gray-800">{advantage.detail}</span>
+              </li>
+            ))
+          ) : (
+            <div>Мэдээлэл алга!</div>
+          )}
         </ul>
       </div>
-
       <div className="pt-2 space-y-4">
         <button
           onClick={onContactClick}
@@ -101,7 +83,7 @@ export default function ProductInfo({
           )}
         </button>
 
-        <Link href={"/preview/12"}>
+        <Link href={`/preview/${drone.id}`}>
           <button className="w-full px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:bg-blue-50 active:scale-[0.98] flex items-center justify-center">
             Дэлгэрэнгүй
           </button>

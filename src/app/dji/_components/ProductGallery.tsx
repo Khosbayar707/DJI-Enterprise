@@ -1,21 +1,16 @@
 "use client";
 import { Drone } from "@/app/_types/types";
+import { CustomDroneClient } from "@/lib/types";
 import { useState } from "react";
 
-interface ProductGalleryProps {
-  mainImage: Drone["mainImage"];
-  images: Drone["images"];
-  name: Drone["name"];
-  discountPrice?: Drone["discountPrice"];
-}
+type ProductGalleryProps = {
+  drone: CustomDroneClient;
+};
 
-export default function ProductGallery({
-  mainImage,
-  images,
-  name,
-  discountPrice,
-}: ProductGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState<string>(mainImage);
+export default function ProductGallery({ drone }: ProductGalleryProps) {
+  const [selectedImage, setSelectedImage] = useState<string>(
+    drone.images.length > 0 ? drone.images[0].url : "/image/placeholder.jpg"
+  );
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({
     x: 0,
@@ -42,11 +37,11 @@ export default function ProductGallery({
       >
         <img
           src={selectedImage}
-          alt={`${name} preview`}
+          alt={`preview image`}
           className={`w-full h-auto max-h-[500px] object-cover transition-all duration-300 ${isZoomed ? "scale-150" : "scale-100"}`}
           style={{ transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%` }}
         />
-        {discountPrice && (
+        {drone.discount > 0 && (
           <div className="absolute top-4 left-4 bg-red-600 text-white font-bold py-1 px-3 rounded-lg shadow-md animate-pulse">
             Хямдрал
           </div>
@@ -54,26 +49,27 @@ export default function ProductGallery({
       </div>
 
       <div className="grid grid-cols-4 gap-3">
-        {images.map((img, i) => (
-          <button
-            key={i}
-            onClick={() => setSelectedImage(img)}
-            className={`relative overflow-hidden rounded-lg transition-all duration-200 ${
-              selectedImage === img
-                ? "ring-2 ring-blue-600"
-                : "hover:ring-2 hover:ring-blue-400"
-            }`}
-          >
-            <img
-              src={img}
-              alt={`Thumbnail ${i + 1}`}
-              className="w-full h-20 object-cover"
-            />
-            {selectedImage === img && (
-              <div className="absolute inset-0 bg-blue-600 bg-opacity-20"></div>
-            )}
-          </button>
-        ))}
+        {drone.images.length > 0 &&
+          drone.images.map((img, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedImage(img.url)}
+              className={`relative overflow-hidden rounded-lg transition-all duration-200 ${
+                selectedImage === img.url
+                  ? "ring-2 ring-blue-600"
+                  : "hover:ring-2 hover:ring-blue-400"
+              }`}
+            >
+              <img
+                src={img.url}
+                alt={`Thumbnail ${i + 1}`}
+                className="w-full h-20 object-cover"
+              />
+              {selectedImage === img.url && (
+                <div className="absolute inset-0 bg-blue-600 bg-opacity-20"></div>
+              )}
+            </button>
+          ))}
       </div>
     </div>
   );

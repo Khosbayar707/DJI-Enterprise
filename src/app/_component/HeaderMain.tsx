@@ -133,9 +133,41 @@ const HeaderMain = () => {
             <div className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none">
               <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
             </div>
-            <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              Холбоо барих
-            </button>
+
+            {isLoggedIn ? (
+              <>
+                <Link href={`/profile/${userInfo.id}`}>
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                    <img
+                      src={userInfo.pfp}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full border-2 border-blue-600"
+                    />
+                    <span className="text-sm font-medium text-gray-800">
+                      {userInfo.name}
+                    </span>
+                  </div>
+                </Link>
+                <button
+                  onClick={logout}
+                  className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition cursor-pointer"
+                >
+                  Гарах
+                </button>
+              </>
+            ) : (
+              <Link href="/account">
+                <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
+                  Нэвтрэх / Бүртгүүлэх
+                </button>
+              </Link>
+            )}
+
+            <Link href="/where-to-buy">
+              <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
+                Холбоо барих
+              </button>
+            </Link>
           </div>
 
           <div className="lg:hidden">
