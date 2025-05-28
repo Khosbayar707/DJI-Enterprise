@@ -3,6 +3,8 @@ import {
   DroneAdvantage,
   DroneCategory,
   DroneDescription,
+  DroneInTheBox,
+  DroneTech,
   Image,
   Spec,
   SpecCategory,
@@ -76,4 +78,6 @@ export type CustomDroneClient = Drone & {
   categories: DroneCategory[];
   descriptions: DroneDescription[];
   advantages: DroneAdvantage[];
+  tech: DroneTech;
+  inTheBox: DroneInTheBox[];
 };

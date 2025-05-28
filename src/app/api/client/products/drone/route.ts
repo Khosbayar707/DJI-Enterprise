@@ -17,6 +17,8 @@ export async function GET(req: NextRequest) {
         featuredVideo: true,
         descriptions: { orderBy: { priority: "desc" } },
         advantages: { orderBy: { createdAt: "asc" } },
+        tech: true,
+        inTheBox: true,
       },
     });
     if (!drone) {

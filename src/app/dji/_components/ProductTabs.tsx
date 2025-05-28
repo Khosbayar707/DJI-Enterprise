@@ -77,7 +77,7 @@ type TabContentProps = {
   drone: CustomDroneClient;
 };
 
-const FeaturesTab = ({ description, videoUrl, drone }: TabContentProps) => {
+const FeaturesTab = ({ drone }: TabContentProps) => {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">{drone.description}</h2>
@@ -113,35 +113,38 @@ const FeaturesTab = ({ description, videoUrl, drone }: TabContentProps) => {
   );
 };
 
-const SpecsTab = ({ specifications }: TabContentProps) => {
+const SpecsTab = ({ specifications, drone }: TabContentProps) => {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">Техникийн үзүүлэлт</h2>
       <div className="grid md:grid-cols-2 gap-6">
-        {Object.entries(specifications || {}).map(([key, value]) => (
-          <div key={key} className="border-b border-gray-100 pb-2">
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              {key.replace(/([A-Z])/g, " $1").trim()}
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {value}
-            </dd>
-          </div>
-        ))}
+        {drone.tech
+          ? Object.entries(specifications || {}).map(([key, value]) => (
+              <div key={key} className="border-b border-gray-100 pb-2">
+                <dt className="text-sm font-medium text-gray-500 capitalize">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </dt>
+                <dd className="mt-1 text-sm font-semibold text-gray-900">
+                  {value}
+                </dd>
+              </div>
+            ))
+          : "Техникийн үзүүлэлт оруулаагүй байна!"}
       </div>
     </div>
   );
 };
 
-const AccessoriesTab = ({ accessories }: TabContentProps) => {
+const AccessoriesTab = ({ drone }: TabContentProps) => {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">Дагалдах хэрэгсэл</h2>
       <ul className="grid sm:grid-cols-2 gap-4">
-        {accessories?.map((item, index) => (
-          <li key={index} className="flex items-start">
+        {drone.inTheBox.length > 0 ? "" : ""}
+        {drone.inTheBox.map((item) => (
+          <li key={item.id} className="flex items-start">
             <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-            <span className="ml-2 text-gray-700">{item}</span>
+            <span className="ml-2 text-gray-700">{item.name}</span>
           </li>
         ))}
       </ul>

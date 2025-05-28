@@ -57,7 +57,7 @@ model Drone {
   specs           Spec[]
   videos          Video[]         @relation("videos")
   categories      DroneCategory[] @relation("DroneToDroneCategory")
-  tech DroneTech[]
+  tech            DroneTech?      @relation("DroneAndDroneTech")
   inTheBox DroneInTheBox[]
   advantages DroneAdvantage[]
   stock Int @default(0)
@@ -71,9 +71,9 @@ model DroneTech {
   dimensions String @default("")
   maxWindResistance String @default("")
   Battery String @default("")
-  drone Drone @relation(references: [id], fields: [droneId])
+  drone Drone @relation("DroneAndDroneTech", references: [id], fields: [droneId])
   createdAt DateTime @default(now())
-  droneId String
+  droneId String @unique
 }
 
 model DroneInTheBox {
