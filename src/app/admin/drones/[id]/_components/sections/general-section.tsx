@@ -7,9 +7,10 @@ import { CustomDrone, CustomSpec } from "@/lib/types";
 import LoadingText from "@/app/_component/LoadingText";
 import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
 import { Snackbar } from "@mui/material";
+import DroneAdditionalDescriptions from "../cards/additional-description";
 
 const GeneralSection = () => {
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const [drone, setDrone] = useState<CustomDrone>();
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
@@ -89,6 +90,9 @@ const GeneralSection = () => {
         />
       ) : (
         <div>Дроны мэдээлэл татахад алдаа гарлаа!</div>
+      )}
+      {drone && (
+        <DroneAdditionalDescriptions drone={drone} setRefresh={setRefresh} />
       )}
     </div>
   );

@@ -159,8 +159,8 @@ model Image {
   public_id          String
   priority           Int      @default(0)
   DroneFeaturedImage Drone?   @relation("DroneFeaturedImage")
-  drone              Drone?   @relation(fields: [droneId], references: [id])
-  spec               Spec?    @relation(fields: [specId], references: [id])
+  drone              Drone?   @relation(fields: [droneId], references: [id], onDelete: Cascade)
+  spec               Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
 }
 
 model Video {
@@ -174,8 +174,8 @@ model Video {
   detail             String   @default("Тайлбар алга!")
   name               String   @default("Нэр өгөөгүй!")
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
-  drone              Drone    @relation("videos", fields: [droneId], references: [id])
-  spec              Spec?    @relation(fields: [specId], references: [id])
+  drone              Drone    @relation("videos", fields: [droneId], references: [id], onDelete: Cascade)
+  spec              Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
   specId String?
 }
 
