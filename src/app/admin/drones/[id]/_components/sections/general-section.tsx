@@ -7,7 +7,7 @@ import { CustomDrone, CustomSpec } from "@/lib/types";
 import LoadingText from "@/app/_component/LoadingText";
 import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
 import { Snackbar } from "@mui/material";
-import DroneAdditionalDescriptions from "../cards/additional-description";
+import DroneAdditionalDescriptions from "../cards/additional-description-card";
 
 const GeneralSection = () => {
   const { id } = useParams() as { id: string };

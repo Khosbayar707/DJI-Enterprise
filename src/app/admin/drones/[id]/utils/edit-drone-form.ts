@@ -10,4 +10,8 @@ export const EditDroneGeneralInfo = z.object({
     .optional(),
   price: z.string().optional(),
   discount: z.string().optional(),
+  previewText: z
+    .string()
+    .min(2, { message: "Дор хаяж 10 үсэг оруулна уу!" })
+    .optional(),
 });

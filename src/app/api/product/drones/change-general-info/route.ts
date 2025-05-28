@@ -15,8 +15,17 @@ export async function POST(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const { name, description, id, cat1, cat2, currentModel, price, discount } =
-      await req.json();
+    const {
+      name,
+      description,
+      id,
+      cat1,
+      cat2,
+      currentModel,
+      price,
+      discount,
+      previewText,
+    } = await req.json();
     const accessToken = req.cookies.get("accessToken")?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
@@ -51,6 +60,7 @@ export async function POST(req: NextRequest) {
               },
             }
           : {}),
+        ...(previewText !== undefined ? { description2: previewText } : {}),
       },
     });
 
