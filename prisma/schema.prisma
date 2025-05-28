@@ -34,7 +34,7 @@ model OTP {
 model Drone {
   id              String          @id @unique @default(nanoid())
   name            String
-  Price           Int?
+  Price           Int @default(0)
   briefDescription String @default("")
   PreviewDescription String @default("")
   description     String          @default("Дэлгэрэнгүй мэдээлэл алга!")

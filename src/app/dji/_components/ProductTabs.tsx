@@ -95,44 +95,56 @@ const SpecsTab = ({ drone }: TabContentProps) => {
       <h2 className="text-xl font-bold text-gray-900">Техникийн үзүүлэлт</h2>
       <div className="grid md:grid-cols-2 gap-6">
         {drone.tech ? (
-          <div className="border-b border-gray-100 pb-2">
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              Жин
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {drone.tech.weight}
-            </dd>
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              Дээд хурд
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {drone.tech.maxSpeed}
-            </dd>
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              Температури
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {drone.tech.operatingTemperature}
-            </dd>
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              Дименшин
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {drone.tech.dimensions}
-            </dd>
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              Салхины эсэргүүцэл
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {drone.tech.maxWindResistance}
-            </dd>
-            <dt className="text-sm font-medium text-gray-500 capitalize">
-              Баттерей
-            </dt>
-            <dd className="mt-1 text-sm font-semibold text-gray-900">
-              {drone.tech.Battery}
-            </dd>
-          </div>
+          <>
+            <div className="border-b border-gray-100 pb-2">
+              <dt className="text-sm font-medium text-gray-500 capitalize">
+                Жин
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">
+                {drone.tech.weight}
+              </dd>
+            </div>
+            <div className="border-b border-gray-100 pb-2">
+              <dt className="text-sm font-medium text-gray-500 capitalize">
+                Дээд хурд
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">
+                {drone.tech.maxSpeed}
+              </dd>
+            </div>
+            <div className="border-b border-gray-100 pb-2">
+              <dt className="text-sm font-medium text-gray-500 capitalize">
+                Температури
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">
+                {drone.tech.operatingTemperature}
+              </dd>
+            </div>
+            <div className="border-b border-gray-100 pb-2">
+              <dt className="text-sm font-medium text-gray-500 capitalize">
+                Дименшин
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">
+                {drone.tech.dimensions}
+              </dd>
+            </div>
+            <div className="border-b border-gray-100 pb-2">
+              <dt className="text-sm font-medium text-gray-500 capitalize">
+                Салхины эсэргүүцэл
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">
+                {drone.tech.maxWindResistance}
+              </dd>
+            </div>
+            <div className="border-b border-gray-100 pb-2">
+              <dt className="text-sm font-medium text-gray-500 capitalize">
+                Баттерей
+              </dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">
+                {drone.tech.Battery}
+              </dd>
+            </div>
+          </>
         ) : (
           "Техникийн үзүүлэлт оруулаагүй байна!"
         )}

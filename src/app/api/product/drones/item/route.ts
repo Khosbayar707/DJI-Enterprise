@@ -26,6 +26,8 @@ export async function GET(req: NextRequest) {
         categories: true,
         featuredImage: true,
         descriptions: { orderBy: { createdAt: "desc" } },
+        tech: true,
+        inTheBox: { orderBy: { createdAt: "desc" } },
       },
     });
     if (!drone) {

@@ -1,7 +1,6 @@
 import { CustomDroneClient } from "@/lib/types";
 import { CheckCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { calculateSavings } from "../utils/calculate-saving";
 
 type ProductInfoProps = {
   onContactClick: () => void;
@@ -38,15 +37,20 @@ export default function ProductInfo({
       <div className="space-y-2">
         {drone.discount > 0 ? (
           <>
-            <p className="text-3xl font-bold text-red-600">{drone.discount}</p>
-            <p className="text-xl text-gray-500 line-through">{drone.Price}</p>
+            <p className="text-3xl font-bold text-red-600">
+              {(drone.Price - drone.discount).toLocaleString()}₮
+            </p>
+            <p className="text-xl text-gray-500 line-through">
+              {drone.Price.toLocaleString()}₮
+            </p>
             <p className="text-green-600 font-medium">
-              Та {calculateSavings(String(drone.Price), String(drone.discount))}{" "}
-              хэмнэж байна!
+              Та {drone.discount}₮ хэмнэж байна!
             </p>
           </>
         ) : (
-          <p className="text-3xl font-semibold text-green-600">{drone.Price}</p>
+          <p className="text-3xl font-semibold text-green-600">
+            {drone.Price}₮
+          </p>
         )}
       </div>
       <p className="text-gray-700 leading-relaxed">

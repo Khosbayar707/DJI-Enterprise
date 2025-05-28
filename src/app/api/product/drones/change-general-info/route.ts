@@ -25,6 +25,8 @@ export async function POST(req: NextRequest) {
       price,
       discount,
       previewText,
+      briefDescription,
+      stock,
     } = await req.json();
     const accessToken = req.cookies.get("accessToken")?.value;
     if (!accessToken) {
@@ -63,6 +65,8 @@ export async function POST(req: NextRequest) {
         ...(previewText !== undefined
           ? { PreviewDescription: previewText }
           : {}),
+        ...(briefDescription !== undefined ? { briefDescription } : {}),
+        ...(stock !== undefined ? { stock } : {}),
       },
     });
 

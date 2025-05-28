@@ -8,6 +8,8 @@ import LoadingText from "@/app/_component/LoadingText";
 import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
 import { Snackbar } from "@mui/material";
 import DroneAdditionalDescriptions from "../cards/additional-description-card";
+import DroneTechCard from "../cards/tech-card";
+import AccessoryCard from "../cards/accessory-card";
 
 const GeneralSection = () => {
   const { id } = useParams() as { id: string };
@@ -79,20 +81,37 @@ const GeneralSection = () => {
       {loading ? (
         <LoadingText />
       ) : drone ? (
-        <DroneInfoCard
-          setRefresh={setRefresh}
-          refresh={refresh}
-          waitingCategories={waitingCategories}
-          drone={drone}
-          droneCategories={droneCategories}
-          specs={specs}
-          droneModels={droneModels}
-        />
+        <>
+          <DroneInfoCard
+            setRefresh={setRefresh}
+            refresh={refresh}
+            waitingCategories={waitingCategories}
+            drone={drone}
+            droneCategories={droneCategories}
+            specs={specs}
+            droneModels={droneModels}
+          />
+
+          <DroneTechCard
+            tech={drone.tech}
+            loading={loading}
+            setLoading={setLoading}
+            refresh={refresh}
+            setRefresh={setRefresh}
+            id={id}
+          />
+          <AccessoryCard
+            accessories={drone.inTheBox}
+            loading={loading}
+            setLoading={setLoading}
+            refresh={refresh}
+            setRefresh={setRefresh}
+            id={id}
+          />
+          <DroneAdditionalDescriptions drone={drone} setRefresh={setRefresh} />
+        </>
       ) : (
         <div>Дроны мэдээлэл татахад алдаа гарлаа!</div>
-      )}
-      {drone && (
-        <DroneAdditionalDescriptions drone={drone} setRefresh={setRefresh} />
       )}
     </div>
   );

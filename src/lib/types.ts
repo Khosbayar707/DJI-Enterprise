@@ -51,6 +51,8 @@ export type CustomDrone = Drone & {
   featuredVideo: Video;
   categories: DroneCategory[];
   descriptions: DroneDescription[];
+  tech: DroneTech;
+  inTheBox: DroneInTheBox[];
 };
 
 export type CustomSpec = Spec & {
