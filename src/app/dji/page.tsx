@@ -25,7 +25,6 @@ export default function ProductListPage() {
     fetchData();
   }, []);
 
-  console.log({ drones });
   return (
     <div className="bg-white min-h-screen">
       <section className="py-20 bg-white">

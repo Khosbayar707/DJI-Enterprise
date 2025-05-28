@@ -61,7 +61,7 @@ const DroneInfoCard = ({
       description: drone?.description,
       price: drone?.Price ? String(drone?.Price) : "0",
       discount: String(drone?.discount) || "0",
-      previewText: drone?.description2,
+      previewText: drone?.PreviewDescription,
     },
     mode: "onChange",
   });

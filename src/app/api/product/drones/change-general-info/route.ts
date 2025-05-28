@@ -60,7 +60,9 @@ export async function POST(req: NextRequest) {
               },
             }
           : {}),
-        ...(previewText !== undefined ? { description2: previewText } : {}),
+        ...(previewText !== undefined
+          ? { PreviewDescription: previewText }
+          : {}),
       },
     });
 
