@@ -10,8 +10,12 @@ import ContactForm from "../_components/ContactForm";
 import RelatedProducts from "../_components/RelatedProducts";
 import Footer from "../_components/Footer";
 import { BreadcrumbItem, Drone, Product } from "@/app/_types/types";
+import { CustomDroneClient } from "@/lib/types";
+import { useParams } from "next/navigation";
+import axios from "axios";
+import LoadingText from "@/app/_component/LoadingText";
 
-const drone: Drone = {
+const drone1: Drone = {
   id: "dji-mavic-3m",
   name: "DJI Mavic 3M",
   price: "7,999,000₮",
@@ -78,13 +82,32 @@ const relatedProducts: Product[] = [
 ];
 
 export default function Page() {
+  const { id } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+  const [drone, setDrone] = useState<CustomDroneClient>();
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: "Нүүр", href: "/" },
     { label: "Дрон", href: "/drones" },
-    { label: drone.name, href: `/drones/${drone.id}` },
+    { label: drone1.name, href: `/drones/${drone1.id}` },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/client/products/drone?id=${id}`);
+        if (res.data.success) {
+          setDrone(res.data.data.drone);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleContactClick = () => {
     setIsLoading(true);
@@ -96,48 +119,46 @@ export default function Page() {
       }
     }, 800);
   };
-
   return (
     <>
       <Head>
-        <title>{`${drone.name} | Инженер Геодези ХХК`}</title>
-        <meta name="description" content={drone.description} />
+        <title>{`${drone1.name} | Инженер Геодези ХХК`}</title>
+        <meta name="description" content={drone1.description} />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-sans">
         <div className="max-w-7xl mx-auto">
-          <Breadcrumbs items={breadcrumbItems} />
+          <div className=" min-h-screen">
+            <Breadcrumbs items={breadcrumbItems} />
 
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-            <ProductGallery
-              mainImage={drone.mainImage}
-              images={drone.images}
-              name={drone.name}
-              discountPrice={drone.discountPrice}
-            />
-
-            <ProductInfo
-              name={drone.name}
-              price={drone.price}
-              discountPrice={drone.discountPrice}
-              description={drone.description}
-              features={drone.features}
-              onContactClick={handleContactClick}
-              isLoading={isLoading}
-            />
+            {loading ? (
+              <div className=" flex justify-center">
+                <LoadingText />
+              </div>
+            ) : drone ? (
+              <>
+                <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
+                  <ProductGallery drone={drone} mainImage={drone1.mainImage} />
+                  <ProductInfo
+                    drone={drone}
+                    onContactClick={handleContactClick}
+                    isLoading={isLoading}
+                  />
+                </div>
+                <ProductTabs
+                  drone={drone}
+                  description={drone1.description}
+                  specifications={drone1.specifications}
+                  accessories={drone1.accessories}
+                  videoUrl={drone1.videoUrl}
+                />
+                <ContactForm />
+                <RelatedProducts products={relatedProducts} />
+              </>
+            ) : (
+              <div>Бараа олдсонгүй!</div>
+            )}
           </div>
-
-          <ProductTabs
-            description={drone.description}
-            specifications={drone.specifications}
-            accessories={drone.accessories}
-            videoUrl={drone.videoUrl}
-          />
-
-          <ContactForm />
-
-          <RelatedProducts products={relatedProducts} />
-
           <Footer />
         </div>
       </div>

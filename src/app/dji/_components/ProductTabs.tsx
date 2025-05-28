@@ -2,20 +2,22 @@
 import { useState } from "react";
 import { PlayCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Drone } from "@/app/_types/types";
-import { ProductTabOptions } from "@/lib/types";
+import { CustomDroneClient, ProductTabOptions } from "@/lib/types";
 
-interface ProductTabsProps {
+type ProductTabsProps = {
   description: Drone["description"];
   specifications: Drone["specifications"];
   accessories: Drone["accessories"];
   videoUrl: Drone["videoUrl"];
-}
+  drone: CustomDroneClient;
+};
 
 export default function ProductTabs({
   description,
   specifications,
   accessories,
   videoUrl,
+  drone,
 }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<ProductTabOptions>(
     ProductTabOptions.features
@@ -48,12 +50,18 @@ export default function ProductTabs({
 
       <div className="p-6 md:p-8">
         {activeTab === "features" && (
-          <FeaturesTab description={description} videoUrl={videoUrl} />
+          <FeaturesTab
+            description={description}
+            videoUrl={videoUrl}
+            drone={drone}
+          />
         )}
 
-        {activeTab === "specs" && <SpecsTab specifications={specifications} />}
+        {activeTab === "specs" && (
+          <SpecsTab specifications={specifications} drone={drone} />
+        )}
         {activeTab === "accessories" && (
-          <AccessoriesTab accessories={accessories} />
+          <AccessoriesTab accessories={accessories} drone={drone} />
         )}
         {activeTab === "reviews" && <ReviewsTab />}
       </div>
@@ -61,40 +69,46 @@ export default function ProductTabs({
   );
 }
 
-interface TabContentProps {
+type TabContentProps = {
   description?: string;
   specifications?: Record<string, string>;
   accessories?: string[];
   videoUrl?: string;
-}
+  drone: CustomDroneClient;
+};
 
-const FeaturesTab = ({ description, videoUrl }: TabContentProps) => {
+const FeaturesTab = ({ description, videoUrl, drone }: TabContentProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-gray-900">Дэлгэрэнгүй тайлбар</h2>
-      <p className="text-gray-700 leading-relaxed">{description}</p>
-      <p className="text-gray-700 leading-relaxed">
-        DJI Mavic 3M нь хөдөө аж ахуй, барилга, уул уурхай, газрын зураглал
-        зэрэг олон салбарт өргөн хэрэглэгддэг дэвшилтэт дрон юм. Энэхүү дрон нь
-        4 ширхэг 5MP олон спектрийн камер, 20MP RGB камертай бөгөөд ургамал
-        болон бусад объектын өнгөний ялгааг маш нарийн тогтоож чаддаг.
-      </p>
+      <h2 className="text-xl font-bold text-gray-900">{drone.description}</h2>
+      {drone.descriptions.length > 0
+        ? drone.descriptions.map((description) => (
+            <p key={description.id} className="text-gray-700 leading-relaxed">
+              {description.description}
+            </p>
+          ))
+        : ""}
 
-      <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <PlayCircleIcon className="w-6 h-6 text-blue-600" />
-          Видео танилцуулга
-        </h3>
-        <div className="relative overflow-hidden rounded-xl shadow-md aspect-w-16 aspect-h-9">
-          <iframe
-            src={videoUrl}
-            title="Product introduction video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-64 sm:h-96 lg:h-[500px]"
-          ></iframe>
+      {drone.videos.length > 0 ? (
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <PlayCircleIcon className="w-6 h-6 text-blue-600" />
+            Видео танилцуулга
+          </h3>
+          <div className="relative overflow-hidden rounded-xl shadow-md aspect-w-16 aspect-h-9">
+            <video
+              muted
+              autoPlay
+              loop
+              src={drone.videos[0].url}
+              title="Product introduction video"
+              className="w-full h-64 sm:h-96 lg:h-[500px]"
+            ></video>
+          </div>
         </div>
-      </div>
+      ) : (
+        "Бичлэг одоогоор алга!"
+      )}
     </div>
   );
 };
