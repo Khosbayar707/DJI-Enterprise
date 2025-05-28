@@ -61,6 +61,7 @@ const DroneInfoCard = ({
       description: drone?.description,
       price: drone?.Price ? String(drone?.Price) : "0",
       discount: String(drone?.discount) || "0",
+      previewText: drone?.description2,
     },
     mode: "onChange",
   });
@@ -132,6 +133,18 @@ const DroneInfoCard = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Дроны тухай дэлгэрэнгүй мэдээлэл</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} rows={50} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="previewText"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preview дэлгэрэнгүй мэдээлэл</FormLabel>
                     <FormControl>
                       <Textarea {...field} rows={50} />
                     </FormControl>

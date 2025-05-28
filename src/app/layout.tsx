@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Mono, Noto_Serif } from "next/font/google";
 import "./globals.css";
-import Header from "./_component/Header";
-import Footer from "./_component/Footer";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/lib/theme";
+import Footer from "./_component/Footer";
+import Header from "./_component/Header";
 
 const notoSans = Noto_Sans({
   weight: ["400", "500", "600", "700"],
