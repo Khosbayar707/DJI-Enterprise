@@ -5,20 +5,10 @@ import { Drone } from "@/app/_types/types";
 import { CustomDroneClient, ProductTabOptions } from "@/lib/types";
 
 type ProductTabsProps = {
-  description: Drone["description"];
-  specifications: Drone["specifications"];
-  accessories: Drone["accessories"];
-  videoUrl: Drone["videoUrl"];
   drone: CustomDroneClient;
 };
 
-export default function ProductTabs({
-  description,
-  specifications,
-  accessories,
-  videoUrl,
-  drone,
-}: ProductTabsProps) {
+export default function ProductTabs({ drone }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<ProductTabOptions>(
     ProductTabOptions.features
   );
@@ -49,20 +39,10 @@ export default function ProductTabs({
       </div>
 
       <div className="p-6 md:p-8">
-        {activeTab === "features" && (
-          <FeaturesTab
-            description={description}
-            videoUrl={videoUrl}
-            drone={drone}
-          />
-        )}
+        {activeTab === "features" && <FeaturesTab drone={drone} />}
 
-        {activeTab === "specs" && (
-          <SpecsTab specifications={specifications} drone={drone} />
-        )}
-        {activeTab === "accessories" && (
-          <AccessoriesTab accessories={accessories} drone={drone} />
-        )}
+        {activeTab === "specs" && <SpecsTab drone={drone} />}
+        {activeTab === "accessories" && <AccessoriesTab drone={drone} />}
         {activeTab === "reviews" && <ReviewsTab />}
       </div>
     </div>
@@ -70,10 +50,6 @@ export default function ProductTabs({
 }
 
 type TabContentProps = {
-  description?: string;
-  specifications?: Record<string, string>;
-  accessories?: string[];
-  videoUrl?: string;
   drone: CustomDroneClient;
 };
 
@@ -89,12 +65,12 @@ const FeaturesTab = ({ drone }: TabContentProps) => {
           ))
         : ""}
 
-      {drone.videos.length > 0 ? (
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <PlayCircleIcon className="w-6 h-6 text-blue-600" />
-            Видео танилцуулга
-          </h3>
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <PlayCircleIcon className="w-6 h-6 text-blue-600" />
+          Видео танилцуулга
+        </h3>
+        {drone.videos.length > 0 ? (
           <div className="relative overflow-hidden rounded-xl shadow-md aspect-w-16 aspect-h-9">
             <video
               muted
@@ -105,31 +81,61 @@ const FeaturesTab = ({ drone }: TabContentProps) => {
               className="w-full h-64 sm:h-96 lg:h-[500px]"
             ></video>
           </div>
-        </div>
-      ) : (
-        "Бичлэг одоогоор алга!"
-      )}
+        ) : (
+          "Бичлэг одоогоор алга!"
+        )}
+      </div>
     </div>
   );
 };
 
-const SpecsTab = ({ specifications, drone }: TabContentProps) => {
+const SpecsTab = ({ drone }: TabContentProps) => {
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">Техникийн үзүүлэлт</h2>
       <div className="grid md:grid-cols-2 gap-6">
-        {drone.tech
-          ? Object.entries(specifications || {}).map(([key, value]) => (
-              <div key={key} className="border-b border-gray-100 pb-2">
-                <dt className="text-sm font-medium text-gray-500 capitalize">
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </dt>
-                <dd className="mt-1 text-sm font-semibold text-gray-900">
-                  {value}
-                </dd>
-              </div>
-            ))
-          : "Техникийн үзүүлэлт оруулаагүй байна!"}
+        {drone.tech ? (
+          <div className="border-b border-gray-100 pb-2">
+            <dt className="text-sm font-medium text-gray-500 capitalize">
+              Жин
+            </dt>
+            <dd className="mt-1 text-sm font-semibold text-gray-900">
+              {drone.tech.weight}
+            </dd>
+            <dt className="text-sm font-medium text-gray-500 capitalize">
+              Дээд хурд
+            </dt>
+            <dd className="mt-1 text-sm font-semibold text-gray-900">
+              {drone.tech.maxSpeed}
+            </dd>
+            <dt className="text-sm font-medium text-gray-500 capitalize">
+              Температури
+            </dt>
+            <dd className="mt-1 text-sm font-semibold text-gray-900">
+              {drone.tech.operatingTemperature}
+            </dd>
+            <dt className="text-sm font-medium text-gray-500 capitalize">
+              Дименшин
+            </dt>
+            <dd className="mt-1 text-sm font-semibold text-gray-900">
+              {drone.tech.dimensions}
+            </dd>
+            <dt className="text-sm font-medium text-gray-500 capitalize">
+              Салхины эсэргүүцэл
+            </dt>
+            <dd className="mt-1 text-sm font-semibold text-gray-900">
+              {drone.tech.maxWindResistance}
+            </dd>
+            <dt className="text-sm font-medium text-gray-500 capitalize">
+              Баттерей
+            </dt>
+            <dd className="mt-1 text-sm font-semibold text-gray-900">
+              {drone.tech.Battery}
+            </dd>
+          </div>
+        ) : (
+          "Техникийн үзүүлэлт оруулаагүй байна!"
+        )}
       </div>
     </div>
   );
@@ -140,13 +146,16 @@ const AccessoriesTab = ({ drone }: TabContentProps) => {
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">Дагалдах хэрэгсэл</h2>
       <ul className="grid sm:grid-cols-2 gap-4">
-        {drone.inTheBox.length > 0 ? "" : ""}
-        {drone.inTheBox.map((item) => (
-          <li key={item.id} className="flex items-start">
-            <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-            <span className="ml-2 text-gray-700">{item.name}</span>
-          </li>
-        ))}
+        {drone.inTheBox.length > 0 ? (
+          drone.inTheBox.map((item) => (
+            <li key={item.id} className="flex items-start">
+              <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <span className="ml-2 text-gray-700">{item.name}</span>
+            </li>
+          ))
+        ) : (
+          <div>Дагалдах хэрэгсэл байхгүй!</div>
+        )}
       </ul>
     </div>
   );

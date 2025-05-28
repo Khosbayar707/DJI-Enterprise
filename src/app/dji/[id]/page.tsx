@@ -15,45 +15,6 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import LoadingText from "@/app/_component/LoadingText";
 
-const drone1: Drone = {
-  id: "dji-mavic-3m",
-  name: "DJI Mavic 3M",
-  price: "7,999,000₮",
-  discountPrice: "7,499,000₮",
-  mainImage:
-    "https://www-cdn.djiits.com/dps/45196aac8f231fe2ae211c76a473212b.jpg",
-  images: [
-    "https://www-cdn.djiits.com/dps/45196aac8f231fe2ae211c76a473212b.jpg",
-    "https://www-cdn.djiits.com/dps/09d051de6f793363e331422963aabf1b.jpg",
-    "https://www-cdn.djiits.com/dps/f4e2d8e9132b4014972ee29d5b49c364.jpg",
-  ],
-  description:
-    "DJI Mavic 3M бол олон спектрийн камер болон RGB камерыг нэгтгэсэн, өндөр нарийвчлалтай агаарын зураглал хийх боломжтой дрон юм.",
-  features: [
-    "4 x 5MP олон спектрийн камер",
-    "20MP RGB камер",
-    "RTK модуль, сантиметрин нарийвчлал",
-    "15 км O3 дамжуулалт",
-    "43 минутын нислэгийн хугацаа",
-  ],
-  specifications: {
-    weight: "920г",
-    dimensions: "221×96.3×90.3мм (нугаслагдсан)",
-    maxSpeed: "21м/с",
-    maxWindResistance: "12м/с",
-    operatingTemperature: "-10°C - 40°C",
-    batteryCapacity: "5000мАц",
-  },
-  videoUrl: "https://www.youtube.com/embed/sample-video-id",
-  accessories: [
-    "3 ширхэг сэлбэг батерей",
-    "Цэнэглэгч",
-    "Тээврийн хайрцаг",
-    "Пропелер сэлбэг",
-    "Холбох кабель",
-  ],
-};
-
 const relatedProducts: Product[] = [
   {
     id: "dji-mavic-3-classic",
@@ -86,13 +47,6 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [drone, setDrone] = useState<CustomDroneClient>();
-
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { label: "Нүүр", href: "/" },
-    { label: "Дрон", href: "/drones" },
-    { label: drone1.name, href: `/drones/${drone1.id}` },
-  ];
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -109,6 +63,26 @@ export default function Page() {
     fetchData();
   }, []);
 
+  if (loading) {
+    return (
+      <div className=" flex justify-center min-h-screen">
+        <LoadingText />
+      </div>
+    );
+  }
+
+  if (!drone) {
+    return (
+      <div className=" flex justify-center min-h-screen">Бараа олдсонгүй!</div>
+    );
+  }
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: "Нүүр", href: "/" },
+    { label: "Дрон", href: "/dji" },
+    { label: drone.name, href: `/dji/${drone.id}` },
+  ];
+
   const handleContactClick = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -122,42 +96,25 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>{`${drone1.name} | Инженер Геодези ХХК`}</title>
-        <meta name="description" content={drone1.description} />
+        <title>{`${drone.name} | Инженер Геодези ХХК`}</title>
+        <meta name="description" content={drone.description} />
       </Head>
-
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-sans">
         <div className="max-w-7xl mx-auto">
           <div className=" min-h-screen">
             <Breadcrumbs items={breadcrumbItems} />
 
-            {loading ? (
-              <div className=" flex justify-center">
-                <LoadingText />
-              </div>
-            ) : drone ? (
-              <>
-                <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-                  <ProductGallery drone={drone} mainImage={drone1.mainImage} />
-                  <ProductInfo
-                    drone={drone}
-                    onContactClick={handleContactClick}
-                    isLoading={isLoading}
-                  />
-                </div>
-                <ProductTabs
-                  drone={drone}
-                  description={drone1.description}
-                  specifications={drone1.specifications}
-                  accessories={drone1.accessories}
-                  videoUrl={drone1.videoUrl}
-                />
-                <ContactForm />
-                <RelatedProducts products={relatedProducts} />
-              </>
-            ) : (
-              <div>Бараа олдсонгүй!</div>
-            )}
+            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
+              <ProductGallery drone={drone} />
+              <ProductInfo
+                drone={drone}
+                onContactClick={handleContactClick}
+                isLoading={isLoading}
+              />
+            </div>
+            <ProductTabs drone={drone} />
+            <ContactForm />
+            <RelatedProducts products={relatedProducts} />
           </div>
           <Footer />
         </div>

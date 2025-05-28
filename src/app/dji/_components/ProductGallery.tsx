@@ -4,16 +4,12 @@ import { CustomDroneClient } from "@/lib/types";
 import { useState } from "react";
 
 type ProductGalleryProps = {
-  mainImage: Drone["mainImage"];
   drone: CustomDroneClient;
 };
 
-export default function ProductGallery({
-  mainImage,
-  drone,
-}: ProductGalleryProps) {
+export default function ProductGallery({ drone }: ProductGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string>(
-    drone.images[0].url ?? mainImage
+    drone.images.length > 0 ? drone.images[0].url : "/image/placeholder.jpg"
   );
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({
