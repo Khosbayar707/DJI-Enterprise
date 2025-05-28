@@ -1,6 +1,7 @@
 import {
   Drone,
   DroneCategory,
+  DroneDescription,
   Image,
   Spec,
   SpecCategory,
@@ -48,6 +49,7 @@ export type CustomDrone = Drone & {
   specs: Spec[];
   featuredVideo: Video;
   categories: DroneCategory[];
+  descriptions: DroneDescription[];
 };
 
 export type CustomSpec = Spec & {
