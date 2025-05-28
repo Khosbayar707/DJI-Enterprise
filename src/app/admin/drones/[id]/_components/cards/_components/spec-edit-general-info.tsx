@@ -1,4 +1,5 @@
 "use client";
+import PriorityForm from "@/app/_component/priority-form";
 import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 import { EditSpecGeneralInfo } from "@/app/admin/specs/[id]/utils/editSpecGeneralInfo";
 import {
@@ -13,7 +14,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { Spec } from "@/generated/prisma";
 import { ResponseType } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -33,6 +34,7 @@ const SpecEditGeneralInfo = ({
       name: spec.name,
       detail: spec.detail,
       previewText: spec.previewText,
+      priority: spec.priority,
     },
   });
 
@@ -75,9 +77,8 @@ const SpecEditGeneralInfo = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Нэр</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <TextField label="Нэр" variant="standard" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,9 +89,12 @@ const SpecEditGeneralInfo = ({
               name="detail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Дэлгэрэнгүй</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <TextField
+                      label="Дэлгэрэнгүй"
+                      variant="standard"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,14 +105,14 @@ const SpecEditGeneralInfo = ({
               name="previewText"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Preview</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <TextField label="Preview" variant="standard" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <PriorityForm form={form} />
             <Button
               disabled={!form.formState.isValid || form.formState.isSubmitting}
               type="submit"

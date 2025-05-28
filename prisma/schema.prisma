@@ -70,6 +70,7 @@ model DroneTech {
   maxWindResistance String @default("")
   Battery String @default("")
   drone Drone @relation(references: [id], fields: [droneId])
+  createdAt DateTime @default(now())
   droneId String
 }
 
@@ -77,6 +78,7 @@ model DroneInTheBox {
   id String @id @unique @default(nanoid())
   name String
   drone Drone @relation(references: [id], fields: [droneId])
+  createdAt DateTime @default(now())
   droneId String
 }
 
@@ -86,6 +88,7 @@ model DroneDescription {
   description String
   priority Int @default(0)
   drone Drone @relation(references: [id], fields: [droneId], onDelete: Cascade)
+  createdAt DateTime @default(now())
   droneId String
 }
 
@@ -94,6 +97,7 @@ model DroneModel {
   id     String  @id @unique @default(nanoid())
   name   String
   drones Drone[]
+  createdAt DateTime @default(now())
 }
 
 model Spec {
@@ -123,6 +127,7 @@ model SpecDescription {
   description String
   priority Int @default(0)
   spec Spec @relation(references: [id], fields: [specId], onDelete: Cascade)
+  createdAt DateTime @default(now())
   specId String
 }
 
@@ -181,5 +186,6 @@ model Review {
   droneId     String
   description String
   drone       Drone  @relation(fields: [droneId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
   reviewee    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

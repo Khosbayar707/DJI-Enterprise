@@ -3,7 +3,9 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const specCat = await prisma.specCategory.findMany();
+    const specCat = await prisma.specCategory.findMany({
+      orderBy: { createdAt: "desc" },
+    });
     return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай!", {
       categories: specCat,
     });

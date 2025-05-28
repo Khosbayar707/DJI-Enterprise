@@ -5,4 +5,5 @@ export const AddNewSchema = z.object({
     .string()
     .min(1, { message: "Бүтээгдэхүүний нэр хоосон байж болохгүй!" }),
   detail: z.string(),
+  priority: z.number(),
 });

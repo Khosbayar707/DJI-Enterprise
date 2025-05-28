@@ -20,6 +20,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CustomSpec, ResponseType } from "@/lib/types";
 import { CustomSnackbar } from "@/app/admin/_components/snackbar";
+import PriorityForm from "@/app/_component/priority-form";
 type Props = {
   spec: CustomSpec;
   specCategories: SpecCategory[];
@@ -42,8 +43,9 @@ const SpecInfoCard = ({
   const form = useForm<z.infer<typeof EditSpecGeneralInfo>>({
     resolver: zodResolver(EditSpecGeneralInfo),
     defaultValues: {
-      name: spec?.name,
-      detail: spec?.detail,
+      name: spec.name,
+      detail: spec.detail,
+      priority: spec.priority,
     },
     mode: "onChange",
   });
@@ -74,7 +76,7 @@ const SpecInfoCard = ({
       setResponse(undefined);
     }, 5000);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [response]);
 
   return (
     <Card className="shadow-2xl">
@@ -98,7 +100,7 @@ const SpecInfoCard = ({
                     <FormControl>
                       <TextField
                         variant="standard"
-                        label="Дроны нэр"
+                        label="Эд ангиийн нэр"
                         {...field}
                         type="text"
                       />
@@ -111,13 +113,14 @@ const SpecInfoCard = ({
                 name="detail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Дроны тухай дэлгэрэнгүй мэдээлэл</FormLabel>
+                    <FormLabel>Эд ангиийн тухай дэлгэрэнгүй мэдээлэл</FormLabel>
                     <FormControl>
                       <Textarea {...field} rows={50} />
                     </FormControl>
                   </FormItem>
                 )}
               />
+              <PriorityForm form={form} />
               {waitingCategories ? (
                 <LoadingText />
               ) : (

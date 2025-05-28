@@ -24,6 +24,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ResponseType } from "@/lib/types";
 import { CustomSnackbar } from "../snackbar";
 import { AddNewSchema } from "@/lib/zod-schemas/add-new-spec-schema";
+import PriorityForm from "@/app/_component/priority-form";
 
 const AddSpecDialog = ({
   refresh,
@@ -38,6 +39,7 @@ const AddSpecDialog = ({
     defaultValues: {
       name: "",
       detail: "",
+      priority: 0,
     },
     mode: "onChange",
   });
@@ -107,6 +109,7 @@ const AddSpecDialog = ({
                   </FormItem>
                 )}
               />
+              <PriorityForm form={form} />
               <Button
                 disabled={
                   !form.formState.isValid || form.formState.isSubmitting
