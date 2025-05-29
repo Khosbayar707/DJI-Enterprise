@@ -10,6 +10,7 @@ import { Snackbar } from "@mui/material";
 import DroneAdditionalDescriptions from "../cards/additional-description-card";
 import DroneTechCard from "../cards/tech-card";
 import AccessoryCard from "../cards/accessory-card";
+import DroneAdvantagesCard from "../cards/advantages-card";
 
 const GeneralSection = () => {
   const { id } = useParams() as { id: string };
@@ -91,7 +92,12 @@ const GeneralSection = () => {
             specs={specs}
             droneModels={droneModels}
           />
-
+          <DroneAdvantagesCard
+            setRefresh={setRefresh}
+            refresh={refresh}
+            drone={drone}
+            id={id}
+          />
           <DroneTechCard
             tech={drone.tech}
             loading={loading}

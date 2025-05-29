@@ -53,6 +53,7 @@ export type CustomDrone = Drone & {
   descriptions: DroneDescription[];
   tech: DroneTech;
   inTheBox: DroneInTheBox[];
+  advantages: DroneAdvantage[];
 };
 
 export type CustomSpec = Spec & {
