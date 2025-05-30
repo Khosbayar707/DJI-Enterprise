@@ -2,26 +2,32 @@
 
 import { ContactInfoItemProps } from "@/app/_types/types";
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ContactInfoSchema } from "../utils/contact-info-schema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import z from "zod";
+import { Button, TextField } from "@mui/material";
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    message: "",
+  const form = useForm({
+    resolver: zodResolver(ContactInfoSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const onSubmit = (values: z.infer<typeof ContactInfoSchema>) => {
+    console.log(values);
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
   return (
     <div
       id="contact-form"
@@ -32,57 +38,64 @@ export default function ContactForm() {
           Бидэнтэй холбогдох
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <form className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Нэр
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Утас
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Мессеж
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-              >
-                Илгээх
-              </button>
-            </form>
+          <div className=" flex flex-col gap-12">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            variant="standard"
+                            label="Нэр"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            variant="standard"
+                            label="Утасны дугаар"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            variant="standard"
+                            label="Нэмэлт тайлбар"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>{" "}
+                <Button type="submit" disabled={!form.formState.isValid}>
+                  Холбоо барих
+                </Button>
+              </form>
+            </Form>
           </div>
           <div className="space-y-6">
             <ContactInfoItem
