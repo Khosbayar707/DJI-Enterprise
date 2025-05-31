@@ -1,4 +1,5 @@
 import {
+  ContactRequest,
   Drone,
   DroneAdvantage,
   DroneCategory,
@@ -9,6 +10,7 @@ import {
   Spec,
   SpecCategory,
   SpecDescription,
+  User,
   Video,
 } from "@/generated/prisma";
 
@@ -69,6 +71,11 @@ export type CustomImage = Image & {
   DroneFeaturedImage: Drone;
   createdAt: string;
   updatedAt: string;
+};
+
+export type CustomContactRequest = ContactRequest & {
+  drone: Drone;
+  user: User;
 };
 
 // client side types
