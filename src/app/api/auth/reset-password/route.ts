@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
       </b>
       <h3>Нууц үг солих холбоос!</h3>
       <strong>
-      <a href="${`${process.env.BASE_URL}/auth/reset-password/${otp}`}" target="_blank">Энд дарна уу!</a>
+      <a href="${`${process.env.NEXT_PUBLIC_BASE_URL}/auth/reset-password/${otp}`}" target="_blank">Энд дарна уу!</a>
       </strong>`, // html body
     });
 

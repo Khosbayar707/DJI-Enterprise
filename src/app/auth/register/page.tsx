@@ -19,10 +19,11 @@ import { ResponseType } from "@/lib/types";
 import { RegisterSchema } from "@/lib/zod-schemas/register-schema";
 import { Checkbox } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
 const Login = () => {
+  const redir = useSearchParams().get("redir");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<ResponseType>();
@@ -42,7 +43,7 @@ const Login = () => {
       const res = await axios.post("/api/auth/register", values);
       setResponse(res.data);
       if (res.data.success) {
-        router.push("/auth");
+        router.push(`${redir ? redir : `/auth`}`);
       }
     } catch (err) {
       console.error(err);
@@ -50,7 +51,19 @@ const Login = () => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const res = await axios.get("/api/auth");
+        if (res.data.success) {
+          router.push(`${redir ? redir : `/auth`}`);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    checkUser();
+  }, [router]);
   useEffect(() => {
     const timeout = setTimeout(() => {
       setResponse(undefined);
@@ -155,7 +168,10 @@ const Login = () => {
         </Form>
         <div>
           Бүртгэлтэй хэрэглэгч{" "}
-          <Link className=" text-blue-800" href={"/auth/login"}>
+          <Link
+            className=" text-blue-800"
+            href={`/auth/login${redir ? `?redir=` + redir : ``}`}
+          >
             энд дарна
           </Link>{" "}
           уу!

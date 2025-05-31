@@ -2,87 +2,179 @@
 
 import { ContactInfoItemProps } from "@/app/_types/types";
 import { PhoneIcon, EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { ContactInfoSchema } from "../utils/contact-info-schema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import z from "zod";
+import { Button, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { User } from "@/generated/prisma";
+import axios from "axios";
+import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
+import LoadingText from "@/app/_component/LoadingText";
+import { ResponseType } from "@/lib/types";
+import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
-export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    message: "",
+const ContactForm = () => {
+  const pathname = usePathname();
+  const { id } = useParams();
+  const [user, setUser] = useState<User>();
+  const [loading, setLoading] = useState(true);
+  const [response, setResponse] = useState<ResponseType>();
+  const form = useForm({
+    resolver: zodResolver(ContactInfoSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      phone: "",
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const onSubmit = async (values: z.infer<typeof ContactInfoSchema>) => {
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        "/api/client/products/drone/contact-request",
+        {
+          ...values,
+          id,
+        }
+      );
+      setResponse(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/auth/current-user");
+        if (res.data.success) {
+          setUser(res.data.data.user);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 7000);
+
+    return () => clearTimeout(timeout);
+  }, [response]);
 
   return (
     <div
       id="contact-form"
       className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden"
     >
+      {response && <CustomSnackbar value={response} />}
       <div className="p-8 md:p-10">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
           Бидэнтэй холбогдох
         </h2>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-10">
           <div>
-            <form className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Нэр
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Утас
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Мессеж
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-6"
               >
-                Илгээх
-              </button>
-            </form>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextField
+                          variant="standard"
+                          label="Нэр"
+                          fullWidth
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextField
+                          variant="standard"
+                          label="Утасны дугаар"
+                          fullWidth
+                          type="number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <TextField
+                          variant="standard"
+                          label="Нэмэлт тайлбар"
+                          fullWidth
+                          multiline
+                          minRows={3}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {loading ? (
+                  <LoadingText />
+                ) : user ? (
+                  <div className=" flex justify-between">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={!form.formState.isValid}
+                      className="w-fit"
+                    >
+                      Холбоо барих
+                    </Button>
+                    <div>{user.email}</div>
+                  </div>
+                ) : (
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login?redir=${process.env.NEXT_PUBLIC_BASE_URL + pathname}`}
+                    className="w-fit"
+                  >
+                    Нэвтрэх
+                  </Link>
+                )}
+              </form>
+            </Form>
           </div>
           <div className="space-y-6">
             <ContactInfoItem
@@ -118,20 +210,20 @@ export default function ContactForm() {
       </div>
     </div>
   );
-}
-
-const ContactInfoItem = ({ icon, title, items }: ContactInfoItemProps) => {
-  return (
-    <div className="flex items-start">
-      <div className="flex-shrink-0 bg-blue-100 p-3 rounded-full">{icon}</div>
-      <div className="ml-4">
-        <h3 className="text-lg font-medium text-gray-900">{title}</h3>
-        {items.map((item, index) => (
-          <p key={index} className="text-gray-600">
-            {item}
-          </p>
-        ))}
-      </div>
-    </div>
-  );
 };
+
+const ContactInfoItem = ({ icon, title, items }: ContactInfoItemProps) => (
+  <div className="flex items-start">
+    <div className="flex-shrink-0 bg-blue-100 p-3 rounded-full">{icon}</div>
+    <div className="ml-4">
+      <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+      {items.map((item, index) => (
+        <p key={index} className="text-gray-600">
+          {item}
+        </p>
+      ))}
+    </div>
+  </div>
+);
+
+export default ContactForm;
