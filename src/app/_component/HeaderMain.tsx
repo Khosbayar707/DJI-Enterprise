@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Menu,
   MenuButton,
@@ -21,7 +21,11 @@ import {
 } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import axios from "axios";
+import { User } from "@/generated/prisma";
+import { ResponseType } from "@/lib/types";
+import LoadingText from "./LoadingText";
 
 const navItems = [
   { href: "/dji", label: "DJI", items: ["DJI Enterprise"] },
@@ -39,15 +43,12 @@ const hoverVariants = {
 };
 
 const HeaderMain = () => {
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User>();
+  const [logging, setLogging] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const isLoggedIn = true;
-  const userInfo = {
-    name: "John Doe",
-    pfp: "/default-profile.png",
-    id: "123",
-  };
 
   const handleSearch = (query: string) => {
     if (query) {
@@ -55,10 +56,37 @@ const HeaderMain = () => {
     }
   };
 
-  const logout = () => {
-    console.log("Logging out");
-    setIsMobileMenuOpen(false);
+  const logout = async () => {
+    setLogging(true);
+    try {
+      const res = await axios.get("/api/auth/logout");
+      if (res.data.success) {
+        setUser(undefined);
+      }
+      setIsMobileMenuOpen(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLogging(false);
+    }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLogging(true);
+      try {
+        const res = await axios.get("/api/auth/current-user");
+        if (res.data.success) {
+          setUser(res.data.data.user);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLogging(false);
+      }
+    };
+    fetchData();
+  }, [pathname]);
 
   return (
     <>
@@ -133,18 +161,14 @@ const HeaderMain = () => {
             <div className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none">
               <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
             </div>
-
-            {isLoggedIn ? (
+            {logging ? (
+              <LoadingText />
+            ) : user ? (
               <>
-                <Link href={`/profile/${userInfo.id}`}>
+                <Link href={`/profile/${user.id}`}>
                   <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
-                    <img
-                      src={userInfo.pfp}
-                      alt="Profile"
-                      className="w-8 h-8 rounded-full border-2 border-blue-600"
-                    />
                     <span className="text-sm font-medium text-gray-800">
-                      {userInfo.name}
+                      {user.email}
                     </span>
                   </div>
                 </Link>
@@ -156,7 +180,9 @@ const HeaderMain = () => {
                 </button>
               </>
             ) : (
-              <Link href="/account">
+              <Link
+                href={`/auth/login?redir=${process.env.NEXT_PUBLIC_BASE_URL + pathname}`}
+              >
                 <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
                   Нэвтрэх / Бүртгүүлэх
                 </button>
@@ -173,7 +199,6 @@ const HeaderMain = () => {
           <div className="lg:hidden">
             <button
               onClick={() => {
-                console.log("Toggling isMobileMenuOpen:", !isMobileMenuOpen);
                 setIsMobileMenuOpen(!isMobileMenuOpen);
               }}
               className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none"
@@ -241,22 +266,19 @@ const HeaderMain = () => {
                   placeholder="Хайлт хийх..."
                 />
               </motion.div>
-              {isLoggedIn ? (
+              {logging ? (
+                <LoadingText />
+              ) : user ? (
                 <div className="flex flex-col gap-4">
-                  <Link href={`/profile/${userInfo.id}`}>
+                  <Link href={`/profile/${user.id}`}>
                     <motion.div
                       className="flex items-center gap-2 bg-gray-50 p-2 rounded-full shadow-sm hover:bg-gray-100 transition-all duration-300"
                       variants={hoverVariants}
                       whileHover="hover"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <img
-                        src={userInfo.pfp}
-                        alt="Profile"
-                        className="rounded-full w-8 h-8 border-2 border-blue-600"
-                      />
                       <span className="text-sm font-medium text-gray-800">
-                        {userInfo.name}
+                        {user.email}
                       </span>
                     </motion.div>
                   </Link>
@@ -284,7 +306,7 @@ const HeaderMain = () => {
                   </Link>
                 </div>
               ) : (
-                <Link href="/account">
+                <Link href={`/auth/login?redir=${pathname}`}>
                   <motion.div
                     className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition-all duration-300 text-center"
                     variants={hoverVariants}
