@@ -1,7 +1,6 @@
-import { CustomResponse } from "@/lib/next-responses";
 import { NextResponse } from "next/server";
 
-export async function GET(req: NextResponse) {
+export async function GET() {
   const response = NextResponse.json({
     success: true,
     code: "LOGOUT_SUCCESS",
