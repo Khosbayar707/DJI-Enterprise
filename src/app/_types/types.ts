@@ -31,21 +31,18 @@ export interface ContactInfoItemProps {
   items: string[];
 }
 
-export type GarminProduct = {
+export interface GarminProduct {
   id: string;
   name: string;
-  price: string;
-  discountPrice?: string;
-  description: string;
-  features: string[];
-  specifications: {
-    label: string;
-    value: string;
-  }[];
-  images: string[];
   category: string;
+  price: number;
+  discountPrice?: number;
+  description: string;
+  specifications: { label: string; value: string }[];
+  images: string[];
+  features: string[];
+  isNew?: boolean;
   rating: number;
   reviewCount: number;
-  isNew?: boolean;
   inStock: boolean;
-};
+}

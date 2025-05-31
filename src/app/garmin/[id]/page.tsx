@@ -17,8 +17,8 @@ const mockGarminProducts: GarminProduct[] = [
     id: "garmin-fenix-7x",
     name: "Garmin Fenix 7X Sapphire Solar",
     category: "Smartwatch",
-    price: "6,499,000₮",
-    discountPrice: "5,999,000₮",
+    price: 6999000,
+    discountPrice: 5999000,
     description:
       "The Fenix 7X Sapphire Solar is Garmin's premium multisport GPS watch with solar charging. Built to withstand the toughest environments with scratch-resistant sapphire lens and stainless steel bezel.",
     features: [
@@ -52,7 +52,7 @@ const mockGarminProducts: GarminProduct[] = [
     id: "garmin-venu-2-plus",
     name: "Garmin Venu 2 Plus",
     category: "Smartwatch",
-    price: "3,999,000₮",
+    price: 3999000,
     description:
       "AMOLED smartwatch with voice assistant and advanced health monitoring features.",
     features: [
@@ -110,10 +110,9 @@ export default function Page() {
   const [product, setProduct] = useState<GarminProduct>();
 
   useEffect(() => {
-    // Simulate API call with mock data
     const fetchData = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate network delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         const foundProduct = mockGarminProducts.find((p) => p.id === id);
         if (foundProduct) {

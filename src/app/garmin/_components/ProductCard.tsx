@@ -2,18 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-
-interface GarminProduct {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  discountPrice?: number;
-  imageUrl: string;
-  features: string[];
-  isNew?: boolean;
-  rating: number;
-}
+import { GarminProduct } from "@/app/_types/types";
 
 interface GarminProductCardProps {
   product: GarminProduct;
@@ -32,19 +21,16 @@ export default function GarminProductCard({
       viewport={{ once: true }}
       className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white"
     >
-      <Link href={`/garmin/${product.id}`} passHref>
+      <Link href={`/garmin/${product.id}`}>
         <div className="relative">
-          {/* Product Image */}
           <div className="h-64 bg-gray-100 flex justify-center items-center relative">
             <Image
-              src={product.imageUrl}
+              src={product.images[1]}
               alt={product.name}
               fill
               className="object-contain p-4"
               priority={index < 3}
             />
-
-            {/* Badges */}
             <div className="absolute top-2 right-2 flex flex-col gap-2">
               {product.isNew && (
                 <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -58,8 +44,6 @@ export default function GarminProductCard({
               )}
             </div>
           </div>
-
-          {/* Product Info */}
           <div className="p-6">
             <div className="flex justify-between items-start mb-2">
               <h3 className="text-lg font-bold line-clamp-2">{product.name}</h3>
@@ -67,8 +51,6 @@ export default function GarminProductCard({
                 {product.category}
               </span>
             </div>
-
-            {/* Rating */}
             <div className="flex items-center mb-3">
               <div className="flex">
                 {[...Array(5)].map((_, starIndex) => (
@@ -86,8 +68,6 @@ export default function GarminProductCard({
                 ({product.rating.toFixed(1)})
               </span>
             </div>
-
-            {/* Price */}
             <div className="mb-4">
               {product.discountPrice ? (
                 <div className="flex items-center gap-2">
@@ -104,8 +84,6 @@ export default function GarminProductCard({
                 </span>
               )}
             </div>
-
-            {/* Features */}
             <ul className="space-y-2 mb-4">
               {product.features.slice(0, 3).map((feature, idx) => (
                 <li key={idx} className="flex items-start text-sm">
@@ -126,11 +104,7 @@ export default function GarminProductCard({
                 </li>
               ))}
             </ul>
-
-            {/* Button */}
-            <button
-              className={`w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition`}
-            >
+            <button className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition">
               Дэлгэрэнгүй
             </button>
           </div>
