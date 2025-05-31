@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "@/lib/theme";
 import Footer from "./_component/Footer";
 import Header from "./_component/Header";
+import { Suspense } from "react";
 
 const notoSans = Noto_Sans({
   weight: ["400", "500", "600", "700"],
@@ -39,7 +40,9 @@ export default function RootLayout({
         className={`${notoSans.variable} ${notoSansMono.variable} ${notoSerif.variable} font-sans`}
       >
         <Header />
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <Suspense>{children}</Suspense>
+        </ThemeProvider>
         <Footer />
       </body>
     </html>
