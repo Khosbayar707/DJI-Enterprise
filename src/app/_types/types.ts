@@ -30,3 +30,22 @@ export interface ContactInfoItemProps {
   title: string;
   items: string[];
 }
+
+export type GarminProduct = {
+  id: string;
+  name: string;
+  price: string;
+  discountPrice?: string;
+  description: string;
+  features: string[];
+  specifications: {
+    label: string;
+    value: string;
+  }[];
+  images: string[];
+  category: string;
+  rating: number;
+  reviewCount: number;
+  isNew?: boolean;
+  inStock: boolean;
+};
