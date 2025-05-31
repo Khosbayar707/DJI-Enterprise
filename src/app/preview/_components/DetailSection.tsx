@@ -1,7 +1,13 @@
 "use client";
+import { Spec } from "@/generated/prisma";
+import { CustomSpecClient } from "@/lib/types";
 import { motion } from "framer-motion";
 
-export default function DetailSection() {
+type Props = {
+  spec: CustomSpecClient;
+};
+
+export default function DetailSection({ spec }: Props) {
   const droneDetails = [
     {
       link: "https://www-cdn.djiits.com/reactor/assets/_next/static/videos/1cb03af0-d384-4949-946e-69e561805c21.mp4",
@@ -50,9 +56,7 @@ export default function DetailSection() {
 
   return (
     <section className="py-16 px-6 bg-black text-white">
-      <h1 className="text-center text-4xl font-bold p-16">
-        Сайжруулсан, үр ашигтай баттерей
-      </h1>
+      <h1 className="text-center text-4xl font-bold p-16">{spec.detail}</h1>
       <div className="max-w-7xl mx-auto space-y-24">
         {droneDetails.map((item, idx) => {
           const isEven = idx % 2 === 0;
@@ -101,7 +105,7 @@ export default function DetailSection() {
       </div>
 
       <h1 className="text-center text-4xl font-bold py-16">
-        Тогтвортой дохио, тасралтгүй дүрс дамжуулалт
+        {spec.previewText}
       </h1>
 
       <div className="bg-black text-white px-6 md:px-20 py-24 space-y-32 max-w-7xl mx-auto">

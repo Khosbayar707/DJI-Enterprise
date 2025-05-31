@@ -67,7 +67,7 @@ const DroneAdvantagesCard = ({ drone, refresh, setRefresh, id }: Props) => {
           <div className="flex items-center justify-between">
             <div className="text-lg font-bold text-gray-800 flex items-center gap-2">
               <Sparkles className="text-yellow-500 w-5 h-5" />
-              Давуу талууд
+              Үндсэн онцлогууд
             </div>
           </div>
         </CardTitle>

@@ -83,11 +83,16 @@ export type CustomContactRequest = ContactRequest & {
 export type CustomDroneClient = Drone & {
   images: Image[];
   videos: Video[];
-  specs: Spec[];
+  specs: CustomSpecClient[];
   featuredVideo: Video;
   categories: DroneCategory[];
   descriptions: DroneDescription[];
   advantages: DroneAdvantage[];
   tech: DroneTech;
   inTheBox: DroneInTheBox[];
+};
+
+export type CustomSpecClient = Spec & {
+  image: Image[];
+  descriptions: SpecDescription[];
 };
