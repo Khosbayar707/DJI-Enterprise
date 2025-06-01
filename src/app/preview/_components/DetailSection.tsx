@@ -10,7 +10,7 @@ type Props = {
 export default function DetailSection({ spec }: Props) {
   return (
     <section className="py-16 px-6 bg-black text-white">
-      <h1 className="text-center text-4xl font-bold pb-12">{spec.name}</h1>
+      <h1 className="text-center text-4xl font-bold pb-12">{spec.detail}</h1>
       <div className="max-w-7xl mx-auto space-y-24">
         {spec.image.length > 0 ? (
           spec.image.map((img, idx) => (
@@ -105,9 +105,6 @@ export default function DetailSection({ spec }: Props) {
             </div>
           </motion.div>
         ))}
-      </div>
-      <div className="max-w-4xl mx-auto text-center text-lg text-gray-300 pt-8">
-        <p>{spec.detail}</p>
       </div>
     </section>
   );
