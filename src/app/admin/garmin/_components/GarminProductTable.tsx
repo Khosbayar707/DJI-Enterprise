@@ -1,7 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import GarminProductForm from "./GarminProductForm"; // Import your form component
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import GarminProductForm from "./GarminProductForm";
 
 interface GarminProduct {
   id: string;
@@ -59,12 +70,12 @@ export default function GarminProductTable() {
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Garmin Products</h2>
-        <button
+        <Button
           onClick={handleAddProduct}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="bg-blue-600 hover:bg-blue-700"
         >
           + Шинэ бүтээгдэхүүн нэмэх
-        </button>
+        </Button>
       </div>
 
       {showForm && (
@@ -95,51 +106,37 @@ export default function GarminProductTable() {
       ) : products.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-gray-500 mb-4">Бүтээгдэхүүн олдсонгүй</p>
-          <button
+          <Button
             onClick={handleAddProduct}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 hover:bg-blue-700"
           >
             Анхны бүтээгдэхүүн нэмэх
-          </button>
+          </Button>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Нэр
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Категори
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Үнэ
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Бэлэн байдал
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {products.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {product.name}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
-                      {product.category}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {formatPrice(product.price)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <Card
+              key={product.id}
+              className="hover:shadow-lg transition-shadow"
+            >
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800">
+                  {product.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Категори:</span>{" "}
+                    {product.category}
+                  </p>
+                  <p className="text-sm text-gray-900">
+                    <span className="font-medium">Үнэ:</span>{" "}
+                    {formatPrice(product.price)}
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Бэлэн байдал:</span>{" "}
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         product.inStock
@@ -149,11 +146,11 @@ export default function GarminProductTable() {
                     >
                       {product.inStock ? "Бэлэн" : "Дууссан"}
                     </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
     </div>
