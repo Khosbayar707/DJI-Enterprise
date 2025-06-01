@@ -4,19 +4,26 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import axios from "axios";
-import { TextField } from "@mui/material";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar"; // Та энэ компонентыг тодорхойлсон гэж үзлээ
-import { TrashIcon } from "lucide-react";
+import { Snackbar, Alert, Checkbox } from "@mui/material";
+import { Trash2 } from "lucide-react";
 import {
   AddGarminProductSchema,
   AddGarminProductSchemaType,
@@ -36,11 +43,12 @@ export default function GarminProductForm({
   initialData,
 }: GarminProductFormProps) {
   const router = useRouter();
-  const [response, setResponse] = useState<{
-    success: boolean;
-    message?: string;
-  }>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const form = useForm<AddGarminProductSchemaType>({
     resolver: zodResolver(AddGarminProductSchema),
@@ -62,6 +70,7 @@ export default function GarminProductForm({
       const featuresArray = data.features
         ? data.features.split("\n").filter((f) => f.trim() !== "")
         : [];
+
       const payload = {
         ...data,
         features: featuresArray,
@@ -70,20 +79,42 @@ export default function GarminProductForm({
 
       let res;
       if (productId) {
-        res = await axios.put(`/api/garmin/${productId}`, payload);
+        res = await fetch(`/api/garmin/${productId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       } else {
-        res = await axios.post("/api/garmin", payload);
+        res = await fetch("/api/garmin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       }
 
-      setResponse({ success: res.data.success, message: res.data.message });
-      if (res.data.success) {
-        form.reset();
-        router.refresh();
-        if (onSubmitSuccess) onSubmitSuccess();
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || "Алдаа гарлаа");
       }
-    } catch (err) {
-      setResponse({ success: false, message: "Алдаа гарлаа" });
-      console.error(err);
+
+      setSnackbarSeverity("success");
+      setSnackbarMessage(
+        productId
+          ? "Бүтээгдэхүүн амжилттай шинэчлэгдлээ"
+          : "Бүтээгдэхүүн амжилттай үүслээ"
+      );
+      setSnackbarOpen(true);
+
+      form.reset();
+      router.refresh();
+      if (onSubmitSuccess) onSubmitSuccess();
+    } catch (error) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage(
+        error instanceof Error ? error.message : "Алдаа гарлаа"
+      );
+      setSnackbarOpen(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -91,130 +122,146 @@ export default function GarminProductForm({
 
   const handleDelete = async () => {
     if (!productId) return;
-    if (confirm("Та энэ бүтээгдэхүүнийг устгахдаа итгэлтэй байна уу?")) {
-      try {
-        const res = await axios.delete(`/api/garmin/${productId}`);
-        setResponse({ success: res.data.success, message: res.data.message });
-        if (res.data.success) {
-          router.refresh();
-          if (onSubmitSuccess) onSubmitSuccess();
-        }
-      } catch (err) {
-        setResponse({ success: false, message: "Устгахад алдаа гарлаа" });
-        console.error(err);
+
+    if (!confirm("Та энэ бүтээгдэхүүнийг устгахдаа итгэлтэй байна уу?")) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/garmin/${productId}`, {
+        method: "DELETE",
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || "Устгахад алдаа гарлаа");
       }
+
+      setSnackbarSeverity("success");
+      setSnackbarMessage("Бүтээгдэхүүн амжилттай устгагдлаа");
+      setSnackbarOpen(true);
+
+      router.refresh();
+      if (onSubmitSuccess) onSubmitSuccess();
+    } catch (error) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage(
+        error instanceof Error ? error.message : "Устгахад алдаа гарлаа"
+      );
+      setSnackbarOpen(true);
     }
   };
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setResponse(undefined), 3000);
-    return () => clearTimeout(timeout);
-  }, [response]);
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
-    <Card className="shadow-2xl border border-gray-200">
-      {response && <CustomSnackbar value={response} />}
-      <CardHeader className="bg-gray-50 border-b">
-        <CardTitle className="text-lg font-semibold text-gray-800">
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">
           {productId
             ? "Garmin Бүтээгдэхүүн засварлах"
             : "Шинэ Garmin бүтээгдэхүүн нэмэх"}
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-6 p-6">
+      <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextField
-                      disabled={isSubmitting}
-                      label="Бүтээгдэхүүний нэр"
-                      variant="standard"
-                      {...field}
-                      placeholder="Жишээ: Garmin Fenix 7X"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Бүтээгдэхүүний нэр</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isSubmitting}
+                        placeholder="Жишээ: Garmin Fenix 7X"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextField
-                      disabled={isSubmitting}
-                      label="Ангилал"
-                      variant="standard"
-                      {...field}
-                      placeholder="Жишээ: Ухаалаг цаг"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ангилал</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isSubmitting}
+                        placeholder="Жишээ: Ухаалаг цаг"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextField
-                      disabled={isSubmitting}
-                      label="Үнэ ($)"
-                      type="number"
-                      variant="standard"
-                      {...field}
-                      placeholder="0.00"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Үнэ ($)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        disabled={isSubmitting}
+                        placeholder="0.00"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="rating"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <TextField
-                      disabled={isSubmitting}
-                      label="Үнэлгээ (0-5)"
-                      type="number"
-                      variant="standard"
-                      {...field}
-                      placeholder="4.5"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="rating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Үнэлгээ (0-5)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        disabled={isSubmitting}
+                        placeholder="4.5"
+                        min={0}
+                        max={5}
+                        step={0.1}
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Зурагны URL</FormLabel>
                   <FormControl>
-                    <TextField
+                    <Input
                       disabled={isSubmitting}
-                      label="Зурагны URL"
-                      variant="standard"
-                      {...field}
                       placeholder="https://example.com/product-image.jpg"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -227,14 +274,13 @@ export default function GarminProductForm({
               name="description"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Тайлбар</FormLabel>
                   <FormControl>
-                    <TextField
+                    <Textarea
                       disabled={isSubmitting}
-                      label="Тайлбар"
-                      variant="standard"
-                      multiline
-                      {...field}
                       placeholder="Дэлгэрэнгүй тайлбар..."
+                      className="min-h-[100px]"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -247,14 +293,13 @@ export default function GarminProductForm({
               name="features"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Онцлогууд (мөрөөр тусгаарлан бичнэ үү)</FormLabel>
                   <FormControl>
-                    <TextField
+                    <Textarea
                       disabled={isSubmitting}
-                      label="Онцлогууд (мөрөөр тусгаарлан бичнэ үү)"
-                      variant="standard"
-                      multiline
-                      {...field}
                       placeholder="Нарны цэнэглэгч\n32GB санах ой\nОлон сувагт GNSS"
+                      className="min-h-[100px]"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -266,59 +311,70 @@ export default function GarminProductForm({
               control={form.control}
               name="isNew"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                   <FormControl>
-                    <input
-                      type="checkbox"
-                      disabled={isSubmitting}
-                      {...field}
+                    <Checkbox
                       checked={field.value}
+                      onChange={field.onChange}
+                      disabled={isSubmitting}
                     />
                   </FormControl>
-                  <label className="ml-2 text-sm text-gray-700">
-                    Шинэ бүтээгдэхүүн гэж тэмдэглэх
-                  </label>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Шинэ бүтээгдэхүүн гэж тэмдэглэх</FormLabel>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="pt-4 flex justify-end space-x-3">
+            <CardFooter className="flex justify-end gap-2 px-0 pt-4">
               {onCancel && (
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={onCancel}
                   disabled={isSubmitting}
-                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Болих
-                </button>
+                </Button>
               )}
               {productId && (
-                <button
+                <Button
                   type="button"
+                  variant="destructive"
                   onClick={handleDelete}
                   disabled={isSubmitting}
-                  className="px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 >
+                  <Trash2 className="mr-2 h-4 w-4" />
                   Устгах
-                </button>
+                </Button>
               )}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
-              >
+              <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting
                   ? "Хадгалж байна..."
                   : productId
-                    ? "Засах"
-                    : "Хадгалах"}
-              </button>
-            </div>
+                    ? "Хадгалах"
+                    : "Үүсгэх"}
+              </Button>
+            </CardFooter>
           </form>
         </Form>
       </CardContent>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 }
