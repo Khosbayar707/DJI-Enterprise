@@ -40,6 +40,16 @@ const SpecSidebar = ({
       >
         <ImageIcon size={20} /> <div>Зураг</div>
       </Button>
+      <Button
+        sx={{ justifyContent: "flex-start" }}
+        color={
+          activeSection === SpecSideBarOptions.VIDEOS ? "primary" : "inherit"
+        }
+        onClick={() => setActiveSection(SpecSideBarOptions.VIDEOS)}
+        className="justify-start cursor-pointer shadow-2xl flex gap-3"
+      >
+        <ImageIcon size={20} /> <div>Бичлэг</div>
+      </Button>
     </aside>
   );
 };

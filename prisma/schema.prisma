@@ -191,7 +191,7 @@ model Image {
 model Video {
   id                 String   @id @unique @default(nanoid())
   url                String
-  droneId            String
+  droneId            String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   priority           Int      @default(0)
@@ -199,7 +199,7 @@ model Video {
   detail             String   @default("Тайлбар алга!")
   name               String   @default("Нэр өгөөгүй!")
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
-  drone              Drone    @relation("videos", fields: [droneId], references: [id], onDelete: Cascade)
+  drone              Drone?    @relation("videos", fields: [droneId], references: [id], onDelete: Cascade)
   spec               Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
   specId             String?
 }

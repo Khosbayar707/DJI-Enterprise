@@ -38,6 +38,7 @@ export enum ProductTabOptions {
 export enum SpecSideBarOptions {
   GENERAL,
   IMAGES,
+  VIDEOS,
 }
 
 export enum DroneSideBarOptions {
@@ -60,6 +61,7 @@ export type CustomDrone = Drone & {
 
 export type CustomSpec = Spec & {
   image: Image[];
+  vidoes: Video[];
   drone: Drone;
   specCategories: SpecCategory[];
   descriptions: SpecDescription[];
@@ -95,4 +97,5 @@ export type CustomDroneClient = Drone & {
 export type CustomSpecClient = Spec & {
   image: Image[];
   descriptions: SpecDescription[];
+  videos: Video[];
 };

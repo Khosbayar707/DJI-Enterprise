@@ -13,7 +13,10 @@ export async function GET(req: NextRequest) {
       include: {
         images: { orderBy: { priority: "desc" } },
         videos: { orderBy: { priority: "desc" } },
-        specs: { orderBy: { priority: "desc" } },
+        specs: {
+          orderBy: { priority: "desc" },
+          include: { image: true, videos: true, descriptions: true },
+        },
         featuredVideo: true,
         descriptions: { orderBy: { priority: "desc" } },
         advantages: { orderBy: { createdAt: "asc" } },

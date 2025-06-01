@@ -40,9 +40,13 @@ export default function HomePage() {
           <HeroSection drone={drone} />
           <FeaturesSection drone={drone} />
           {drone.specs.length > 0 ? (
-            drone.specs.map((spec) => <DetailSection spec={spec} />)
+            drone.specs.map((spec) => (
+              <DetailSection spec={spec} key={spec.id} />
+            ))
           ) : (
-            <div>Эд ангийн showcase алга</div>
+            <div className=" flex justify-center italic">
+              Эд ангийн showcase алга
+            </div>
           )}
         </>
       ) : (
