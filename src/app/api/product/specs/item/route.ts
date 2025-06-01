@@ -19,6 +19,7 @@ export async function GET(req: NextRequest) {
         specCategories: true,
         drone: true,
         image: { orderBy: { priority: "desc" } },
+        videos: true,
       },
     });
     if (!spec) {
