@@ -1,17 +1,10 @@
 "use client";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DroneCategory, DroneModel, SpecCategory } from "@/generated/prisma";
-import { Button, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingText from "../loading";
-import { PlusCircle } from "lucide-react";
 import AddCategoryDialog from "../_dialogs/add-category-dialog";
 
 const CategoriesSection = () => {
@@ -32,15 +25,12 @@ const CategoriesSection = () => {
         setDroneCategories(res.data.data.categories);
       }
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error(err.response?.data || err.message);
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     } finally {
       setWaitingD(false);
     }
   };
+
   const fetchSpecCategories = async () => {
     try {
       const res = await axios.get("/api/categories/specs");
@@ -48,15 +38,12 @@ const CategoriesSection = () => {
         setSpecCategories(res.data.data.categories);
       }
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error(err.response?.data || err.message);
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     } finally {
       setWaitingS(false);
     }
   };
+
   const fetchDroneModels = async () => {
     try {
       const res = await axios.get("/api/categories/models");
@@ -64,15 +51,12 @@ const CategoriesSection = () => {
         setModels(res.data.data.models);
       }
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error(err.response?.data || err.message);
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     } finally {
       setWaitingM(false);
     }
   };
+
   useEffect(() => {
     fetchDroneCategories();
     fetchSpecCategories();
@@ -82,96 +66,61 @@ const CategoriesSection = () => {
   return (
     <Card className="shadow-2xl">
       <CardHeader>
-        <CardTitle>
-          <div className=" flex items-center w-full justify-between">
-            <div>Категоринууд</div>
-            <AddCategoryDialog setRefresh={setRefresh} refresh={refresh} />
-          </div>
+        <CardTitle className="flex items-center justify-between">
+          <span>Категоринууд</span>
+          <AddCategoryDialog setRefresh={setRefresh} refresh={refresh} />
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
         <div>
-          <Accordion type="multiple" className="w-full">
-            <AccordionItem key={`drone-categories`} value={`drone-categories`}>
-              <AccordionTrigger className="cursor-pointer flex justify-between items-center font-extrabold">
-                <div className="flex items-center justify-between w-full gap-7">
-                  <div>Дроны категори</div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className=" flex flex-wrap gap-4 items-center justify-center">
-                  {waitingDrones ? (
-                    <LoadingText />
-                  ) : droneCategories.length > 0 ? (
-                    droneCategories.map((category) => (
-                      <Chip
-                        key={category.id}
-                        variant="filled"
-                        label={category.name}
-                      />
-                    ))
-                  ) : (
-                    <div>Категори алга</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <Accordion type="multiple" className="w-full">
-            <AccordionItem key={`drone-categories`} value={`drone-categories`}>
-              <AccordionTrigger className="cursor-pointer flex justify-between items-center font-extrabold">
-                <div className="flex items-center justify-between w-full gap-7">
-                  <div>Дроны моделүүд</div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className=" flex flex-wrap gap-4 items-center justify-center">
-                  {waitingModels ? (
-                    <LoadingText />
-                  ) : models.length > 0 ? (
-                    models.map((category) => (
-                      <Chip
-                        key={category.id}
-                        variant="filled"
-                        label={category.name}
-                      />
-                    ))
-                  ) : (
-                    <div>Модел алга</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <Accordion type="multiple" className="w-full">
-            <AccordionItem key={`specs-categories`} value={`specs-categories`}>
-              <AccordionTrigger className="cursor-pointer flex justify-between items-center font-extrabold">
-                <div className="flex items-center gap-7">
-                  <div> Эд ангийн категори</div>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className=" flex flex-wrap gap-4 items-center justify-center">
-                  {waitingSpecs ? (
-                    <LoadingText />
-                  ) : specCategories.length > 0 ? (
-                    specCategories.map((category) => (
-                      <Chip
-                        key={category.id}
-                        variant="filled"
-                        label={category.name}
-                      />
-                    ))
-                  ) : (
-                    <div>Категори алга</div>
-                  )}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <h3 className="font-bold text-lg mb-2">Дроны категори</h3>
+          <div className="flex flex-wrap gap-4">
+            {waitingDrones ? (
+              <LoadingText />
+            ) : droneCategories.length > 0 ? (
+              droneCategories.map((category) => (
+                <Chip
+                  key={category.id}
+                  variant="filled"
+                  label={category.name}
+                />
+              ))
+            ) : (
+              <div>Категори алга</div>
+            )}
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold text-lg mb-2">Дроны моделүүд</h3>
+          <div className="flex flex-wrap gap-4">
+            {waitingModels ? (
+              <LoadingText />
+            ) : models.length > 0 ? (
+              models.map((model) => (
+                <Chip key={model.id} variant="filled" label={model.name} />
+              ))
+            ) : (
+              <div>Модел алга</div>
+            )}
+          </div>
+        </div>
+        <div>
+          <h3 className="font-bold text-lg mb-2">Эд ангийн категори</h3>
+          <div className="flex flex-wrap gap-4">
+            {waitingSpecs ? (
+              <LoadingText />
+            ) : specCategories.length > 0 ? (
+              specCategories.map((spec) => (
+                <Chip key={spec.id} variant="filled" label={spec.name} />
+              ))
+            ) : (
+              <div>Категори алга</div>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
   );
 };
+
 export default CategoriesSection;
