@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import GarminProductForm from "./GarminProductForm"; // Import your form component
 
 interface GarminProduct {
   id: string;
@@ -14,26 +15,38 @@ export default function GarminProductTable() {
   const [products, setProducts] = useState<GarminProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("/api/garmin");
+      if (!res.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data = await res.json();
+      setProducts(data.data || data);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("/api/garmin");
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await res.json();
-        setProducts(data.data || data);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchProducts();
   }, []);
+
+  const handleAddProduct = () => {
+    setShowForm(true);
+  };
+
+  const handleFormSubmit = async () => {
+    setShowForm(false);
+    setLoading(true);
+    await fetchProducts();
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -44,7 +57,32 @@ export default function GarminProductTable() {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Garmin Products</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Garmin Products</h2>
+        <button
+          onClick={handleAddProduct}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        >
+          + Шинэ бүтээгдэхүүн нэмэх
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Шинэ бүтээгдэхүүн</h3>
+              <button
+                onClick={() => setShowForm(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ×
+              </button>
+            </div>
+            <GarminProductForm onSubmitSuccess={handleFormSubmit} />
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-8">
@@ -55,7 +93,15 @@ export default function GarminProductTable() {
           <p>{error}</p>
         </div>
       ) : products.length === 0 ? (
-        <p className="text-gray-500 py-4">No products found</p>
+        <div className="text-center py-8">
+          <p className="text-gray-500 mb-4">Бүтээгдэхүүн олдсонгүй</p>
+          <button
+            onClick={handleAddProduct}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Анхны бүтээгдэхүүн нэмэх
+          </button>
+        </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
