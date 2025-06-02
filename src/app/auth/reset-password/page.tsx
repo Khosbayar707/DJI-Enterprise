@@ -21,6 +21,7 @@ import axios from "axios";
 const ResetPassword = () => {
   const [response, setResponse] = useState<ResponseType>();
   const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof ResetPasswordStep1Schema>>({
     resolver: zodResolver(ResetPasswordStep1Schema),
     defaultValues: {
@@ -40,14 +41,23 @@ const ResetPassword = () => {
     }
   };
 
-  return (
-    <div className=" flex justify-center min-h-screen items-center">
-      <div className=" p-10 bg-background w-1/5 flex flex-col gap-5">
-        <div className=" text-2xl">Нууц үгээ сэргээх</div>
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [response]);
 
+  return (
+    <main className="min-h-screen w-full flex items-center justify-center px-4 py-10 sm:py-24">
+      <div className="w-full max-w-md rounded-md bg-white/80 backdrop-blur-md shadow-lg p-6 sm:p-9 text-sm sm:text-base">
+        {response && <CustomSnackbar value={response} />}
+        <h2 className="text-2xl font-semibold text-center mb-4">
+          Нууц үгээ сэргээх
+        </h2>
         <Form {...form}>
           <form
-            className=" flex flex-col gap-2"
+            className="flex flex-col gap-4"
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <FormField
@@ -55,11 +65,13 @@ const ResetPassword = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel className="text-sm">Емайл</FormLabel>
                   <FormControl>
                     <TextField
+                      fullWidth
                       disabled={response?.success}
                       variant="standard"
-                      label="Майл хаягаа оруулна уу!"
+                      label="Мэйл хаягаа оруулна уу!"
                       {...field}
                     />
                   </FormControl>
@@ -67,26 +79,34 @@ const ResetPassword = () => {
                 </FormItem>
               )}
             />
-            <div
-              className={`${response?.success ? "text-green-500" : "text-red-500"}`}
-            >
-              {response?.message && response?.message}
-            </div>
+
+            {response?.message && (
+              <div
+                className={`text-sm ${
+                  response.success ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {response.message}
+              </div>
+            )}
+
             <Button
+              type="submit"
               disabled={
                 !form.formState.isValid ||
                 form.formState.isSubmitting ||
                 response?.success
               }
-              className="w-full"
-              type="submit"
+              variant="contained"
+              fullWidth
             >
               {loading ? "Түр хүлээнэ үү!" : "Үргэлжлүүлэх"}
             </Button>
           </form>
         </Form>
       </div>
-    </div>
+    </main>
   );
 };
+
 export default ResetPassword;

@@ -21,7 +21,7 @@ import LoadingText from "@/app/_component/LoadingText";
 const ResetPassword = () => {
   const params = useParams();
   const router = useRouter();
-  const { otp } = params;
+  const { otp } = params as { otp: string };
   const [response, setResponse] = useState<ResponseType>();
   const [response2, setResponse2] = useState<ResponseType>();
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ const ResetPassword = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [otp]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -72,23 +72,29 @@ const ResetPassword = () => {
       }, 3000);
     }
     return () => clearTimeout(timeout);
-  }, [response2]);
+  }, [response2, router]);
+
   return (
-    <div className=" flex justify-center min-h-screen items-center">
-      <div className=" p-10 bg-background w-1/5 flex flex-col gap-5">
-        <div className=" text-2xl">Нууц үгээ сэргээх</div>{" "}
+    <main className="min-h-screen w-full flex items-center justify-center sm:justify-center px-4 py-10 sm:py-24">
+      <div className="w-full max-w-md rounded-md bg-white/80 backdrop-blur-md shadow-lg p-6 sm:p-9 text-sm sm:text-base mr-0 sm:mr-24">
+        <h2 className="text-2xl font-semibold text-center mb-4">
+          Нууц үгээ сэргээх
+        </h2>
+
         {loading ? (
           <LoadingText />
         ) : !response?.success || response2 ? (
           <div
-            className={`${response2?.success ? "text-green-500" : "text-red-500"}`}
+            className={`text-center text-sm ${
+              response2?.success ? "text-green-600" : "text-red-600"
+            }`}
           >
             {response2?.message ?? response?.message}
           </div>
         ) : (
           <Form {...form}>
             <form
-              className=" flex flex-col gap-2"
+              className="flex flex-col gap-4"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <FormField
@@ -98,6 +104,7 @@ const ResetPassword = () => {
                   <FormItem>
                     <FormControl>
                       <TextField
+                        fullWidth
                         type="password"
                         variant="standard"
                         label="Нууц үгээ оруулна уу!"
@@ -115,6 +122,7 @@ const ResetPassword = () => {
                   <FormItem>
                     <FormControl>
                       <TextField
+                        fullWidth
                         type="password"
                         variant="standard"
                         label="Нууц үгээ ахин оруулна уу!"
@@ -126,11 +134,14 @@ const ResetPassword = () => {
                 )}
               />
               <Button
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
-                className="w-full"
                 type="submit"
+                disabled={
+                  !form.formState.isValid ||
+                  form.formState.isSubmitting ||
+                  changing
+                }
+                variant="contained"
+                fullWidth
               >
                 {changing ? "Түр хүлээнэ үү!" : "Үргэлжлүүлэх"}
               </Button>
@@ -138,7 +149,8 @@ const ResetPassword = () => {
           </Form>
         )}
       </div>
-    </div>
+    </main>
   );
 };
+
 export default ResetPassword;
