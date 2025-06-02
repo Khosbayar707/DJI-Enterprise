@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Snackbar from "@mui/material/Snackbar";
 import {
   Form,
   FormControl,
@@ -22,11 +21,12 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CustomSnackbar } from "@/app/admin/_components/snackbar";
 
-const Login = () => {
+const Register = () => {
   const redir = useSearchParams().get("redir");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<ResponseType>();
+
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -51,6 +51,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -64,6 +65,7 @@ const Login = () => {
     };
     checkUser();
   }, [router]);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setResponse(undefined);
@@ -72,14 +74,17 @@ const Login = () => {
   }, [response]);
 
   return (
-    <div className=" text-xs sm:text-sm rounded-sm p-18 bg-background sm:fixed sm:w-[450px] shadow-4xl min-h-screen flex flex-col items-center gap-7 justify-center  sm:min-h-auto sm:top-24 sm:right-24">
-      {response && <CustomSnackbar value={response} />}
-      <div className="flex justify-center flex-col items-center gap-6 shadow-2xl p-12 sm:shadow-none sm:p-4 sm:whitespace-nowrap">
-        <div className="text-2xl font-semibold text-center">Бүртгүүлэх</div>
-        <div className="w-full border-t border-border"></div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-4">
+    <main className="min-h-screen w-full flex items-start justify-center sm:justify-end px-4 py-10 sm:py-24">
+      <div className="w-full max-w-md rounded-md bg-white/80 backdrop-blur-md shadow-lg p-6 sm:p-9 text-xs sm:text-sm mr-0 sm:mr-24">
+        {response && <CustomSnackbar value={response} />}
+        <div className="flex justify-center flex-col items-center gap-6">
+          <div className="text-2xl font-semibold text-center">Бүртгүүлэх</div>
+          <div className="w-full border-t border-border"></div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full space-y-4"
+            >
               <FormField
                 name="email"
                 control={form.control}
@@ -163,22 +168,22 @@ const Login = () => {
               >
                 {loading ? "Түр хүлээнэ үү!" : "Үргэлжлүүлэх"}
               </Button>
-            </div>
-          </form>
-        </Form>
-        <div>
-          Бүртгэлтэй хэрэглэгч{" "}
-          <Link
-            className=" text-blue-800"
-            href={`/auth/login${redir ? `?redir=` + redir : ``}`}
-          >
-            энд дарна
-          </Link>{" "}
-          уу!
+            </form>
+          </Form>
+          <div className="text-center">
+            Бүртгэлтэй хэрэглэгч{" "}
+            <Link
+              className="text-blue-800 font-medium"
+              href={`/auth/login${redir ? `?redir=` + redir : ``}`}
+            >
+              энд дарна
+            </Link>{" "}
+            уу!
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-export default Login;
+export default Register;

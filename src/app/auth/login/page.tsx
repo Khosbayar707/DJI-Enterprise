@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Snackbar from "@mui/material/Snackbar";
 import {
   Form,
   FormControl,
@@ -27,6 +26,7 @@ const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<ResponseType>();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -49,6 +49,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     const checkUser = async () => {
       try {
@@ -62,6 +63,7 @@ const Login = () => {
     };
     checkUser();
   }, [router]);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setResponse(undefined);
@@ -70,22 +72,16 @@ const Login = () => {
   }, [response]);
 
   return (
-    <div className="rounded-sm p-9 text-xs sm:text-sm bg-background sm:fixed min-h-screen sm:w-[450px] shadow-4xl flex flex-col items-center gap-7 justify-center z-51  sm:min-h-auto sm:top-24 sm:right-24">
-      {response && <CustomSnackbar value={response} />}
-      <div className="flex flex-col items-center gap-6 justify-center shadow-2xl p-10 sm:shadow-none sm:p-0 w-full">
-        <div className="flex flex-col gap-4">
-          <div className=" flex flex-col justify-center  gap-5 items-center">
-            <div className="text-2xl">Нэвтрэх</div>
-            <div className=" border-b w-full"></div>
-            <div>
-              <Button className="bg-secondary text-foreground hover:bg-foreground hover:text-secondary w-full flex items-center justify-center gap-3 py-2 cursor-pointer">
-                <FaGoogle className="text-lg" />
-                <span className="text-sm sm:text-base">
-                  Google -ээр нэвтрэх
-                </span>
-              </Button>
-            </div>
-          </div>
+    <main className="min-h-screen w-full flex items-start justify-end px-4 py-10 sm:py-24">
+      <div className="w-full max-w-md sm:max-w-lg lg:max-w-md rounded-md bg-white/80 backdrop-blur-md shadow-lg p-6 sm:p-9 text-sm sm:text-base mr-0 sm:mr-24">
+        {response && <CustomSnackbar value={response} />}
+        <div className="flex flex-col items-center gap-6">
+          <h2 className="text-2xl font-semibold">Нэвтрэх</h2>
+          <Button className="bg-secondary text-foreground hover:bg-foreground hover:text-secondary w-full flex items-center justify-center gap-3 py-2 cursor-pointer">
+            <FaGoogle className="text-lg" />
+            <span className="text-sm sm:text-base">Google -ээр нэвтрэх</span>
+          </Button>
+
           <div className="flex items-center w-full gap-3">
             <div className="flex-1 border-t border-border"></div>
             <span className="text-xs font-medium text-muted-foreground">
@@ -93,89 +89,85 @@ const Login = () => {
             </span>
             <div className="flex-1 border-t border-border"></div>
           </div>
-        </div>
-        <div className="flex flex-col gap-6">
+
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-4">
-                <FormField
-                  name="email"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-xs sm:text-sm">
-                        Емайл
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          className="text-xs sm:text-sm"
-                          {...field}
-                          type="email"
-                          placeholder="Емайл хаягаа оруулна уу!"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full space-y-4"
+            >
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Емайл</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="text-sm"
+                        {...field}
+                        type="email"
+                        placeholder="Емайл хаягаа оруулна уу!"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  name="password"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className=" flex justify-between items-end">
-                        <FormLabel className="text-xs sm:text-sm">
-                          Нууц үг
-                        </FormLabel>
-                        <Link
-                          href={`/auth/reset-password`}
-                          className=" text-xs text-gray-500"
-                        >
-                          Нууц үгээ мартсан уу?
-                        </Link>
-                      </div>
-                      <FormControl>
-                        <Input
-                          className="text-xs sm:text-sm"
-                          {...field}
-                          type="password"
-                          placeholder="Нууц үгээ оруулна уу!"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  disabled={
-                    !form.formState.isValid || form.formState.isSubmitting
-                  }
-                  className={`bg-secondary text-foreground text-xs sm:text-sm ${
-                    !form.formState.isValid || form.formState.isSubmitting
-                      ? "text-foreground cursor-not-allowed"
-                      : "bg-foreground text-background cursor-pointer hover:text-foreground hover:bg-secondary"
-                  }`}
+              <FormField
+                name="password"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm">Нууц үг</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="text-sm"
+                        {...field}
+                        type="password"
+                        placeholder="Нууц үгээ оруулна уу!"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-between items-center">
+                <Link
+                  href="/auth/reset-password"
+                  className="text-xs text-gray-500"
                 >
-                  {loading ? "Түр хүлээнэ үү!" : "Үргэлжлүүлэх"}
-                </Button>
+                  Нууц үгээ мартсан уу?
+                </Link>
               </div>
+              <Button
+                type="submit"
+                disabled={
+                  !form.formState.isValid || form.formState.isSubmitting
+                }
+                className={`w-full text-sm cursor-pointer ${
+                  !form.formState.isValid || form.formState.isSubmitting
+                    ? "bg-secondary text-foreground cursor-not-allowed"
+                    : "bg-foreground text-background hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                {loading ? "Түр хүлээнэ үү!" : "Үргэлжлүүлэх"}
+              </Button>
             </form>
           </Form>
-        </div>
-        <div>
-          <Link
-            className=" text-blue-800"
-            href={`/auth/register${redir ? `?redir=` + redir : ``}`}
-          >
-            Энд дарж
-          </Link>{" "}
-          бүртгүүлнэ үү!
+
+          <p className="text-center text-sm">
+            <Link
+              className="text-blue-800 font-medium"
+              href={`/auth/register${redir ? `?redir=` + redir : ``}`}
+            >
+              Энд дарж
+            </Link>{" "}
+            бүртгүүлнэ үү!
+          </p>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
