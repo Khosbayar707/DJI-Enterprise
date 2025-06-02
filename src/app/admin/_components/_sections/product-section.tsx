@@ -5,6 +5,7 @@ import CategoriesSection from "../_cards/categories-card";
 import DroneCard from "../_cards/drone-card";
 import SpecCard from "../_cards/spec-card";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import GarminProductTable from "../../garmin/_components/GarminProductTable";
 
 const ProductSection = () => {
   const [menu, setMenu] = useState("drone");
@@ -24,12 +25,14 @@ const ProductSection = () => {
             control={<Radio />}
           />
           <FormControlLabel label="Эд анги" value="spec" control={<Radio />} />
+          <FormControlLabel label="Гармин" value="garmin" control={<Radio />} />
         </RadioGroup>
       </div>
 
       {menu === "categories" && <CategoriesSection />}
       {menu === "drone" && <DroneCard />}
       {menu === "spec" && <SpecCard />}
+      {menu === "garmin" && <GarminProductTable />}
     </div>
   );
 };

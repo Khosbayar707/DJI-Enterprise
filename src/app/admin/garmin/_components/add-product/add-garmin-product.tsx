@@ -20,7 +20,7 @@ const AddGarminProduct = ({ setRefresh }: Props) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Бүтээгдэхүүн засварлах</DialogTitle>
+        <DialogTitle>Бүтээгдэхүүн нэмэх</DialogTitle>
         <GraminProductCreateForm setRefresh={setRefresh} />
       </DialogContent>
     </Dialog>
