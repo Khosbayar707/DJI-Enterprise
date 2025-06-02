@@ -1,4 +1,4 @@
-import GarminProductForm from "./_components/GarminProductForm";
+import GarminProductForm from "./_components/edit-product-form";
 import GarminProductTable from "./_components/GarminProductTable";
 
 export default function AdminPage() {
