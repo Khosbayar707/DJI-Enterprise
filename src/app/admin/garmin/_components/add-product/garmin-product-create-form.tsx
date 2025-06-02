@@ -26,7 +26,6 @@ type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
 };
 export default function GraminProductCreateForm({ setRefresh }: Props) {
-  const router = useRouter();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
@@ -52,7 +51,6 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
       const featuresArray = data.features
         ? data.features.split("\n").filter((f) => f.trim() !== "")
         : [];
-
       const payload = {
         ...data,
         features: featuresArray,
