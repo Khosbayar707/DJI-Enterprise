@@ -11,6 +11,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkUser = async () => {
       try {
+        await axios.get("/api/auth/refresh-token");
         const res = await axios.get("/api/auth");
         if (res.data.success) {
           if (res.data.code === "USER") {

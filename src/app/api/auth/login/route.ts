@@ -1,4 +1,8 @@
-import { CustomResponse, NextResponse_CatchError } from "@/lib/next-responses";
+import {
+  CustomResponse,
+  NextResponse_CatchError,
+  NextResponse_NoEnv,
+} from "@/lib/next-responses";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
@@ -6,13 +10,8 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.JWT_SECRET) {
-      return CustomResponse(
-        false,
-        "NO_ENV",
-        "Серверийн тохиргооны алдаа!",
-        null
-      );
+    if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
+      return NextResponse_NoEnv();
     }
     const { email, password } = await req.json();
 
@@ -49,8 +48,8 @@ export async function POST(req: NextRequest) {
     );
     const refreshToken = jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin },
-      process.env.JWT_SECRET,
-      { expiresIn: "48h" }
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "24h" }
     );
     const response = NextResponse.json({
       success: true,
@@ -63,13 +62,15 @@ export async function POST(req: NextRequest) {
       secure: true,
       sameSite: "strict",
       maxAge: 60 * 60,
+      path: "/",
     });
 
     response.cookies.set("refreshToken", refreshToken, {
       httpOnly: true,
       secure: true,
-      maxAge: 60 * 60 * 48,
+      maxAge: 60 * 60 * 24,
       sameSite: "strict",
+      path: "/",
     });
 
     return response;

@@ -31,8 +31,6 @@ export const NextResponse_NoToken = (): NextResponse => {
     message: "Хэрэглэгч нэвтрээгүй байна!",
     data: null,
   });
-  response.cookies.delete("accessToken");
-  response.cookies.delete("refreshToken");
   return response;
 };
 
@@ -43,8 +41,7 @@ export const NextResponse_NoEnv = (): NextResponse => {
     message: "Серверийн тохиргооны алдаа!",
     data: null,
   });
-  response.cookies.delete("accessToken");
-  response.cookies.delete("refreshToken");
+
   return response;
 };
 

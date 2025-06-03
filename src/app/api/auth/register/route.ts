@@ -1,4 +1,8 @@
-import { CustomResponse, NextResponse_CatchError } from "@/lib/next-responses";
+import {
+  CustomResponse,
+  NextResponse_CatchError,
+  NextResponse_NoEnv,
+} from "@/lib/next-responses";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
@@ -6,13 +10,8 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.JWT_SECRET) {
-      return CustomResponse(
-        false,
-        "NO_ENV",
-        "Серверийн тохиргооны алдаа!",
-        null
-      );
+    if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
+      return NextResponse_NoEnv();
     }
     const { email, password, sub_news } = await req.json();
     const user = await prisma.user.findUnique({
@@ -56,8 +55,8 @@ export async function POST(req: NextRequest) {
           email: user.email,
           isAdmin: user.isAdmin,
         },
-        process.env.JWT_SECRET,
-        { expiresIn: "48h" }
+        process.env.JWT_REFRESH_SECRET,
+        { expiresIn: "24h" }
       );
       response.cookies.set("accessToken", accessToken, {
         maxAge: 60 * 60,
@@ -66,13 +65,14 @@ export async function POST(req: NextRequest) {
         sameSite: "strict",
       });
       response.cookies.set("refreshToken", refreshToken, {
-        maxAge: 60 * 60 * 48,
+        maxAge: 60 * 60 * 24,
         httpOnly: true,
         secure: true,
         sameSite: "strict",
       });
       return response;
     }
+
     const encryptedPass = await bcrypt.hash(password, 14);
     const newUser = await prisma.user.create({
       data: { email, password: encryptedPass, sub_news },
@@ -97,8 +97,8 @@ export async function POST(req: NextRequest) {
         email: newUser.email,
         isAdmin: newUser.isAdmin,
       },
-      process.env.JWT_SECRET,
-      { expiresIn: "48h" }
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "24h" }
     );
     response.cookies.set("accessToken", accessToken, {
       maxAge: 60 * 60,
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
       sameSite: "strict",
     });
     response.cookies.set("refreshToken", refreshToken, {
-      maxAge: 60 * 60 * 48,
+      maxAge: 60 * 60 * 24,
       httpOnly: true,
       secure: true,
       sameSite: "strict",

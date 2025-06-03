@@ -81,7 +81,6 @@ const Login = () => {
             <FaGoogle className="text-lg" />
             <span className="text-sm sm:text-base">Google -ээр нэвтрэх</span>
           </Button>
-
           <div className="flex items-center w-full gap-3">
             <div className="flex-1 border-t border-border"></div>
             <span className="text-xs font-medium text-muted-foreground">
