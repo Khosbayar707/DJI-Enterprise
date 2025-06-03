@@ -66,7 +66,7 @@ const DroneInfoCard = ({
     defaultValues: {
       name: drone?.name,
       description: drone?.description,
-      price: drone?.Price ? String(drone?.Price) : "0",
+      price: drone?.price ? String(drone?.price) : "0",
       discount: String(drone?.discount) || "0",
       previewText: drone?.PreviewDescription,
       briefDescription: drone?.briefDescription,
@@ -210,8 +210,8 @@ const DroneInfoCard = ({
                 <div className=" text-md">
                   Одоо зарагдаж байгаа үнэ(хямдралыг хасаад):{" "}
                   <span className=" text-green-500 text-2xl">
-                    {(drone?.Price
-                      ? drone.Price - drone.discount
+                    {(drone?.price
+                      ? drone.price - drone.discount
                       : 0
                     ).toLocaleString()}
                     ₮

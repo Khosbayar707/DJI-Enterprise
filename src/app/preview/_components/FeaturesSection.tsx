@@ -3,44 +3,10 @@ import { CustomDroneClient } from "@/lib/types";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
-const features = [
-  {
-    title: "Жижигхэн, авч явахад хялбар",
-    description: "Эвхэгддэг тул хадгалахад хялбар",
-  },
-  {
-    title: "Олон спектрийн камер",
-    description: "4 × 5MP Ногоон / Улаан / Улаан ирмэг / Хэт улаан туяа (NIR)",
-  },
-  {
-    title: "RGB камер",
-    description: "20 MP 4/3 CMOS, механик хаалттай",
-  },
-  {
-    title: "Аюулгүй, тогтвортой нислэг",
-    description: "Бүх чиглэлд саадыг мэдрэх систем, 15 км дамжуулах зай",
-  },
-  {
-    title: "Өндөр нарийвчлалтай байршил тогтоолт",
-    description:
-      "Сантиметрийн нарийвчлалтай RTK, микросекунд түвшний цагийн синхрончлол",
-  },
-  {
-    title: "Үр дүнтэй агаарын зураглал",
-    description: "Нэг нислэгээр 200 га хүртэл талбайг хамарна",
-  },
-];
-
 type Props = {
   drone: CustomDroneClient;
 };
 export default function FeaturesSection({ drone }: Props) {
-  const randomImages = useMemo(() => {
-    if (drone.images.length === 0) return null;
-    const randomIndex = Math.floor(Math.random() * drone.images.length);
-    return drone.images[randomIndex];
-  }, [drone.images]);
-
   const randomVideo = useMemo(() => {
     if (drone.videos.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * drone.videos.length);
