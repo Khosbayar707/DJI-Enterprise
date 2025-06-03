@@ -1,5 +1,12 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
+
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -14,31 +21,35 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { GarminProduct } from "@/generated/prisma";
+import { Snackbar, Alert } from "@mui/material";
 import axios from "axios";
 import {
   AddGarminProductSchema,
   AddGarminProductSchemaType,
 } from "../../utlis/add-garmin-product-schema";
-import { Alert, Snackbar } from "@mui/material";
+import { GarminProduct } from "@/generated/prisma";
+import CircularProgressWithLabel from "@/app/dji/utils/loading-circle";
 
-interface GarminProductFormProps {
-  product: GarminProduct;
+type Props = {
+  product: GarminProduct & {
+    images: { url: string; public_id: string }[];
+  };
   setRefresh: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
-}
+};
 
 export default function EditProductForm({
   product,
   setRefresh,
   onClose,
-}: GarminProductFormProps) {
-  const [error, setError] = useState<string | null>(null);
+}: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const [imageUploading, setImageUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const form = useForm<AddGarminProductSchemaType>({
     resolver: zodResolver(AddGarminProductSchema),
@@ -46,16 +57,80 @@ export default function EditProductForm({
       name: product.name,
       category: product.category,
       price: product.price,
+      images: product.images || [],
       description: product.description || "",
-      imageUrl: "",
       features: product.features?.join("\n") || "",
       isNew: product.isNew || false,
       rating: product.rating || 0,
     },
   });
 
+  const { setValue } = form;
+
+  useEffect(() => {
+    setValue("images", product.images);
+  }, [product.images, setValue]);
+
+  const imageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    setImageUploading(true);
+    try {
+      const files = Array.from(event.target.files);
+      const response1 = await axios.get(
+        `/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`
+      );
+      if (!response1.data.success) return;
+
+      const { timestamp, signature, api_key } = response1.data.data;
+      const uploadedImageUrls: string[] = [];
+      const uploadedImagePublicIds: string[] = [];
+
+      for (const file of files) {
+        const data = new FormData();
+        data.append("file", file);
+        data.append("timestamp", timestamp.toString());
+        data.append("signature", signature);
+        data.append("api_key", api_key);
+        data.append("resource_type", "image");
+        data.append("folder", "Garmin/Smartwatch");
+
+        const response2 = await axios.post(
+          `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
+          data,
+          {
+            onUploadProgress: (progress) => {
+              if (progress.total) {
+                const percent = Math.round(
+                  (progress.loaded * 100) / progress.total
+                );
+                setProgress(percent);
+              }
+            },
+          }
+        );
+
+        if (response2.data) {
+          uploadedImageUrls.push(response2.data.secure_url);
+          uploadedImagePublicIds.push(response2.data.public_id);
+        }
+      }
+
+      const newImages = uploadedImageUrls.map((url, i) => ({
+        url,
+        public_id: uploadedImagePublicIds[i],
+      }));
+
+      const currentImages = form.getValues("images") || [];
+      const updatedImages = [...currentImages, ...newImages];
+      setValue("images", updatedImages);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setImageUploading(false);
+    }
+  };
+
   const onSubmit = async (data: AddGarminProductSchemaType) => {
-    setError(null);
     try {
       const featuresArray = data.features
         ? data.features.split("\n").filter((f) => f.trim() !== "")
@@ -64,27 +139,27 @@ export default function EditProductForm({
       const payload = {
         ...data,
         features: featuresArray,
-        specifications: [],
       };
 
-      const res = await axios.put(
+      const response = await axios.put(
         `/api/garmins/garmin?id=${product.id}`,
         payload
       );
-      if (res.data.success) {
+
+      if (response.data.success) {
         setRefresh((prev) => !prev);
         onClose();
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Бүтээгдэхүүн амжилттай шинэчлэгдлээ");
       } else {
-        setError("Бүтээгдэхүүнийг шинэчлэхэд алдаа гарлаа.");
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Шинэчлэхэд алдаа гарлаа");
       }
-      setSnackbarSeverity("success");
-      setSnackbarMessage("Бүтээгдэхүүн амжилттай заслаа");
+
+      setSnackbarOpen(true);
     } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Бүтээгдэхүүнийг шинэчлэхэд алдаа гарлаа."
-      );
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Алдаа гарлаа");
       setSnackbarOpen(true);
     }
   };
@@ -109,12 +184,8 @@ export default function EditProductForm({
           {snackbarMessage}
         </Alert>
       </Snackbar>
+
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {error && (
-          <div className="p-3 bg-red-100 text-red-800 rounded-md text-sm">
-            {error}
-          </div>
-        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -123,11 +194,7 @@ export default function EditProductForm({
               <FormItem>
                 <FormLabel>Бүтээгдэхүүний нэр</FormLabel>
                 <FormControl>
-                  <Input
-                    disabled={form.formState.isSubmitting}
-                    placeholder="Жишээ: Garmin Fenix 7X"
-                    {...field}
-                  />
+                  <Input disabled={form.formState.isSubmitting} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -140,11 +207,7 @@ export default function EditProductForm({
               <FormItem>
                 <FormLabel>Ангилал</FormLabel>
                 <FormControl>
-                  <Input
-                    disabled={form.formState.isSubmitting}
-                    placeholder="Жишээ: Ухаалаг цаг"
-                    {...field}
-                  />
+                  <Input disabled={form.formState.isSubmitting} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,12 +218,11 @@ export default function EditProductForm({
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Үнэ (₮)</FormLabel>
+                <FormLabel>Үнэ ($)</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     disabled={form.formState.isSubmitting}
-                    placeholder="0"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
@@ -178,11 +240,10 @@ export default function EditProductForm({
                 <FormControl>
                   <Input
                     type="number"
-                    disabled={form.formState.isSubmitting}
-                    placeholder="4.5"
                     min={0}
                     max={5}
                     step={0.1}
+                    disabled={form.formState.isSubmitting}
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
@@ -192,23 +253,40 @@ export default function EditProductForm({
             )}
           />
         </div>
+
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="images"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Зурагны URL</FormLabel>
+              <div className=" flex justify-between">
+                <FormLabel>Бүтээгдэхүүний зургууд</FormLabel>
+                {progress > 0 && <CircularProgressWithLabel value={progress} />}
+              </div>
               <FormControl>
                 <Input
-                  disabled={form.formState.isSubmitting}
-                  placeholder="https://example.com/product-image.jpg"
-                  {...field}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  disabled={imageUploading || form.formState.isSubmitting}
+                  onChange={imageUpload}
                 />
               </FormControl>
+              <div className="flex gap-2 flex-wrap mt-2">
+                {field.value?.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img.url}
+                    alt="uploaded"
+                    className="w-24 h-24 object-cover border rounded"
+                  />
+                ))}
+              </div>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="description"
@@ -218,8 +296,7 @@ export default function EditProductForm({
               <FormControl>
                 <Textarea
                   disabled={form.formState.isSubmitting}
-                  placeholder="Дэлгэрэнгүй тайлбар..."
-                  className="min-h-[80px]"
+                  className="min-h-[100px]"
                   {...field}
                 />
               </FormControl>
@@ -227,6 +304,7 @@ export default function EditProductForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="features"
@@ -236,8 +314,7 @@ export default function EditProductForm({
               <FormControl>
                 <Textarea
                   disabled={form.formState.isSubmitting}
-                  placeholder="Нарны цэнэглэгч\n32GB санах ой\nОлон сувагт GNSS"
-                  className="min-h-[80px]"
+                  className="min-h-[100px]"
                   {...field}
                 />
               </FormControl>
@@ -245,6 +322,7 @@ export default function EditProductForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="isNew"
@@ -257,28 +335,18 @@ export default function EditProductForm({
                   disabled={form.formState.isSubmitting}
                 />
               </FormControl>
-              <FormLabel className="text-sm">
-                Шинэ бүтээгдэхүүн гэж тэмдэглэх
-              </FormLabel>
+              <FormLabel>Шинэ бүтээгдэхүүн</FormLabel>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="flex justify-end space-x-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onClose}
-            disabled={form.formState.isSubmitting}
-          >
-            Цуцлах
+
+        <div className="flex justify-end gap-4">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Болих
           </Button>
-          <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            {form.formState.isSubmitting ? "Хадгалж байна..." : "Хадгалах"}
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? "Шинэчилж байна..." : "Хадгалах"}
           </Button>
         </div>
       </form>

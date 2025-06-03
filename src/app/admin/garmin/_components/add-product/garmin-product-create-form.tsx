@@ -1,7 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
-import { useRouter } from "next/navigation";
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -21,16 +20,22 @@ import {
   AddGarminProductSchemaType,
 } from "../../utlis/add-garmin-product-schema";
 import axios from "axios";
+import CircularProgressWithLabel from "@/app/dji/utils/loading-circle";
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
 };
+
 export default function GraminProductCreateForm({ setRefresh }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const [progress, setProgress] = useState(0);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [ImagePreview, setImagePreview] = useState<string[]>([]);
+  const [publicIds, setPublicIds] = useState<string[]>([]);
 
   const form = useForm<AddGarminProductSchemaType>({
     resolver: zodResolver(AddGarminProductSchema),
@@ -46,7 +51,10 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
     },
   });
 
+  const { setValue } = form;
+
   const onSubmit = async (data: AddGarminProductSchemaType) => {
+    console.log(data);
     try {
       const featuresArray = data.features
         ? data.features.split("\n").filter((f) => f.trim() !== "")
@@ -54,18 +62,14 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
       const payload = {
         ...data,
         features: featuresArray,
-        specifications: [],
       };
-
       const response = await axios.post("/api/garmins", payload);
-
       if (response.data.success) {
         setRefresh((prev) => !prev);
       }
       setSnackbarSeverity("success");
       setSnackbarMessage("Бүтээгдэхүүн амжилттай үүслээ");
       setSnackbarOpen(true);
-
       form.reset();
     } catch (error) {
       setSnackbarSeverity("error");
@@ -78,6 +82,66 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  const imageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    setImageUploading(true);
+    try {
+      const files = Array.from(event.target.files);
+
+      const response1 = await axios.get(
+        `/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`
+      );
+      if (!response1.data.success) return;
+
+      const { timestamp, signature, api_key } = response1.data.data;
+
+      const uploadedImageUrls: string[] = [];
+      const uploadedImagePublicIds: string[] = [];
+
+      for (const file of files) {
+        const data = new FormData();
+        data.append("file", file);
+        data.append("timestamp", timestamp.toString());
+        data.append("signature", signature);
+        data.append("api_key", api_key);
+        data.append("resource_type", "image");
+        data.append("folder", "Garmin/Smartwatch");
+
+        const response2 = await axios.post(
+          `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
+          data,
+          {
+            onUploadProgress: (progress) => {
+              if (progress.total) {
+                const percent = Math.round(
+                  (progress.loaded * 100) / progress.total
+                );
+                setProgress(percent);
+              }
+            },
+          }
+        );
+
+        if (response2.data) {
+          uploadedImageUrls.push(response2.data.secure_url);
+          uploadedImagePublicIds.push(response2.data.public_id);
+        }
+      }
+
+      setImagePreview(uploadedImageUrls);
+      setPublicIds(uploadedImagePublicIds);
+      const combined = uploadedImageUrls.map((url, i) => ({
+        url,
+        public_id: uploadedImagePublicIds[i],
+      }));
+      setValue("images", combined);
+    } catch (err) {
+      console.error(err, "server error");
+    } finally {
+      setImageUploading(false);
+    }
   };
 
   return (
@@ -96,6 +160,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
@@ -153,6 +218,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="rating"
@@ -182,14 +248,31 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
           name="images"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Зурагны URL</FormLabel>
+              <div className=" flex justify-between">
+                <FormLabel>Бүтээгдэхүүний зураг</FormLabel>
+                {progress > 0 && <CircularProgressWithLabel value={progress} />}
+              </div>
               <FormControl>
                 <Input
-                  disabled={form.formState.isSubmitting}
-                  placeholder="https://example.com/product-image.jpg"
-                  {...field}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  disabled={imageUploading || form.formState.isSubmitting}
+                  onChange={imageUpload}
                 />
               </FormControl>
+
+              <div className="flex flex-wrap gap-2 mt-2">
+                {field.value?.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img.url}
+                    alt={`uploaded-${idx}`}
+                    className="w-24 h-24 object-cover rounded border"
+                  />
+                ))}
+              </div>
+
               <FormMessage />
             </FormItem>
           )}
@@ -223,7 +306,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
               <FormControl>
                 <Textarea
                   disabled={form.formState.isSubmitting}
-                  placeholder="-Нарны цэнэглэгч -32GB санах ой -Олон сувагт GNSS"
+                  placeholder="-Нарны цэнэглэгч\n-32GB санах ой\n-Олон сувагт GNSS"
                   className="min-h-[100px]"
                   {...field}
                 />
@@ -250,10 +333,11 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
             </FormItem>
           )}
         />
+
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className=" w-full cursor-pointer"
+          className="w-full cursor-pointer"
         >
           {form.formState.isSubmitting ? "Хадгалж байна..." : "Үүсгэх"}
         </Button>

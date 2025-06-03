@@ -8,7 +8,7 @@ export const AddGarminProductSchema = z.object({
     .string()
     .min(2, { message: "Ангилал дор хаяж 2 тэмдэгт байх ёстой!" }),
   price: z.number().min(0, { message: "Үнэ 0-ээс бага байж болохгүй!" }),
-  images: z.array(z.string()),
+  images: z.array(z.object({ url: z.string(), public_id: z.string() })),
   description: z.string().optional(),
   features: z.string().optional(),
   isNew: z.boolean(),
