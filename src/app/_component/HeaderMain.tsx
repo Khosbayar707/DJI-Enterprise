@@ -1,5 +1,4 @@
 "use client";
-
 import { Fragment, useEffect, useState } from "react";
 import {
   Menu,
@@ -47,6 +46,7 @@ const HeaderMain = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User>();
   const [logging, setLogging] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
@@ -86,7 +86,22 @@ const HeaderMain = () => {
       }
     };
     fetchData();
-  }, [pathname]);
+  }, [pathname, refresh]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLogging(true);
+      try {
+        const res = await axios.get("/api/auth/refresh-token");
+        if (res.data.success) {
+          setRefresh((prev) => !prev);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
