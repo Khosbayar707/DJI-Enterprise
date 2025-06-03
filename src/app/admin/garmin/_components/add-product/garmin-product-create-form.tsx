@@ -38,8 +38,8 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
       name: "",
       category: "",
       price: 0,
+      images: [],
       description: "",
-      imageUrl: "",
       features: "",
       isNew: false,
       rating: 0,
@@ -179,7 +179,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
 
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="images"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Зурагны URL</FormLabel>
@@ -223,7 +223,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
               <FormControl>
                 <Textarea
                   disabled={form.formState.isSubmitting}
-                  placeholder="Нарны цэнэглэгч\n32GB санах ой\nОлон сувагт GNSS"
+                  placeholder="-Нарны цэнэглэгч -32GB санах ой -Олон сувагт GNSS"
                   className="min-h-[100px]"
                   {...field}
                 />

@@ -30,7 +30,7 @@ import LoadingText from "./LoadingText";
 const navItems = [
   { href: "/dji", label: "DJI", items: ["DJI Enterprise"] },
   { href: "/autel", label: "Autel", items: ["Autel EVO", "Autel Robotics"] },
-  { href: "/garmin", label: "Garmin", items: ["Aviation", "Marine"] },
+  { href: "/garmin", label: "Garmin", items: ["Smartwatch"] },
 ];
 
 const mobileMenuVariants = {

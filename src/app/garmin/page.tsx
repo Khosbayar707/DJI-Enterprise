@@ -31,9 +31,9 @@ export default function GarminProductListPage() {
         { label: "Connectivity", value: "Bluetooth, ANT+, Wi-Fi" },
       ],
       images: [
-        "https://m.media-amazon.com/images/I/71m+5+b5WmL._AC_SL1500_.jpg",
-        "https://m.media-amazon.com/images/I/71q2Q4yVzKL._AC_SL1500_.jpg",
-        "https://m.media-amazon.com/images/I/71Qe9ZQ0VGL._AC_SL1500_.jpg",
+        "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
+        "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
+        "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
       ],
       rating: 4.8,
       reviewCount: 124,
