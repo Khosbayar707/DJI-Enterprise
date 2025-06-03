@@ -90,7 +90,6 @@ const HeaderMain = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLogging(true);
       try {
         const res = await axios.get("/api/auth/refresh-token");
         if (res.data.success) {
