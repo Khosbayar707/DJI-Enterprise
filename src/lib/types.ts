@@ -6,6 +6,7 @@ import {
   DroneDescription,
   DroneInTheBox,
   DroneTech,
+  GarminProduct,
   Image,
   Spec,
   SpecCategory,
@@ -78,6 +79,10 @@ export type CustomImage = Image & {
 export type CustomContactRequest = ContactRequest & {
   drone: Drone;
   user: User;
+};
+
+export type CustomGarminProduct = GarminProduct & {
+  images: Image[];
 };
 
 // client side types

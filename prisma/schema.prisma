@@ -179,6 +179,7 @@ model Image {
   url                String
   droneId            String?
   specId             String?
+  garminId String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   public_id          String
@@ -186,6 +187,8 @@ model Image {
   DroneFeaturedImage Drone?   @relation("DroneFeaturedImage")
   drone              Drone?   @relation(fields: [droneId], references: [id], onDelete: Cascade)
   spec               Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
+  garmins GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
+
 }
 
 model Video {
@@ -221,7 +224,7 @@ model GarminProduct {
   price          Float
   discountPrice  Float?
   description    String
-  images         String[]
+  images         Image[]
   features       String[]
   isNew          Boolean       @default(false)
   rating         Float

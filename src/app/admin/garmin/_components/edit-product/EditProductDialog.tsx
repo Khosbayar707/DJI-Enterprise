@@ -5,11 +5,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { GarminProduct } from "@/generated/prisma";
 import EditProductForm from "./edit-product-form";
+import { CustomGarminProduct } from "@/lib/types";
 
 type Props = {
-  product: GarminProduct;
+  product: CustomGarminProduct;
   setRefresh: (value: React.SetStateAction<boolean>) => void;
   onClose: () => void;
 };
