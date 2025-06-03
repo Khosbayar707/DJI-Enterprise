@@ -10,14 +10,14 @@ import { formatPrice } from "../utlis/format-price";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CustomGarminProduct } from "@/lib/types";
 
 export default function GarminProductTable() {
-  const [products, setProducts] = useState<GarminProduct[]>([]);
+  const [products, setProducts] = useState<CustomGarminProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(true);
-  const [editingProduct, setEditingProduct] = useState<GarminProduct | null>(
-    null
-  );
+  const [editingProduct, setEditingProduct] =
+    useState<CustomGarminProduct | null>(null);
 
   const fetchProducts = async () => {
     try {
