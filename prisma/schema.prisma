@@ -49,7 +49,7 @@ model OTP {
 model Drone {
   id                 String             @id @unique @default(nanoid())
   name               String
-  Price              Int                @default(0)
+  price              Int                @default(0)
   description        String             @default("Дэлгэрэнгүй мэдээлэл алга!")
   featuredImageId    String?            @unique
   featuredVideoId    String?            @unique
@@ -77,6 +77,19 @@ model Drone {
   specs              Spec[]
   videos             Video[]            @relation("videos")
   categories         DroneCategory[]    @relation("DroneToDroneCategory")
+  rtk rtkModule? 
+}
+
+model rtkModule {
+  id String @id @default(nanoid()) @unique
+  title String
+  briefDescription String?
+  description String
+  videoId String @unique
+  droneId String @unique
+  drone Drone @relation(references: [id], fields: [droneId])
+  video Video @relation(references: [id], fields: [videoId])
+  createdAt DateTime @default(now())
 }
 
 model DroneTech {
@@ -195,6 +208,7 @@ model Video {
   id                 String   @id @unique @default(nanoid())
   url                String
   droneId            String?
+  rtkId String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
   priority           Int      @default(0)
@@ -205,6 +219,7 @@ model Video {
   droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
   drone              Drone?   @relation("videos", fields: [droneId], references: [id], onDelete: Cascade)
   spec               Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
+  rtk rtkModule? 
 }
 
 model Review {

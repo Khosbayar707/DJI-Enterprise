@@ -38,10 +38,10 @@ export default function ProductInfo({
         {drone.discount > 0 ? (
           <>
             <p className="text-3xl font-bold text-red-600">
-              {(drone.Price - drone.discount).toLocaleString()}₮
+              {(drone.price - drone.discount).toLocaleString()}₮
             </p>
             <p className="text-xl text-gray-500 line-through">
-              {drone.Price.toLocaleString()}₮
+              {drone.price.toLocaleString()}₮
             </p>
             <p className="text-green-600 font-medium">
               Та {drone.discount}₮ хэмнэж байна!
@@ -49,7 +49,7 @@ export default function ProductInfo({
           </>
         ) : (
           <p className="text-3xl font-semibold text-green-600">
-            {drone.Price}₮
+            {drone.price}₮
           </p>
         )}
       </div>
