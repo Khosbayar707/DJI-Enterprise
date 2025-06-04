@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { GarminProduct } from "@/app/_types/types";
 
 interface GarminProductCardProps {
