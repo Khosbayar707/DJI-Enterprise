@@ -36,11 +36,7 @@ export default function ProductListPage() {
           ) : drones.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {drones.map((drone, i) => (
-                <div key={drone.id}>
-                  <Link href={`/dji/${drone.id}`} target="_blank">
-                    <ProductCard drone={drone} index={i} />
-                  </Link>
-                </div>
+                <ProductCard key={drone.id} drone={drone} index={i} />
               ))}
             </div>
           ) : (

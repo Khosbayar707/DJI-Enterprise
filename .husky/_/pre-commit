@@ -1,1 +1,2 @@
-npm run build
+#!/usr/bin/env sh
+. "$(dirname "$0")/h"
