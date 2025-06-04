@@ -193,7 +193,7 @@ export default function Page() {
 
             <ContactForm />
 
-            <RelatedProducts products={relatedProducts} />
+            {/* <RelatedProducts /> */}
           </div>
         </div>
       </div>
