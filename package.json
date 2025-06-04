@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "prepare": "npx husky"
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -6,6 +6,7 @@ import { theme } from "@/lib/theme";
 import Footer from "./_component/Footer";
 import Header from "./_component/Header";
 import { Suspense } from "react";
+import LoadingText from "./_component/LoadingText";
 
 const notoSans = Noto_Sans({
   weight: ["400", "500", "600", "700"],
@@ -36,15 +37,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="mn">
-      <body
-        className={`${notoSans.variable} ${notoSansMono.variable} ${notoSerif.variable} font-sans`}
-      >
-        <Header />
-        <ThemeProvider theme={theme}>
-          <Suspense>{children}</Suspense>
-        </ThemeProvider>
-        <Footer />
-      </body>
+      <Suspense>
+        <body
+          className={`${notoSans.variable} ${notoSansMono.variable} ${notoSerif.variable} font-sans`}
+        >
+          <Header />
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <Footer />
+        </body>
+      </Suspense>
     </html>
   );
 }

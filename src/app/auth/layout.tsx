@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }}
       className="min-w-screen min-h-screen"
     >
-      {children}
+      <Suspense>{children}</Suspense>
     </div>
   );
 }

@@ -55,9 +55,7 @@ export default function DJIProductsSection() {
                 transition={{ delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Link href={`/dji/${product.id}`}>
-                  <ProductCard drone={product} index={index} />
-                </Link>
+                <ProductCard drone={product} index={index} />
               </motion.div>
             ))
           ) : (
