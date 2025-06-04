@@ -1,7 +1,7 @@
 import {
-  ContactRequest,
   Drone,
   DroneAdvantage,
+  DroneBuyRequest,
   DroneCategory,
   DroneDescription,
   DroneInTheBox,
@@ -24,9 +24,10 @@ export type ResponseType = {
 
 export enum AdminSideBarOptions {
   products,
-  users,
   orders,
   images,
+  DroneBuyRequest,
+  ContactRequest,
 }
 
 export enum ProductTabOptions {
@@ -76,7 +77,7 @@ export type CustomImage = Image & {
   updatedAt: string;
 };
 
-export type CustomContactRequest = ContactRequest & {
+export type CustomDroneBuyRequest = DroneBuyRequest & {
   drone: Drone;
   user: User;
 };

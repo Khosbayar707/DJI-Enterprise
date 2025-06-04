@@ -1,20 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import UserCard from "../_cards/user-card";
-import { ContactRequest } from "@/generated/prisma";
 import axios from "axios";
 import LoadingText from "../loading";
-import { CustomContactRequest } from "@/lib/types";
+import { CustomDroneBuyRequest } from "@/lib/types";
+import DroneBuyRequestCard from "../_cards/drone-buy-request-card";
 
-const UserSection = () => {
-  const [requests, setRequests] = useState<CustomContactRequest[]>([]);
+const DroneBuyRequestSection = () => {
+  const [requests, setRequests] = useState<CustomDroneBuyRequest[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/api/users/contact-requests");
+        const res = await axios.get("/api/users/drone-buy-request");
         if (res.data.success) {
           setRequests(res.data.data.users);
         }
@@ -32,10 +31,10 @@ const UserSection = () => {
       {loading ? (
         <LoadingText />
       ) : (
-        <UserCard requests={requests} setRefresh={setRefresh} />
+        <DroneBuyRequestCard requests={requests} setRefresh={setRefresh} />
       )}
     </div>
   );
 };
 
-export default UserSection;
+export default DroneBuyRequestSection;

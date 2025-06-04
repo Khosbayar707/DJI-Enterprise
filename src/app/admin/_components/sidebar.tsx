@@ -10,7 +10,7 @@ const Sidebar = ({
   setActiveSection: Dispatch<SetStateAction<AdminSideBarOptions>>;
 }) => {
   return (
-    <aside className="w-64 bg-muted p-6 flex flex-col gap-4 border-r">
+    <aside className="w-96 bg-muted p-6 flex flex-col gap-4 border-r">
       <h2 className="text-xl font-semibold mb-4">Админ</h2>
       <Button
         sx={{ justifyContent: "flex-start" }}
@@ -45,12 +45,26 @@ const Sidebar = ({
       <Button
         sx={{ justifyContent: "flex-start" }}
         color={
-          activeSection === AdminSideBarOptions.users ? "primary" : "inherit"
+          activeSection === AdminSideBarOptions.DroneBuyRequest
+            ? "primary"
+            : "inherit"
         }
-        onClick={() => setActiveSection(AdminSideBarOptions.users)}
+        onClick={() => setActiveSection(AdminSideBarOptions.DroneBuyRequest)}
         className="justify-start cursor-pointer shadow-2xl flex gap-3"
       >
-        <Users size={20} /> <div>Хэрэглэгчид</div>
+        <Users size={20} /> <div>Дрон худалдан авах хүсэлт</div>
+      </Button>
+      <Button
+        sx={{ justifyContent: "flex-start" }}
+        color={
+          activeSection === AdminSideBarOptions.ContactRequest
+            ? "primary"
+            : "inherit"
+        }
+        onClick={() => setActiveSection(AdminSideBarOptions.ContactRequest)}
+        className="justify-start cursor-pointer shadow-2xl flex gap-3"
+      >
+        <Users size={20} /> <div>Холбоо барих хүсэлт</div>
       </Button>
     </aside>
   );
