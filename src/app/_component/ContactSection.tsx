@@ -1,10 +1,56 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import ContactRequestFromUserSchema, {
+  ContactRequestFromUserSchemaType,
+} from "./utils/contact-request-schema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button, TextField } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { ResponseType } from "@/lib/types";
+import { CustomResponse } from "@/lib/next-responses";
+import { CustomSnackbar } from "../admin/_components/snackbar";
 
 export default function ContactSection() {
+  const [response, setResponse] = useState<ResponseType>();
+  const form = useForm({
+    resolver: zodResolver(ContactRequestFromUserSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = async (values: ContactRequestFromUserSchemaType) => {
+    try {
+      const res = await axios.post("/api/client/contact-request", values);
+      setResponse(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setResponse(undefined);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [response]);
   return (
     <section className="py-20 bg-gray-50">
+      {response && <CustomSnackbar value={response} />}
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0 }}
@@ -20,61 +66,92 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h3 className="text-xl font-semibold mb-6">Бидэнтэй холбогдох</h3>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-gray-700 mb-2">
-                  Нэр
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-gray-700 mb-2">
-                  И-мэйл
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-gray-700 mb-2">
-                  Утас
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-gray-700 mb-2">
-                  Мессеж
-                </label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-medium"
-              >
-                Илгээх
-              </button>
-            </form>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="flex flex-col gap-12">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            variant="standard"
+                            label="Нэр"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            variant="standard"
+                            label="Майл"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            type="number"
+                            variant="standard"
+                            label="Утасны дугаар"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            variant="standard"
+                            label="Зурвас"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <Button
+                  className=" w-full"
+                  disabled={!form.formState.isValid}
+                  variant="text"
+                  type="submit"
+                >
+                  Илгээх
+                </Button>
+              </form>
+            </Form>
           </motion.div>
 
           <motion.div

@@ -10,23 +10,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomContactRequest, ResponseType } from "@/lib/types";
+import { CustomDroneBuyRequest, ResponseType } from "@/lib/types";
 import axios from "axios";
 import { format } from "date-fns";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CustomSnackbar } from "../snackbar";
 import LoadingText from "../loading";
 import _ from "lodash";
+import { ContactRequest } from "@/generated/prisma";
 
 type Props = {
-  requests: CustomContactRequest[];
+  requests: ContactRequest[];
   setRefresh: Dispatch<SetStateAction<boolean>>;
 };
 
-const UserCard = ({ requests, setRefresh }: Props) => {
+const ContactRequestCard = ({ requests, setRefresh }: Props) => {
   const [changing, setChanging] = useState(false);
   const [response, setResponse] = useState<ResponseType>();
-  const [sorted, setSorted] = useState<CustomContactRequest[]>(requests);
+  const [sorted, setSorted] = useState<ContactRequest[]>(requests);
 
   const [sortConfig, setSortConfig] = useState<{
     key: "status" | "createdAt";
@@ -41,7 +42,7 @@ const UserCard = ({ requests, setRefresh }: Props) => {
       requests,
       [
         (item) => {
-          if (sortConfig.key === "status") return item.resolved;
+          if (sortConfig.key === "status") return item;
           if (sortConfig.key === "createdAt")
             return new Date(item.createdAt).getTime();
           return _.get(item, sortConfig.key);
@@ -63,7 +64,7 @@ const UserCard = ({ requests, setRefresh }: Props) => {
   const handleButton = async (id: string) => {
     setChanging(true);
     try {
-      const res = await axios.patch("/api/users/contact-requests", { id });
+      const res = await axios.patch("/api/users/contact-request", { id });
       setResponse(res.data);
       if (res.data.success) {
         setRefresh((prev) => !prev);
@@ -84,7 +85,7 @@ const UserCard = ({ requests, setRefresh }: Props) => {
     <Card className="shadow-2xl">
       {response && <CustomSnackbar value={response} />}
       <CardHeader>
-        <CardTitle>Хэрэглэгчийн хүсэлтүүд</CardTitle>
+        <CardTitle>Холбоо барих хүсэлтүүд</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -94,7 +95,6 @@ const UserCard = ({ requests, setRefresh }: Props) => {
                 <TableHead>Нэр</TableHead>
                 <TableHead>Емайл</TableHead>
                 <TableHead>Утас</TableHead>
-                <TableHead>Дрон</TableHead>
                 <TableHead
                   className="cursor-pointer"
                   onClick={() => toggleSort("createdAt")}
@@ -119,9 +119,8 @@ const UserCard = ({ requests, setRefresh }: Props) => {
                 sorted.map((request) => (
                   <TableRow key={request.id}>
                     <TableCell>{request.name}</TableCell>
-                    <TableCell>{request.user.email}</TableCell>
+                    <TableCell>{request.email}</TableCell>
                     <TableCell>{request.phone}</TableCell>
-                    <TableCell>{request.drone.name}</TableCell>
                     <TableCell>
                       {format(
                         new Date(request.createdAt),
@@ -130,9 +129,9 @@ const UserCard = ({ requests, setRefresh }: Props) => {
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant={request.resolved ? "default" : "destructive"}
+                        variant={request.contacted ? "default" : "destructive"}
                       >
-                        {request.resolved
+                        {request.contacted
                           ? "Холбоо барьсан"
                           : "Холбоо бариагүй"}
                       </Badge>
@@ -165,4 +164,4 @@ const UserCard = ({ requests, setRefresh }: Props) => {
   );
 };
 
-export default UserCard;
+export default ContactRequestCard;

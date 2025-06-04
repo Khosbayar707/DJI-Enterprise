@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const existingRequest = await prisma.contactRequest.findFirst({
+    const existingRequest = await prisma.droneBuyRequest.findFirst({
       where: { userId: user.id, droneId: id, resolved: false },
     });
     if (existingRequest) {
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
         null
       );
     }
-    const newRequest = await prisma.contactRequest.create({
+    const newRequest = await prisma.droneBuyRequest.create({
       data: {
         name,
         description,

@@ -9,22 +9,23 @@ datasource db {
 }
 
 model User {
-  id        String           @id @unique @default(nanoid())
-  email     String           @unique
-  password  String
-  isAdmin   Boolean          @default(false)
-  sub_news  Boolean          @default(false)
-  isActive  Boolean          @default(true)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  requests  ContactRequest[]
-  drones    Drone[]
-  Otps      OTP[]
-  reviewee  Review[]
-  specs     Spec[]
+  id         String            @id @unique @default(nanoid())
+  email      String            @unique
+  password   String
+  isAdmin    Boolean           @default(false)
+  sub_news   Boolean           @default(false)
+  isActive   Boolean           @default(true)
+  isVerified Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  requests   DroneBuyRequest[]
+  drones     Drone[]
+  Otps       OTP[]
+  reviewee   Review[]
+  specs      Spec[]
 }
 
-model ContactRequest {
+model DroneBuyRequest {
   id          String   @id @unique @default(nanoid())
   userId      String
   name        String
@@ -36,6 +37,17 @@ model ContactRequest {
   updatedAt   DateTime @default(now()) @updatedAt
   drone       Drone    @relation(fields: [droneId], references: [id])
   user        User     @relation(fields: [userId], references: [id])
+}
+
+model ContactRequest {
+  id        String   @id @unique @default(nanoid())
+  name      String
+  email     String
+  phone     String
+  message   String
+  ip        String
+  contacted Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model OTP {
@@ -64,7 +76,7 @@ model Drone {
   stock              Int                @default(0)
   PreviewDescription String             @default("")
   briefDescription   String             @default("")
-  userRequests       ContactRequest[]
+  userRequests       DroneBuyRequest[]
   admin              User               @relation(fields: [adminId], references: [id])
   featuredImage      Image?             @relation("DroneFeaturedImage", fields: [featuredImageId], references: [id])
   featuredVideo      Video?             @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id])
@@ -234,12 +246,12 @@ model Review {
 }
 
 model GarminProduct {
-  id            String  @id @default(nanoid())
-  name          String
-  category      String
-  price         Float
-  discountPrice Float?
-  featured      Boolean @default(false)
+  id             String          @id @default(nanoid())
+  name           String
+  category       String
+  price          Float
+  discountPrice  Float?
+  featured       Boolean         @default(false)
   description    String
   images         Image[]
   features       String[]

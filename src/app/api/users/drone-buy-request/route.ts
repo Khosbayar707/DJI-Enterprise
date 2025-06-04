@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     if (!verify.isAdmin) {
       return NextResponse_NotAnAdmin();
     }
-    const users = await prisma.contactRequest.findMany({
+    const users = await prisma.droneBuyRequest.findMany({
       include: { drone: true, user: { omit: { password: true } } },
       orderBy: { createdAt: "desc" },
     });
@@ -52,7 +52,7 @@ export async function PATCH(req: NextRequest) {
     if (!verify.isAdmin) {
       return NextResponse_NotAnAdmin();
     }
-    const request = await prisma.contactRequest.findUnique({ where: { id } });
+    const request = await prisma.droneBuyRequest.findUnique({ where: { id } });
     if (!request) {
       return CustomResponse(
         false,
@@ -61,7 +61,7 @@ export async function PATCH(req: NextRequest) {
         null
       );
     }
-    const deleteRequest = await prisma.contactRequest.update({
+    const deleteRequest = await prisma.droneBuyRequest.update({
       where: { id: request.id },
       data: {
         resolved: !request.resolved,
