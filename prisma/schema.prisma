@@ -53,6 +53,7 @@ model Drone {
   description        String             @default("Дэлгэрэнгүй мэдээлэл алга!")
   featuredImageId    String?            @unique
   featuredVideoId    String?            @unique
+  featured           Boolean            @default(false)
   adminId            String
   visible            Boolean            @default(false)
   createdAt          DateTime           @default(now())
@@ -77,19 +78,19 @@ model Drone {
   specs              Spec[]
   videos             Video[]            @relation("videos")
   categories         DroneCategory[]    @relation("DroneToDroneCategory")
-  rtk rtkModule? 
+  rtk                rtkModule?
 }
 
 model rtkModule {
-  id String @id @default(nanoid()) @unique
-  title String
+  id               String   @id @unique @default(nanoid())
+  title            String
   briefDescription String?
-  description String
-  videoId String @unique
-  droneId String @unique
-  drone Drone @relation(references: [id], fields: [droneId])
-  video Video @relation(references: [id], fields: [videoId])
-  createdAt DateTime @default(now())
+  description      String
+  videoId          String   @unique
+  droneId          String   @unique
+  drone            Drone    @relation(references: [id], fields: [droneId])
+  video            Video    @relation(references: [id], fields: [videoId])
+  createdAt        DateTime @default(now())
 }
 
 model DroneTech {
@@ -186,40 +187,39 @@ model SpecCategory {
 }
 
 model Image {
-  id                 String   @id @unique @default(nanoid())
-  name               String   @default("Нэр өгөөгүй!")
-  description        String   @default("Дэлгэрэнгүй мэдээлэл оруулаагүй байна!")
+  id                 String         @id @unique @default(nanoid())
+  name               String         @default("Нэр өгөөгүй!")
+  description        String         @default("Дэлгэрэнгүй мэдээлэл оруулаагүй байна!")
   url                String
   droneId            String?
   specId             String?
-  garminId String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  garminId           String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
   public_id          String
-  priority           Int      @default(0)
-  DroneFeaturedImage Drone?   @relation("DroneFeaturedImage")
-  drone              Drone?   @relation(fields: [droneId], references: [id], onDelete: Cascade)
-  spec               Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
-  garmins GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
-
+  priority           Int            @default(0)
+  DroneFeaturedImage Drone?         @relation("DroneFeaturedImage")
+  drone              Drone?         @relation(fields: [droneId], references: [id], onDelete: Cascade)
+  spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
+  garmins            GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
 }
 
 model Video {
-  id                 String   @id @unique @default(nanoid())
+  id                 String     @id @unique @default(nanoid())
   url                String
   droneId            String?
-  rtkId String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  priority           Int      @default(0)
+  rtkId              String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  priority           Int        @default(0)
   public_id          String
-  detail             String   @default("Тайлбар алга!")
-  name               String   @default("Нэр өгөөгүй!")
+  detail             String     @default("Тайлбар алга!")
+  name               String     @default("Нэр өгөөгүй!")
   specId             String?
-  droneFeaturedVideo Drone?   @relation("DroneFeaturedVideo")
-  drone              Drone?   @relation("videos", fields: [droneId], references: [id], onDelete: Cascade)
-  spec               Spec?    @relation(fields: [specId], references: [id], onDelete: Cascade)
-  rtk rtkModule? 
+  droneFeaturedVideo Drone?     @relation("DroneFeaturedVideo")
+  drone              Drone?     @relation("videos", fields: [droneId], references: [id], onDelete: Cascade)
+  spec               Spec?      @relation(fields: [specId], references: [id], onDelete: Cascade)
+  rtk                rtkModule?
 }
 
 model Review {
@@ -232,29 +232,31 @@ model Review {
   drone       Drone    @relation(fields: [droneId], references: [id], onDelete: Cascade)
   reviewee    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
 model GarminProduct {
-  id             String        @id @default(nanoid())
-  name           String
-  category       String
-  price          Float
-  discountPrice  Float?
+  id            String  @id @default(nanoid())
+  name          String
+  category      String
+  price         Float
+  discountPrice Float?
+  featured      Boolean @default(false)
   description    String
   images         Image[]
   features       String[]
-  isNew          Boolean       @default(false)
+  isNew          Boolean         @default(false)
   rating         Float
-  reviewCount    Int           @default(0)
-  inStock        Boolean       @default(true)
+  reviewCount    Int             @default(0)
+  inStock        Boolean         @default(true)
   specifications Specification[]
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@index([category])
   @@index([name])
 }
 
 model Specification {
-  id        String   @id @default(nanoid())
+  id        String        @id @default(nanoid())
   label     String
   value     String
   product   GarminProduct @relation(fields: [productId], references: [id])

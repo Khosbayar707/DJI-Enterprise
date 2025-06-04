@@ -13,34 +13,7 @@ import { BreadcrumbItem, Drone, Product } from "@/app/_types/types";
 import { CustomDroneClient } from "@/lib/types";
 import { useParams } from "next/navigation";
 import axios from "axios";
-import LoadingText from "@/app/_component/LoadingText";
-
-const relatedProducts: Product[] = [
-  {
-    id: "dji-mavic-3-classic",
-    name: "DJI Mavic 3 Classic",
-    price: "6,499,000₮",
-    description: "4K камертай, 46 минутын нислэгийн хугацаа",
-    image:
-      "https://www-cdn.djiits.com/dps/09d051de6f793363e331422963aabf1b.jpg",
-  },
-  {
-    id: "dji-mini-3-pro",
-    name: "DJI Mini 3 Pro",
-    price: "3,999,000₮",
-    description: "Гялалзсан 4K HDR видео, 34 минут нислэг",
-    image:
-      "https://www-cdn.djiits.com/dps/45196aac8f231fe2ae211c76a473212b.jpg",
-  },
-  {
-    id: "dji-air-2s",
-    name: "DJI Air 2S",
-    price: "4,499,000₮",
-    description: "1 инчийн сенсортой 5.4K камер",
-    image:
-      "https://www-cdn.djiits.com/dps/45196aac8f231fe2ae211c76a473212b.jpg",
-  },
-];
+import DroneDetailSkeleton from "@/app/_component/skeleton/dji-page-skeleton";
 
 export default function Page() {
   const { id } = useParams();
@@ -63,12 +36,22 @@ export default function Page() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!loading && drone) {
+      const hash = window.location.hash;
+      if (hash === "#contact-form") {
+        const el = document.getElementById("contact-form");
+        if (el) {
+          setTimeout(() => {
+            el.scrollIntoView({ behavior: "smooth" });
+          }, 300);
+        }
+      }
+    }
+  }, [loading, drone]);
+
   if (loading) {
-    return (
-      <div className=" flex justify-center min-h-screen">
-        <LoadingText />
-      </div>
-    );
+    return <DroneDetailSkeleton />;
   }
 
   if (!drone) {
@@ -93,6 +76,7 @@ export default function Page() {
       }
     }, 800);
   };
+
   return (
     <>
       <Head>
@@ -114,7 +98,7 @@ export default function Page() {
             </div>
             <ProductTabs drone={drone} />
             <ContactForm />
-            <RelatedProducts products={relatedProducts} />
+            <RelatedProducts />
           </div>
           <Footer />
         </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import AboutCompanySection from "./_component/AboutCompanySection";
 import CaseStudiesSection from "./_component/CaseStudiesSection";
 import ContactSection from "./_component/ContactSection";
@@ -8,7 +6,7 @@ import DroneServiceTrainingSection from "./_component/DroneServiceTrainingSectio
 import HeroSection from "./_component/HeroSection";
 import ServicesSection from "./_component/ServicesSection";
 
-export default function Home() {
+const App = () => {
   return (
     <main className="bg-white">
       <HeroSection />
@@ -20,4 +18,6 @@ export default function Home() {
       <ContactSection />
     </main>
   );
-}
+};
+
+export default App;

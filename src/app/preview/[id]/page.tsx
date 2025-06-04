@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { CustomDroneClient } from "@/lib/types";
 import axios from "axios";
-import LoadingText from "@/app/_component/LoadingText";
+import DroneShowcaseSkeleton from "@/app/_component/skeleton/preview-page-skeleton";
 
-export default function HomePage() {
+const PreviewPage = () => {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [drone, setDrone] = useState<CustomDroneClient>();
   useEffect(() => {
@@ -31,10 +30,7 @@ export default function HomePage() {
   return (
     <main className="bg-black text-white">
       {loading ? (
-        <div className=" flex justify-center min-h-screen items-center">
-          {" "}
-          <LoadingText />
-        </div>
+        <DroneShowcaseSkeleton />
       ) : drone ? (
         <>
           <HeroSection drone={drone} />
@@ -54,4 +50,6 @@ export default function HomePage() {
       )}
     </main>
   );
-}
+};
+
+export default PreviewPage;

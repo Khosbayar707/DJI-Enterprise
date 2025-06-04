@@ -75,7 +75,7 @@ export default function ProductInfo({
         <button
           onClick={onContactClick}
           disabled={isLoading}
-          className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-800 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
+          className="w-full px-6 py-3 cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:from-blue-700 hover:to-blue-800 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
         >
           {isLoading ? (
             <>
@@ -88,7 +88,7 @@ export default function ProductInfo({
         </button>
 
         <Link href={`/preview/${drone.id}`}>
-          <button className="w-full px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:bg-blue-50 active:scale-[0.98] flex items-center justify-center">
+          <button className="w-full cursor-pointer px-6 py-3 border-2 border-blue-600 text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:bg-blue-50 active:scale-[0.98] flex items-center justify-center">
             Дэлгэрэнгүй
           </button>
         </Link>

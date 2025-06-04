@@ -40,7 +40,7 @@ export default function ProductCard({ drone, index }: ProductCardProps) {
       </div>
       <div className="p-6">
         <button
-          className={`w-full py-2 bg-blue-600 text-background rounded-lg transition`}
+          className={`w-full py-2 bg-blue-600 text-background rounded-lg transition cursor-pointer`}
         >
           Дэлгэрэнгүй
         </button>
