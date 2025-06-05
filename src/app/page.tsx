@@ -15,6 +15,7 @@ import LoadingText from "./_component/LoadingText";
 
 import { CustomDroneClient } from "@/lib/types";
 import DroneServiceTrainingSection from "./_component/DroneServiceTrainingSection ";
+import Head from "next/head";
 
 const App = () => {
   const search = useSearchParams().get("search");
@@ -44,6 +45,14 @@ const App = () => {
 
   return (
     <main className="bg-white min-h-screen">
+      <Head>
+        <title>Инженер Геодези ХХК - Мэргэжлийн дрон худалдаа</title>
+        <meta
+          name="description"
+          content="Мэргэжлийн DJI дронуудыг Монголд худалдаж аваарай."
+        />
+        ...
+      </Head>
       {search ? (
         loading ? (
           <LoadingText />
