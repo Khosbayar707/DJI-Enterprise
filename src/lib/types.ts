@@ -8,6 +8,7 @@ import {
   DroneTech,
   GarminProduct,
   Image,
+  rtkModule,
   Spec,
   SpecCategory,
   SpecDescription,
@@ -59,6 +60,11 @@ export type CustomDrone = Drone & {
   tech: DroneTech;
   inTheBox: DroneInTheBox[];
   advantages: DroneAdvantage[];
+  rtk: CustomRTK | undefined;
+};
+
+export type CustomRTK = rtkModule & {
+  video: Video;
 };
 
 export type CustomSpec = Spec & {
