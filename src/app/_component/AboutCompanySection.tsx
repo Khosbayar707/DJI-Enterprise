@@ -15,10 +15,10 @@ export default function AboutCompanySection() {
           >
             <div className="relative h-96 w-full rounded-xl overflow-hidden shadow-lg">
               <Image
-                src="/image/EG.jpg"
+                src="/image/logo.png"
                 alt="Инженер Геодези ХХК"
                 fill
-                className="object-cover"
+                className="object-contain w-full"
               />
             </div>
           </motion.div>
