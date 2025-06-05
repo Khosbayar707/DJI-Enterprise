@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import UserProfileChangeEmail from "./_components/user-profile-change-email";
-import UserProfileChangePassword from "./_components/user-profile-change-password";
-import UserProfileDroneBuyRequests from "./_components/user-profile-drone-buy-requests";
+import UserProfileChangeEmail from "./_featured/user-profile-change-email";
+import UserProfileChangePassword from "./_featured/user-profile-change-password";
+import UserProfileDroneBuyRequests from "./_featured/user-profile-drone-buy-requests";
 import { DroneBuyRequest, User } from "@/generated/prisma";
 import axios from "axios";
 import LoadingText from "../_component/LoadingText";
 import { CustomUserClient } from "@/lib/types";
+import UserProfileSkeleton from "./_components/skeleton";
 
 const mockUser = {
   email: "adiya@example.com",
@@ -17,6 +18,7 @@ type CustomUser = User & {
 export default function ProfilePage() {
   const [user, setUser] = useState<CustomUserClient>();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,23 +34,29 @@ export default function ProfilePage() {
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-10 space-y-10">
+    <main className="max-w-4xl w-full mx-auto px-4 py-10 space-y-10 flex flex-col">
       {loading ? (
-        <LoadingText />
+        <UserProfileSkeleton />
       ) : user ? (
         <>
-          <section className="p-6 border rounded-lg shadow-sm">
+          <section className="p-6 border rounded-lg shadow-sm w-full">
             <h2 className="text-xl font-semibold mb-4">👤 Хувийн мэдээлэл</h2>
             <p className="text-gray-700">
               <strong>И-мэйл: {user.email}</strong>
             </p>
           </section>
-          <UserProfileChangeEmail user={user} />
-          <UserProfileChangePassword />
-          <UserProfileDroneBuyRequests requests={user.requests} />
+          <section className="p-6 border rounded-lg shadow-sm w-full">
+            <UserProfileChangeEmail user={user} setRefresh={setRefresh} />
+          </section>
+          <section className="p-6 border rounded-lg shadow-sm w-full">
+            <UserProfileChangePassword user={user} setRefresh={setRefresh} />
+          </section>
+          <section className="p-6 border rounded-lg shadow-sm w-full">
+            <UserProfileDroneBuyRequests requests={user.requests} />
+          </section>
         </>
       ) : (
         <div>Хэрэглэгч эхлээд нэвтрэх ёстой!</div>

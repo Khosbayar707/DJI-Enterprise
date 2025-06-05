@@ -19,16 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { email, password } = await req.json();
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
-      return CustomResponse(
-        false,
-        "REQUEST_FAILED",
-        "Майл бүртгэлтэй байна!",
-        null
-      );
-    }
+    const { currentPassword, password } = await req.json();
 
     const accessToken = req.cookies.get("accessToken")?.value;
     if (!accessToken) {
@@ -47,6 +38,7 @@ export async function POST(req: NextRequest) {
         null
       );
     }
+
     if (!user.isActive) {
       return CustomResponse(
         false,
@@ -56,7 +48,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isValidPass = await bcrypt.compare(password, user.password);
+    const isValidPass = await bcrypt.compare(currentPassword, user.password);
     if (!isValidPass) {
       return CustomResponse(
         false,
@@ -66,15 +58,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const updateUserEmail = await prisma.user.update({
+    const encryptedPass = await bcrypt.hash(password, 15);
+
+    const updateUserPassword = await prisma.user.update({
       where: { id: user.id },
-      data: { email },
+      data: { password: encryptedPass },
+      omit: { password: true },
     });
+
     return CustomResponse(
       true,
       "REQUEST_SUCCESS",
       "Мэдээлэл амжилттай хадгалагдлаа!",
-      { new: updateUserEmail }
+      { new: updateUserPassword }
     );
   } catch (err) {
     console.error(err);

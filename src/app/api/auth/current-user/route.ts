@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { id: verify.id },
       include: { requests: { include: { drone: true } } },
+      omit: { password: true },
     });
     if (!user) {
       return CustomResponse(
