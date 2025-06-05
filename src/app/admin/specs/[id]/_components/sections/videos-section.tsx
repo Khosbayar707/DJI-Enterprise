@@ -35,7 +35,6 @@ const VideosSection = () => {
     fetchImages();
   }, [refresh]);
 
-  console.log({ spec, videos });
   return (
     <div className=" flex flex-col gap-6">
       {!loading && spec && <div>{spec.name}</div>}

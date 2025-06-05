@@ -54,7 +54,6 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
   const { setValue } = form;
 
   const onSubmit = async (data: AddGarminProductSchemaType) => {
-    console.log(data);
     try {
       const featuresArray = data.features
         ? data.features.split("\n").filter((f) => f.trim() !== "")

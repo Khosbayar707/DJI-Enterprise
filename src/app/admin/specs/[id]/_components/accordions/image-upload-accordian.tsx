@@ -42,7 +42,6 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
       const response1 = await axios.get(
         `/api/auth/cloudinary-sign?folder=Spec/Images`
       );
-      console.log(response1);
       if (!response1.data.success) {
         return;
       }

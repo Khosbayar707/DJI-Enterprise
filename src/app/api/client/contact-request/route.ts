@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
     }
 
     const forwarded = req.headers.get("x-forwarded-for");
-    console.log(req);
     const ip = forwarded?.split(",")[0].trim() || "unknown";
 
     const existingRequest = await prisma.contactRequest.findFirst({

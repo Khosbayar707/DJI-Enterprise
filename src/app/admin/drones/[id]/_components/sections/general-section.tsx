@@ -11,6 +11,7 @@ import DroneAdditionalDescriptions from "../cards/additional-description-card";
 import DroneTechCard from "../cards/tech-card";
 import AccessoryCard from "../cards/accessory-card";
 import DroneAdvantagesCard from "../cards/advantages-card";
+import RTKModuleCard from "../cards/rtk-card";
 
 const GeneralSection = () => {
   const { id } = useParams() as { id: string };
@@ -91,6 +92,14 @@ const GeneralSection = () => {
             droneCategories={droneCategories}
             specs={specs}
             droneModels={droneModels}
+          />
+          <RTKModuleCard
+            RTK={drone.rtk}
+            loading={loading}
+            setLoading={setLoading}
+            refresh={refresh}
+            setRefresh={setRefresh}
+            id={id}
           />
           <DroneAdvantagesCard
             setRefresh={setRefresh}
