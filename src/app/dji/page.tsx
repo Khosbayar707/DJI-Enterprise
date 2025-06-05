@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
 import ProductCard from "../_component/ProductCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LoadingText from "../_component/LoadingText";
 import { CustomDroneClient } from "@/lib/types";
+import ProductListSkeleton from "./_components/skeleton";
 
 export default function ProductListPage() {
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
@@ -25,25 +25,21 @@ export default function ProductListPage() {
     fetchData();
   }, []);
 
-  return (
+  return loading ? (
+    <ProductListSkeleton />
+  ) : drones.length > 0 ? (
     <div className="bg-white min-h-screen">
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          {loading ? (
-            <div className=" flex justify-center">
-              <LoadingText />
-            </div>
-          ) : drones.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {drones.map((drone, i) => (
-                <ProductCard key={drone.id} drone={drone} index={i} />
-              ))}
-            </div>
-          ) : (
-            <div>Бараа дууссан</div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {drones.map((drone, i) => (
+              <ProductCard key={drone.id} drone={drone} index={i} />
+            ))}
+          </div>
         </div>
       </section>
     </div>
+  ) : (
+    <div>Бараа дууссан</div>
   );
 }

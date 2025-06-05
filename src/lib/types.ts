@@ -88,6 +88,10 @@ export type CustomGarminProduct = GarminProduct & {
 
 // client side types
 
+export type CustomUserClient = User & {
+  requests: CustomDroneBuyRequestClient[];
+};
+
 export type CustomDroneClient = Drone & {
   images: Image[];
   videos: Video[];
@@ -104,4 +108,8 @@ export type CustomSpecClient = Spec & {
   image: Image[];
   descriptions: SpecDescription[];
   videos: Video[];
+};
+
+export type CustomDroneBuyRequestClient = DroneBuyRequest & {
+  drone: Drone;
 };

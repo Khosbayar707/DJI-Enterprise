@@ -200,7 +200,7 @@ const HeaderMain = () => {
             <LoadingText />
           ) : user ? (
             <>
-              <Link href={`/profile/${user.id}`}>
+              <Link href={`/profile`}>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
                   <span className="text-sm font-medium text-gray-800">
                     {user.email}
@@ -303,7 +303,7 @@ const HeaderMain = () => {
               <LoadingText />
             ) : user ? (
               <div className="flex flex-col gap-4">
-                <Link href={`/profile/${user.id}`}>
+                <Link href={`/profile`}>
                   <motion.div
                     className="flex items-center gap-2 bg-gray-50 p-2 rounded-full hover:bg-gray-100"
                     variants={hoverVariants}
