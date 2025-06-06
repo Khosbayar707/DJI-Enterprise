@@ -2,7 +2,6 @@
 import ProductCard from "../_component/ProductCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import LoadingText from "../_component/LoadingText";
 import { CustomDroneClient } from "@/lib/types";
 import ProductListSkeleton from "./_components/skeleton";
 

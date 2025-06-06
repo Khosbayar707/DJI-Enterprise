@@ -1,7 +1,8 @@
 import { GarminProduct, Product } from "@/app/_types/types";
+import { CustomGarminProduct } from "@/lib/types";
 
 interface ProductInfoProps {
-  product: GarminProduct;
+  product: CustomGarminProduct;
   onContactClick: () => void;
   isLoading: boolean;
 }

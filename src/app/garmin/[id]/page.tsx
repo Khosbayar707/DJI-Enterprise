@@ -10,116 +10,21 @@ import ProductGallery from "../_components/ProductGallery";
 import ProductInfo from "../_components/ProductInfo";
 import ProductTabs from "../_components/ProductTabs";
 import ContactForm from "@/app/dji/_components/ContactForm";
-import RelatedProducts from "@/app/dji/_components/RelatedProducts";
-
-const mockGarminProducts: GarminProduct[] = [
-  {
-    id: "garmin-fenix-7x",
-    name: "Garmin Fenix 7X Sapphire Solar",
-    category: "Smartwatch",
-    price: 6999000,
-    discountPrice: 5999000,
-    description:
-      "The Fenix 7X Sapphire Solar is Garmin's premium multisport GPS watch with solar charging. Built to withstand the toughest environments with scratch-resistant sapphire lens and stainless steel bezel.",
-    features: [
-      "Solar charging extends battery life",
-      "32GB memory for maps and music",
-      "Multi-band GNSS for improved accuracy",
-      "Up to 37 days battery life in smartwatch mode",
-      "Touchscreen with sunlight-visible display",
-    ],
-    specifications: [
-      {
-        label: "Display",
-        value: '1.4" sunlight-visible, transflective memory-in-pixel (MIP)',
-      },
-      { label: "Dimensions", value: "51 x 51 x 14.9 mm" },
-      { label: "Weight", value: "89 g" },
-      { label: "Water Rating", value: "10 ATM" },
-      { label: "Connectivity", value: "Bluetooth, ANT+, Wi-Fi" },
-    ],
-    images: [
-      "https://m.media-amazon.com/images/I/71m+5+b5WmL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71q2Q4yVzKL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71Qe9ZQ0VGL._AC_SL1500_.jpg",
-    ],
-    rating: 4.8,
-    reviewCount: 124,
-    isNew: true,
-    inStock: true,
-  },
-  {
-    id: "garmin-venu-2-plus",
-    name: "Garmin Venu 2 Plus",
-    category: "Smartwatch",
-    price: 3999000,
-    description:
-      "AMOLED smartwatch with voice assistant and advanced health monitoring features.",
-    features: [
-      "Brilliant AMOLED display",
-      "Voice assistant support",
-      "Up to 9 days battery life",
-      "Advanced sleep monitoring",
-      "On-screen workouts",
-    ],
-    specifications: [
-      { label: "Display", value: '1.3" AMOLED (416 x 416 pixels)' },
-      { label: "Dimensions", value: "43.6 x 43.6 x 12.2 mm" },
-      { label: "Weight", value: "51 g" },
-      { label: "Water Rating", value: "5 ATM" },
-      { label: "Connectivity", value: "Bluetooth, Wi-Fi" },
-    ],
-    images: [
-      "https://m.media-amazon.com/images/I/61XDeaOrjRL._AC_SL1500_.jpg",
-      "https://m.media-amazon.com/images/I/71+QN8xVWBL._AC_SL1500_.jpg",
-    ],
-    rating: 4.6,
-    reviewCount: 89,
-    inStock: true,
-  },
-];
-
-const relatedProducts: Product[] = [
-  {
-    id: "garmin-fenix-7",
-    name: "Garmin Fenix 7",
-    price: "5,999,000₮",
-    description: "Premium multisport GPS watch with solar charging",
-    image:
-      "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
-  },
-  {
-    id: "garmin-venu-2-plus",
-    name: "Garmin Venu 2 Plus",
-    price: "3,999,000₮",
-    description: "AMOLED smartwatch with voice assistant",
-    image:
-      "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
-  },
-  {
-    id: "garmin-forerunner-955",
-    name: "Garmin Forerunner 955",
-    price: "4,499,000₮",
-    description: "Advanced running watch with solar charging",
-    image:
-      "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
-  },
-];
+import axios from "axios";
+import { CustomGarminProduct } from "@/lib/types";
 
 export default function Page() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
-  const [product, setProduct] = useState<GarminProduct>();
+  const [product, setProduct] = useState<CustomGarminProduct>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-
-        const foundProduct = mockGarminProducts.find((p) => p.id === id);
-        if (foundProduct) {
-          setProduct(foundProduct);
+        const res = await axios.get(`/api/garmins/garmin?id=${id}`);
+        if (res.data.success) {
+          setProduct(res.data.data.product);
         }
       } catch (err) {
         console.error(err);
@@ -127,9 +32,8 @@ export default function Page() {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [id]);
+  }, []);
 
   if (loading) {
     return (
@@ -174,10 +78,7 @@ export default function Page() {
             <Breadcrumbs items={breadcrumbItems} />
 
             <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-              <ProductGallery
-                images={product.images}
-                productName={product.name}
-              />
+              <ProductGallery product={product} />
               <ProductInfo
                 product={product}
                 onContactClick={handleContactClick}
@@ -187,7 +88,7 @@ export default function Page() {
 
             <ProductTabs
               features={product.features}
-              specifications={product.specifications}
+              // specifications={product.specifications}
               description={product.description}
             />
 

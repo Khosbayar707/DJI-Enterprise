@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { GarminProduct } from "@/app/_types/types";
+import { CustomGarminProduct } from "@/lib/types";
 
 interface GarminProductCardProps {
-  product: GarminProduct;
+  product: CustomGarminProduct;
   index: number;
 }
 
@@ -22,13 +22,17 @@ export default function GarminProductCard({
     >
       <div className="relative">
         <div className="h-64 bg-gray-100 flex justify-center items-center relative">
-          <Image
-            src={product.images[1]}
-            alt={product.name}
-            fill
-            className="object-contain p-4"
-            priority={index < 3}
-          />
+          {product.images.length > 0 ? (
+            <Image
+              src={product.images[0].url}
+              alt={product.name}
+              fill
+              className="object-contain p-4"
+            />
+          ) : (
+            <div>Зураг байхгүй</div>
+          )}
+
           <div className="absolute top-2 right-2 flex flex-col gap-2">
             {product.isNew && (
               <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -66,7 +70,7 @@ export default function GarminProductCard({
               ({product.rating.toFixed(1)})
             </span>
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             {product.discountPrice ? (
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold text-gray-900">
@@ -81,7 +85,7 @@ export default function GarminProductCard({
                 ${product.price.toFixed(2)}
               </span>
             )}
-          </div>
+          </div> */}
           <ul className="space-y-2 mb-4">
             {product.features.slice(0, 3).map((feature, idx) => (
               <li key={idx} className="flex items-start text-sm">

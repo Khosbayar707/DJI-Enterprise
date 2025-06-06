@@ -2,106 +2,62 @@
 import Link from "next/link";
 import GarminProductCard from "./_components/ProductCard";
 import { GarminProduct } from "../_types/types";
-import { Suspense } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import ProductListSkeleton from "../dji/_components/skeleton";
+import { CustomGarminProduct } from "@/lib/types";
 
 export default function GarminProductListPage() {
-  const products: GarminProduct[] = [
-    {
-      id: "garmin-fenix-7x",
-      name: "Garmin Fenix 7X Sapphire Solar",
-      category: "Smartwatch",
-      price: 6999000,
-      discountPrice: 5999000,
-      description:
-        "The Fenix 7X Sapphire Solar is Garmin's premium multisport GPS watch with solar charging. Built to withstand the toughest environments with scratch-resistant sapphire lens and stainless steel bezel.",
-      features: [
-        "Solar charging extends battery life",
-        "32GB memory for maps and music",
-        "Multi-band GNSS for improved accuracy",
-        "Up to 37 days battery life in smartwatch mode",
-        "Touchscreen with sunlight-visible display",
-      ],
-      specifications: [
-        {
-          label: "Display",
-          value: '1.4" sunlight-visible, transflective memory-in-pixel (MIP)',
-        },
-        { label: "Dimensions", value: "51 x 51 x 14.9 mm" },
-        { label: "Weight", value: "89 g" },
-        { label: "Water Rating", value: "10 ATM" },
-        { label: "Connectivity", value: "Bluetooth, ANT+, Wi-Fi" },
-      ],
-      images: [
-        "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
-        "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
-        "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_1.0,f_auto,h_500,q_auto,w_500/c_pad,h_500,w_500/v1/Product_Images/en/products/010-02905-20/v/cf-xl?pgw=1",
-      ],
-      rating: 4.8,
-      reviewCount: 124,
-      isNew: true,
-      inStock: true,
-    },
-    {
-      id: "garmin-venu-2-plus",
-      name: "Garmin Venu 2 Plus",
-      category: "Smartwatch",
-      price: 3999000,
-      description:
-        "AMOLED smartwatch with voice assistant and advanced health monitoring features.",
-      features: [
-        "Brilliant AMOLED display",
-        "Voice assistant support",
-        "Up to 9 days battery life",
-        "Advanced sleep monitoring",
-        "On-screen workouts",
-      ],
-      specifications: [
-        { label: "Display", value: '1.3" AMOLED (416 x 416 pixels)' },
-        { label: "Dimensions", value: "43.6 x 43.6 x 12.2 mm" },
-        { label: "Weight", value: "51 g" },
-        { label: "Water Rating", value: "5 ATM" },
-        { label: "Connectivity", value: "Bluetooth, Wi-Fi" },
-      ],
-      images: [
-        "https://m.media-amazon.com/images/I/61XDeaOrjRL._AC_SL1500_.jpg",
-        "https://m.media-amazon.com/images/I/71+QN8xVWBL._AC_SL1500_.jpg",
-      ],
-      rating: 4.6,
-      reviewCount: 89,
-      inStock: true,
-    },
-  ];
+  const [garmin, setGarmin] = useState<CustomGarminProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/garmins");
+        if (res.data.success) {
+          console.log(res.data.data.products);
+          setGarmin(res.data.data.products);
+        }
+      } catch (err) {
+        console.error("Garmin fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) return <ProductListSkeleton />;
 
   return (
-    <Suspense>
-      <div className="bg-white min-h-screen">
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-              Garmin Products
-            </h1>
+    <div className="bg-white min-h-screen">
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Garmin Products
+          </h1>
 
-            {products.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {products.map((product, i) => (
-                  <div
-                    key={product.id}
-                    className="hover:shadow-lg transition-shadow duration-300"
-                  >
-                    <Link href={`/garmin/${product.id}`} passHref>
-                      <GarminProductCard product={product} index={i} />
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center text-gray-500 py-10">
-                Бүтээгдэхүүн олдсонгүй.
-              </div>
-            )}
-          </div>
-        </section>
-      </div>
-    </Suspense>
+          {garmin.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {garmin.map((product, i) => (
+                <div
+                  key={product.id}
+                  className="hover:shadow-lg transition-shadow duration-300"
+                >
+                  <Link href={`/garmin/${product.id}`}>
+                    <GarminProductCard product={product} index={i} />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-500 py-10">
+              Бүтээгдэхүүн олдсонгүй.
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
   );
 }
