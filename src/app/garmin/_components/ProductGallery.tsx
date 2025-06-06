@@ -1,35 +1,33 @@
+import { CustomGarminProduct } from "@/lib/types";
 import { useState } from "react";
 
 interface ProductGalleryProps {
-  images: string[];
-  productName: string;
+  product: CustomGarminProduct;
 }
 
-export default function ProductGallery({
-  images,
-  productName,
-}: ProductGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState(0);
-
+export default function ProductGallery({ product }: ProductGalleryProps) {
+  const [selectedImage, setSelectedImage] = useState<string>(
+    product.images.length > 0 ? product.images[0].url : "/image/placeholder.jpg"
+  );
   return (
     <div>
       <div className="bg-gray-100 rounded-lg overflow-hidden mb-4">
         <img
-          src={images[selectedImage]}
-          alt={productName}
+          src={selectedImage}
+          alt={product.name}
           className="w-full h-96 object-contain"
         />
       </div>
       <div className="grid grid-cols-4 gap-2">
-        {images.map((img, index) => (
+        {product.images.map((img, index) => (
           <button
             key={index}
-            onClick={() => setSelectedImage(index)}
-            className={`border rounded-md overflow-hidden ${selectedImage === index ? "ring-2 ring-blue-500" : ""}`}
+            onClick={() => setSelectedImage(img.url)}
+            className={`border rounded-md overflow-hidden ${selectedImage === img.url ? "ring-2 ring-blue-500" : ""}`}
           >
             <img
-              src={img}
-              alt={`${productName} view ${index + 1}`}
+              src={img.url}
+              alt={`${product.name} view ${index + 1}`}
               className="w-full h-20 object-contain bg-gray-50"
             />
           </button>
