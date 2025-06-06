@@ -35,15 +35,10 @@ const PreviewPage = () => {
         <>
           <HeroSection drone={drone} />
           <FeaturesSection drone={drone} />
-          {drone.specs.length > 0 ? (
+          {drone.specs.length > 0 &&
             drone.specs.map((spec) => (
               <DetailSection spec={spec} key={spec.id} />
-            ))
-          ) : (
-            <div className=" flex justify-center italic">
-              Эд ангийн showcase алга
-            </div>
-          )}
+            ))}
         </>
       ) : (
         <div>Холбоос буруу</div>

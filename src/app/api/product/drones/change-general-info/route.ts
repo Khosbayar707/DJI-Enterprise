@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
             }
           : {}),
         ...(currentModel ? { modelId: currentModel } : {}),
-        ...(price !== undefined ? { Price: price } : {}),
+        ...(price !== undefined ? { price } : {}),
         ...(discount !== undefined ? { discount } : {}),
 
         ...(cat1
