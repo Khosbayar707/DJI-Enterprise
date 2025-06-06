@@ -54,7 +54,7 @@ export default function FeaturesSection({ drone }: Props) {
         )}
       </div>
 
-      {randomVideo ? (
+      {drone.rtk && (
         <div className="relative h-[750px] bg-black flex items-center justify-center overflow-hidden mt-14">
           <video
             autoPlay
@@ -63,7 +63,7 @@ export default function FeaturesSection({ drone }: Props) {
             playsInline
             className="absolute h-full w-full object-cover opacity-60"
           >
-            <source src={randomVideo.url} type="video/mp4" />
+            <source src={drone.rtk.video.url} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80"></div>
@@ -72,19 +72,21 @@ export default function FeaturesSection({ drone }: Props) {
             <p className="text-blue-400 text-sm uppercase tracking-widest mb-2">
               RTK модуль
             </p>
-            <h3 className="text-4xl font-bold mb-6 drop-shadow-md">
-              Бүх пикселийг нарийвчлалтайгаар буулгана
-            </h3>
+            <div>
+              <h3 className="text-4xl font-bold mb-6 drop-shadow-md">
+                {drone.rtk.title}
+              </h3>
+              {drone.rtk.briefDescription && (
+                <h6 className="text-xl font-bold mb-6 drop-shadow-md text-background">
+                  {drone.rtk.briefDescription}
+                </h6>
+              )}
+            </div>
             <p className="text-lg text-gray-200 drop-shadow-md py-16">
-              Mavic 3M нь RTK модулийн тусламжтайгаар сантиметрийн нарийвчлалтай
-              байршил тогтоолт хийж, микросекунд түвшний цагийн синхрончлолыг
-              хангадаг. Ингэснээр танд газрын хяналтын цэгүүд шаардлагагүйгээр
-              өндөр нарийвчлалтай агаарын судалгаа хийх боломжийг олгоно.
+              {drone.rtk.description}
             </p>
           </div>
         </div>
-      ) : (
-        <div className="absolute h-full w-full object-cover opacity-60"></div>
       )}
     </section>
   );

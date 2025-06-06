@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
         advantages: { orderBy: { createdAt: "asc" } },
         tech: true,
         inTheBox: true,
+        rtk: { include: { video: true } },
       },
     });
     if (!drone) {

@@ -108,6 +108,7 @@ export type CustomDroneClient = Drone & {
   advantages: DroneAdvantage[];
   tech: DroneTech;
   inTheBox: DroneInTheBox[];
+  rtk: CustomRTK;
 };
 
 export type CustomSpecClient = Spec & {
