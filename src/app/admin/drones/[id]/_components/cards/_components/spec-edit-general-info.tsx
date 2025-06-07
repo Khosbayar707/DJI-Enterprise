@@ -1,4 +1,5 @@
 'use client';
+
 import PriorityForm from '@/app/_component/priority-form';
 import { CustomSnackbar } from '@/app/admin/_components/snackbar';
 import { EditSpecGeneralInfo } from '@/app/admin/specs/[id]/utils/editSpecGeneralInfo';
@@ -21,6 +22,7 @@ const SpecEditGeneralInfo = ({
   setRefresh: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [response, setResponse] = useState<ResponseType>();
+
   const form = useForm<z.infer<typeof EditSpecGeneralInfo>>({
     resolver: zodResolver(EditSpecGeneralInfo),
     defaultValues: {
@@ -52,6 +54,7 @@ const SpecEditGeneralInfo = ({
     }, 3000);
     return () => clearTimeout(timeout);
   }, [response]);
+
   return (
     <TabsContent value="general">
       {response && <CustomSnackbar value={response} />}
@@ -64,47 +67,57 @@ const SpecEditGeneralInfo = ({
             form.handleSubmit(onSubmit)(e);
           }}
         >
-          <div className=" flex flex-col gap-4">
+          <div className="flex flex-col gap-6 px-1 py-2">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField label="Нэр" variant="standard" {...field} />
+                    <TextField label="Нэр" variant="standard" fullWidth {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="detail"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField label="Дэлгэрэнгүй" variant="standard" {...field} />
+                    <TextField label="Дэлгэрэнгүй" variant="standard" fullWidth {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="previewText"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField label="Preview" variant="standard" {...field} />
+                    <TextField label="Preview" variant="standard" fullWidth {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <PriorityForm form={form} />
-            <Button disabled={!form.formState.isValid || form.formState.isSubmitting} type="submit">
-              Өөрчлөх
-            </Button>
+
+            <div className="flex justify-center pt-2">
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? 'Хадгалж байна...' : 'Өөрчлөх'}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

@@ -315,43 +315,58 @@ const DroneInfoCard = ({
                               >
                                 <Dialog>
                                   <DialogTrigger>
-                                    <FaRegEdit className=" text-lg cursor-pointer -top-1" />
+                                    <FaRegEdit className="text-lg cursor-pointer hover:text-primary transition-colors" />
                                   </DialogTrigger>
-                                  <DialogContent>
-                                    <DialogTitle className="flex">
-                                      <div className="truncate">
-                                        Эд анги {spec.name} -г засах гэж байна!
+                                  <DialogContent className="max-w-2xl rounded-xl p-6 space-y-6 shadow-lg">
+                                    <DialogTitle className="flex justify-self-center items-start gap-2">
+                                      <div className="text-base font-semibold leading-snug truncate max-w-[85%]">
+                                        Эд анги засах
                                       </div>
-                                      <Link target="_blank" href={`/admin/specs/${spec.id}`}>
-                                        <ImNewTab className="text-xs" />
+                                      <Link
+                                        target="_blank"
+                                        href={`/admin/specs/${spec.id}`}
+                                        className="text-gray-500 hover:text-primary transition-colors"
+                                      >
+                                        <ImNewTab className="text-sm" />
                                       </Link>
                                     </DialogTitle>
+
                                     <div className="relative">
-                                      <Tabs>
-                                        <TabsList className=" w-full ">
-                                          <TabsTrigger className=" cursor-pointer" value="general">
+                                      <Tabs defaultValue="general" className="w-full">
+                                        <TabsList className="w-full flex gap-2 border-b mb-4">
+                                          <TabsTrigger
+                                            className="px-4 py-2 text-sm font-medium rounded-t-md border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary transition-all cursor-pointer"
+                                            value="general"
+                                          >
                                             Ерөнхий
                                           </TabsTrigger>
                                           <TabsTrigger
-                                            className=" cursor-pointer"
+                                            className="px-4 py-2 text-sm font-medium rounded-t-md border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary transition-all cursor-pointer"
                                             value="add-description"
                                           >
                                             Дэлгэрэнгүй мэдээлэл нэмэх
                                           </TabsTrigger>
                                           <TabsTrigger
-                                            className=" cursor-pointer"
+                                            className="px-4 py-2 text-sm font-medium rounded-t-md border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary transition-all cursor-pointer"
                                             value="descriptions"
                                           >
                                             Бүх дэлгэрэнгүй мэдээлэл
                                           </TabsTrigger>
                                         </TabsList>
-                                        <SpecEditInfo setRefresh={setRefresh} spec={spec} />
-                                        <SpecAddDescription spec={spec} setRefresh={setRefresh} />
-                                        <SpecAllDescriptions spec={spec} setRefresh={setRefresh} />
+
+                                        <div className="pt-2">
+                                          <SpecEditInfo setRefresh={setRefresh} spec={spec} />
+                                          <SpecAddDescription spec={spec} setRefresh={setRefresh} />
+                                          <SpecAllDescriptions
+                                            spec={spec}
+                                            setRefresh={setRefresh}
+                                          />
+                                        </div>
                                       </Tabs>
                                     </div>
                                   </DialogContent>
                                 </Dialog>
+
                                 <div
                                   role="button"
                                   tabIndex={0}

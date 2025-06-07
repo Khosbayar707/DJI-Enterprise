@@ -168,7 +168,7 @@ const DroneAdditionalDescriptions = ({
                           }
                         `}
                     >
-                      Priority {description.priority}
+                      Эрэмбэ {description.priority}
                     </span>
                   </CardHeader>
                   <CardContent className="text-sm text-gray-700">
