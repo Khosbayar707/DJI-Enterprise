@@ -20,6 +20,7 @@ import { ResponseType } from '@/lib/types';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import GoogleButton from '@/app/_component/google-button';
 
 const Login = () => {
   const redir = useSearchParams().get('redir');
@@ -77,10 +78,7 @@ const Login = () => {
         {response && <CustomSnackbar value={response} />}
         <div className="flex flex-col items-center gap-6">
           <h2 className="text-2xl font-semibold">Нэвтрэх</h2>
-          <Button className="bg-secondary text-foreground hover:bg-foreground hover:text-secondary w-full flex items-center justify-center gap-3 py-2 cursor-pointer">
-            <FaGoogle className="text-lg" />
-            <span className="text-sm sm:text-base">Google -ээр нэвтрэх</span>
-          </Button>
+          <GoogleButton />
           <div className="flex items-center w-full gap-3">
             <div className="flex-1 border-t border-border"></div>
             <span className="text-xs font-medium text-muted-foreground">эсвэл</span>
