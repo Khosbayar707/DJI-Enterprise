@@ -30,19 +30,7 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
           </div>
         </div>
       </div>
-      <div className="space-y-2">
-        {drone.discount > 0 ? (
-          <>
-            <p className="text-3xl font-bold text-red-600">
-              {(drone.price - drone.discount).toLocaleString()}₮
-            </p>
-            <p className="text-xl text-gray-500 line-through">{drone.price.toLocaleString()}₮</p>
-            <p className="text-green-600 font-medium">Та {drone.discount}₮ хэмнэж байна!</p>
-          </>
-        ) : (
-          <p className="text-3xl font-semibold text-green-600">{drone.price}₮</p>
-        )}
-      </div>
+
       <p className="text-gray-700 leading-relaxed">
         {drone.briefDescription ?? 'Мэдээлэл одоогоор алга!'}
       </p>

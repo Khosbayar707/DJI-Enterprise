@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
         inTheBox: true,
         rtk: { include: { video: true } },
       },
+      omit: { price: true, discount: true },
     });
     if (!drone) {
       return CustomResponse(false, 'PRODUCT_NOT_FOUND', 'Бүтээгдэхүүн олдсонгүй!', null);

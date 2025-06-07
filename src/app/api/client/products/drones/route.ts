@@ -13,6 +13,7 @@ export async function GET() {
         advantages: { orderBy: { createdAt: 'asc' } },
       },
       orderBy: { createdAt: 'desc' },
+      omit: { price: true, discount: true },
     });
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Бүх дронууд', { drones });
   } catch (err) {
