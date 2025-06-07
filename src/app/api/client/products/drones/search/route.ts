@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const search = req.nextUrl.searchParams.get('search');
     if (!search) return;
     const drones = await prisma.drone.findMany({
-      where: { name: { contains: search, mode: 'insensitive' } },
+      where: { name: { contains: search, mode: 'insensitive' }, visible: true },
       include: { images: true },
       orderBy: { createdAt: 'desc' },
       omit: { price: true, discount: true },

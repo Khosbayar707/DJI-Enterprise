@@ -66,7 +66,7 @@ const DescriptionEditDialog = ({ description, setRefresh }: Props) => {
       {response && <CustomSnackbar value={response} />}
       <DialogTrigger>
         <DialogTitle>
-          <CardTitle className="text-lg font-semibold text-gray-800">
+          <CardTitle className="text-lg font-semibold text-gray-800 cursor-pointer">
             {description.highlight}
           </CardTitle>
         </DialogTitle>

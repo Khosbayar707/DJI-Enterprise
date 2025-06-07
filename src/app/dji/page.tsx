@@ -39,6 +39,13 @@ export default function ProductListPage() {
       </section>
     </div>
   ) : (
-    <div>Бараа дууссан</div>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="text-center space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-700">Бараа дууссан</h2>
+        <p className="text-sm text-gray-500">
+          Одоогоор худалдаанд байгаа дрон алга байна. Дараа дахин шалгана уу.
+        </p>
+      </div>
+    </div>
   );
 }

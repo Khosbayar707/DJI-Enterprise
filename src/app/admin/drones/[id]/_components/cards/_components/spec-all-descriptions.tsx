@@ -1,3 +1,5 @@
+'use client';
+
 import { CustomSnackbar } from '@/app/admin/_components/snackbar';
 import { TabsContent } from '@/components/ui/tabs';
 import { CustomSpec, ResponseType } from '@/lib/types';
@@ -13,11 +15,11 @@ const SpecAllDescriptions = ({
   setRefresh: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [response, setResponse] = useState<ResponseType>();
-  const [deleting, setDeleting] = useState(false);
-  const [deletingId, setId] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   const handleDelete = async (id: string) => {
     try {
-      setDeleting(true);
+      setDeletingId(id);
       const res = await axios.delete(`/api/product/specs/item/spec-desc?id=${id}`);
       if (res.data.success) {
         setRefresh((prev) => !prev);
@@ -26,7 +28,7 @@ const SpecAllDescriptions = ({
     } catch (err) {
       console.error(err);
     } finally {
-      setDeleting(false);
+      setDeletingId(null);
     }
   };
 
@@ -34,35 +36,35 @@ const SpecAllDescriptions = ({
     const timeout = setTimeout(() => {
       setResponse(undefined);
     }, 3000);
-
     return () => clearTimeout(timeout);
   }, [response]);
+
   return (
     <TabsContent value="descriptions">
       {response && <CustomSnackbar value={response} />}
-      <div>
+      <div className="flex flex-col gap-4 px-2 py-2">
         {spec.descriptions.length > 0 ? (
           spec.descriptions.map((sp, i) => (
-            <div key={sp.id} className=" flex justify-between">
-              <div>
-                {i + 1}. <span className=" text-xl">{sp.highlight}</span> -{' '}
-                <span className=" italic">{sp.highlight}</span> ({sp.priority}
-                /5)
-              </div>{' '}
+            <div key={sp.id} className="flex justify-between items-start gap-4 border-b pb-3">
+              <div className="flex-1 text-sm">
+                <div className="font-medium text-base">
+                  {i + 1}. {sp.highlight}
+                </div>
+                <div className="italic text-gray-600 mt-1">{sp.description}</div>
+                <div className="text-xs text-gray-500 mt-1">Эрэмбэ: {sp.priority}/5</div>
+              </div>
               <Button
-                disabled={deleting}
-                onClick={() => {
-                  handleDelete(sp.id);
-                  setId(sp.id);
-                }}
-                variant="text"
+                disabled={!!deletingId}
+                onClick={() => handleDelete(sp.id)}
+                variant="outlined"
+                size="small"
               >
-                {deleting && deletingId === sp.id ? 'Устгаж байна' : 'Устгах'}
+                {deletingId === sp.id ? 'Устгаж байна...' : 'Устгах'}
               </Button>
             </div>
           ))
         ) : (
-          <div>Дэлгэрэнгүй мэдээлэл алга!</div>
+          <div className="text-sm text-gray-500">Дэлгэрэнгүй мэдээлэл алга!</div>
         )}
       </div>
     </TabsContent>

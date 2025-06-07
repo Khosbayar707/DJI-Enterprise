@@ -14,6 +14,7 @@ export async function GET() {
       },
       orderBy: { createdAt: 'desc' },
       omit: { price: true, discount: true },
+      where: { visible: true },
     });
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Бүх дронууд', { drones });
   } catch (err) {

@@ -1,4 +1,5 @@
 'use client';
+
 import { SpecDescriptionSchema } from '@/app/admin/specs/[id]/utils/editSpecGeneralInfo';
 import { TabsContent } from '@/components/ui/tabs';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,6 +39,7 @@ const SpecAddDescription = ({
       setResponse(res.data);
       if (res.data.success) {
         setRefresh((prev) => !prev);
+        form.reset();
       }
     } catch (err) {
       console.error(err);
@@ -56,21 +58,21 @@ const SpecAddDescription = ({
       {response && <CustomSnackbar value={response} />}
       <Form {...form}>
         <form
-          className=" flex flex-col gap-2"
+          className="flex flex-col gap-6 p-2"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             form.handleSubmit(onSubmit)(e);
           }}
         >
-          <div className=" flex justify-around">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="highlight"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField variant="standard" label="Гарчиг" {...field} />
+                    <TextField variant="standard" label="Гарчиг" fullWidth {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -82,15 +84,25 @@ const SpecAddDescription = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField variant="standard" label="Инфо" {...field} />
+                    <TextField variant="standard" label="Инфо" fullWidth {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
+
           <PriorityForm form={form} />
-          <Button type="submit">Нэмэх</Button>
+
+          <div className="flex justify-center">
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? 'Нэмэж байна...' : 'Нэмэх'}
+            </Button>
+          </div>
         </form>
       </Form>
     </TabsContent>
