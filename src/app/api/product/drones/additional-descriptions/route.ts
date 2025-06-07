@@ -8,6 +8,7 @@ import {
 import { NextRequest } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
+import { checkAdminAuth } from '@/lib/check-admin';
 
 export async function GET() {
   try {
@@ -78,6 +79,31 @@ export async function DELETE(req: NextRequest) {
     });
   } catch (err) {
     console.error(err);
+    return NextResponse_CatchError(err);
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const { highlight, description, priority, id } = await req.json();
+    const check = checkAdminAuth(req);
+    if (check) return check;
+    const drone = await prisma.droneDescription.findUnique({ where: { id } });
+    if (!drone) {
+      return CustomResponse(false, 'NOT_FOUND', 'Тайлбар олдсонгүй!', null);
+    }
+    const updateDescription = await prisma.droneDescription.update({
+      data: {
+        ...(highlight !== undefined ? { highlight } : {}),
+        ...(description !== undefined ? { description } : {}),
+        ...(priority !== undefined ? { priority } : {}),
+      },
+      where: { id },
+    });
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Тайлбар амжилттай засагдлаа!', {
+      new: updateDescription,
+    });
+  } catch (err) {
     return NextResponse_CatchError(err);
   }
 }
