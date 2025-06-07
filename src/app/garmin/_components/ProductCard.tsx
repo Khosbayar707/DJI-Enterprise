@@ -1,17 +1,14 @@
-"use client";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { CustomGarminProduct } from "@/lib/types";
+'use client';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { CustomGarminProduct } from '@/lib/types';
 
 interface GarminProductCardProps {
   product: CustomGarminProduct;
   index: number;
 }
 
-export default function GarminProductCard({
-  product,
-  index,
-}: GarminProductCardProps) {
+export default function GarminProductCard({ product, index }: GarminProductCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,7 +55,7 @@ export default function GarminProductCard({
               {[...Array(5)].map((_, starIndex) => (
                 <svg
                   key={starIndex}
-                  className={`w-4 h-4 ${starIndex < Math.floor(product.rating) ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`w-4 h-4 ${starIndex < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -66,9 +63,7 @@ export default function GarminProductCard({
                 </svg>
               ))}
             </div>
-            <span className="text-xs text-gray-500 ml-1">
-              ({product.rating.toFixed(1)})
-            </span>
+            <span className="text-xs text-gray-500 ml-1">({product.rating.toFixed(1)})</span>
           </div>
           {/* <div className="mb-4">
             {product.discountPrice ? (

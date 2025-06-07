@@ -1,27 +1,21 @@
-"use client";
+'use client';
 
-import { ContactInfoItemProps } from "@/app/_types/types";
-import { PhoneIcon, EnvelopeIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { ContactInfoSchema } from "../utils/contact-info-schema";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import z from "zod";
-import { Button, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import { User } from "@/generated/prisma";
-import axios from "axios";
-import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
-import LoadingText from "@/app/_component/LoadingText";
-import { ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
+import { ContactInfoItemProps } from '@/app/_types/types';
+import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/solid';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { ContactInfoSchema } from '../utils/contact-info-schema';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import z from 'zod';
+import { Button, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { User } from '@/generated/prisma';
+import axios from 'axios';
+import Link from 'next/link';
+import { useParams, usePathname } from 'next/navigation';
+import LoadingText from '@/app/_component/LoadingText';
+import { ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
 
 const ContactForm = () => {
   const pathname = usePathname();
@@ -32,22 +26,19 @@ const ContactForm = () => {
   const form = useForm({
     resolver: zodResolver(ContactInfoSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      phone: "",
+      name: '',
+      description: '',
+      phone: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof ContactInfoSchema>) => {
     try {
       setLoading(true);
-      const res = await axios.post(
-        "/api/client/products/drone/contact-request",
-        {
-          ...values,
-          id,
-        }
-      );
+      const res = await axios.post('/api/client/products/drone/contact-request', {
+        ...values,
+        id,
+      });
       setResponse(res.data);
     } catch (err) {
       console.error(err);
@@ -59,7 +50,7 @@ const ContactForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/api/auth/current-user");
+        const res = await axios.get('/api/auth/current-user');
         if (res.data.success) {
           setUser(res.data.data.user);
         }
@@ -81,34 +72,21 @@ const ContactForm = () => {
   }, [response]);
 
   return (
-    <div
-      id="contact-form"
-      className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden"
-    >
+    <div id="contact-form" className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden">
       {response && <CustomSnackbar value={response} />}
       <div className="p-8 md:p-10">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Бидэнтэй холбогдох
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Бидэнтэй холбогдох</h2>
         <div className="grid md:grid-cols-2 gap-10">
           <div>
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-6"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <TextField
-                          variant="standard"
-                          label="Нэр"
-                          fullWidth
-                          {...field}
-                        />
+                        <TextField variant="standard" label="Нэр" fullWidth {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -180,22 +158,21 @@ const ContactForm = () => {
             <ContactInfoItem
               icon={<PhoneIcon className="h-6 w-6 text-blue-600" />}
               title="Утас"
-              items={["+976 9999 9999", "+976 8888 8888"]}
+              items={['+976 9999 9999', '+976 8888 8888']}
             />
             <ContactInfoItem
               icon={<EnvelopeIcon className="h-6 w-6 text-blue-600" />}
               title="И-мэйл"
-              items={["info@dronestore.mn", "sales@dronestore.mn"]}
+              items={['info@dronestore.mn', 'sales@dronestore.mn']}
             />
             <ContactInfoItem
               icon={<MapPinIcon className="h-6 w-6 text-blue-600" />}
               title="Хаяг"
-              items={[
-                "Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Жуулчны гудамж 34-1",
-              ]}
+              items={['Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Жуулчны гудамж 34-1']}
             />
             <div className="pt-4">
               <iframe
+                title="addess"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2676.063079710459!2d106.8920424!3d47.9183684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96eccc00000001:0xd9419ff8407d6f3c!2z0JjQvdC20LXQvdC10YAg0LPQtdC-0LTQtdC5INCR0JDQlyDQodCQ0JcgLyBFbmdpbmVlcmluZyBnZW9kZXN5IExMQw!5e0!3m2!1smn!2smn!4v1716115200000!5m2!1smn!2smn"
                 width="100%"
                 height="200"

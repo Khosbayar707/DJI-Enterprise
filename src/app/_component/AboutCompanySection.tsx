@@ -1,6 +1,6 @@
-"use client";
-import Image from "next/image";
-import { motion } from "framer-motion";
+'use client';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function AboutCompanySection() {
   return (
@@ -30,18 +30,16 @@ export default function AboutCompanySection() {
             className="lg:w-1/2"
           >
             <h2 className="text-3xl font-bold mb-6">
-              <span className="text-blue-600">Инженер Геодези</span> ХХК-ны
-              тухай
+              <span className="text-blue-600">Инженер Геодези</span> ХХК-ны тухай
             </h2>
             <p className="text-gray-600 mb-4">
-              Манай компани нь 2018 оноос хойш Монгол улсад DJI Enterprise
-              бүтээгдэхүүний албан ёсны дистрибьютерээр ажиллаж байна.
+              Манай компани нь 2018 оноос хойш Монгол улсад DJI Enterprise бүтээгдэхүүний албан ёсны
+              дистрибьютерээр ажиллаж байна.
             </p>
             <p className="text-gray-600 mb-4">
-              Бид газар зүй, барилга, уул уурхай, эрчим хүчний салбарт дроны
-              технологийн шийдлүүдийг нэвтрүүлэх, мэргэжлийн сургалт явуулах,
-              техник тоног төхөөрөмжийн борлуулалт, засвар үйлчилгээний
-              чиглэлээр үйл ажиллагаа явуулдаг.
+              Бид газар зүй, барилга, уул уурхай, эрчим хүчний салбарт дроны технологийн шийдлүүдийг
+              нэвтрүүлэх, мэргэжлийн сургалт явуулах, техник тоног төхөөрөмжийн борлуулалт, засвар
+              үйлчилгээний чиглэлээр үйл ажиллагаа явуулдаг.
             </p>
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div className="bg-blue-50 p-4 rounded-lg">

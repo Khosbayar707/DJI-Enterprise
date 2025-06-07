@@ -1,17 +1,13 @@
-import { CustomDroneClient } from "@/lib/types";
-import { CheckCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { CustomDroneClient } from '@/lib/types';
+import { CheckCircleIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
 
 type ProductInfoProps = {
   onContactClick: () => void;
   isLoading: boolean;
   drone: CustomDroneClient;
 };
-export default function ProductInfo({
-  drone,
-  onContactClick,
-  isLoading,
-}: ProductInfoProps) {
+export default function ProductInfo({ drone, onContactClick, isLoading }: ProductInfoProps) {
   return (
     <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg space-y-6 sticky top-4">
       <div>
@@ -40,21 +36,15 @@ export default function ProductInfo({
             <p className="text-3xl font-bold text-red-600">
               {(drone.price - drone.discount).toLocaleString()}₮
             </p>
-            <p className="text-xl text-gray-500 line-through">
-              {drone.price.toLocaleString()}₮
-            </p>
-            <p className="text-green-600 font-medium">
-              Та {drone.discount}₮ хэмнэж байна!
-            </p>
+            <p className="text-xl text-gray-500 line-through">{drone.price.toLocaleString()}₮</p>
+            <p className="text-green-600 font-medium">Та {drone.discount}₮ хэмнэж байна!</p>
           </>
         ) : (
-          <p className="text-3xl font-semibold text-green-600">
-            {drone.price}₮
-          </p>
+          <p className="text-3xl font-semibold text-green-600">{drone.price}₮</p>
         )}
       </div>
       <p className="text-gray-700 leading-relaxed">
-        {drone.briefDescription ?? "Мэдээлэл одоогоор алга!"}
+        {drone.briefDescription ?? 'Мэдээлэл одоогоор алга!'}
       </p>
       <div className="space-y-4">
         <h3 className="font-semibold text-lg">Үндсэн онцлогууд:</h3>
@@ -83,7 +73,7 @@ export default function ProductInfo({
               Хүлээж байна...
             </>
           ) : (
-            "Холбоо барих"
+            'Холбоо барих'
           )}
         </button>
 
@@ -96,12 +86,7 @@ export default function ProductInfo({
 
       <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
         <div className="flex items-center space-x-2 text-blue-800">
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -111,9 +96,7 @@ export default function ProductInfo({
           </svg>
           <span className="font-medium">Үнэгүй хүргэлт</span>
         </div>
-        <p className="text-sm text-blue-700 mt-1">
-          Улаанбаатар хотод 24 цагийн дотор хүргэнэ
-        </p>
+        <p className="text-sm text-blue-700 mt-1">Улаанбаатар хотод 24 цагийн дотор хүргэнэ</p>
       </div>
     </div>
   );

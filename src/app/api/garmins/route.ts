@@ -1,21 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "../../../generated/prisma";
+import { NextRequest } from 'next/server';
 import {
   CustomResponse,
   NextResponse_CatchError,
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import jwt from "jsonwebtoken";
-import { prisma } from "@/lib/prisma";
+} from '@/lib/next-responses';
+import jwt from 'jsonwebtoken';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
     const products = await prisma.garminProduct.findMany({
       include: { specifications: true, images: true },
     });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Бүх цагнууд", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Бүх цагнууд', {
       products,
     });
   } catch (err) {
@@ -37,27 +36,18 @@ export async function POST(req: NextRequest) {
       rating,
       reviewCount,
       inStock,
-      specifications,
     } = body;
 
     if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) return NextResponse_NoToken();
     const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as {
       isAdmin: boolean;
     };
     if (!verify.isAdmin) return NextResponse_NotAnAdmin();
 
-    if (
-      !Array.isArray(images) ||
-      !images.every((img) => img.url && img.public_id)
-    ) {
-      return CustomResponse(
-        false,
-        "INVALID_IMAGES",
-        "Зураг буруу форматтай",
-        null
-      );
+    if (!Array.isArray(images) || !images.every((img) => img.url && img.public_id)) {
+      return CustomResponse(false, 'INVALID_IMAGES', 'Зураг буруу форматтай', null);
     }
 
     const product = await prisma.garminProduct.create({
@@ -86,7 +76,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return CustomResponse(true, "SUCCESS", "Бүтээгдэхүүн үүслээ", { product });
+    return CustomResponse(true, 'SUCCESS', 'Бүтээгдэхүүн үүслээ', { product });
   } catch (err) {
     return NextResponse_CatchError(err);
   }
@@ -130,7 +120,7 @@ export async function PATCH(req: NextRequest) {
       include: { specifications: true },
     });
 
-    return CustomResponse(true, "REQUEST_SUCCESS", "Бүх дронууд", { product });
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Бүх дронууд', { product });
   } catch (err) {
     console.error(err);
     return NextResponse_CatchError(err);

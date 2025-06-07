@@ -1,11 +1,10 @@
-"use client";
-
-import axios from "axios";
-import ImagesCard from "../cards/images-card";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { CustomImage } from "@/lib/types";
-import { Spec } from "@/generated/prisma";
+'use client';
+import axios from 'axios';
+import ImagesCard from '../cards/images-card';
+import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { CustomImage } from '@/lib/types';
+import { Spec } from '@/generated/prisma';
 
 const ImagesSection = () => {
   const params = useParams();
@@ -15,7 +14,7 @@ const ImagesSection = () => {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     try {
       const res = await axios.get(`/api/product/specs/item?id=${id}`);
       if (res.data.success) {
@@ -27,11 +26,12 @@ const ImagesSection = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchImages();
-  }, [refresh]);
+  }, [refresh, fetchImages]);
+
   return (
     <div className=" flex flex-col gap-6">
       {!loading && spec && <div>{spec.name}</div>}

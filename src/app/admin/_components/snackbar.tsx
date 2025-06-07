@@ -1,5 +1,5 @@
-import { ResponseType } from "@/lib/types";
-import { Snackbar } from "@mui/material";
+import { ResponseType } from '@/lib/types';
+import { Snackbar } from '@mui/material';
 
 export const CustomSnackbar = ({ value }: { value: ResponseType }) => {
   return (
@@ -7,7 +7,7 @@ export const CustomSnackbar = ({ value }: { value: ResponseType }) => {
       className="z-51"
       open={!!value}
       message={value?.message}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     />
   );
 };

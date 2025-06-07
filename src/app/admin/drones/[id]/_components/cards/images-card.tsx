@@ -1,9 +1,9 @@
-"use client";
-import { Dispatch, SetStateAction } from "react";
-import LoadingText from "@/app/_component/LoadingText";
-import ImageDetailDialog from "../dialogs/image-detail-dialog";
-import ImageUploadAccordion from "../accordions/image-upload-accordian";
-import { CustomImage } from "@/lib/types";
+'use client';
+import { Dispatch, SetStateAction } from 'react';
+import LoadingText from '@/app/_component/LoadingText';
+import ImageDetailDialog from '../dialogs/image-detail-dialog';
+import ImageUploadAccordion from '../accordions/image-upload-accordian';
+import { CustomImage } from '@/lib/types';
 
 type Props = {
   loading: boolean;
@@ -26,12 +26,7 @@ const ImagesCard = ({ loading, images, setRefresh, id }: Props) => {
             <LoadingText />
           ) : images.length > 0 ? (
             images.map((image) => (
-              <ImageDetailDialog
-                key={image.id}
-                image={image}
-                id={id}
-                setRefresh={setRefresh}
-              />
+              <ImageDetailDialog key={image.id} image={image} id={id} setRefresh={setRefresh} />
             ))
           ) : (
             <div>Зураг алга</div>

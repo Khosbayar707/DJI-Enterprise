@@ -1,27 +1,25 @@
-"use client";
-import { useState, useEffect } from "react";
-import AddGarminProduct from "./add-product/add-garmin-product";
-import EditProductDialog from "./edit-product/EditProductDialog";
-import { GarminProduct } from "@/generated/prisma";
-import axios from "axios";
-import DeleteGarmin from "./delete-product/delete-garmin-product-buttom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatPrice } from "../utlis/format-price";
-import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CustomGarminProduct } from "@/lib/types";
+'use client';
+import { useState, useEffect } from 'react';
+import AddGarminProduct from './add-product/add-garmin-product';
+import EditProductDialog from './edit-product/EditProductDialog';
+import axios from 'axios';
+import DeleteGarmin from './delete-product/delete-garmin-product-buttom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatPrice } from '../utlis/format-price';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { CustomGarminProduct } from '@/lib/types';
 
 export default function GarminProductTable() {
   const [products, setProducts] = useState<CustomGarminProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(true);
-  const [editingProduct, setEditingProduct] =
-    useState<CustomGarminProduct | null>(null);
+  const [editingProduct, setEditingProduct] = useState<CustomGarminProduct | null>(null);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("/api/garmins");
+      const response = await axios.get('/api/garmins');
       if (response.data.success) {
         setProducts(response.data.data.products);
       }
@@ -43,7 +41,7 @@ export default function GarminProductTable() {
       y: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
+        ease: 'easeOut',
       },
     },
   };
@@ -59,9 +57,7 @@ export default function GarminProductTable() {
             className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white rounded-xl shadow-sm p-6"
           >
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Гармин бүтээгдэхүүн
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900">Гармин бүтээгдэхүүн</h1>
               <p className="text-gray-500 mt-1">Гармин хянах хэсэг</p>
             </div>
             <AddGarminProduct setRefresh={setRefresh} />
@@ -143,16 +139,12 @@ export default function GarminProductTable() {
                       <CardContent className="flex-grow">
                         <div className="space-y-3">
                           <div className="flex items-center">
-                            <span className="text-sm font-medium text-gray-500 mr-2">
-                              Төрөл:
-                            </span>
+                            <span className="text-sm font-medium text-gray-500 mr-2">Төрөл:</span>
                             <Badge variant="outline">{product.category}</Badge>
                           </div>
 
                           <div className="flex items-center">
-                            <span className="text-sm font-medium text-gray-500 mr-2">
-                              Үнэ:
-                            </span>
+                            <span className="text-sm font-medium text-gray-500 mr-2">Үнэ:</span>
                             <span className="text-gray-900 font-medium">
                               {formatPrice(product.price)}
                             </span>
@@ -162,12 +154,8 @@ export default function GarminProductTable() {
                             <span className="text-sm font-medium text-gray-500 mr-2">
                               Байгаа эсэх:
                             </span>
-                            <Badge
-                              variant={
-                                product.inStock ? "default" : "destructive"
-                              }
-                            >
-                              {product.inStock ? "In Stock" : "Out of Stock"}
+                            <Badge variant={product.inStock ? 'default' : 'destructive'}>
+                              {product.inStock ? 'In Stock' : 'Out of Stock'}
                             </Badge>
                           </div>
                         </div>
@@ -198,10 +186,7 @@ export default function GarminProductTable() {
                           Засварлах
                         </Button>
 
-                        <DeleteGarmin
-                          productId={product.id}
-                          setRefresh={setRefresh}
-                        />
+                        <DeleteGarmin productId={product.id} setRefresh={setRefresh} />
                       </div>
                     </Card>
                   </motion.div>

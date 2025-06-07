@@ -1,4 +1,4 @@
-import { ImSpinner9 } from "react-icons/im";
+import { ImSpinner9 } from 'react-icons/im';
 const LoadingText = () => {
   return (
     <div className=" flex items-center gap-2">

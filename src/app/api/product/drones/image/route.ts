@@ -4,33 +4,19 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+} from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
+import { checkAdminAuth } from '@/lib/check-admin';
 
 export async function POST(req: NextRequest) {
   try {
     const { url, public_id, id } = await req.json();
-    if (!process.env.JWT_SECRET) {
-      return NextResponse_NoEnv();
-    }
-    const accessToken = req.cookies.get("accessToken")?.value;
-    if (!accessToken) {
-      return NextResponse_NoToken();
-    }
-    const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as {
-      isAdmin: boolean;
-    };
-    if (!verify.isAdmin) {
-      return NextResponse_NotAnAdmin();
-    }
-    if (
-      !Array.isArray(url) ||
-      !Array.isArray(public_id) ||
-      url.length !== public_id.length
-    ) {
-      return CustomResponse(false, "INVALID_INPUT", "Буруу өгөгдөл", null);
+    const response = checkAdminAuth(req);
+    if (response) return response;
+    if (!Array.isArray(url) || !Array.isArray(public_id) || url.length !== public_id.length) {
+      return CustomResponse(false, 'INVALID_INPUT', 'Буруу өгөгдөл', null);
     }
 
     const data = url.map((u, i) => ({
@@ -41,7 +27,7 @@ export async function POST(req: NextRequest) {
     const newImages = await prisma.image.createMany({
       data,
     });
-    return CustomResponse(true, "SUCCESS", "Зураг амжилттай хадгаллаа!", {
+    return CustomResponse(true, 'SUCCESS', 'Зураг амжилттай хадгаллаа!', {
       new: newImages,
     });
   } catch (err) {
@@ -55,7 +41,7 @@ export async function PATCH(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -67,7 +53,7 @@ export async function PATCH(req: NextRequest) {
     }
     const image = await prisma.image.findUnique({ where: { id } });
     if (!image) {
-      return CustomResponse(false, "IMAGE_NOT_FOUND", "Зураг олдонгүй!", null);
+      return CustomResponse(false, 'IMAGE_NOT_FOUND', 'Зураг олдонгүй!', null);
     }
     const updateImage = await prisma.image.update({
       where: { id },
@@ -77,12 +63,9 @@ export async function PATCH(req: NextRequest) {
         priority,
       },
     });
-    return CustomResponse(
-      true,
-      "REQUEST_SUCCESS",
-      "Мэдээлэл амжилттай өөрчлөгдлөө!",
-      { new: updateImage }
-    );
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Мэдээлэл амжилттай өөрчлөгдлөө!', {
+      new: updateImage,
+    });
   } catch (err) {
     return NextResponse_CatchError(err);
   }

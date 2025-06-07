@@ -4,10 +4,10 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
-import { prisma } from "@/lib/prisma";
+} from '@/lib/next-responses';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {
   const { id, highlight, description, priority } = await req.json();
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const newDesc = await prisma.specDescription.create({
       data: { specId: id, description, priority, highlight },
     });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай нэмэгдлээ!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай нэмэгдлээ!', {
       new: newDesc,
     });
   } catch (err) {
@@ -38,20 +38,15 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const id = req.nextUrl.searchParams.get("id");
+  const id = req.nextUrl.searchParams.get('id');
   try {
     if (!id) {
-      return CustomResponse(
-        false,
-        "NO_ID_PROVIDED",
-        "Таних тэмдэг илгээгээгүй байна!",
-        null
-      );
+      return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг илгээгээгүй байна!', null);
     }
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -62,7 +57,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse_NotAnAdmin();
     }
     const deleted = await prisma.specDescription.delete({ where: { id } });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай устгалаа!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай устгалаа!', {
       new: deleted,
     });
   } catch (err) {

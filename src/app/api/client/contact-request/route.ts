@@ -1,6 +1,6 @@
-import { CustomResponse, NextResponse_CatchError } from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
+import { CustomResponse, NextResponse_CatchError } from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,16 +8,11 @@ export async function POST(req: NextRequest) {
     const { name, email, message, phone } = body;
 
     if (!email?.trim() || !message?.trim()) {
-      return CustomResponse(
-        false,
-        "INVALID_INPUT",
-        "И-мэйл болон мессеж шаардлагатай!",
-        null
-      );
+      return CustomResponse(false, 'INVALID_INPUT', 'И-мэйл болон мессеж шаардлагатай!', null);
     }
 
-    const forwarded = req.headers.get("x-forwarded-for");
-    const ip = forwarded?.split(",")[0].trim() || "unknown";
+    const forwarded = req.headers.get('x-forwarded-for');
+    const ip = forwarded?.split(',')[0].trim() || 'unknown';
 
     const existingRequest = await prisma.contactRequest.findFirst({
       where: {
@@ -30,19 +25,14 @@ export async function POST(req: NextRequest) {
     });
 
     if (existingRequest) {
-      return CustomResponse(
-        false,
-        "POSSIBLE_SPAM",
-        "Хүсэлт илгээсэн байна!",
-        null
-      );
+      return CustomResponse(false, 'POSSIBLE_SPAM', 'Хүсэлт илгээсэн байна!', null);
     }
 
     const contactRequest = await prisma.contactRequest.create({
       data: { name, email, message, phone, ip },
     });
 
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай илгээлээ!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай илгээлээ!', {
       new: contactRequest,
     });
   } catch (err) {

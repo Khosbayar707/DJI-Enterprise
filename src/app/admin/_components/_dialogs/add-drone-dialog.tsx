@@ -1,10 +1,5 @@
-"use client";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+'use client';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -12,18 +7,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { AddDroneSchema } from "@/lib/zod-schemas/add-drone-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import LoadingText from "../loading";
-import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "../snackbar";
+} from '@/components/ui/form';
+import { AddDroneSchema } from '@/lib/zod-schemas/add-drone-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, TextField } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import LoadingText from '../loading';
+import { Textarea } from '@/components/ui/textarea';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '../snackbar';
 
 const AddDroneDialog = ({
   refresh,
@@ -36,15 +31,15 @@ const AddDroneDialog = ({
   const form = useForm<z.infer<typeof AddDroneSchema>>({
     resolver: zodResolver(AddDroneSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = async (values: z.infer<typeof AddDroneSchema>) => {
     try {
-      const res = await axios.post("/api/product/drones", values);
+      const res = await axios.post('/api/product/drones', values);
       if (res.data) {
         setResponse(res.data);
         form.reset();
@@ -85,7 +80,7 @@ const AddDroneDialog = ({
                     <FormControl>
                       <TextField
                         {...field}
-                        color={form.formState.isValid ? "primary" : "error"}
+                        color={form.formState.isValid ? 'primary' : 'error'}
                         variant="standard"
                         label="Дроны нэр"
                       />
@@ -108,13 +103,11 @@ const AddDroneDialog = ({
                 )}
               />
               <Button
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
                 type="submit"
                 className=" w-full"
               >
-                {form.formState.isSubmitting ? <LoadingText /> : "Нэмэх"}
+                {form.formState.isSubmitting ? <LoadingText /> : 'Нэмэх'}
               </Button>
             </div>
           </form>

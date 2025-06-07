@@ -1,6 +1,6 @@
-"use client";
-import { Dispatch, SetStateAction, useState } from "react";
-import axios from "axios";
+'use client';
+import { Dispatch, SetStateAction, useState } from 'react';
+import axios from 'axios';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -11,14 +11,14 @@ export default function DeleteGarmin({ productId, setRefresh }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    if (!confirm("Та энэ бүтээгдэхүүнийг устгахдаа итгэлтэй байна уу?")) return;
+    if (!confirm('Та энэ бүтээгдэхүүнийг устгахдаа итгэлтэй байна уу?')) return;
     setLoading(true);
     try {
       await axios.delete(`/api/garmins/garmin?id=${productId}`);
       setRefresh((prev) => !prev);
     } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("Бүтээгдэхүүнийг устгахад алдаа гарлаа.");
+      console.error('Error deleting product:', error);
+      alert('Бүтээгдэхүүнийг устгахад алдаа гарлаа.');
     } finally {
       setLoading(false);
     }
@@ -33,11 +33,7 @@ export default function DeleteGarmin({ productId, setRefresh }: Props) {
       aria-label="Бүтээгдэхүүнийг устгах"
     >
       {loading ? (
-        <svg
-          className="animate-spin h-5 w-5 text-red-600"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
+        <svg className="animate-spin h-5 w-5 text-red-600" viewBox="0 0 24 24" aria-hidden="true">
           <circle
             className="opacity-25"
             cx="12"

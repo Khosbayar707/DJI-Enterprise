@@ -1,11 +1,6 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { UseFormReturn, FieldValues, Path } from "react-hook-form";
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { UseFormReturn, FieldValues, Path } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -14,14 +9,12 @@ const PriorityForm = <T extends FieldValues>({ form }: Props<T>) => {
   return (
     <FormField
       control={form.control}
-      name={"priority" as Path<T>}
+      name={'priority' as Path<T>}
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            Хэр чухал вэ?{" "}
-            <span className="text-xs italic">
-              *их тоотой нь хамгийн эхэнд харагдана
-            </span>
+            Хэр чухал вэ?{' '}
+            <span className="text-xs italic">*их тоотой нь хамгийн эхэнд харагдана</span>
           </FormLabel>
           <FormControl>
             <RadioGroup

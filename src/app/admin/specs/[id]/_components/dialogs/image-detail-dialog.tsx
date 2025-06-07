@@ -1,29 +1,17 @@
-"use client";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { CustomImage, ResponseType } from "@/lib/types";
-import Image from "next/image";
-import {
-  TextField,
-  Button,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { EditSpecImageDetailSchema } from "../../utils/edit-spec-image-detail-schema";
-import LoadingText from "@/app/_component/LoadingText";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
+'use client';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { CustomImage, ResponseType } from '@/lib/types';
+import Image from 'next/image';
+import { TextField, Button, FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { EditSpecImageDetailSchema } from '../../utils/edit-spec-image-detail-schema';
+import LoadingText from '@/app/_component/LoadingText';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
 
 type Props = {
   image: CustomImage;
@@ -39,18 +27,16 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
   const form = useForm<z.infer<typeof EditSpecImageDetailSchema>>({
     resolver: zodResolver(EditSpecImageDetailSchema),
     defaultValues: {
-      name: image.name || "",
-      description: image.description || "",
+      name: image.name || '',
+      description: image.description || '',
       priority: image.priority || 0,
     },
   });
 
-  const onSubmit = async (
-    values: z.infer<typeof EditSpecImageDetailSchema>
-  ) => {
+  const onSubmit = async (values: z.infer<typeof EditSpecImageDetailSchema>) => {
     try {
       setWaiting(true);
-      const res = await axios.patch("/api/product/specs/image", {
+      const res = await axios.patch('/api/product/specs/image', {
         ...values,
         id: image.id,
       });
@@ -93,7 +79,7 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
           {response && <CustomSnackbar value={response} />}
           <div className="relative w-32 h-32 rounded-md overflow-hidden border border-gray-200">
             <Image
-              src={image.url ?? "/auth/banner.webp"}
+              src={image.url ?? '/auth/banner.webp'}
               alt="drone image"
               fill
               className="object-cover"
@@ -104,28 +90,25 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
               🏷️ <span className="font-semibold">Нэр:</span> {image.name}
             </p>
             <p className="text-gray-600">
-              📄 <span className="font-semibold">Дэлгэрэнгүй:</span>{" "}
-              {image.description}
+              📄 <span className="font-semibold">Дэлгэрэнгүй:</span> {image.description}
             </p>
             <div>
               <p className="text-gray-400 text-xs mt-2">
-                Нэмэгдсэн: {new Date(image.createdAt).toLocaleString("mn-MN")}
+                Нэмэгдсэн: {new Date(image.createdAt).toLocaleString('mn-MN')}
               </p>
               <p className="text-gray-400 text-xs">
-                Засагдсан: {new Date(image.updatedAt).toLocaleString("mn-MN")}
+                Засагдсан: {new Date(image.updatedAt).toLocaleString('mn-MN')}
               </p>
             </div>
           </div>
         </div>
       </DialogTrigger>
       <DialogContent className="max-w-md">
-        <DialogTitle className="mb-4 text-lg font-semibold">
-          Зургийн мэдээлэл засах
-        </DialogTitle>
+        <DialogTitle className="mb-4 text-lg font-semibold">Зургийн мэдээлэл засах</DialogTitle>
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-64 h-64 rounded-lg overflow-hidden border shadow">
             <Image
-              src={image.url ?? "/auth/banner.webp"}
+              src={image.url ?? '/auth/banner.webp'}
               alt="Drone Image Preview"
               fill
               className="object-cover"
@@ -177,7 +160,7 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Хэр чухал вэ?{" "}
+                          Хэр чухал вэ?{' '}
                           <span className="text-xs italic">
                             *их тоотой нь хамгийн эхэнд харагдана
                           </span>
@@ -187,9 +170,7 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                             {...field}
                             row
                             value={field.value || 0}
-                            onChange={(e) =>
-                              field.onChange(Number(e.target.value))
-                            }
+                            onChange={(e) => field.onChange(Number(e.target.value))}
                             className=" flex justify-center gap-4"
                           >
                             {[0, 1, 2, 3, 4, 5].map((val) => (
@@ -213,7 +194,7 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
                     color="primary"
                     size="small"
                   >
-                    {waiting ? <LoadingText /> : "Хадгалах"}
+                    {waiting ? <LoadingText /> : 'Хадгалах'}
                   </Button>
                 </div>
               </form>
@@ -221,22 +202,22 @@ const ImageDetailDialog = ({ image, setRefresh }: Props) => {
             <div className="text-xs text-gray-500 space-y-1 flex justify-between">
               <div>
                 <p>
-                  📅 <span className="font-medium">Үүсгэсэн:</span>{" "}
-                  {new Date(image.createdAt).toLocaleString("mn-MN")}
+                  📅 <span className="font-medium">Үүсгэсэн:</span>{' '}
+                  {new Date(image.createdAt).toLocaleString('mn-MN')}
                 </p>
                 <p>
-                  🔄 <span className="font-medium">Шинэчилсэн:</span>{" "}
-                  {new Date(image.updatedAt).toLocaleString("mn-MN")}
+                  🔄 <span className="font-medium">Шинэчилсэн:</span>{' '}
+                  {new Date(image.updatedAt).toLocaleString('mn-MN')}
                 </p>
               </div>
               <div>
                 {confirm ? (
                   <Button color="warning" onClick={handleDeleteImage}>
-                    {deletingImage ? <LoadingText /> : "Баталгаажуулах!"}
+                    {deletingImage ? <LoadingText /> : 'Баталгаажуулах!'}
                   </Button>
                 ) : (
                   <Button onClick={() => setConfirm(true)} color="warning">
-                    {deletingImage ? <LoadingText /> : "Устгах"}
+                    {deletingImage ? <LoadingText /> : 'Устгах'}
                   </Button>
                 )}
               </div>

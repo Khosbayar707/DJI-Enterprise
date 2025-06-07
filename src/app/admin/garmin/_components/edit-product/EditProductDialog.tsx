@@ -1,12 +1,7 @@
-"use client";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import EditProductForm from "./edit-product-form";
-import { CustomGarminProduct } from "@/lib/types";
+'use client';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import EditProductForm from './edit-product-form';
+import { CustomGarminProduct } from '@/lib/types';
 
 type Props = {
   product: CustomGarminProduct;
@@ -14,22 +9,12 @@ type Props = {
   onClose: () => void;
 };
 
-export default function EditProductDialog({
-  product,
-  setRefresh,
-  onClose,
-}: Props) {
+export default function EditProductDialog({ product, setRefresh, onClose }: Props) {
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="">
-        <DialogTitle>
-          Та бүтээгдэхүүн {product.name}-ыг засах гэж байна!
-        </DialogTitle>
-        <EditProductForm
-          product={product}
-          setRefresh={setRefresh}
-          onClose={onClose}
-        />
+        <DialogTitle>Та бүтээгдэхүүн {product.name}-ыг засах гэж байна!</DialogTitle>
+        <EditProductForm product={product} setRefresh={setRefresh} onClose={onClose} />
       </DialogContent>
     </Dialog>
   );

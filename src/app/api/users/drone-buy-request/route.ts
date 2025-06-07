@@ -4,17 +4,17 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
-import { prisma } from "@/lib/prisma";
+} from '@/lib/next-responses';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
+import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
   try {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -26,9 +26,9 @@ export async function GET(req: NextRequest) {
     }
     const users = await prisma.droneBuyRequest.findMany({
       include: { drone: true, user: { omit: { password: true } } },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Хүсэлт амжилттай!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Хүсэлт амжилттай!', {
       users,
     });
   } catch (err) {
@@ -42,7 +42,7 @@ export async function PATCH(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -54,12 +54,7 @@ export async function PATCH(req: NextRequest) {
     }
     const request = await prisma.droneBuyRequest.findUnique({ where: { id } });
     if (!request) {
-      return CustomResponse(
-        false,
-        "REQUEST_NOT_FOUND",
-        "Хүсэлт олдсонгүй!",
-        null
-      );
+      return CustomResponse(false, 'REQUEST_NOT_FOUND', 'Хүсэлт олдсонгүй!', null);
     }
     const deleteRequest = await prisma.droneBuyRequest.update({
       where: { id: request.id },
@@ -68,14 +63,9 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    return CustomResponse(
-      true,
-      "REQUEST_SUCCESS",
-      "Төлөв амжилттай өөрчлөгдлөө!",
-      {
-        deleted: deleteRequest,
-      }
-    );
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Төлөв амжилттай өөрчлөгдлөө!', {
+      deleted: deleteRequest,
+    });
   } catch (err) {
     console.error(err);
     return NextResponse_CatchError(err);

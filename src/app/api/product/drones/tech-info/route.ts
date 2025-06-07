@@ -4,10 +4,10 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+} from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     });
     if (!existingTech) {
       const tech = await prisma.droneTech.create({ data: body });
-      return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай хадгаллаа!", {
+      return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай хадгаллаа!', {
         new: tech,
       });
     }
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       where: { id: existingTech.id },
       data: body,
     });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай хадгаллаа!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай хадгаллаа!', {
       new: tech,
     });
   } catch (err) {

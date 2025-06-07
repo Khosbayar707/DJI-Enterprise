@@ -1,17 +1,11 @@
-"use client";
+'use client';
 
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Form,
   FormControl,
@@ -19,16 +13,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Snackbar, Alert } from "@mui/material";
-import axios from "axios";
+} from '@/components/ui/form';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Snackbar, Alert } from '@mui/material';
+import axios from 'axios';
 import {
   AddGarminProductSchema,
   AddGarminProductSchemaType,
-} from "../../utlis/add-garmin-product-schema";
-import { GarminProduct } from "@/generated/prisma";
-import CircularProgressWithLabel from "@/app/dji/utils/loading-circle";
+} from '../../utlis/add-garmin-product-schema';
+import { GarminProduct } from '@/generated/prisma';
+import CircularProgressWithLabel from '@/app/dji/utils/loading-circle';
+import Image from 'next/image';
 
 type Props = {
   product: GarminProduct & {
@@ -38,16 +33,10 @@ type Props = {
   onClose: () => void;
 };
 
-export default function EditProductForm({
-  product,
-  setRefresh,
-  onClose,
-}: Props) {
+export default function EditProductForm({ product, setRefresh, onClose }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success"
-  );
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [imageUploading, setImageUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -58,8 +47,8 @@ export default function EditProductForm({
       category: product.category,
       price: product.price,
       images: product.images || [],
-      description: product.description || "",
-      features: product.features?.join("\n") || "",
+      description: product.description || '',
+      features: product.features?.join('\n') || '',
       isNew: product.isNew || false,
       rating: product.rating || 0,
     },
@@ -68,7 +57,7 @@ export default function EditProductForm({
   const { setValue } = form;
 
   useEffect(() => {
-    setValue("images", product.images);
+    setValue('images', product.images);
   }, [product.images, setValue]);
 
   const imageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,9 +65,7 @@ export default function EditProductForm({
     setImageUploading(true);
     try {
       const files = Array.from(event.target.files);
-      const response1 = await axios.get(
-        `/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`
-      );
+      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`);
       if (!response1.data.success) return;
 
       const { timestamp, signature, api_key } = response1.data.data;
@@ -87,12 +74,12 @@ export default function EditProductForm({
 
       for (const file of files) {
         const data = new FormData();
-        data.append("file", file);
-        data.append("timestamp", timestamp.toString());
-        data.append("signature", signature);
-        data.append("api_key", api_key);
-        data.append("resource_type", "image");
-        data.append("folder", "Garmin/Smartwatch");
+        data.append('file', file);
+        data.append('timestamp', timestamp.toString());
+        data.append('signature', signature);
+        data.append('api_key', api_key);
+        data.append('resource_type', 'image');
+        data.append('folder', 'Garmin/Smartwatch');
 
         const response2 = await axios.post(
           `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
@@ -100,9 +87,7 @@ export default function EditProductForm({
           {
             onUploadProgress: (progress) => {
               if (progress.total) {
-                const percent = Math.round(
-                  (progress.loaded * 100) / progress.total
-                );
+                const percent = Math.round((progress.loaded * 100) / progress.total);
                 setProgress(percent);
               }
             },
@@ -120,9 +105,9 @@ export default function EditProductForm({
         public_id: uploadedImagePublicIds[i],
       }));
 
-      const currentImages = form.getValues("images") || [];
+      const currentImages = form.getValues('images') || [];
       const updatedImages = [...currentImages, ...newImages];
-      setValue("images", updatedImages);
+      setValue('images', updatedImages);
     } catch (err) {
       console.error(err);
     } finally {
@@ -133,7 +118,7 @@ export default function EditProductForm({
   const onSubmit = async (data: AddGarminProductSchemaType) => {
     try {
       const featuresArray = data.features
-        ? data.features.split("\n").filter((f) => f.trim() !== "")
+        ? data.features.split('\n').filter((f) => f.trim() !== '')
         : [];
 
       const payload = {
@@ -141,25 +126,23 @@ export default function EditProductForm({
         features: featuresArray,
       };
 
-      const response = await axios.put(
-        `/api/garmins/garmin?id=${product.id}`,
-        payload
-      );
+      const response = await axios.put(`/api/garmins/garmin?id=${product.id}`, payload);
 
       if (response.data.success) {
         setRefresh((prev) => !prev);
         onClose();
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Бүтээгдэхүүн амжилттай шинэчлэгдлээ");
+        setSnackbarSeverity('success');
+        setSnackbarMessage('Бүтээгдэхүүн амжилттай шинэчлэгдлээ');
       } else {
-        setSnackbarSeverity("error");
-        setSnackbarMessage("Шинэчлэхэд алдаа гарлаа");
+        setSnackbarSeverity('error');
+        setSnackbarMessage('Шинэчлэхэд алдаа гарлаа');
       }
 
       setSnackbarOpen(true);
     } catch (error) {
-      setSnackbarSeverity("error");
-      setSnackbarMessage("Алдаа гарлаа");
+      console.error(error);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Алдаа гарлаа');
       setSnackbarOpen(true);
     }
   };
@@ -174,13 +157,9 @@ export default function EditProductForm({
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarSeverity}
-          sx={{ width: "100%" }}
-        >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -274,12 +253,15 @@ export default function EditProductForm({
               </FormControl>
               <div className="flex gap-2 flex-wrap mt-2">
                 {field.value?.map((img, i) => (
-                  <img
-                    key={i}
-                    src={img.url}
-                    alt="uploaded"
-                    className="w-24 h-24 object-cover border rounded"
-                  />
+                  <div key={i} className="relative w-24 h-24">
+                    <Image
+                      src={img.url}
+                      alt="uploaded"
+                      fill
+                      className="object-cover border rounded"
+                      sizes="96px"
+                    />
+                  </div>
                 ))}
               </div>
               <FormMessage />
@@ -346,7 +328,7 @@ export default function EditProductForm({
             Болих
           </Button>
           <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Шинэчилж байна..." : "Хадгалах"}
+            {form.formState.isSubmitting ? 'Шинэчилж байна...' : 'Хадгалах'}
           </Button>
         </div>
       </form>

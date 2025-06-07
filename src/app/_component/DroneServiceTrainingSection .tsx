@@ -1,14 +1,12 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Wrench, School } from "lucide-react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Wrench, School } from 'lucide-react';
 
 export default function DroneServiceTrainingSection() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Дроны Засвар Үйлчилгээ & Сургалт
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Дроны Засвар Үйлчилгээ & Сургалт</h2>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white p-8 rounded-lg shadow-md">
@@ -17,8 +15,8 @@ export default function DroneServiceTrainingSection() {
               <h3 className="text-xl font-semibold">Дроны Засвар Үйлчилгээ</h3>
             </div>
             <p className="text-gray-600 mb-4">
-              Бид DJI брэндийн бүх төрлийн дроны засвар, оношилгоо, тохируулгыг
-              мэргэжлийн өндөр түвшинд хийж гүйцэтгэдэг.
+              Бид DJI брэндийн бүх төрлийн дроны засвар, оношилгоо, тохируулгыг мэргэжлийн өндөр
+              түвшинд хийж гүйцэтгэдэг.
             </p>
             <ul className="space-y-2 mb-6">
               <li className="flex items-center">
@@ -79,10 +77,7 @@ export default function DroneServiceTrainingSection() {
                 Хурдан шуурхай засвар
               </li>
             </ul>
-            <Button
-              variant="outline"
-              className="border-blue-600 text-blue-600 hover:bg-blue-50"
-            >
+            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
               Дэлгэрэнгүй мэдээлэл
             </Button>
           </div>
@@ -90,13 +85,11 @@ export default function DroneServiceTrainingSection() {
           <div className="bg-white p-8 rounded-lg shadow-md">
             <div className="flex items-center mb-4">
               <School className="w-8 h-8 text-green-600 mr-3" />
-              <h3 className="text-xl font-semibold">
-                Дроны Жолоодлогын Сургалт
-              </h3>
+              <h3 className="text-xl font-semibold">Дроны Жолоодлогын Сургалт</h3>
             </div>
             <p className="text-gray-600 mb-4">
-              Мэргэшсэн багш нартай дроны жолоодлого, FAA дүрэм, агаарын
-              хөдөлгөөний тухай бүрэн хүрээнд суралцана.
+              Мэргэшсэн багш нартай дроны жолоодлого, FAA дүрэм, агаарын хөдөлгөөний тухай бүрэн
+              хүрээнд суралцана.
             </p>
             <ul className="space-y-2 mb-6">
               <li className="flex items-center">
@@ -157,10 +150,7 @@ export default function DroneServiceTrainingSection() {
                 Хувийн болон бүлгийн сургалт
               </li>
             </ul>
-            <Button
-              variant="outline"
-              className="border-green-600 text-green-600 hover:bg-green-50"
-            >
+            <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
               Сургалтанд бүртгүүлэх
             </Button>
           </div>

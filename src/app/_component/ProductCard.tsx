@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { CustomDroneClient } from "@/lib/types";
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { CustomDroneClient } from '@/lib/types';
 
 type ProductCardProps = {
   drone: CustomDroneClient;
@@ -36,9 +36,7 @@ export default function ProductCard({ drone, index }: ProductCardProps) {
         <div className="p-4 flex-1 flex flex-col justify-between">
           <div>
             <h3 className="text-lg font-bold mb-2">{drone.name}</h3>
-            <p className="text-gray-600 text-sm line-clamp-1">
-              {drone.briefDescription}
-            </p>
+            <p className="text-gray-600 text-sm line-clamp-1">{drone.briefDescription}</p>
           </div>
           <button className="mt-4 w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
             Дэлгэрэнгүй

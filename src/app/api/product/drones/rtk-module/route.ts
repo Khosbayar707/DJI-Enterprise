@@ -4,11 +4,11 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
-import { prisma } from "@/lib/prisma";
-import { v2 as cloudinary } from "cloudinary";
+} from '@/lib/next-responses';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
+import { prisma } from '@/lib/prisma';
+import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -18,18 +18,11 @@ cloudinary.config({
 
 export async function POST(req: NextRequest) {
   try {
-    const {
-      title,
-      briefDescription,
-      description,
-      public_id,
-      droneId,
-      videoURL,
-    } = await req.json();
+    const { title, briefDescription, description, public_id, droneId, videoURL } = await req.json();
 
     if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
 
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) return NextResponse_NoToken();
 
     const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as {
@@ -53,16 +46,9 @@ export async function POST(req: NextRequest) {
         include: { video: true },
       });
       if (videoURL !== updateRTK.video.url) {
-        const result = await cloudinary.uploader.destroy(
-          updateRTK.video.public_id
-        );
-        if (result.result !== "ok" && result.result !== "not found") {
-          return CustomResponse(
-            false,
-            "FAILED",
-            "Хуучин видеог устгаж чадсангүй!",
-            null
-          );
+        const result = await cloudinary.uploader.destroy(updateRTK.video.public_id);
+        if (result.result !== 'ok' && result.result !== 'not found') {
+          return CustomResponse(false, 'FAILED', 'Хуучин видеог устгаж чадсангүй!', null);
         }
 
         await prisma.video.update({
@@ -74,14 +60,9 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      return CustomResponse(
-        true,
-        "REQUEST_SUCCESS",
-        "Амжилттай шинэчлэгдлээ!",
-        {
-          updated: updateRTK,
-        }
-      );
+      return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай шинэчлэгдлээ!', {
+        updated: updateRTK,
+      });
     }
     const video = await prisma.video.create({
       data: {
@@ -98,7 +79,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай хадгаллаа!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай хадгаллаа!', {
       new: video,
     });
   } catch (err) {
@@ -109,38 +90,23 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
+    const id = req.nextUrl.searchParams.get('id');
     if (!id) {
-      return CustomResponse(
-        false,
-        "NO_ID_PROVIDED",
-        "Таних тэмдэг алга байна!",
-        null
-      );
+      return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга байна!', null);
     }
     const rtk = await prisma.rtkModule.findUnique({
       where: { id },
       include: { video: true },
     });
     if (!rtk) {
-      return CustomResponse(false, "NOT_FOUND", "RTK модуль олдсонгүй", null);
+      return CustomResponse(false, 'NOT_FOUND', 'RTK модуль олдсонгүй', null);
     }
     const result = await cloudinary.uploader.destroy(rtk.video.public_id);
-    if (result.result !== "ok" && result.result !== "not found") {
-      return CustomResponse(
-        false,
-        "FAILED",
-        "Хуучин видеог устгаж чадсангүй!",
-        null
-      );
+    if (result.result !== 'ok' && result.result !== 'not found') {
+      return CustomResponse(false, 'FAILED', 'Хуучин видеог устгаж чадсангүй!', null);
     }
     await prisma.rtkModule.delete({ where: { id } });
-    return CustomResponse(
-      true,
-      "SUCCESS",
-      "RTK модуль болон бичлэг устлаа",
-      null
-    );
+    return CustomResponse(true, 'SUCCESS', 'RTK модуль болон бичлэг устлаа', null);
   } catch (err) {
     console.error(err);
     return NextResponse_CatchError(err);

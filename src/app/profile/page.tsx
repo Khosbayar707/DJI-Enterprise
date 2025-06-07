@@ -1,20 +1,12 @@
-"use client";
-import { useEffect, useState } from "react";
-import UserProfileChangeEmail from "./_featured/user-profile-change-email";
-import UserProfileChangePassword from "./_featured/user-profile-change-password";
-import UserProfileDroneBuyRequests from "./_featured/user-profile-drone-buy-requests";
-import { DroneBuyRequest, User } from "@/generated/prisma";
-import axios from "axios";
-import LoadingText from "../_component/LoadingText";
-import { CustomUserClient } from "@/lib/types";
-import UserProfileSkeleton from "./_components/skeleton";
+'use client';
+import { useEffect, useState } from 'react';
+import UserProfileChangeEmail from './_featured/user-profile-change-email';
+import UserProfileChangePassword from './_featured/user-profile-change-password';
+import UserProfileDroneBuyRequests from './_featured/user-profile-drone-buy-requests';
+import axios from 'axios';
+import { CustomUserClient } from '@/lib/types';
+import UserProfileSkeleton from './_components/skeleton';
 
-const mockUser = {
-  email: "adiya@example.com",
-};
-type CustomUser = User & {
-  requests: DroneBuyRequest[];
-};
 export default function ProfilePage() {
   const [user, setUser] = useState<CustomUserClient>();
   const [loading, setLoading] = useState(true);
@@ -23,7 +15,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/api/auth/current-user");
+        const res = await axios.get('/api/auth/current-user');
         if (res.data.success) {
           setUser(res.data.data.user);
         }
@@ -52,7 +44,7 @@ export default function ProfilePage() {
             <UserProfileChangeEmail user={user} setRefresh={setRefresh} />
           </section>
           <section className="p-6 border rounded-lg shadow-sm w-full">
-            <UserProfileChangePassword user={user} setRefresh={setRefresh} />
+            <UserProfileChangePassword />
           </section>
           <section className="p-6 border rounded-lg shadow-sm w-full">
             <UserProfileDroneBuyRequests requests={user.requests} />

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import SpecInfoCard from "../cards/general-card";
-import { useEffect, useState } from "react";
-import { Drone, SpecCategory } from "@/generated/prisma";
-import { CustomSpec } from "@/lib/types";
-import axios from "axios";
-import LoadingText from "@/app/_component/LoadingText";
+import { useParams } from 'next/navigation';
+import SpecInfoCard from '../cards/general-card';
+import { useCallback, useEffect, useState } from 'react';
+import { Drone, SpecCategory } from '@/generated/prisma';
+import { CustomSpec } from '@/lib/types';
+import axios from 'axios';
+import LoadingText from '@/app/_component/LoadingText';
 
 const GeneralSection = () => {
   const params = useParams();
@@ -21,8 +21,8 @@ const GeneralSection = () => {
 
   const fetchCategories = async () => {
     try {
-      const speccat = await axios.get("/api/categories/specs");
-      const drones = await axios.get("/api/product/drones");
+      const speccat = await axios.get('/api/categories/specs');
+      const drones = await axios.get('/api/product/drones');
       if (speccat.data.success) {
         setSpecCategories(speccat.data.data.categories);
       }
@@ -35,7 +35,7 @@ const GeneralSection = () => {
       setWaitingCategories(false);
     }
   };
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await axios.get(`/api/product/specs/item/?id=${id}`);
       if (res.data.success) {
@@ -50,11 +50,11 @@ const GeneralSection = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
   useEffect(() => {
     fetchData();
     fetchCategories();
-  }, [refresh]);
+  }, [refresh, fetchData]);
 
   return (
     <div className=" flex flex-col gap-6">

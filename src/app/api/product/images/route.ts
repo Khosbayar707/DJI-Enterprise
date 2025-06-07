@@ -4,11 +4,11 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
-import { v2 } from "cloudinary";
+} from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
+import { v2 } from 'cloudinary';
 
 v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -17,14 +17,14 @@ v2.config({
 });
 export async function DELETE(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
+    const id = req.nextUrl.searchParams.get('id');
     if (!id) {
-      return CustomResponse(false, "NO_ID_PROVIDED", "Таних тэмдэг алга", null);
+      return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга', null);
     }
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -36,19 +36,14 @@ export async function DELETE(req: NextRequest) {
     }
     const image = await prisma.image.findUnique({ where: { id } });
     if (!image) {
-      return CustomResponse(false, "IMAGE_NOT_FOUND", "Зураг олдонгүй!", null);
+      return CustomResponse(false, 'IMAGE_NOT_FOUND', 'Зураг олдонгүй!', null);
     }
     const result = await v2.uploader.destroy(image.public_id);
-    if (result.result !== "ok" && result.result !== "not found") {
-      return CustomResponse(
-        false,
-        "FAILED",
-        "Датабазаас устгаж чадсангүй!",
-        null
-      );
+    if (result.result !== 'ok' && result.result !== 'not found') {
+      return CustomResponse(false, 'FAILED', 'Датабазаас устгаж чадсангүй!', null);
     }
     const deleted = await prisma.image.delete({ where: { id } });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай устлаа!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай устлаа!', {
       deleted,
     });
   } catch (err) {

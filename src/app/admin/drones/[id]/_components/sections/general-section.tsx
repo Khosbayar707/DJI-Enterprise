@@ -1,17 +1,17 @@
-"use client";
-import { useEffect, useState } from "react";
-import DroneInfoCard from "../cards/general-card";
-import axios from "axios";
-import { useParams } from "next/navigation";
-import { CustomDrone, CustomSpec } from "@/lib/types";
-import LoadingText from "@/app/_component/LoadingText";
-import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
-import { Snackbar } from "@mui/material";
-import DroneAdditionalDescriptions from "../cards/additional-description-card";
-import DroneTechCard from "../cards/tech-card";
-import AccessoryCard from "../cards/accessory-card";
-import DroneAdvantagesCard from "../cards/advantages-card";
-import RTKModuleCard from "../cards/rtk-card";
+'use client';
+import { useCallback, useEffect, useState } from 'react';
+import DroneInfoCard from '../cards/general-card';
+import axios from 'axios';
+import { useParams } from 'next/navigation';
+import { CustomDrone, CustomSpec } from '@/lib/types';
+import LoadingText from '@/app/_component/LoadingText';
+import { DroneCategory, DroneModel } from '@/generated/prisma';
+import { Snackbar } from '@mui/material';
+import DroneAdditionalDescriptions from '../cards/additional-description-card';
+import DroneTechCard from '../cards/tech-card';
+import AccessoryCard from '../cards/accessory-card';
+import DroneAdvantagesCard from '../cards/advantages-card';
+import RTKModuleCard from '../cards/rtk-card';
 
 const GeneralSection = () => {
   const { id } = useParams() as { id: string };
@@ -27,9 +27,9 @@ const GeneralSection = () => {
   const fetchCategories = async () => {
     try {
       setWaiting(true);
-      const drone = await axios.get("/api/categories/drones");
-      const model = await axios.get("/api/categories/models");
-      const specs = await axios.get("/api/product/specs");
+      const drone = await axios.get('/api/categories/drones');
+      const model = await axios.get('/api/categories/models');
+      const specs = await axios.get('/api/product/specs');
       if (drone.data.success) {
         setDroneCategories(drone.data.data.categories);
       }
@@ -50,7 +50,7 @@ const GeneralSection = () => {
       setWaiting(false);
     }
   };
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await axios.get(`/api/product/drones/item/?id=${id}`);
       if (res.data.success) {
@@ -66,18 +66,18 @@ const GeneralSection = () => {
       setLoading(false);
       fetchCategories();
     }
-  };
+  }, [id]);
   useEffect(() => {
     fetchData();
-  }, [refresh]);
+  }, [refresh, fetchData]);
 
   return (
     <div className=" flex flex-col gap-6">
       {waiting && (
         <Snackbar
           open={waiting}
-          message={"Мэдээлэл шинэчилж байна!"}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          message={'Мэдээлэл шинэчилж байна!'}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         />
       )}
       {loading ? (
@@ -101,12 +101,7 @@ const GeneralSection = () => {
             setRefresh={setRefresh}
             id={id}
           />
-          <DroneAdvantagesCard
-            setRefresh={setRefresh}
-            refresh={refresh}
-            drone={drone}
-            id={id}
-          />
+          <DroneAdvantagesCard setRefresh={setRefresh} refresh={refresh} drone={drone} id={id} />
           <DroneTechCard
             tech={drone.tech}
             loading={loading}

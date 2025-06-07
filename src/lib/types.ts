@@ -14,7 +14,7 @@ import {
   SpecDescription,
   User,
   Video,
-} from "@/generated/prisma";
+} from '@/generated/prisma';
 
 export type ResponseType = {
   success: boolean;
@@ -32,10 +32,10 @@ export enum AdminSideBarOptions {
 }
 
 export enum ProductTabOptions {
-  features = "features",
-  specs = "specs",
-  accessories = "accessories",
-  reviews = "reviews",
+  features = 'features',
+  specs = 'specs',
+  accessories = 'accessories',
+  reviews = 'reviews',
 }
 
 export enum SpecSideBarOptions {

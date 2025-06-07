@@ -1,4 +1,4 @@
-import { BreadcrumbItem } from "@/app/_types/types";
+import { BreadcrumbItem } from '@/app/_types/types';
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[];
@@ -35,9 +35,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
                 </svg>
               </>
             ) : (
-              <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
-                {item.label}
-              </span>
+              <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">{item.label}</span>
             )}
           </li>
         ))}

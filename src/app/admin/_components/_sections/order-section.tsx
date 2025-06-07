@@ -1,4 +1,4 @@
-import OrderCard from "../_cards/order-card";
+import OrderCard from '../_cards/order-card';
 
 const OrderSection = () => {
   return (

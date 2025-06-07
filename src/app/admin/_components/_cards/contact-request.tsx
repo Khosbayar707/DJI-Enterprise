@@ -1,7 +1,7 @@
-"use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -9,15 +9,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { CustomDroneBuyRequest, ResponseType } from "@/lib/types";
-import axios from "axios";
-import { format } from "date-fns";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { CustomSnackbar } from "../snackbar";
-import LoadingText from "../loading";
-import _ from "lodash";
-import { ContactRequest } from "@/generated/prisma";
+} from '@/components/ui/table';
+import { ResponseType } from '@/lib/types';
+import axios from 'axios';
+import { format } from 'date-fns';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { CustomSnackbar } from '../snackbar';
+import LoadingText from '../loading';
+import _ from 'lodash';
+import { ContactRequest } from '@/generated/prisma';
 
 type Props = {
   requests: ContactRequest[];
@@ -30,11 +30,11 @@ const ContactRequestCard = ({ requests, setRefresh }: Props) => {
   const [sorted, setSorted] = useState<ContactRequest[]>(requests);
 
   const [sortConfig, setSortConfig] = useState<{
-    key: "status" | "createdAt";
-    order: "asc" | "desc";
+    key: 'status' | 'createdAt';
+    order: 'asc' | 'desc';
   }>({
-    key: "status",
-    order: "asc",
+    key: 'status',
+    order: 'asc',
   });
 
   useEffect(() => {
@@ -42,9 +42,8 @@ const ContactRequestCard = ({ requests, setRefresh }: Props) => {
       requests,
       [
         (item) => {
-          if (sortConfig.key === "status") return item;
-          if (sortConfig.key === "createdAt")
-            return new Date(item.createdAt).getTime();
+          if (sortConfig.key === 'status') return item;
+          if (sortConfig.key === 'createdAt') return new Date(item.createdAt).getTime();
           return _.get(item, sortConfig.key);
         },
       ],
@@ -53,18 +52,18 @@ const ContactRequestCard = ({ requests, setRefresh }: Props) => {
     setSorted(sortedData);
   }, [requests, sortConfig]);
 
-  const toggleSort = (key: "status" | "createdAt") => {
+  const toggleSort = (key: 'status' | 'createdAt') => {
     setSortConfig((prev) =>
       prev?.key === key
-        ? { key, order: prev.order === "asc" ? "desc" : "asc" }
-        : { key, order: "asc" }
+        ? { key, order: prev.order === 'asc' ? 'desc' : 'asc' }
+        : { key, order: 'asc' }
     );
   };
 
   const handleButton = async (id: string) => {
     setChanging(true);
     try {
-      const res = await axios.patch("/api/users/contact-request", { id });
+      const res = await axios.patch('/api/users/contact-request', { id });
       setResponse(res.data);
       if (res.data.success) {
         setRefresh((prev) => !prev);
@@ -95,21 +94,11 @@ const ContactRequestCard = ({ requests, setRefresh }: Props) => {
                 <TableHead>Нэр</TableHead>
                 <TableHead>Емайл</TableHead>
                 <TableHead>Утас</TableHead>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => toggleSort("createdAt")}
-                >
-                  Огноо{" "}
-                  {sortConfig.key === "createdAt" &&
-                    (sortConfig.order === "asc" ? "↑" : "↓")}
+                <TableHead className="cursor-pointer" onClick={() => toggleSort('createdAt')}>
+                  Огноо {sortConfig.key === 'createdAt' && (sortConfig.order === 'asc' ? '↑' : '↓')}
                 </TableHead>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => toggleSort("status")}
-                >
-                  Төлөв{" "}
-                  {sortConfig.key === "status" &&
-                    (sortConfig.order === "asc" ? "↑" : "↓")}
+                <TableHead className="cursor-pointer" onClick={() => toggleSort('status')}>
+                  Төлөв {sortConfig.key === 'status' && (sortConfig.order === 'asc' ? '↑' : '↓')}
                 </TableHead>
                 <TableHead>Үйлдэл</TableHead>
               </TableRow>
@@ -122,18 +111,11 @@ const ContactRequestCard = ({ requests, setRefresh }: Props) => {
                     <TableCell>{request.email}</TableCell>
                     <TableCell>{request.phone}</TableCell>
                     <TableCell>
-                      {format(
-                        new Date(request.createdAt),
-                        "yyyy-MM-dd HH:mm:ss"
-                      )}
+                      {format(new Date(request.createdAt), 'yyyy-MM-dd HH:mm:ss')}
                     </TableCell>
                     <TableCell>
-                      <Badge
-                        variant={request.contacted ? "default" : "destructive"}
-                      >
-                        {request.contacted
-                          ? "Холбоо барьсан"
-                          : "Холбоо бариагүй"}
+                      <Badge variant={request.contacted ? 'default' : 'destructive'}>
+                        {request.contacted ? 'Холбоо барьсан' : 'Холбоо бариагүй'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -144,7 +126,7 @@ const ContactRequestCard = ({ requests, setRefresh }: Props) => {
                         variant="outline"
                         onClick={() => handleButton(request.id)}
                       >
-                        {changing ? <LoadingText /> : "Төлөв өөрчлөх"}
+                        {changing ? <LoadingText /> : 'Төлөв өөрчлөх'}
                       </Button>
                     </TableCell>
                   </TableRow>

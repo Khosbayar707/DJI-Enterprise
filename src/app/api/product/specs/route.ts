@@ -5,21 +5,21 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+} from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 export async function GET() {
   const specs = await prisma.spec.findMany({
     include: {
       image: true,
       drone: true,
-      descriptions: { orderBy: { createdAt: "desc" } },
+      descriptions: { orderBy: { createdAt: 'desc' } },
     },
   });
 
-  return CustomResponse(true, "REQUEST_SUCCESS", "Хүсэлт амжилттай!", {
+  return CustomResponse(true, 'REQUEST_SUCCESS', 'Хүсэлт амжилттай!', {
     specs,
   });
 }
@@ -31,9 +31,9 @@ export async function POST(req: NextRequest) {
       return NextResponse_NoEnv();
     }
     if (!name) {
-      return CustomResponse(false, "NO_NAME_PROVIDED", "Нэр өгөх ёстой!", null);
+      return CustomResponse(false, 'NO_NAME_PROVIDED', 'Нэр өгөх ёстой!', null);
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -52,14 +52,9 @@ export async function POST(req: NextRequest) {
       data: { name, adminId: user.id, detail, priority },
       include: { image: true, drone: true },
     });
-    return CustomResponse(
-      true,
-      "DRONE_ADDED",
-      "Бүтээгдэхүүн амжилттай нэмлээ!",
-      {
-        item: newSpec,
-      }
-    );
+    return CustomResponse(true, 'DRONE_ADDED', 'Бүтээгдэхүүн амжилттай нэмлээ!', {
+      item: newSpec,
+    });
   } catch (err) {
     return NextResponse_CatchError(err);
   }
@@ -67,19 +62,14 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id");
+    const id = req.nextUrl.searchParams.get('id');
     if (!id) {
-      return CustomResponse(
-        false,
-        "REQUEST_FAILED",
-        "Таних тэмдэг алга!",
-        null
-      );
+      return CustomResponse(false, 'REQUEST_FAILED', 'Таних тэмдэг алга!', null);
     }
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -90,7 +80,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse_NotAnAdmin();
     }
     const deleteSpec = await prisma.spec.delete({ where: { id } });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай устгалаа!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай устгалаа!', {
       new: deleteSpec,
     });
   } catch (err) {

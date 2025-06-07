@@ -1,26 +1,19 @@
-"use client";
-import LinearDeterminate from "@/app/_component/LinearProgress";
-import LoadingText from "@/app/_component/LoadingText";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
+'use client';
+import LinearDeterminate from '@/app/_component/LinearProgress';
+import LoadingText from '@/app/_component/LoadingText';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ResponseType } from "@/lib/types";
-import { Button } from "@mui/material";
-import axios from "axios";
-import Image from "next/image";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { GrUploadOption } from "react-icons/gr";
+} from '@/components/ui/accordion';
+import { ResponseType } from '@/lib/types';
+import { Button } from '@mui/material';
+import axios from 'axios';
+import Image from 'next/image';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { GrUploadOption } from 'react-icons/gr';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -39,9 +32,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
     setImageUploading(true);
     try {
       const files = Array.from(event.target.files);
-      const response1 = await axios.get(
-        `/api/auth/cloudinary-sign?folder=Drone/Images`
-      );
+      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=Drone/Images`);
       if (!response1.data.success) {
         setResponse(response1.data);
         return;
@@ -53,12 +44,12 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
 
       for (const file of files) {
         const data = new FormData();
-        data.append("file", file);
-        data.append("timestamp", timestamp.toString());
-        data.append("signature", signature);
-        data.append("api_key", api_key);
-        data.append("resource_type", "image");
-        data.append("folder", "Drone/Images");
+        data.append('file', file);
+        data.append('timestamp', timestamp.toString());
+        data.append('signature', signature);
+        data.append('api_key', api_key);
+        data.append('resource_type', 'image');
+        data.append('folder', 'Drone/Images');
 
         const response2 = await axios.post(
           `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
@@ -66,9 +57,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
           {
             onUploadProgress: (progress) => {
               if (progress.total) {
-                const percent = Math.round(
-                  (progress.loaded * 100) / progress.total
-                );
+                const percent = Math.round((progress.loaded * 100) / progress.total);
                 setProgress(percent);
               }
             },
@@ -83,7 +72,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
       setImagePreview(uploadedImageUrls);
       setPublicIds(uploadedImagePublicIds);
     } catch (err) {
-      console.error(err, "server error");
+      console.error(err, 'server error');
     } finally {
       setImageUploading(false);
     }
@@ -92,7 +81,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
   const handleSubmit = async () => {
     try {
       setImageUploading(true);
-      const res = await axios.post("/api/product/drones/image", {
+      const res = await axios.post('/api/product/drones/image', {
         url: ImagePreview,
         public_id: publicIds,
         id,
@@ -121,9 +110,7 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
     <Accordion type="multiple">
       {response && <CustomSnackbar value={response} />}
       <AccordionItem key={`imageUpload`} value="imageupload">
-        <AccordionTrigger className=" cursor-pointer">
-          Зураг оруулах
-        </AccordionTrigger>
+        <AccordionTrigger className=" cursor-pointer">Зураг оруулах</AccordionTrigger>
         <AccordionContent>
           <div className="flex flex-col items-center justify-center gap-4 py-6 bg-secondary p-7">
             <div
@@ -131,13 +118,9 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
               className="w-full max-w-md h-40 cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 hover:border-blue-500 bg-white hover:bg-blue-50 flex flex-col items-center justify-center transition-all"
             >
               <GrUploadOption className="text-4xl text-gray-500 hover:text-blue-500" />
-              <p className="mt-2 text-sm text-gray-600">
-                Энд дарж зураг оруулна уу!
-              </p>
+              <p className="mt-2 text-sm text-gray-600">Энд дарж зураг оруулна уу!</p>
             </div>
-            <p className="text-xs text-gray-500">
-              Зөвшөөрөгдөх өргөтгөлүүд: .jpg, .jpeg, .png
-            </p>
+            <p className="text-xs text-gray-500">Зөвшөөрөгдөх өргөтгөлүүд: .jpg, .jpeg, .png</p>
 
             {progress > 0 && (
               <div className="w-full max-w-md">
@@ -155,22 +138,13 @@ const ImageUploadAccordion = ({ setRefresh, id }: Props) => {
                     key={preview}
                     className="relative w-48 h-48 rounded-lg overflow-hidden shadow-sm border border-gray-200"
                   >
-                    <Image
-                      alt="Preview"
-                      src={preview}
-                      fill
-                      className="object-cover"
-                    />
+                    <Image alt="Preview" src={preview} fill className="object-cover" />
                   </div>
                 ))}
               </div>
             )}
-            <Button
-              disabled={imageUploading}
-              onClick={handleSubmit}
-              className=" w-full"
-            >
-              {imageUploading ? <LoadingText /> : "Нэмэх"}
+            <Button disabled={imageUploading} onClick={handleSubmit} className=" w-full">
+              {imageUploading ? <LoadingText /> : 'Нэмэх'}
             </Button>
             <input
               ref={inputRef}

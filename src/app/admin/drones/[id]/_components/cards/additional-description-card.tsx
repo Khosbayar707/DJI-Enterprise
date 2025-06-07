@@ -1,29 +1,23 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button as ButtonShadcn } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { AddDroneDescriptionSchema } from "../../utils/add-drone-description-schema";
-import z from "zod";
-import { Button, TextField } from "@mui/material";
-import PriorityForm from "@/app/_component/priority-form";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { CustomDrone, ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { Info } from "lucide-react";
-import { motion } from "framer-motion";
-import { formatDistanceToNow } from "date-fns";
-import { mn } from "date-fns/locale";
-import LoadingText from "@/app/_component/LoadingText";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Button as ButtonShadcn } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { AddDroneDescriptionSchema } from '../../utils/add-drone-description-schema';
+import z from 'zod';
+import { Button, TextField } from '@mui/material';
+import PriorityForm from '@/app/_component/priority-form';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { CustomDrone, ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { Info } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { formatDistanceToNow } from 'date-fns';
+import { mn } from 'date-fns/locale';
+import LoadingText from '@/app/_component/LoadingText';
 
 const DroneAdditionalDescriptions = ({
   setRefresh,
@@ -34,24 +28,22 @@ const DroneAdditionalDescriptions = ({
 }) => {
   const [response, setResponse] = useState<ResponseType>();
   const [deleting, setDeleting] = useState(false);
-  const [id, setId] = useState("");
+  const [id, setId] = useState('');
   const form = useForm<z.infer<typeof AddDroneDescriptionSchema>>({
     resolver: zodResolver(AddDroneDescriptionSchema),
     defaultValues: {
-      highlight: "",
-      description: "",
+      highlight: '',
+      description: '',
       priority: 5,
     },
   });
 
-  const onSubmit = async (
-    values: z.infer<typeof AddDroneDescriptionSchema>
-  ) => {
+  const onSubmit = async (values: z.infer<typeof AddDroneDescriptionSchema>) => {
     try {
-      const res = await axios.post(
-        "/api/product/drones/additional-descriptions",
-        { ...values, id: drone.id }
-      );
+      const res = await axios.post('/api/product/drones/additional-descriptions', {
+        ...values,
+        id: drone.id,
+      });
       setResponse(res.data);
       if (res.data.success) {
         setRefresh((prev) => !prev);
@@ -65,9 +57,7 @@ const DroneAdditionalDescriptions = ({
   const handleDelete = async (id: string) => {
     setDeleting(true);
     try {
-      const res = await axios.delete(
-        `/api/product/drones/additional-descriptions?id=${id}`
-      );
+      const res = await axios.delete(`/api/product/drones/additional-descriptions?id=${id}`);
       setResponse(res.data);
       if (res.data.success) {
         setRefresh((prev) => !prev);
@@ -109,12 +99,7 @@ const DroneAdditionalDescriptions = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <TextField
-                        variant="standard"
-                        label="Гарчиг"
-                        fullWidth
-                        {...field}
-                      />
+                      <TextField variant="standard" label="Гарчиг" fullWidth {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -126,12 +111,7 @@ const DroneAdditionalDescriptions = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <TextField
-                        variant="standard"
-                        label="Инфо"
-                        fullWidth
-                        {...field}
-                      />
+                      <TextField variant="standard" label="Инфо" fullWidth {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -146,7 +126,7 @@ const DroneAdditionalDescriptions = ({
                 variant="contained"
                 className="w-full"
               >
-                {form.formState.isSubmitting ? <LoadingText /> : "Нэмэх"}
+                {form.formState.isSubmitting ? <LoadingText /> : 'Нэмэх'}
               </Button>
             </div>
           </form>
@@ -170,11 +150,7 @@ const DroneAdditionalDescriptions = ({
                     disabled={deleting}
                     className="bg-background text-foreground  hover:bg-foreground hover:text-background flex text-xs absolute top-1 right-1 cursor-pointer"
                   >
-                    {deleting && id === description.id ? (
-                      <LoadingText />
-                    ) : (
-                      "Устгах"
-                    )}
+                    {deleting && id === description.id ? <LoadingText /> : 'Устгах'}
                   </ButtonShadcn>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg font-semibold text-gray-800">
@@ -184,10 +160,10 @@ const DroneAdditionalDescriptions = ({
                       className={`text-xs font-medium px-2 py-1 rounded w-max mt-1
                           ${
                             description.priority < 3
-                              ? "bg-red-100 text-red-600"
+                              ? 'bg-red-100 text-red-600'
                               : description.priority < 6
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-green-100 text-green-700"
+                                ? 'bg-yellow-100 text-yellow-700'
+                                : 'bg-green-100 text-green-700'
                           }
                         `}
                     >
@@ -197,7 +173,7 @@ const DroneAdditionalDescriptions = ({
                   <CardContent className="text-sm text-gray-700">
                     <p>{description.description}</p>
                     <p className="mt-2 text-xs text-gray-400">
-                      Үүсгэсэн:{" "}
+                      Үүсгэсэн:{' '}
                       {formatDistanceToNow(new Date(description.createdAt), {
                         addSuffix: true,
                         locale: mn,

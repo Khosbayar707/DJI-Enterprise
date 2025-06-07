@@ -1,35 +1,32 @@
-"use client";
-import { useState } from "react";
-import { PlayCircleIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
-import { Drone } from "@/app/_types/types";
-import { CustomDroneClient, ProductTabOptions } from "@/lib/types";
+'use client';
+import { useState } from 'react';
+import { PlayCircleIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CustomDroneClient, ProductTabOptions } from '@/lib/types';
 
 type ProductTabsProps = {
   drone: CustomDroneClient;
 };
 
 export default function ProductTabs({ drone }: ProductTabsProps) {
-  const [activeTab, setActiveTab] = useState<ProductTabOptions>(
-    ProductTabOptions.features
-  );
+  const [activeTab, setActiveTab] = useState<ProductTabOptions>(ProductTabOptions.features);
 
   return (
     <div className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden">
       <div className="border-b border-gray-200">
         <nav className="flex -mb-px">
           {[
-            { id: "features", label: "Бүтээгдэхүүний тайлбар" },
-            { id: "specs", label: "Техникийн үзүүлэлт" },
-            { id: "accessories", label: "Дагалдах хэрэгсэл" },
-            { id: "reviews", label: "Үнэлгээ" },
+            { id: 'features', label: 'Бүтээгдэхүүний тайлбар' },
+            { id: 'specs', label: 'Техникийн үзүүлэлт' },
+            { id: 'accessories', label: 'Дагалдах хэрэгсэл' },
+            { id: 'reviews', label: 'Үнэлгээ' },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as ProductTabOptions)}
               className={`py-4 px-6 text-center border-b-2 font-medium text-sm cursor-pointer ${
                 activeTab === tab.id
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
               {tab.label}
@@ -39,11 +36,11 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
       </div>
 
       <div className="p-6 md:p-8">
-        {activeTab === "features" && <FeaturesTab drone={drone} />}
+        {activeTab === 'features' && <FeaturesTab drone={drone} />}
 
-        {activeTab === "specs" && <SpecsTab drone={drone} />}
-        {activeTab === "accessories" && <AccessoriesTab drone={drone} />}
-        {activeTab === "reviews" && <ReviewsTab />}
+        {activeTab === 'specs' && <SpecsTab drone={drone} />}
+        {activeTab === 'accessories' && <AccessoriesTab drone={drone} />}
+        {activeTab === 'reviews' && <ReviewsTab />}
       </div>
     </div>
   );
@@ -63,7 +60,7 @@ const FeaturesTab = ({ drone }: TabContentProps) => {
               {description.description}
             </p>
           ))
-        : ""}
+        : ''}
 
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -82,7 +79,7 @@ const FeaturesTab = ({ drone }: TabContentProps) => {
             ></video>
           </div>
         ) : (
-          "Бичлэг одоогоор алга!"
+          'Бичлэг одоогоор алга!'
         )}
       </div>
     </div>
@@ -97,56 +94,36 @@ const SpecsTab = ({ drone }: TabContentProps) => {
         {drone.tech ? (
           <>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">
-                Жин
-              </dt>
-              <dd className="mt-1 text-sm font-semibold text-gray-900">
-                {drone.tech.weight}
-              </dd>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Жин</dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">{drone.tech.weight}</dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">
-                Дээд хурд
-              </dt>
-              <dd className="mt-1 text-sm font-semibold text-gray-900">
-                {drone.tech.maxSpeed}
-              </dd>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Дээд хурд</dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">{drone.tech.maxSpeed}</dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">
-                Температури
-              </dt>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Температури</dt>
               <dd className="mt-1 text-sm font-semibold text-gray-900">
                 {drone.tech.operatingTemperature}
               </dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">
-                Дименшин
-              </dt>
-              <dd className="mt-1 text-sm font-semibold text-gray-900">
-                {drone.tech.dimensions}
-              </dd>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Дименшин</dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">{drone.tech.dimensions}</dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">
-                Салхины эсэргүүцэл
-              </dt>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Салхины эсэргүүцэл</dt>
               <dd className="mt-1 text-sm font-semibold text-gray-900">
                 {drone.tech.maxWindResistance}
               </dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">
-                Баттерей
-              </dt>
-              <dd className="mt-1 text-sm font-semibold text-gray-900">
-                {drone.tech.Battery}
-              </dd>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Баттерей</dt>
+              <dd className="mt-1 text-sm font-semibold text-gray-900">{drone.tech.Battery}</dd>
             </div>
           </>
         ) : (
-          "Техникийн үзүүлэлт оруулаагүй байна!"
+          'Техникийн үзүүлэлт оруулаагүй байна!'
         )}
       </div>
     </div>
@@ -178,9 +155,7 @@ const ReviewsTab = () => {
     <div className="space-y-6">
       <h2 className="text-xl font-bold text-gray-900">Үнэлгээ</h2>
       <div className="bg-gray-50 p-6 rounded-lg">
-        <p className="text-gray-600">
-          Энэ бүтээгдэхүүнийг үнэлсэн хэрэглэгч байхгүй байна.
-        </p>
+        <p className="text-gray-600">Энэ бүтээгдэхүүнийг үнэлсэн хэрэглэгч байхгүй байна.</p>
       </div>
     </div>
   );

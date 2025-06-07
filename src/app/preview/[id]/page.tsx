@@ -1,12 +1,12 @@
-"use client";
-import HeroSection from "../_components/HeroSection";
-import FeaturesSection from "../_components/FeaturesSection";
-import DetailSection from "../_components/DetailSection";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { CustomDroneClient } from "@/lib/types";
-import axios from "axios";
-import DroneShowcaseSkeleton from "@/app/_component/skeleton/preview-page-skeleton";
+'use client';
+import HeroSection from '../_components/HeroSection';
+import FeaturesSection from '../_components/FeaturesSection';
+import DetailSection from '../_components/DetailSection';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { CustomDroneClient } from '@/lib/types';
+import axios from 'axios';
+import DroneShowcaseSkeleton from '@/app/_component/skeleton/preview-page-skeleton';
 
 const PreviewPage = () => {
   const { id } = useParams();
@@ -26,7 +26,7 @@ const PreviewPage = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
   return (
     <main className="bg-black text-white">
       {loading ? (
@@ -36,9 +36,7 @@ const PreviewPage = () => {
           <HeroSection drone={drone} />
           <FeaturesSection drone={drone} />
           {drone.specs.length > 0 &&
-            drone.specs.map((spec) => (
-              <DetailSection spec={spec} key={spec.id} />
-            ))}
+            drone.specs.map((spec) => <DetailSection spec={spec} key={spec.id} />)}
         </>
       ) : (
         <div>Холбоос буруу</div>

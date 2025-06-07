@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import {
   Menu,
   MenuButton,
@@ -10,37 +10,33 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-} from "@headlessui/react";
+} from '@headlessui/react';
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
   Bars3Icon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
-} from "@heroicons/react/20/solid";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
-import { User } from "@/generated/prisma";
-import LoadingText from "./LoadingText";
-import {
-  Search,
-  SearchIconWrapper,
-  StyledInputBase,
-} from "@/components/ui/search";
-import { useSearchDebounce } from "./debounce/search";
+} from '@heroicons/react/20/solid';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import { User } from '@/generated/prisma';
+import LoadingText from './LoadingText';
+import { Search, SearchIconWrapper, StyledInputBase } from '@/components/ui/search';
+import { useSearchDebounce } from './debounce/search';
 
 const navItems = [
-  { href: "/dji", label: "DJI", items: ["DJI Enterprise"] },
-  { href: "/autel", label: "Autel", items: ["Autel EVO", "Autel Robotics"] },
-  { href: "/garmin", label: "Garmin", items: ["Smartwatch"] },
+  { href: '/dji', label: 'DJI', items: ['DJI Enterprise'] },
+  { href: '/autel', label: 'Autel', items: ['Autel EVO', 'Autel Robotics'] },
+  { href: '/garmin', label: 'Garmin', items: ['Smartwatch'] },
 ];
 
 const mobileMenuVariants = {
   hidden: { opacity: 0, height: 0 },
-  visible: { opacity: 1, height: "auto", transition: { duration: 0.3 } },
+  visible: { opacity: 1, height: 'auto', transition: { duration: 0.3 } },
 };
 
 const hoverVariants = {
@@ -49,19 +45,19 @@ const hoverVariants = {
 
 const HeaderMain = () => {
   const pathname = usePathname();
-  const search = useSearchParams().get("search");
+  const search = useSearchParams().get('search');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<User>();
   const [logging, setLogging] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(search || "");
+  const [searchQuery, setSearchQuery] = useState(search || '');
   const debouncedSearchQuery = useSearchDebounce(searchQuery, 1000);
   const router = useRouter();
 
   const logout = useCallback(async () => {
     setLogging(true);
     try {
-      const res = await axios.get("/api/auth/logout");
+      const res = await axios.get('/api/auth/logout');
       if (res.data.success) {
         setUser(undefined);
       }
@@ -77,7 +73,7 @@ const HeaderMain = () => {
     const fetchData = async () => {
       setLogging(true);
       try {
-        const res = await axios.get("/api/auth/current-user");
+        const res = await axios.get('/api/auth/current-user');
         if (res.data.success) {
           setUser(res.data.data.user);
         }
@@ -93,7 +89,7 @@ const HeaderMain = () => {
   useEffect(() => {
     const fetchRefresh = async () => {
       try {
-        const res = await axios.get("/api/auth/refresh-token");
+        const res = await axios.get('/api/auth/refresh-token');
         if (res.data.success) {
           setRefresh((prev) => !prev);
         }
@@ -108,7 +104,7 @@ const HeaderMain = () => {
     if (debouncedSearchQuery.trim()) {
       router.push(`/?search=${debouncedSearchQuery}`);
     }
-  }, [debouncedSearchQuery]);
+  }, [debouncedSearchQuery, router]);
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -134,11 +130,7 @@ const HeaderMain = () => {
           aria-label="Main Navigation"
         >
           {navItems.map((nav, idx) => (
-            <Menu
-              as="div"
-              key={idx}
-              className="relative inline-block text-left"
-            >
+            <Menu as="div" key={idx} className="relative inline-block text-left">
               <MenuButton className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600 relative group">
                 {nav.label}
                 <ChevronDownIcon className="ml-1 h-4 w-4 text-gray-500" />
@@ -161,9 +153,7 @@ const HeaderMain = () => {
                           <Link
                             href={nav.href}
                             className={`${
-                              active
-                                ? "bg-gray-50 text-blue-600"
-                                : "text-gray-700"
+                              active ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
                             } block px-4 py-2 text-sm font-medium`}
                           >
                             {item}
@@ -193,7 +183,7 @@ const HeaderMain = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Хайх"
-              inputProps={{ "aria-label": "search" }}
+              inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
           {logging ? (
@@ -202,9 +192,7 @@ const HeaderMain = () => {
             <>
               <Link href={`/profile`}>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
-                  <span className="text-sm font-medium text-gray-800">
-                    {user.email}
-                  </span>
+                  <span className="text-sm font-medium text-gray-800">{user.email}</span>
                 </div>
               </Link>
               <button
@@ -294,7 +282,7 @@ const HeaderMain = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Хайх"
-                  inputProps={{ "aria-label": "search" }}
+                  inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
             </motion.div>
@@ -310,9 +298,7 @@ const HeaderMain = () => {
                     whileHover="hover"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <span className="text-sm font-medium text-gray-800">
-                      {user.email}
-                    </span>
+                    <span className="text-sm font-medium text-gray-800">{user.email}</span>
                   </motion.div>
                 </Link>
                 <motion.button

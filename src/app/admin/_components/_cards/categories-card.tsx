@@ -1,11 +1,11 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DroneCategory, DroneModel, SpecCategory } from "@/generated/prisma";
-import { Chip } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import LoadingText from "../loading";
-import AddCategoryDialog from "../_dialogs/add-category-dialog";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DroneCategory, DroneModel, SpecCategory } from '@/generated/prisma';
+import { Chip } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import LoadingText from '../loading';
+import AddCategoryDialog from '../_dialogs/add-category-dialog';
 
 const CategoriesSection = () => {
   const [droneCategories, setDroneCategories] = useState<DroneCategory[]>([]);
@@ -20,7 +20,7 @@ const CategoriesSection = () => {
 
   const fetchDroneCategories = async () => {
     try {
-      const res = await axios.get("/api/categories/drones");
+      const res = await axios.get('/api/categories/drones');
       if (res.data) {
         setDroneCategories(res.data.data.categories);
       }
@@ -33,7 +33,7 @@ const CategoriesSection = () => {
 
   const fetchSpecCategories = async () => {
     try {
-      const res = await axios.get("/api/categories/specs");
+      const res = await axios.get('/api/categories/specs');
       if (res.data) {
         setSpecCategories(res.data.data.categories);
       }
@@ -46,7 +46,7 @@ const CategoriesSection = () => {
 
   const fetchDroneModels = async () => {
     try {
-      const res = await axios.get("/api/categories/models");
+      const res = await axios.get('/api/categories/models');
       if (res.data) {
         setModels(res.data.data.models);
       }
@@ -79,11 +79,7 @@ const CategoriesSection = () => {
               <LoadingText />
             ) : droneCategories.length > 0 ? (
               droneCategories.map((category) => (
-                <Chip
-                  key={category.id}
-                  variant="filled"
-                  label={category.name}
-                />
+                <Chip key={category.id} variant="filled" label={category.name} />
               ))
             ) : (
               <div>Категори алга</div>
@@ -96,9 +92,7 @@ const CategoriesSection = () => {
             {waitingModels ? (
               <LoadingText />
             ) : models.length > 0 ? (
-              models.map((model) => (
-                <Chip key={model.id} variant="filled" label={model.name} />
-              ))
+              models.map((model) => <Chip key={model.id} variant="filled" label={model.name} />)
             ) : (
               <div>Модел алга</div>
             )}

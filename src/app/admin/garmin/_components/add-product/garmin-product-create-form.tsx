@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Form,
   FormControl,
@@ -13,14 +13,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Snackbar, Alert, Checkbox } from "@mui/material";
+} from '@/components/ui/form';
+import { Snackbar, Alert, Checkbox } from '@mui/material';
 import {
   AddGarminProductSchema,
   AddGarminProductSchemaType,
-} from "../../utlis/add-garmin-product-schema";
-import axios from "axios";
-import CircularProgressWithLabel from "@/app/dji/utils/loading-circle";
+} from '../../utlis/add-garmin-product-schema';
+import axios from 'axios';
+import CircularProgressWithLabel from '@/app/dji/utils/loading-circle';
+import Image from 'next/image';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -28,24 +29,19 @@ type Props = {
 
 export default function GraminProductCreateForm({ setRefresh }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
-    "success"
-  );
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [progress, setProgress] = useState(0);
   const [imageUploading, setImageUploading] = useState(false);
-  const [ImagePreview, setImagePreview] = useState<string[]>([]);
-  const [publicIds, setPublicIds] = useState<string[]>([]);
-
   const form = useForm<AddGarminProductSchemaType>({
     resolver: zodResolver(AddGarminProductSchema),
     defaultValues: {
-      name: "",
-      category: "",
+      name: '',
+      category: '',
       price: 0,
       images: [],
-      description: "",
-      features: "",
+      description: '',
+      features: '',
       isNew: false,
       rating: 0,
     },
@@ -56,25 +52,23 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
   const onSubmit = async (data: AddGarminProductSchemaType) => {
     try {
       const featuresArray = data.features
-        ? data.features.split("\n").filter((f) => f.trim() !== "")
+        ? data.features.split('\n').filter((f) => f.trim() !== '')
         : [];
       const payload = {
         ...data,
         features: featuresArray,
       };
-      const response = await axios.post("/api/garmins", payload);
+      const response = await axios.post('/api/garmins', payload);
       if (response.data.success) {
         setRefresh((prev) => !prev);
       }
-      setSnackbarSeverity("success");
-      setSnackbarMessage("Бүтээгдэхүүн амжилттай үүслээ");
+      setSnackbarSeverity('success');
+      setSnackbarMessage('Бүтээгдэхүүн амжилттай үүслээ');
       setSnackbarOpen(true);
       form.reset();
     } catch (error) {
-      setSnackbarSeverity("error");
-      setSnackbarMessage(
-        error instanceof Error ? error.message : "Алдаа гарлаа"
-      );
+      setSnackbarSeverity('error');
+      setSnackbarMessage(error instanceof Error ? error.message : 'Алдаа гарлаа');
       setSnackbarOpen(true);
     }
   };
@@ -89,9 +83,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
     try {
       const files = Array.from(event.target.files);
 
-      const response1 = await axios.get(
-        `/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`
-      );
+      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`);
       if (!response1.data.success) return;
 
       const { timestamp, signature, api_key } = response1.data.data;
@@ -101,12 +93,12 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
 
       for (const file of files) {
         const data = new FormData();
-        data.append("file", file);
-        data.append("timestamp", timestamp.toString());
-        data.append("signature", signature);
-        data.append("api_key", api_key);
-        data.append("resource_type", "image");
-        data.append("folder", "Garmin/Smartwatch");
+        data.append('file', file);
+        data.append('timestamp', timestamp.toString());
+        data.append('signature', signature);
+        data.append('api_key', api_key);
+        data.append('resource_type', 'image');
+        data.append('folder', 'Garmin/Smartwatch');
 
         const response2 = await axios.post(
           `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
@@ -114,9 +106,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
           {
             onUploadProgress: (progress) => {
               if (progress.total) {
-                const percent = Math.round(
-                  (progress.loaded * 100) / progress.total
-                );
+                const percent = Math.round((progress.loaded * 100) / progress.total);
                 setProgress(percent);
               }
             },
@@ -129,15 +119,13 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
         }
       }
 
-      setImagePreview(uploadedImageUrls);
-      setPublicIds(uploadedImagePublicIds);
       const combined = uploadedImageUrls.map((url, i) => ({
         url,
         public_id: uploadedImagePublicIds[i],
       }));
-      setValue("images", combined);
+      setValue('images', combined);
     } catch (err) {
-      console.error(err, "server error");
+      console.error(err, 'server error');
     } finally {
       setImageUploading(false);
     }
@@ -149,13 +137,9 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarSeverity}
-          sx={{ width: "100%" }}
-        >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -263,12 +247,15 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
 
               <div className="flex flex-wrap gap-2 mt-2">
                 {field.value?.map((img, idx) => (
-                  <img
-                    key={idx}
-                    src={img.url}
-                    alt={`uploaded-${idx}`}
-                    className="w-24 h-24 object-cover rounded border"
-                  />
+                  <div key={idx} className="relative w-24 h-24">
+                    <Image
+                      src={img.url}
+                      alt={`uploaded-${idx}`}
+                      fill
+                      className="object-cover rounded border"
+                      sizes="96px"
+                    />
+                  </div>
                 ))}
               </div>
 
@@ -338,7 +325,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
           disabled={form.formState.isSubmitting}
           className="w-full cursor-pointer"
         >
-          {form.formState.isSubmitting ? "Хадгалж байна..." : "Үүсгэх"}
+          {form.formState.isSubmitting ? 'Хадгалж байна...' : 'Үүсгэх'}
         </Button>
       </form>
     </Form>

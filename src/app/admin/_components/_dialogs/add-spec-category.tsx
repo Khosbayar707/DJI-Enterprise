@@ -1,10 +1,5 @@
-"use client";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+'use client';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -12,19 +7,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import LoadingText from "../loading";
-import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "../snackbar";
-import { AddNewSchema } from "@/lib/zod-schemas/add-new-spec-schema";
-import PriorityForm from "@/app/_component/priority-form";
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, TextField } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import LoadingText from '../loading';
+import { Textarea } from '@/components/ui/textarea';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '../snackbar';
+import { AddNewSchema } from '@/lib/zod-schemas/add-new-spec-schema';
+import PriorityForm from '@/app/_component/priority-form';
 
 const AddSpecDialog = ({
   refresh,
@@ -37,16 +32,16 @@ const AddSpecDialog = ({
   const form = useForm<z.infer<typeof AddNewSchema>>({
     resolver: zodResolver(AddNewSchema),
     defaultValues: {
-      name: "",
-      detail: "",
+      name: '',
+      detail: '',
       priority: 0,
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = async (values: z.infer<typeof AddNewSchema>) => {
     try {
-      const res = await axios.post("/api/product/specs", values);
+      const res = await axios.post('/api/product/specs', values);
       if (res.data) {
         setResponse(res.data);
         form.reset();
@@ -87,7 +82,7 @@ const AddSpecDialog = ({
                     <FormControl>
                       <TextField
                         {...field}
-                        color={form.formState.isValid ? "primary" : "error"}
+                        color={form.formState.isValid ? 'primary' : 'error'}
                         variant="standard"
                         label="Эд ангийн нэр"
                       />
@@ -111,13 +106,11 @@ const AddSpecDialog = ({
               />
               <PriorityForm form={form} />
               <Button
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
                 type="submit"
                 className=" w-full"
               >
-                {form.formState.isSubmitting ? <LoadingText /> : "Нэмэх"}
+                {form.formState.isSubmitting ? <LoadingText /> : 'Нэмэх'}
               </Button>
             </div>
           </form>

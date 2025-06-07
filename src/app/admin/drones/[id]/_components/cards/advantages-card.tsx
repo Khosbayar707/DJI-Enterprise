@@ -1,23 +1,16 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CustomDrone, ResponseType } from "@/lib/types";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AddDroneAdvantageSchema } from "../../utils/add-drone-advantage-schema";
-import z from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import axios from "axios";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Sparkles } from "lucide-react";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CustomDrone, ResponseType } from '@/lib/types';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AddDroneAdvantageSchema } from '../../utils/add-drone-advantage-schema';
+import z from 'zod';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import axios from 'axios';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { Input } from '@/components/ui/input';
+import { Sparkles } from 'lucide-react';
 
 type Props = {
   drone: CustomDrone;
@@ -26,18 +19,18 @@ type Props = {
   id: string;
 };
 
-const DroneAdvantagesCard = ({ drone, refresh, setRefresh, id }: Props) => {
+const DroneAdvantagesCard = ({ drone, setRefresh, id }: Props) => {
   const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof AddDroneAdvantageSchema>>({
     resolver: zodResolver(AddDroneAdvantageSchema),
     defaultValues: {
-      detail: "",
+      detail: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof AddDroneAdvantageSchema>) => {
     try {
-      const res = await axios.post("/api/product/drones/advantage", {
+      const res = await axios.post('/api/product/drones/advantage', {
         ...values,
         id,
       });

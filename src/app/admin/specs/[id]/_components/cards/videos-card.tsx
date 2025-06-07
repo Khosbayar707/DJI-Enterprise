@@ -1,33 +1,16 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { Video } from "@/generated/prisma";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
-import LoadingText from "@/app/_component/LoadingText";
-import axios from "axios";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { ResponseType } from "@/lib/types";
-import { EditSpecVideoDetailSchema } from "../../utils/edit-spec-video-detail-schema";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Video } from '@/generated/prisma';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import LoadingText from '@/app/_component/LoadingText';
+import axios from 'axios';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { ResponseType } from '@/lib/types';
+import { EditSpecVideoDetailSchema } from '../../utils/edit-spec-video-detail-schema';
 type Props = {
   video: Video;
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -42,18 +25,16 @@ const VideosCard = ({ video, setRefresh }: Props) => {
   const form = useForm<z.infer<typeof EditSpecVideoDetailSchema>>({
     resolver: zodResolver(EditSpecVideoDetailSchema),
     defaultValues: {
-      name: video.name || "",
-      detail: video.detail || "",
+      name: video.name || '',
+      detail: video.detail || '',
       priority: video.priority || 0,
     },
   });
 
-  const onSubmit = async (
-    values: z.infer<typeof EditSpecVideoDetailSchema>
-  ) => {
+  const onSubmit = async (values: z.infer<typeof EditSpecVideoDetailSchema>) => {
     setWaiting(true);
     try {
-      const res = await axios.patch("/api/product/drones/videos", {
+      const res = await axios.patch('/api/product/drones/videos', {
         ...values,
         id: video.id,
       });
@@ -103,7 +84,9 @@ const VideosCard = ({ video, setRefresh }: Props) => {
                 className="w-full h-full object-cover"
                 controls
                 aria-label={`Видео: ${video.name}`}
-              />
+              >
+                <track kind="captions" srcLang="mn" label="Mongolian captions" />
+              </video>
             </div>
             <div className="flex flex-col justify-around text-sm w-full">
               <div className="flex flex-col gap-2">
@@ -111,18 +94,13 @@ const VideosCard = ({ video, setRefresh }: Props) => {
                   🏷️ <span className="font-semibold">Нэр:</span> {video.name}
                 </p>
                 <p className="text-gray-600 whitespace-pre-wrap">
-                  📄 <span className="font-semibold">Дэлгэрэнгүй:</span>{" "}
-                  {video.detail}
+                  📄 <span className="font-semibold">Дэлгэрэнгүй:</span> {video.detail}
                 </p>
               </div>
 
               <div className="mt-4 text-xs text-gray-400">
-                <p>
-                  Нэмэгдсэн: {new Date(video.createdAt).toLocaleString("mn-MN")}
-                </p>
-                <p>
-                  Засагдсан: {new Date(video.updatedAt).toLocaleString("mn-MN")}
-                </p>
+                <p>Нэмэгдсэн: {new Date(video.createdAt).toLocaleString('mn-MN')}</p>
+                <p>Засагдсан: {new Date(video.updatedAt).toLocaleString('mn-MN')}</p>
               </div>
             </div>
           </div>
@@ -137,7 +115,9 @@ const VideosCard = ({ video, setRefresh }: Props) => {
               className="w-full h-full object-cover"
               controls
               aria-label={`Видео: ${video.name}`}
-            />
+            >
+              <track kind="captions" srcLang="mn" label="Mongolian captions" />
+            </video>
           </div>
           <div className="w-full flex flex-col gap-4">
             <Form {...form}>
@@ -185,7 +165,7 @@ const VideosCard = ({ video, setRefresh }: Props) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Хэр чухал вэ?{" "}
+                          Хэр чухал вэ?{' '}
                           <span className="text-xs italic">
                             *их тоотой нь хамгийн эхэнд харагдана
                           </span>
@@ -195,9 +175,7 @@ const VideosCard = ({ video, setRefresh }: Props) => {
                             {...field}
                             row
                             value={field.value || 0}
-                            onChange={(e) =>
-                              field.onChange(Number(e.target.value))
-                            }
+                            onChange={(e) => field.onChange(Number(e.target.value))}
                             className=" flex justify-center gap-4"
                           >
                             {[0, 1, 2, 3, 4, 5].map((val) => (
@@ -221,7 +199,7 @@ const VideosCard = ({ video, setRefresh }: Props) => {
                     color="primary"
                     size="small"
                   >
-                    {waiting ? <LoadingText /> : "Хадгалах"}
+                    {waiting ? <LoadingText /> : 'Хадгалах'}
                   </Button>
                 </div>
               </form>
@@ -229,22 +207,22 @@ const VideosCard = ({ video, setRefresh }: Props) => {
             <div className="text-xs text-gray-500 space-y-1 flex justify-between">
               <div>
                 <p>
-                  📅 <span className="font-medium">Үүсгэсэн:</span>{" "}
-                  {new Date(video.createdAt).toLocaleString("mn-MN")}
+                  📅 <span className="font-medium">Үүсгэсэн:</span>{' '}
+                  {new Date(video.createdAt).toLocaleString('mn-MN')}
                 </p>
                 <p>
-                  🔄 <span className="font-medium">Шинэчилсэн:</span>{" "}
-                  {new Date(video.updatedAt).toLocaleString("mn-MN")}
+                  🔄 <span className="font-medium">Шинэчилсэн:</span>{' '}
+                  {new Date(video.updatedAt).toLocaleString('mn-MN')}
                 </p>
               </div>
               <div>
                 {confirm ? (
                   <Button color="warning" onClick={handleDeleteVideo}>
-                    {deletingVideo ? <LoadingText /> : "Баталгаажуулах!"}
+                    {deletingVideo ? <LoadingText /> : 'Баталгаажуулах!'}
                   </Button>
                 ) : (
                   <Button onClick={() => setConfirm(true)} color="warning">
-                    {deletingVideo ? <LoadingText /> : "Устгах"}
+                    {deletingVideo ? <LoadingText /> : 'Устгах'}
                   </Button>
                 )}
               </div>

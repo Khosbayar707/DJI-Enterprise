@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import { BreadcrumbItem, GarminProduct, Product } from "@/app/_types/types";
-import { useParams } from "next/navigation";
-import LoadingText from "@/app/_component/LoadingText";
-import Breadcrumbs from "@/app/dji/_components/Breadcrumbs";
-import ProductGallery from "../_components/ProductGallery";
-import ProductInfo from "../_components/ProductInfo";
-import ProductTabs from "../_components/ProductTabs";
-import ContactForm from "@/app/dji/_components/ContactForm";
-import axios from "axios";
-import { CustomGarminProduct } from "@/lib/types";
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { BreadcrumbItem } from '@/app/_types/types';
+import { useParams } from 'next/navigation';
+import LoadingText from '@/app/_component/LoadingText';
+import Breadcrumbs from '@/app/dji/_components/Breadcrumbs';
+import ProductGallery from '../_components/ProductGallery';
+import ProductInfo from '../_components/ProductInfo';
+import ProductTabs from '../_components/ProductTabs';
+import ContactForm from '@/app/dji/_components/ContactForm';
+import axios from 'axios';
+import { CustomGarminProduct } from '@/lib/types';
 
 export default function Page() {
   const { id } = useParams();
@@ -33,7 +33,7 @@ export default function Page() {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   if (loading) {
     return (
@@ -44,14 +44,12 @@ export default function Page() {
   }
 
   if (!product) {
-    return (
-      <div className="flex justify-center min-h-screen">Бараа олдсонгүй!</div>
-    );
+    return <div className="flex justify-center min-h-screen">Бараа олдсонгүй!</div>;
   }
 
   const breadcrumbItems: BreadcrumbItem[] = [
-    { label: "Нүүр", href: "/" },
-    { label: "Garmin", href: "/garmin" },
+    { label: 'Нүүр', href: '/' },
+    { label: 'Garmin', href: '/garmin' },
     { label: product.name, href: `/garmin/${product.id}` },
   ];
 
@@ -59,9 +57,9 @@ export default function Page() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      const contactForm = document.getElementById("contact-form");
+      const contactForm = document.getElementById('contact-form');
       if (contactForm) {
-        contactForm.scrollIntoView({ behavior: "smooth" });
+        contactForm.scrollIntoView({ behavior: 'smooth' });
       }
     }, 800);
   };

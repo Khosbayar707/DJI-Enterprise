@@ -1,5 +1,5 @@
-"use client";
-import { Skeleton } from "@mui/material";
+'use client';
+import { Skeleton } from '@mui/material';
 
 const UserProfileSkeleton = () => {
   return (
@@ -12,12 +12,7 @@ const UserProfileSkeleton = () => {
       <section className="p-6 border rounded-lg shadow-sm w-full space-y-4">
         <Skeleton variant="text" width={180} height={28} />
         <Skeleton variant="rectangular" height={56} className="rounded" />
-        <Skeleton
-          variant="rectangular"
-          height={40}
-          width={120}
-          className="rounded"
-        />
+        <Skeleton variant="rectangular" height={40} width={120} className="rounded" />
       </section>
 
       <section className="p-6 border rounded-lg shadow-sm w-full space-y-4">
@@ -25,12 +20,7 @@ const UserProfileSkeleton = () => {
         <Skeleton variant="rectangular" height={56} className="rounded" />
         <Skeleton variant="rectangular" height={56} className="rounded" />
         <Skeleton variant="rectangular" height={56} className="rounded" />
-        <Skeleton
-          variant="rectangular"
-          height={40}
-          width={160}
-          className="rounded"
-        />
+        <Skeleton variant="rectangular" height={40} width={160} className="rounded" />
       </section>
 
       <section className="p-6 border rounded-lg shadow-sm w-full space-y-4">
