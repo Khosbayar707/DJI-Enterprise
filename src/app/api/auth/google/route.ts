@@ -3,17 +3,12 @@ import { prisma } from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '@/app/providers/auth';
-import { CustomResponse } from '@/lib/next-responses';
+import { CustomResponse, NextResponse_NoEnv } from '@/lib/next-responses';
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
-    return NextResponse.json({
-      success: false,
-      message: 'Сервэрийн тохиргооны алдаа (ENV)',
-      code: 'NO_ENV',
-      data: null,
-    });
+    return NextResponse_NoEnv();
   }
   if (!session || !session.user?.email) {
     return NextResponse.redirect(new URL('/auth', req.url));
