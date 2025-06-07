@@ -1,5 +1,5 @@
-import { CustomResponse, NextResponse_CatchError } from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
+import { CustomResponse, NextResponse_CatchError } from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
@@ -7,7 +7,7 @@ export async function GET() {
       where: { featured: true },
       include: { images: true },
     });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Хүсэлт амжиллттай", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Хүсэлт амжиллттай', {
       drones,
     });
   } catch (err) {

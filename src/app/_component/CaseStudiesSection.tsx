@@ -1,25 +1,25 @@
-"use client";
-import Image from "next/image";
-import { motion } from "framer-motion";
+'use client';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const caseStudies = [
   {
-    title: "Улаанбаатар хотын GIS систем",
-    description: "Дроны зураглалаар бүрдүүлсэн газар зүйн мэдээллийн систем",
-    image: "/image/Geographic.jpg",
-    tags: ["Газар зүй", "DJI Phantom 4 RTK", "2023"],
+    title: 'Улаанбаатар хотын GIS систем',
+    description: 'Дроны зураглалаар бүрдүүлсэн газар зүйн мэдээллийн систем',
+    image: '/image/Geographic.jpg',
+    tags: ['Газар зүй', 'DJI Phantom 4 RTK', '2023'],
   },
   {
-    title: "Цахилгаан дамжуулах шугамын хяналт",
-    description: "Thermal камер ашиглан дэд станцын техникийн үзлэг",
-    image: "/image/Geographic.jpg",
-    tags: ["Эрчим хүч", "DJI Mavic 3T", "2024"],
+    title: 'Цахилгаан дамжуулах шугамын хяналт',
+    description: 'Thermal камер ашиглан дэд станцын техникийн үзлэг',
+    image: '/image/Geographic.jpg',
+    tags: ['Эрчим хүч', 'DJI Mavic 3T', '2024'],
   },
   {
-    title: "Авто замын барилгын мониторинг",
-    description: "Барилгын явцыг дроноор хянах системийн нэвтрүүлэлт",
-    image: "/image/Geographic.jpg",
-    tags: ["Барилга", "DJI Matrice 300", "2023"],
+    title: 'Авто замын барилгын мониторинг',
+    description: 'Барилгын явцыг дроноор хянах системийн нэвтрүүлэлт',
+    image: '/image/Geographic.jpg',
+    tags: ['Барилга', 'DJI Matrice 300', '2023'],
   },
 ];
 
@@ -52,12 +52,7 @@ export default function CaseStudiesSection() {
               className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="h-48 relative">
-                <Image
-                  src={study.image}
-                  alt={study.title}
-                  fill
-                  className="object-cover"
-                />
+                <Image src={study.image} alt={study.title} fill className="object-cover" />
               </div>
               <div className="p-6">
                 <div className="flex flex-wrap gap-2 mb-3">

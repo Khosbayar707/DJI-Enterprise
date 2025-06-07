@@ -1,12 +1,8 @@
-import {
-  CustomResponse,
-  NextResponse_CatchError,
-  NextResponse_NoEnv,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { CustomResponse, NextResponse_CatchError, NextResponse_NoEnv } from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,60 +13,50 @@ export async function POST(req: NextRequest) {
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return CustomResponse(
-        false,
-        "USER_NOT_FOUND",
-        "Хэрэглэгч бүртгэлгүй байна!",
-        null
-      );
+      return CustomResponse(false, 'USER_NOT_FOUND', 'Хэрэглэгч бүртгэлгүй байна!', null);
     }
     const verifypass = await bcrypt.compare(password, user.password);
     if (!verifypass) {
-      return CustomResponse(
-        false,
-        "WRONG_CREDENTIALS",
-        "Нууц үг таарсангүй!",
-        null
-      );
+      return CustomResponse(false, 'WRONG_CREDENTIALS', 'Нууц үг таарсангүй!', null);
     }
     if (!user.isActive) {
       return CustomResponse(
         false,
-        "ACCOUNT_BLOCKED",
-        "Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!",
+        'ACCOUNT_BLOCKED',
+        'Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!',
         null
       );
     }
     const accessToken = jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: '1h' }
     );
     const refreshToken = jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: '24h' }
     );
     const response = NextResponse.json({
       success: true,
-      message: "Тавтай морил",
+      message: 'Тавтай морил',
       data: { id: user.id },
     });
 
-    response.cookies.set("accessToken", accessToken, {
+    response.cookies.set('accessToken', accessToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: 'strict',
       maxAge: 60 * 60,
-      path: "/",
+      path: '/',
     });
 
-    response.cookies.set("refreshToken", refreshToken, {
+    response.cookies.set('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
       maxAge: 60 * 60 * 24,
-      sameSite: "strict",
-      path: "/",
+      sameSite: 'strict',
+      path: '/',
     });
 
     return response;

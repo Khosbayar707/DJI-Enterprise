@@ -1,11 +1,11 @@
-"use client";
-import { motion } from "framer-motion";
-import ProductCard from "./ProductCard";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { CustomDroneClient } from "@/lib/types";
-import axios from "axios";
-import LoadingText from "./LoadingText";
+'use client';
+import { motion } from 'framer-motion';
+import ProductCard from './ProductCard';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { CustomDroneClient } from '@/lib/types';
+import axios from 'axios';
+import LoadingText from './LoadingText';
 
 export default function DJIProductsSection() {
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
@@ -13,7 +13,7 @@ export default function DJIProductsSection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/api/client/products/drones");
+        const res = await axios.get('/api/client/products/drones');
         if (res.data.success) {
           setDrones(res.data.data.drones);
         }
@@ -35,8 +35,7 @@ export default function DJIProductsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl font-bold mb-4">
-            <span className="text-blue-600">DJI Enterprise</span>{" "}
-            Бүтээгдэхүүнүүд
+            <span className="text-blue-600">DJI Enterprise</span> Бүтээгдэхүүнүүд
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Дэлхийд тэргүүлэгч DJI Enterprise бүтээгдэхүүнүүдийн жагсаалт

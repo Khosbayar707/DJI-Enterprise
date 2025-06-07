@@ -1,24 +1,17 @@
-"use client";
-import PriorityForm from "@/app/_component/priority-form";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { EditSpecGeneralInfo } from "@/app/admin/specs/[id]/utils/editSpecGeneralInfo";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { TabsContent } from "@/components/ui/tabs";
-import { Spec } from "@/generated/prisma";
-import { ResponseType } from "@/lib/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField } from "@mui/material";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import z from "zod";
+'use client';
+import PriorityForm from '@/app/_component/priority-form';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { EditSpecGeneralInfo } from '@/app/admin/specs/[id]/utils/editSpecGeneralInfo';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { TabsContent } from '@/components/ui/tabs';
+import { Spec } from '@/generated/prisma';
+import { ResponseType } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, TextField } from '@mui/material';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
 
 const SpecEditGeneralInfo = ({
   spec,
@@ -40,7 +33,7 @@ const SpecEditGeneralInfo = ({
 
   const onSubmit = async (values: z.infer<typeof EditSpecGeneralInfo>) => {
     try {
-      const res = await axios.post("/api/product/specs/change-general-info", {
+      const res = await axios.post('/api/product/specs/change-general-info', {
         id: spec.id,
         ...values,
       });
@@ -90,11 +83,7 @@ const SpecEditGeneralInfo = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextField
-                      label="Дэлгэрэнгүй"
-                      variant="standard"
-                      {...field}
-                    />
+                    <TextField label="Дэлгэрэнгүй" variant="standard" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,10 +102,7 @@ const SpecEditGeneralInfo = ({
               )}
             />
             <PriorityForm form={form} />
-            <Button
-              disabled={!form.formState.isValid || form.formState.isSubmitting}
-              type="submit"
-            >
+            <Button disabled={!form.formState.isValid || form.formState.isSubmitting} type="submit">
               Өөрчлөх
             </Button>
           </div>

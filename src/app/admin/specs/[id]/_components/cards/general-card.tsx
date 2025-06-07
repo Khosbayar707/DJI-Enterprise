@@ -1,26 +1,20 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { Drone, Spec, SpecCategory } from "@/generated/prisma";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { EditSpecGeneralInfo } from "../../utils/editSpecGeneralInfo";
-import axios from "axios";
-import { Textarea } from "@/components/ui/textarea";
-import LoadingText from "@/app/_component/LoadingText";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { CustomSpec, ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import PriorityForm from "@/app/_component/priority-form";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Drone, SpecCategory } from '@/generated/prisma';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, TextField } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { EditSpecGeneralInfo } from '../../utils/editSpecGeneralInfo';
+import axios from 'axios';
+import { Textarea } from '@/components/ui/textarea';
+import LoadingText from '@/app/_component/LoadingText';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { CustomSpec, ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import PriorityForm from '@/app/_component/priority-form';
 type Props = {
   spec: CustomSpec;
   specCategories: SpecCategory[];
@@ -38,7 +32,7 @@ const SpecInfoCard = ({
   waitingCategories,
 }: Props) => {
   const [cat, setCat] = useState<SpecCategory[]>(spec.specCategories || []);
-  const [drone, setDrone] = useState(spec.droneId || "");
+  const [drone, setDrone] = useState(spec.droneId || '');
   const [response, setResponse] = useState<ResponseType>();
   const form = useForm<z.infer<typeof EditSpecGeneralInfo>>({
     resolver: zodResolver(EditSpecGeneralInfo),
@@ -47,12 +41,12 @@ const SpecInfoCard = ({
       detail: spec.detail,
       priority: spec.priority,
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = async (values: z.infer<typeof EditSpecGeneralInfo>) => {
     try {
-      const res = await axios.post("/api/product/specs/change-general-info", {
+      const res = await axios.post('/api/product/specs/change-general-info', {
         ...values,
         cat,
         drone,
@@ -98,12 +92,7 @@ const SpecInfoCard = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <TextField
-                        variant="standard"
-                        label="Эд ангиийн нэр"
-                        {...field}
-                        type="text"
-                      />
+                      <TextField variant="standard" label="Эд ангиийн нэр" {...field} type="text" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -128,28 +117,20 @@ const SpecInfoCard = ({
                   <div className=" flex flex-col gap-3">
                     <div>
                       Категори
-                      <span className=" text-xs text-gray-500 italic">
-                        *олныг сонгох боломжтой
-                      </span>
+                      <span className=" text-xs text-gray-500 italic">*олныг сонгох боломжтой</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {specCategories.length > 0 ? (
                         specCategories.map((category) => {
-                          const isSelected = cat.some(
-                            (item) => item.id === category.id
-                          );
+                          const isSelected = cat.some((item) => item.id === category.id);
                           return (
                             <Badge
                               key={category.id}
                               onClick={() => {
                                 setCat((prev) => {
-                                  const exists = prev.some(
-                                    (item) => item.id === category.id
-                                  );
+                                  const exists = prev.some((item) => item.id === category.id);
                                   if (exists) {
-                                    return prev.filter(
-                                      (item) => item.id !== category.id
-                                    );
+                                    return prev.filter((item) => item.id !== category.id);
                                   } else {
                                     return [...prev, category];
                                   }
@@ -157,8 +138,8 @@ const SpecInfoCard = ({
                               }}
                               className={`text-xs cursor-pointer transition-all duration-200 ${
                                 isSelected
-                                  ? "bg-green-600 text-white"
-                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                  ? 'bg-green-600 text-white'
+                                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                               }`}
                             >
                               {category.name}
@@ -172,13 +153,11 @@ const SpecInfoCard = ({
                   </div>
                   <div className=" flex flex-col gap-3">
                     <div>
-                      Дрон{" "}
+                      Дрон{' '}
                       <span className=" text-xs text-gray-500 italic">
                         *нэгийг л сонгох боломжтой
                       </span>
-                      {drone && (
-                        <Button onClick={() => setDrone("")}>Арилгах</Button>
-                      )}
+                      {drone && <Button onClick={() => setDrone('')}>Арилгах</Button>}
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {drones.length > 0 ? (
@@ -190,8 +169,8 @@ const SpecInfoCard = ({
                               onClick={() => setDrone(model.id)}
                               className={`text-xs cursor-pointer transition-all duration-200 ${
                                 isSelected
-                                  ? "bg-purple-600 text-white"
-                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                  ? 'bg-purple-600 text-white'
+                                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                               }`}
                             >
                               {model.name}
@@ -208,11 +187,9 @@ const SpecInfoCard = ({
               <Button
                 type="submit"
                 className=" w-full"
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? <LoadingText /> : "Өөрчлөх"}
+                {form.formState.isSubmitting ? <LoadingText /> : 'Өөрчлөх'}
               </Button>
             </div>
           </form>

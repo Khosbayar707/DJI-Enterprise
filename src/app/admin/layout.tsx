@@ -1,8 +1,8 @@
-"use client";
-import { Snackbar } from "@mui/material";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+'use client';
+import { Snackbar } from '@mui/material';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useEffect, useState } from 'react';
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
@@ -11,14 +11,14 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        await axios.get("/api/auth/refresh-token");
-        const res = await axios.get("/api/auth");
+        await axios.get('/api/auth/refresh-token');
+        const res = await axios.get('/api/auth');
         if (res.data.success) {
-          if (res.data.code === "USER") {
-            router.push("/");
+          if (res.data.code === 'USER') {
+            router.push('/');
           }
         } else {
-          router.push("/auth/login");
+          router.push('/auth/login');
         }
       } catch (err) {
         console.error(err);
@@ -32,8 +32,8 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
     <div className="min-h-screen">
       <Snackbar
         open={loading}
-        message={"Админы эрхийг шалгаж байна!"}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        message={'Админы эрхийг шалгаж байна!'}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       />
       {children}
     </div>

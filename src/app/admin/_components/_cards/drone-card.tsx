@@ -1,13 +1,14 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@mui/material";
-import AddDroneDialog from "../_dialogs/add-drone-dialog";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import LoadingText from "../loading";
-import { CustomDrone, ResponseType } from "@/lib/types";
-import Link from "next/link";
-import { CustomSnackbar } from "../snackbar";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@mui/material';
+import AddDroneDialog from '../_dialogs/add-drone-dialog';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import LoadingText from '../loading';
+import { CustomDrone, ResponseType } from '@/lib/types';
+import Link from 'next/link';
+import { CustomSnackbar } from '../snackbar';
+import FeatureDrone from './feature-drone/feature-drone';
 
 const DroneCard = () => {
   const [drones, setProducts] = useState<CustomDrone[]>([]);
@@ -19,7 +20,7 @@ const DroneCard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("/api/product/drones");
+      const res = await axios.get('/api/product/drones');
       if (res.data.success) {
         setProducts(res.data.data.drones);
       }
@@ -74,14 +75,10 @@ const DroneCard = () => {
   return (
     <div className="flex flex-col gap-6">
       {response && <CustomSnackbar value={response} />}
-
-      {/* Header with Add button */}
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Дрон жагсаалт</h2>
         <AddDroneDialog refresh={refresh} setRefresh={setRefresh} />
       </div>
-
-      {/* Drone Cards */}
       {loading ? (
         <div className="w-full flex justify-center">
           <LoadingText />
@@ -92,6 +89,7 @@ const DroneCard = () => {
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>{drone.name}</span>
+                <FeatureDrone id={drone.id} featured={drone.featured} setRefresh={setRefresh} />
                 <div className="flex gap-3 text-sm text-muted-foreground">
                   <span>Зурагнууд: {drone.images.length}</span>
                   <span>Бичлэгнүүд: {drone.videos.length}</span>
@@ -106,9 +104,7 @@ const DroneCard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                {drone.description}
-              </p>
+              <p className="text-sm text-muted-foreground">{drone.description}</p>
 
               <div>
                 <h4 className="text-sm font-semibold mb-2">Эд анги:</h4>
@@ -136,15 +132,13 @@ const DroneCard = () => {
                     color="error"
                     variant="contained"
                   >
-                    {deleting ? <LoadingText /> : "Устгах"}
+                    {deleting ? <LoadingText /> : 'Устгах'}
                   </Button>
                 </div>
                 <div className="flex gap-2 items-center">
                   {drone.visible ? (
                     <>
-                      <div className="text-green-600">
-                        Уг бүтээгдэхүүн нийтлэгдсэн байна!
-                      </div>
+                      <div className="text-green-600">Уг бүтээгдэхүүн нийтлэгдсэн байна!</div>
                       <Button
                         disabled={publishing}
                         onClick={() => handlePublish(drone.id)}
@@ -156,9 +150,7 @@ const DroneCard = () => {
                     </>
                   ) : (
                     <>
-                      <div className="text-rose-800">
-                        Уг бүтээгдэхүүн нийтлэгдээгүй байна!
-                      </div>
+                      <div className="text-rose-800">Уг бүтээгдэхүүн нийтлэгдээгүй байна!</div>
                       <Button
                         disabled={publishing}
                         onClick={() => handlePublish(drone.id)}

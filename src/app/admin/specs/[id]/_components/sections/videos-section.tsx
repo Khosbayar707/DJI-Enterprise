@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { CustomSpec } from "@/lib/types";
-import { Video } from "@/generated/prisma";
-import VideosCard from "../cards/videos-card";
-import VideoUploadAccordion from "../accordions/video-upload-accordian";
-import LoadingText from "@/app/_component/LoadingText";
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { CustomSpec } from '@/lib/types';
+import { Video } from '@/generated/prisma';
+import VideosCard from '../cards/videos-card';
+import VideoUploadAccordion from '../accordions/video-upload-accordian';
+import LoadingText from '@/app/_component/LoadingText';
 
 const VideosSection = () => {
   const params = useParams();
@@ -17,7 +17,7 @@ const VideosSection = () => {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
-  const fetchImages = async () => {
+  const fetchVideos = useCallback(async () => {
     try {
       const res = await axios.get(`/api/product/specs/item?id=${id}`);
       if (res.data.success) {
@@ -29,11 +29,11 @@ const VideosSection = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
-    fetchImages();
-  }, [refresh]);
+    fetchVideos();
+  }, [refresh, fetchVideos]);
 
   return (
     <div className=" flex flex-col gap-6">
@@ -44,9 +44,7 @@ const VideosSection = () => {
       {loading ? (
         <LoadingText />
       ) : videos.length > 0 && spec ? (
-        videos.map((video) => (
-          <VideosCard key={video.id} video={video} setRefresh={setRefresh} />
-        ))
+        videos.map((video) => <VideosCard key={video.id} video={video} setRefresh={setRefresh} />)
       ) : (
         <div>Бичлэг алга</div>
       )}

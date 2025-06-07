@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
 
-import AboutCompanySection from "./_component/AboutCompanySection";
-import CaseStudiesSection from "./_component/CaseStudiesSection";
-import ContactSection from "./_component/ContactSection";
-import DJIProductsSection from "./_component/DJIProductsSection";
-import HeroSection from "./_component/HeroSection";
-import ServicesSection from "./_component/ServicesSection";
-import ProductCard from "./_component/ProductCard";
-import LoadingText from "./_component/LoadingText";
+import AboutCompanySection from './_component/AboutCompanySection';
+import CaseStudiesSection from './_component/CaseStudiesSection';
+import ContactSection from './_component/ContactSection';
+import DJIProductsSection from './_component/DJIProductsSection';
+import HeroSection from './_component/HeroSection';
+import ServicesSection from './_component/ServicesSection';
+import ProductCard from './_component/ProductCard';
+import LoadingText from './_component/LoadingText';
 
-import { CustomDroneClient } from "@/lib/types";
-import DroneServiceTrainingSection from "./_component/DroneServiceTrainingSection ";
-import Head from "next/head";
+import { CustomDroneClient } from '@/lib/types';
+import DroneServiceTrainingSection from './_component/DroneServiceTrainingSection ';
+import Head from 'next/head';
 
 const App = () => {
-  const search = useSearchParams().get("search");
+  const search = useSearchParams().get('search');
   const [drones, setDrones] = useState<CustomDroneClient[]>();
   const [loading, setLoading] = useState(true);
 
@@ -27,14 +27,12 @@ const App = () => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `/api/client/products/drones/search?search=${search}`
-        );
+        const res = await axios.get(`/api/client/products/drones/search?search=${search}`);
         if (res.data.success) {
           setDrones(res.data.data.drones);
         }
       } catch (err) {
-        console.error("Drone search fetch error:", err);
+        console.error('Drone search fetch error:', err);
       } finally {
         setLoading(false);
       }
@@ -47,10 +45,7 @@ const App = () => {
     <main className="bg-white min-h-screen">
       <Head>
         <title>Инженер Геодези ХХК - Мэргэжлийн дрон худалдаа</title>
-        <meta
-          name="description"
-          content="Мэргэжлийн DJI дронуудыг Монголд худалдаж аваарай."
-        />
+        <meta name="description" content="Мэргэжлийн DJI дронуудыг Монголд худалдаж аваарай." />
         ...
       </Head>
       {search ? (
@@ -65,9 +60,7 @@ const App = () => {
             </div>
           </section>
         ) : (
-          <p className="text-center text-lg text-gray-500 py-12">
-            Илэрц олдсонгүй!
-          </p>
+          <p className="text-center text-lg text-gray-500 py-12">Илэрц олдсонгүй!</p>
         )
       ) : (
         <>

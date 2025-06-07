@@ -1,12 +1,12 @@
-import { CustomResponse, NextResponse_CatchError } from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
-import { nanoid } from "nanoid";
-import nodemailer from "nodemailer";
-import bcrypt from "bcrypt";
+import { CustomResponse, NextResponse_CatchError } from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import { nanoid } from 'nanoid';
+import nodemailer from 'nodemailer';
+import bcrypt from 'bcrypt';
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.zoho.com",
+  host: 'smtp.zoho.com',
   port: 465,
   secure: true,
   auth: {
@@ -22,25 +22,20 @@ export async function GET(req: NextRequest) {
     await prisma.oTP.deleteMany({
       where: { createdAt: { lte: expiryTime } },
     });
-    const otp = req.nextUrl.searchParams.get("otp");
+    const otp = req.nextUrl.searchParams.get('otp');
     if (!otp) {
-      return CustomResponse(
-        false,
-        "NO_OTP_PROVIDED",
-        "Нэг удаагийн код илгээгээгүй байна!",
-        null
-      );
+      return CustomResponse(false, 'NO_OTP_PROVIDED', 'Нэг удаагийн код илгээгээгүй байна!', null);
     }
     const userOTP = await prisma.oTP.findUnique({ where: { otp } });
     if (!userOTP) {
       return CustomResponse(
         false,
-        "NOT_A_VALID_OTP",
-        "Нэг удаагийн код буруу эсвэл хугацаа дууссан",
+        'NOT_A_VALID_OTP',
+        'Нэг удаагийн код буруу эсвэл хугацаа дууссан',
         null
       );
     }
-    return CustomResponse(true, "REQUEST_SUCCESS", "Код зөв", { OTP: userOTP });
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Код зөв', { OTP: userOTP });
   } catch (err) {
     console.error(err);
     return NextResponse_CatchError(err);
@@ -51,21 +46,11 @@ export async function POST(req: NextRequest) {
   try {
     const { email } = await req.json();
     if (!email) {
-      return CustomResponse(
-        false,
-        "NO_EMAIL_PROVIDED",
-        "Майл хаяг алга!",
-        null
-      );
+      return CustomResponse(false, 'NO_EMAIL_PROVIDED', 'Майл хаяг алга!', null);
     }
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return CustomResponse(
-        false,
-        "USER_NOT_FOUND",
-        "Хэрэглэгч олдсонгүй!",
-        null
-      );
+      return CustomResponse(false, 'USER_NOT_FOUND', 'Хэрэглэгч олдсонгүй!', null);
     }
     const otp = nanoid();
 
@@ -73,8 +58,8 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: `"DJI Mongolia" <${process.env.EMAIL}>`, // sender address
       to: user.email, // list of receivers
-      subject: "DJI - Нууц үг солих хүсэлт ирлээ!", // Subject line
-      text: "Нууц үг солих", // plain text body
+      subject: 'DJI - Нууц үг солих хүсэлт ирлээ!', // Subject line
+      text: 'Нууц үг солих', // plain text body
       html: `<b>  Сайн байна уу!
       </b>
       <h3>Нууц үг солих холбоос!</h3>
@@ -85,8 +70,8 @@ export async function POST(req: NextRequest) {
 
     return CustomResponse(
       true,
-      "REQUEST_SUCCESS",
-      "Таны майл рүү холбоос илгээсэн. Хэрвээ ирээгүй байвал спам болон хогийн савыг шалгана уу!",
+      'REQUEST_SUCCESS',
+      'Таны майл рүү холбоос илгээсэн. Хэрвээ ирээгүй байвал спам болон хогийн савыг шалгана уу!',
       null
     );
   } catch (err) {
@@ -99,7 +84,7 @@ export async function PATCH(req: NextRequest) {
   try {
     const { password, otp } = await req.json();
     if (!password && !otp) {
-      return CustomResponse(false, "REQUEST_FAILED", "Мэдээлэл дутуу", null);
+      return CustomResponse(false, 'REQUEST_FAILED', 'Мэдээлэл дутуу', null);
     }
     const userOTP = await prisma.oTP.findUnique({
       where: { otp },
@@ -113,12 +98,9 @@ export async function PATCH(req: NextRequest) {
       omit: { password: true },
     });
 
-    return CustomResponse(
-      true,
-      "REQUEST_SUCCESS",
-      "Нууц үг амжилттай солигдлоо!",
-      { new: updateUser }
-    );
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Нууц үг амжилттай солигдлоо!', {
+      new: updateUser,
+    });
   } catch (err) {
     console.error(err);
   }

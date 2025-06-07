@@ -1,12 +1,8 @@
-import {
-  CustomResponse,
-  NextResponse_CatchError,
-  NextResponse_NoEnv,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { CustomResponse, NextResponse_CatchError, NextResponse_NoEnv } from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,22 +18,22 @@ export async function POST(req: NextRequest) {
       if (!verify) {
         return CustomResponse(
           false,
-          "USER_EXISTS",
-          "Хэрэглэгч бүртгэлтэй ч нууц үг буруу байна!",
+          'USER_EXISTS',
+          'Хэрэглэгч бүртгэлтэй ч нууц үг буруу байна!',
           null
         );
       }
       if (!user.isActive) {
         return CustomResponse(
           false,
-          "ACCOUNT_BLOCKED",
-          "Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!",
+          'ACCOUNT_BLOCKED',
+          'Таны хаяг идэвхигүй болсон байна! Админтай холбогдоно уу!',
           null
         );
       }
       const response = NextResponse.json({
         success: true,
-        message: "Бүртгэлтэй хэрэглэгч амжилттай нэвтэрлээ!",
+        message: 'Бүртгэлтэй хэрэглэгч амжилттай нэвтэрлээ!',
         data: { id: user.id },
       });
       const accessToken = jwt.sign(
@@ -47,7 +43,7 @@ export async function POST(req: NextRequest) {
           isAdmin: user.isAdmin,
         },
         process.env.JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: '1h' }
       );
       const refreshToken = jwt.sign(
         {
@@ -56,19 +52,19 @@ export async function POST(req: NextRequest) {
           isAdmin: user.isAdmin,
         },
         process.env.JWT_REFRESH_SECRET,
-        { expiresIn: "24h" }
+        { expiresIn: '24h' }
       );
-      response.cookies.set("accessToken", accessToken, {
+      response.cookies.set('accessToken', accessToken, {
         maxAge: 60 * 60,
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: 'strict',
       });
-      response.cookies.set("refreshToken", refreshToken, {
+      response.cookies.set('refreshToken', refreshToken, {
         maxAge: 60 * 60 * 24,
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: 'strict',
       });
       return response;
     }
@@ -79,7 +75,7 @@ export async function POST(req: NextRequest) {
     });
     const response = NextResponse.json({
       success: true,
-      message: "Хэрэглэгч амжилттай бүртгэгдлээ!",
+      message: 'Хэрэглэгч амжилттай бүртгэгдлээ!',
       data: { id: newUser.id },
     });
     const accessToken = jwt.sign(
@@ -89,7 +85,7 @@ export async function POST(req: NextRequest) {
         isAdmin: newUser.isAdmin,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: '1h' }
     );
     const refreshToken = jwt.sign(
       {
@@ -98,19 +94,19 @@ export async function POST(req: NextRequest) {
         isAdmin: newUser.isAdmin,
       },
       process.env.JWT_REFRESH_SECRET,
-      { expiresIn: "24h" }
+      { expiresIn: '24h' }
     );
-    response.cookies.set("accessToken", accessToken, {
+    response.cookies.set('accessToken', accessToken, {
       maxAge: 60 * 60,
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: 'strict',
     });
-    response.cookies.set("refreshToken", refreshToken, {
+    response.cookies.set('refreshToken', refreshToken, {
       maxAge: 60 * 60 * 24,
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: 'strict',
     });
     return response;
   } catch (err) {

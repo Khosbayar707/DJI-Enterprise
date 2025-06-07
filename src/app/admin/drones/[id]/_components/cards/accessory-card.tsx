@@ -1,24 +1,18 @@
-"use client";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { DroneInTheBox } from "@/generated/prisma";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { AddAccessorySchema } from "../../utils/add-accessory-schema";
-import z from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { PuzzlePieceIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
-import { ResponseType } from "@/lib/types";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { TextField } from "@mui/material";
-import { TrashIcon } from "lucide-react";
+'use client';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { DroneInTheBox } from '@/generated/prisma';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { AddAccessorySchema } from '../../utils/add-accessory-schema';
+import z from 'zod';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { PuzzlePieceIcon } from '@heroicons/react/24/solid';
+import axios from 'axios';
+import { ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { TextField } from '@mui/material';
+import { TrashIcon } from 'lucide-react';
 
 type Props = {
   loading: boolean;
@@ -34,12 +28,12 @@ const AccessoryCard = ({ accessories, id, setRefresh }: Props) => {
   const [deleting, setDeleting] = useState(false);
   const form = useForm<z.infer<typeof AddAccessorySchema>>({
     resolver: zodResolver(AddAccessorySchema),
-    defaultValues: { name: "" },
+    defaultValues: { name: '' },
   });
 
   const onSubmit = async (values: z.infer<typeof AddAccessorySchema>) => {
     try {
-      const res = await axios.post("/api/product/drones/accessory", {
+      const res = await axios.post('/api/product/drones/accessory', {
         ...values,
         id,
       });
@@ -120,15 +114,13 @@ const AccessoryCard = ({ accessories, id, setRefresh }: Props) => {
                 key={item.id}
                 className="relative bg-white border rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition"
               >
-                <div className="text-gray-800 font-medium pr-8">
-                  {item.name}
-                </div>
+                <div className="text-gray-800 font-medium pr-8">{item.name}</div>
 
                 <button
                   onClick={() => handleDelete(item.id)}
                   disabled={deleting}
                   title="Устгах"
-                  className={`absolute top-2 right-2 p-1 rounded-full bg-red-50 hover:bg-red-100 hover:text-red-700 transition cursor-pointer ${deleting ? "text-secondary" : "text-red-600 "}`}
+                  className={`absolute top-2 right-2 p-1 rounded-full bg-red-50 hover:bg-red-100 hover:text-red-700 transition cursor-pointer ${deleting ? 'text-secondary' : 'text-red-600 '}`}
                 >
                   <TrashIcon className="w-5 h-5" />
                 </button>

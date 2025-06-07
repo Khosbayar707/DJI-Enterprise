@@ -1,13 +1,13 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import LoadingText from "../loading";
-import { CustomSpec, ResponseType } from "@/lib/types";
-import AddSpecDialog from "../_dialogs/add-spec-category";
-import Link from "next/link";
-import { CustomSnackbar } from "../snackbar";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@mui/material';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import LoadingText from '../loading';
+import { CustomSpec, ResponseType } from '@/lib/types';
+import AddSpecDialog from '../_dialogs/add-spec-category';
+import Link from 'next/link';
+import { CustomSnackbar } from '../snackbar';
 
 const SpecCard = () => {
   const [specs, setSpecs] = useState<CustomSpec[]>([]);
@@ -18,7 +18,7 @@ const SpecCard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("/api/product/specs");
+      const res = await axios.get('/api/product/specs');
       if (res.data.success) {
         setSpecs(res.data.data.specs);
       }
@@ -94,7 +94,7 @@ const SpecCard = () => {
                   onClick={() => deleteItem(spec.id)}
                   disabled={deleting}
                 >
-                  {deleting ? <LoadingText /> : "Устгах"}
+                  {deleting ? <LoadingText /> : 'Устгах'}
                 </Button>
               </div>
             </CardHeader>

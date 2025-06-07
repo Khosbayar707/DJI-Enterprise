@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import VideosCard from "../cards/videos-card";
-import { useParams } from "next/navigation";
-import { CustomDrone, CustomImage } from "@/lib/types";
-import { Drone, Video } from "@/generated/prisma";
-import axios from "axios";
-import LoadingText from "@/app/_component/LoadingText";
-import VideoUploadAccordion from "../accordions/video-upload-accordian";
+import { useCallback, useEffect, useState } from 'react';
+import VideosCard from '../cards/videos-card';
+import { useParams } from 'next/navigation';
+import { CustomDrone } from '@/lib/types';
+import { Video } from '@/generated/prisma';
+import axios from 'axios';
+import LoadingText from '@/app/_component/LoadingText';
+import VideoUploadAccordion from '../accordions/video-upload-accordian';
 
 const VideosSection = () => {
   const params = useParams();
@@ -17,7 +17,7 @@ const VideosSection = () => {
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
-  const fetchVideos = async () => {
+  const fetchVideos = useCallback(async () => {
     try {
       const res = await axios.get(`/api/product/drones/item?id=${id}`);
       if (res.data.success) {
@@ -29,11 +29,11 @@ const VideosSection = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchVideos();
-  }, [refresh]);
+  }, [refresh, fetchVideos]);
 
   return (
     <div className=" flex flex-col gap-6">
@@ -44,9 +44,7 @@ const VideosSection = () => {
       {loading ? (
         <LoadingText />
       ) : videos.length > 0 && drone ? (
-        videos.map((video) => (
-          <VideosCard key={video.id} video={video} setRefresh={setRefresh} />
-        ))
+        videos.map((video) => <VideosCard key={video.id} video={video} setRefresh={setRefresh} />)
       ) : (
         <div>Бичлэг алга</div>
       )}

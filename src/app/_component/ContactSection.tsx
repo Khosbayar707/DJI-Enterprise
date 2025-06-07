@@ -1,40 +1,33 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { motion } from 'framer-motion';
+import { useForm } from 'react-hook-form';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import ContactRequestFromUserSchema, {
   ContactRequestFromUserSchemaType,
-} from "./utils/contact-request-schema";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button, TextField } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { ResponseType } from "@/lib/types";
-import { CustomResponse } from "@/lib/next-responses";
-import { CustomSnackbar } from "../admin/_components/snackbar";
+} from './utils/contact-request-schema';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Button, TextField } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { ResponseType } from '@/lib/types';
+import { CustomSnackbar } from '../admin/_components/snackbar';
 
 export default function ContactSection() {
   const [response, setResponse] = useState<ResponseType>();
   const form = useForm({
     resolver: zodResolver(ContactRequestFromUserSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
     },
   });
 
   const onSubmit = async (values: ContactRequestFromUserSchemaType) => {
     try {
-      const res = await axios.post("/api/client/contact-request", values);
+      const res = await axios.post('/api/client/contact-request', values);
       setResponse(res.data);
     } catch (err) {
       console.error(err);
@@ -82,11 +75,7 @@ export default function ContactSection() {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <TextField
-                            variant="standard"
-                            label="Нэр"
-                            {...field}
-                          />
+                          <TextField variant="standard" label="Нэр" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -98,11 +87,7 @@ export default function ContactSection() {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <TextField
-                            variant="standard"
-                            label="Майл"
-                            {...field}
-                          />
+                          <TextField variant="standard" label="Майл" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -131,11 +116,7 @@ export default function ContactSection() {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <TextField
-                            variant="standard"
-                            label="Зурвас"
-                            {...field}
-                          />
+                          <TextField variant="standard" label="Зурвас" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -191,8 +172,8 @@ export default function ContactSection() {
               <div>
                 <h4 className="font-medium">Хаяг</h4>
                 <p className="text-gray-600">
-                  Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн
-                  гудамж 52/3, "Инженер Геодези ХХК" байр
+                  Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3,
+                  &quot;Инженер Геодези ХХК&quot; байр
                 </p>
               </div>
             </div>
@@ -210,6 +191,7 @@ export default function ContactSection() {
 
             <div className="pt-4">
               <iframe
+                title="addess"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2676.063079710459!2d106.8920424!3d47.9183684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96eccc00000001:0xd9419ff8407d6f3c!2z0JjQvdC20LXQvdC10YAg0LPQtdC-0LTQtdC5INCR0JDQlyDQodCQ0JcgLyBFbmdpbmVlcmluZyBnZW9kZXN5IExMQw!5e0!3m2!1smn!2smn!4v1716115200000!5m2!1smn!2smn"
                 width="100%"
                 height="300"

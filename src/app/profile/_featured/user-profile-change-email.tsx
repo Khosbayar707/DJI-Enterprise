@@ -1,9 +1,9 @@
-"use client";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { CustomUserClient, ResponseType } from "@/lib/types";
-import { TextField } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import UserProfileConfirmPassword from "../_components/confirm-password";
+'use client';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { CustomUserClient, ResponseType } from '@/lib/types';
+import { TextField } from '@mui/material';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import UserProfileConfirmPassword from '../_components/confirm-password';
 
 type Props = {
   user: CustomUserClient;

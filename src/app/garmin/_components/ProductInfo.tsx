@@ -1,5 +1,4 @@
-import { GarminProduct, Product } from "@/app/_types/types";
-import { CustomGarminProduct } from "@/lib/types";
+import { CustomGarminProduct } from '@/lib/types';
 
 interface ProductInfoProps {
   product: CustomGarminProduct;
@@ -7,11 +6,7 @@ interface ProductInfoProps {
   isLoading: boolean;
 }
 
-export default function ProductInfo({
-  product,
-  onContactClick,
-  isLoading,
-}: ProductInfoProps) {
+export default function ProductInfo({ product, onContactClick, isLoading }: ProductInfoProps) {
   return (
     <div>
       <div className="flex justify-between items-start">
@@ -20,9 +15,7 @@ export default function ProductInfo({
           <p className="text-gray-500 mt-1">{product.category}</p>
         </div>
         {product.isNew && (
-          <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
-            NEW
-          </span>
+          <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">NEW</span>
         )}
       </div>
 
@@ -31,7 +24,7 @@ export default function ProductInfo({
           {[...Array(5)].map((_, starIndex) => (
             <svg
               key={starIndex}
-              className={`w-5 h-5 ${starIndex < Math.floor(product.rating) ? "text-yellow-400" : "text-gray-300"}`}
+              className={`w-5 h-5 ${starIndex < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -47,17 +40,11 @@ export default function ProductInfo({
       <div className="mt-6">
         {product.discountPrice ? (
           <div>
-            <span className="text-3xl font-bold text-gray-900">
-              {product.discountPrice}
-            </span>
-            <span className="text-lg text-gray-500 line-through ml-2">
-              {product.price}
-            </span>
+            <span className="text-3xl font-bold text-gray-900">{product.discountPrice}</span>
+            <span className="text-lg text-gray-500 line-through ml-2">{product.price}</span>
           </div>
         ) : (
-          <span className="text-3xl font-bold text-gray-900">
-            {product.price}
-          </span>
+          <span className="text-3xl font-bold text-gray-900">{product.price}</span>
         )}
       </div>
 
@@ -66,14 +53,14 @@ export default function ProductInfo({
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200"
           disabled={!product.inStock}
         >
-          {product.inStock ? "Сагсанд хийх" : "Дууссан"}
+          {product.inStock ? 'Сагсанд хийх' : 'Дууссан'}
         </button>
         <button
           className="w-full mt-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-bold py-3 px-4 rounded-lg transition duration-200"
           onClick={onContactClick}
           disabled={isLoading}
         >
-          {isLoading ? "Ачааллаж байна..." : "Холбоо барих"}
+          {isLoading ? 'Ачааллаж байна...' : 'Холбоо барих'}
         </button>
       </div>
     </div>

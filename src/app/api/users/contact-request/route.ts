@@ -4,15 +4,15 @@ import {
   NextResponse_NoEnv,
   NextResponse_NotAnAdmin,
   NextResponse_NoToken,
-} from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
-import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+} from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const requests = await prisma.contactRequest.findMany();
-    return CustomResponse(true, "REQUEST_SUCCESS", "Хүсэлт амжилттай!", {
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Хүсэлт амжилттай!', {
       requests,
     });
   } catch (err) {
@@ -27,7 +27,7 @@ export async function PATCH(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       return NextResponse_NoEnv();
     }
-    const accessToken = req.cookies.get("accessToken")?.value;
+    const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) {
       return NextResponse_NoToken();
     }
@@ -39,12 +39,7 @@ export async function PATCH(req: NextRequest) {
     }
     const request = await prisma.contactRequest.findUnique({ where: { id } });
     if (!request) {
-      return CustomResponse(
-        false,
-        "REQUEST_NOT_FOUND",
-        "Хүсэлт олдсонгүй!",
-        null
-      );
+      return CustomResponse(false, 'REQUEST_NOT_FOUND', 'Хүсэлт олдсонгүй!', null);
     }
     const deleteRequest = await prisma.contactRequest.update({
       where: { id: request.id },
@@ -53,14 +48,9 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    return CustomResponse(
-      true,
-      "REQUEST_SUCCESS",
-      "Төлөв амжилттай өөрчлөгдлөө!",
-      {
-        deleted: deleteRequest,
-      }
-    );
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Төлөв амжилттай өөрчлөгдлөө!', {
+      deleted: deleteRequest,
+    });
   } catch (err) {
     console.error(err);
     return NextResponse_CatchError(err);

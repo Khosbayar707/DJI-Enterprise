@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 interface ProductTabsProps {
   features: string[];
@@ -11,27 +11,27 @@ export default function ProductTabs({
   // specifications,
   description,
 }: ProductTabsProps) {
-  const [activeTab, setActiveTab] = useState("description");
+  const [activeTab, setActiveTab] = useState('description');
 
   return (
     <div className="mt-16">
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
           <button
-            className={`px-1 py-4 text-sm font-medium ${activeTab === "description" ? "border-b-2 border-blue-500 text-blue-600" : "border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"}`}
-            onClick={() => setActiveTab("description")}
+            className={`px-1 py-4 text-sm font-medium ${activeTab === 'description' ? 'border-b-2 border-blue-500 text-blue-600' : 'border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+            onClick={() => setActiveTab('description')}
           >
             Тайлбар
           </button>
           <button
-            className={`px-1 py-4 text-sm font-medium ${activeTab === "features" ? "border-b-2 border-blue-500 text-blue-600" : "border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"}`}
-            onClick={() => setActiveTab("features")}
+            className={`px-1 py-4 text-sm font-medium ${activeTab === 'features' ? 'border-b-2 border-blue-500 text-blue-600' : 'border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+            onClick={() => setActiveTab('features')}
           >
             Онцлог
           </button>
           <button
-            className={`px-1 py-4 text-sm font-medium ${activeTab === "specs" ? "border-b-2 border-blue-500 text-blue-600" : "border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"}`}
-            onClick={() => setActiveTab("specs")}
+            className={`px-1 py-4 text-sm font-medium ${activeTab === 'specs' ? 'border-b-2 border-blue-500 text-blue-600' : 'border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+            onClick={() => setActiveTab('specs')}
           >
             Техникийн үзүүлэлт
           </button>
@@ -39,20 +39,16 @@ export default function ProductTabs({
       </div>
 
       <div className="py-8">
-        {activeTab === "description" && (
+        {activeTab === 'description' && (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Бүтээгдэхүүний тайлбар
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Бүтээгдэхүүний тайлбар</h3>
             <p className="text-gray-700 whitespace-pre-line">{description}</p>
           </div>
         )}
 
-        {activeTab === "features" && (
+        {activeTab === 'features' && (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Үндсэн онцлог
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Үндсэн онцлог</h3>
             <ul className="space-y-3">
               {features.map((feature, index) => (
                 <li key={index} className="flex items-start">
@@ -76,11 +72,9 @@ export default function ProductTabs({
           </div>
         )}
 
-        {activeTab === "specs" && (
+        {activeTab === 'specs' && (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Техникийн үзүүлэлт
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Техникийн үзүүлэлт</h3>
             {/* <div className="bg-gray-50 rounded-lg overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <tbody className="bg-white divide-y divide-gray-200">

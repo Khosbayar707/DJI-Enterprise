@@ -1,9 +1,9 @@
-"use client";
-import ProductCard from "../_component/ProductCard";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CustomDroneClient } from "@/lib/types";
-import ProductListSkeleton from "./_components/skeleton";
+'use client';
+import ProductCard from '../_component/ProductCard';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { CustomDroneClient } from '@/lib/types';
+import ProductListSkeleton from './_components/skeleton';
 
 export default function ProductListPage() {
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
@@ -11,7 +11,7 @@ export default function ProductListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/api/client/products/drones");
+        const res = await axios.get('/api/client/products/drones');
         if (res.data.success) {
           setDrones(res.data.data.drones);
         }

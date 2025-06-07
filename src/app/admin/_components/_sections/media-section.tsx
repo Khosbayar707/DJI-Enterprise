@@ -1,4 +1,4 @@
-import ImageCard from "../_cards/image-card";
+import ImageCard from '../_cards/image-card';
 
 const MediaSection = () => {
   return (

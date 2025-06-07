@@ -1,23 +1,19 @@
-"use client";
+'use client';
 
-import { CustomUserClient, ResponseType } from "@/lib/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { TextField } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ResponseType } from '@/lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   UserProfileChangePasswordSchema,
   UserProfileChangePasswordSchemaType,
-} from "../utils/change-password-schema";
-import { Form, FormField } from "@/components/ui/form";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import axios from "axios";
+} from '../utils/change-password-schema';
+import { Form, FormField } from '@/components/ui/form';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import axios from 'axios';
 
-type Props = {
-  user: CustomUserClient;
-  setRefresh: Dispatch<SetStateAction<boolean>>;
-};
-const UserProfileChangePassword = ({ user, setRefresh }: Props) => {
+const UserProfileChangePassword = () => {
   const [response, setResponse] = useState<ResponseType>();
 
   useEffect(() => {
@@ -31,18 +27,15 @@ const UserProfileChangePassword = ({ user, setRefresh }: Props) => {
   const form = useForm({
     resolver: zodResolver(UserProfileChangePasswordSchema),
     defaultValues: {
-      currentPassword: "",
-      password: "",
-      confirmPassword: "",
+      currentPassword: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
   const onSubmit = async (values: UserProfileChangePasswordSchemaType) => {
     try {
-      const res = await axios.post(
-        "/api/auth/current-user/change-password",
-        values
-      );
+      const res = await axios.post('/api/auth/current-user/change-password', values);
       setResponse(res.data);
       if (res.data.success) {
         form.reset();
@@ -107,7 +100,7 @@ const UserProfileChangePassword = ({ user, setRefresh }: Props) => {
             type="submit"
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
           >
-            {form.formState.isSubmitting ? "Түр хүлээнэ үү!" : "Нууц үг солих"}
+            {form.formState.isSubmitting ? 'Түр хүлээнэ үү!' : 'Нууц үг солих'}
           </button>
         </form>
       </Form>

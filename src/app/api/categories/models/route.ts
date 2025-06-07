@@ -1,13 +1,13 @@
-import { CustomResponse, NextResponse_CatchError } from "@/lib/next-responses";
-import { prisma } from "@/lib/prisma";
+import { CustomResponse, NextResponse_CatchError } from '@/lib/next-responses';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
     const models = await prisma.droneModel.findMany({
       include: { drones: true },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
-    return CustomResponse(true, "REQUEST_SUCCESS", "Амжилттай", { models });
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай', { models });
   } catch (err) {
     return NextResponse_CatchError(err);
   }

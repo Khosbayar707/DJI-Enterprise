@@ -1,34 +1,16 @@
-"use client";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { ResponseType } from "@/lib/types";
-import { AddCategorySchema } from "@/lib/zod-schemas/add-category-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import z from "zod";
-import { CustomSnackbar } from "../snackbar";
-import LoadingText from "../loading";
+'use client';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { ResponseType } from '@/lib/types';
+import { AddCategorySchema } from '@/lib/zod-schemas/add-category-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { CustomSnackbar } from '../snackbar';
+import LoadingText from '../loading';
 const AddCategoryDialog = ({
   refresh,
   setRefresh,
@@ -40,14 +22,14 @@ const AddCategoryDialog = ({
   const form = useForm<z.infer<typeof AddCategorySchema>>({
     resolver: zodResolver(AddCategorySchema),
     defaultValues: {
-      name: "",
-      type: "drone",
+      name: '',
+      type: 'drone',
     },
-    mode: "onTouched",
+    mode: 'onTouched',
   });
   const onSubmit = async (values: z.infer<typeof AddCategorySchema>) => {
     try {
-      const res = await axios.post("/api/categories", values);
+      const res = await axios.post('/api/categories', values);
       setResponse(res.data);
       if (res.data.success) {
         form.reset();
@@ -87,7 +69,7 @@ const AddCategoryDialog = ({
                       <FormControl>
                         <TextField
                           {...field}
-                          color={form.formState.isValid ? "primary" : "error"}
+                          color={form.formState.isValid ? 'primary' : 'error'}
                           variant="standard"
                           label="Категори нэр"
                         />
@@ -105,7 +87,7 @@ const AddCategoryDialog = ({
                         <RadioGroup
                           {...field}
                           row
-                          value={field.value || ""}
+                          value={field.value || ''}
                           onChange={(e) => field.onChange(e.target.value)}
                           className=" flex justify-center gap-4"
                         >
@@ -132,13 +114,11 @@ const AddCategoryDialog = ({
                 />
               </div>
               <Button
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
                 type="submit"
                 className=" w-full"
               >
-                {form.formState.isSubmitting ? <LoadingText /> : "Нэмэх"}
+                {form.formState.isSubmitting ? <LoadingText /> : 'Нэмэх'}
               </Button>
             </form>
           </Form>

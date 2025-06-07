@@ -1,9 +1,9 @@
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { TabsContent } from "@/components/ui/tabs";
-import { CustomSpec, ResponseType } from "@/lib/types";
-import { Button } from "@mui/material";
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { TabsContent } from '@/components/ui/tabs';
+import { CustomSpec, ResponseType } from '@/lib/types';
+import { Button } from '@mui/material';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 const SpecAllDescriptions = ({
   spec,
@@ -14,13 +14,11 @@ const SpecAllDescriptions = ({
 }) => {
   const [response, setResponse] = useState<ResponseType>();
   const [deleting, setDeleting] = useState(false);
-  const [deletingId, setId] = useState("");
+  const [deletingId, setId] = useState('');
   const handleDelete = async (id: string) => {
     try {
       setDeleting(true);
-      const res = await axios.delete(
-        `/api/product/specs/item/spec-desc?id=${id}`
-      );
+      const res = await axios.delete(`/api/product/specs/item/spec-desc?id=${id}`);
       if (res.data.success) {
         setRefresh((prev) => !prev);
       }
@@ -47,10 +45,10 @@ const SpecAllDescriptions = ({
           spec.descriptions.map((sp, i) => (
             <div key={sp.id} className=" flex justify-between">
               <div>
-                {i + 1}. <span className=" text-xl">{sp.highlight}</span> -{" "}
+                {i + 1}. <span className=" text-xl">{sp.highlight}</span> -{' '}
                 <span className=" italic">{sp.highlight}</span> ({sp.priority}
                 /5)
-              </div>{" "}
+              </div>{' '}
               <Button
                 disabled={deleting}
                 onClick={() => {
@@ -59,7 +57,7 @@ const SpecAllDescriptions = ({
                 }}
                 variant="text"
               >
-                {deleting && deletingId === sp.id ? "Устгаж байна" : "Устгах"}
+                {deleting && deletingId === sp.id ? 'Устгаж байна' : 'Устгах'}
               </Button>
             </div>
           ))

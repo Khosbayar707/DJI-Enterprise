@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import Breadcrumbs from "../_components/Breadcrumbs";
-import ProductGallery from "../_components/ProductGallery";
-import ProductInfo from "../_components/ProductInfo";
-import ProductTabs from "../_components/ProductTabs";
-import ContactForm from "../_components/ContactForm";
-import RelatedProducts from "../_components/RelatedProducts";
-import Footer from "../_components/Footer";
-import { BreadcrumbItem, Drone, Product } from "@/app/_types/types";
-import { CustomDroneClient } from "@/lib/types";
-import { useParams } from "next/navigation";
-import axios from "axios";
-import DroneDetailSkeleton from "@/app/_component/skeleton/dji-page-skeleton";
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import Breadcrumbs from '../_components/Breadcrumbs';
+import ProductGallery from '../_components/ProductGallery';
+import ProductInfo from '../_components/ProductInfo';
+import ProductTabs from '../_components/ProductTabs';
+import ContactForm from '../_components/ContactForm';
+import RelatedProducts from '../_components/RelatedProducts';
+import Footer from '../_components/Footer';
+import { BreadcrumbItem } from '@/app/_types/types';
+import { CustomDroneClient } from '@/lib/types';
+import { useParams } from 'next/navigation';
+import axios from 'axios';
+import DroneDetailSkeleton from '@/app/_component/skeleton/dji-page-skeleton';
 
 export default function Page() {
   const { id } = useParams();
@@ -34,16 +34,16 @@ export default function Page() {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!loading && drone) {
       const hash = window.location.hash;
-      if (hash === "#contact-form") {
-        const el = document.getElementById("contact-form");
+      if (hash === '#contact-form') {
+        const el = document.getElementById('contact-form');
         if (el) {
           setTimeout(() => {
-            el.scrollIntoView({ behavior: "smooth" });
+            el.scrollIntoView({ behavior: 'smooth' });
           }, 300);
         }
       }
@@ -55,14 +55,12 @@ export default function Page() {
   }
 
   if (!drone) {
-    return (
-      <div className=" flex justify-center min-h-screen">Бараа олдсонгүй!</div>
-    );
+    return <div className=" flex justify-center min-h-screen">Бараа олдсонгүй!</div>;
   }
 
   const breadcrumbItems: BreadcrumbItem[] = [
-    { label: "Нүүр", href: "/" },
-    { label: "Дрон", href: "/dji" },
+    { label: 'Нүүр', href: '/' },
+    { label: 'Дрон', href: '/dji' },
     { label: drone.name, href: `/dji/${drone.id}` },
   ];
 
@@ -70,9 +68,9 @@ export default function Page() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      const contactForm = document.getElementById("contact-form");
+      const contactForm = document.getElementById('contact-form');
       if (contactForm) {
-        contactForm.scrollIntoView({ behavior: "smooth" });
+        contactForm.scrollIntoView({ behavior: 'smooth' });
       }
     }, 800);
   };

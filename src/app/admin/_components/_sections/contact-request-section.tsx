@@ -1,9 +1,9 @@
-"use client";
-import { useEffect, useState } from "react";
-import ContactRequestCard from "../_cards/contact-request";
-import { ContactRequest } from "@/generated/prisma";
-import axios from "axios";
-import LoadingText from "../loading";
+'use client';
+import { useEffect, useState } from 'react';
+import ContactRequestCard from '../_cards/contact-request';
+import { ContactRequest } from '@/generated/prisma';
+import axios from 'axios';
+import LoadingText from '../loading';
 
 const ContactRequestSection = () => {
   const [requests, setRequests] = useState<ContactRequest[]>([]);
@@ -13,7 +13,7 @@ const ContactRequestSection = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/api/users/contact-request");
+        const res = await axios.get('/api/users/contact-request');
         if (res.data.success) {
           setRequests(res.data.data.requests);
         }

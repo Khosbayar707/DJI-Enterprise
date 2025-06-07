@@ -1,7 +1,6 @@
-"use client";
-import { CustomDroneClient } from "@/lib/types";
-import { motion } from "framer-motion";
-import { useMemo } from "react";
+'use client';
+import { CustomDroneClient } from '@/lib/types';
+import { motion } from 'framer-motion';
 
 type Props = {
   drone: CustomDroneClient;

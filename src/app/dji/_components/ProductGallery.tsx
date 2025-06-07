@@ -1,7 +1,7 @@
-"use client";
-import { Drone } from "@/app/_types/types";
-import { CustomDroneClient } from "@/lib/types";
-import { useState } from "react";
+'use client';
+import { CustomDroneClient } from '@/lib/types';
+import { useState } from 'react';
+import Image from 'next/image';
 
 type ProductGalleryProps = {
   drone: CustomDroneClient;
@@ -9,7 +9,7 @@ type ProductGalleryProps = {
 
 export default function ProductGallery({ drone }: ProductGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string>(
-    drone.images.length > 0 ? drone.images[0].url : "/image/placeholder.jpg"
+    drone.images.length > 0 ? drone.images[0].url : '/image/placeholder.jpg'
   );
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [zoomPosition, setZoomPosition] = useState<{ x: number; y: number }>({
@@ -35,12 +35,16 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
         onMouseMove={handleImageHover}
         onMouseLeave={() => setIsZoomed(false)}
       >
-        <img
-          src={selectedImage}
-          alt={`preview image`}
-          className={`w-full h-auto max-h-[500px] object-cover transition-all duration-300 ${isZoomed ? "scale-150" : "scale-100"}`}
-          style={{ transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%` }}
-        />
+        <div className="relative w-full h-[500px]">
+          <Image
+            src={selectedImage}
+            alt="preview"
+            fill
+            className={`object-cover transition-all duration-300 ${isZoomed ? 'scale-150' : 'scale-100'}`}
+            style={{ transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%` }}
+            priority
+          />
+        </div>
         {drone.discount > 0 && (
           <div className="absolute top-4 left-4 bg-red-600 text-white font-bold py-1 px-3 rounded-lg shadow-md animate-pulse">
             Хямдрал
@@ -56,17 +60,21 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
               onClick={() => setSelectedImage(img.url)}
               className={`relative overflow-hidden rounded-lg transition-all duration-200 ${
                 selectedImage === img.url
-                  ? "ring-2 ring-blue-600"
-                  : "hover:ring-2 hover:ring-blue-400"
+                  ? 'ring-2 ring-blue-500 shadow-md scale-105'
+                  : 'hover:ring-2 hover:ring-blue-300'
               }`}
             >
-              <img
-                src={img.url}
-                alt={`Thumbnail ${i + 1}`}
-                className="w-full h-20 object-cover"
-              />
+              <div className="relative w-full h-20">
+                <Image
+                  src={img.url}
+                  alt={`Thumbnail ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="80px"
+                />
+              </div>
               {selectedImage === img.url && (
-                <div className="absolute inset-0 bg-blue-600 bg-opacity-20"></div>
+                <div className="absolute inset-0 ring-2 ring-blue-500 rounded-lg pointer-events-none"></div>
               )}
             </button>
           ))}

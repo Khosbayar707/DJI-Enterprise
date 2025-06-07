@@ -1,4 +1,4 @@
-import { SiSpinrilla } from "react-icons/si";
+import { SiSpinrilla } from 'react-icons/si';
 
 const LoadingText = () => {
   return (

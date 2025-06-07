@@ -1,25 +1,17 @@
-import LinearDeterminate from "@/app/_component/LinearProgress";
-import LoadingText from "@/app/_component/LoadingText";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
+import LinearDeterminate from '@/app/_component/LinearProgress';
+import LoadingText from '@/app/_component/LoadingText';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ResponseType } from "@/lib/types";
-import { Button } from "@mui/material";
-import axios from "axios";
-import Image from "next/image";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { GrUploadOption } from "react-icons/gr";
+} from '@/components/ui/accordion';
+import { ResponseType } from '@/lib/types';
+import { Button } from '@mui/material';
+import axios from 'axios';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { GrUploadOption } from 'react-icons/gr';
 
 type Props = {
   id: string;
@@ -39,14 +31,14 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
     if (!event.target.files || event.target.files.length === 0) return;
 
     const file = event.target.files[0];
-    const isMP4 = file.type === "video/mp4";
+    const isMP4 = file.type === 'video/mp4';
     const isUnderSizeLimit = file.size <= MAX_VIDEO_SIZE;
 
     if (!isMP4) {
       setResponse({
         success: false,
-        code: "",
-        message: "Зөвхөн .mp4 өргөтгөлтэй бичлэг зөвшөөрнө.",
+        code: '',
+        message: 'Зөвхөн .mp4 өргөтгөлтэй бичлэг зөвшөөрнө.',
         data: null,
       });
       return;
@@ -55,8 +47,8 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
     if (!isUnderSizeLimit) {
       setResponse({
         success: false,
-        code: "",
-        message: "Бичлэгийн хэмжээ 100MB-с бага байх ёстой!",
+        code: '',
+        message: 'Бичлэгийн хэмжээ 100MB-с бага байх ёстой!',
         data: null,
       });
       return;
@@ -64,20 +56,18 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
 
     setVideoUploading(true);
     try {
-      const response1 = await axios.get(
-        `/api/auth/cloudinary-sign?folder=Drone/Videos`
-      );
+      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=Drone/Videos`);
       if (!response1.data.success) return;
 
       const { timestamp, signature, api_key } = response1.data.data;
 
       const data = new FormData();
-      data.append("file", file);
-      data.append("timestamp", timestamp.toString());
-      data.append("signature", signature);
-      data.append("api_key", api_key);
-      data.append("resource_type", "video");
-      data.append("folder", "Drone/Videos");
+      data.append('file', file);
+      data.append('timestamp', timestamp.toString());
+      data.append('signature', signature);
+      data.append('api_key', api_key);
+      data.append('resource_type', 'video');
+      data.append('folder', 'Drone/Videos');
 
       const response2 = await axios.post(
         `https://api.cloudinary.com/v1_1/doluiuzq8/video/upload`,
@@ -85,9 +75,7 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
         {
           onUploadProgress: (progressEvent) => {
             if (progressEvent.total) {
-              const percent = Math.round(
-                (progressEvent.loaded * 100) / progressEvent.total
-              );
+              const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               setProgress(percent);
             }
           },
@@ -99,11 +87,11 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
         setPublicId(response2.data.public_id);
       }
     } catch (err) {
-      console.error(err, "Upload error");
+      console.error(err, 'Upload error');
       setResponse({
         success: false,
-        code: "",
-        message: "Сервер дээр алдаа гарлаа!",
+        code: '',
+        message: 'Сервер дээр алдаа гарлаа!',
         data: null,
       });
     } finally {
@@ -114,14 +102,14 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
   const handleSubmit = async () => {
     try {
       setVideoUploading(true);
-      const res = await axios.post("/api/product/drones/videos", {
+      const res = await axios.post('/api/product/drones/videos', {
         VideoPreview,
         publicId,
         id,
       });
       if (res.data.success) {
-        setVideoPreview("");
-        setPublicId("");
+        setVideoPreview('');
+        setPublicId('');
         setRefresh((p) => !p);
       }
       setResponse(res.data);
@@ -143,9 +131,7 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
     <Accordion type="multiple">
       {response && <CustomSnackbar value={response} />}
       <AccordionItem key={`imageUpload`} value="imageupload">
-        <AccordionTrigger className=" cursor-pointer">
-          Бичлэг оруулах
-        </AccordionTrigger>
+        <AccordionTrigger className=" cursor-pointer">Бичлэг оруулах</AccordionTrigger>
         <AccordionContent>
           <div className="flex flex-col items-center justify-center gap-4 py-6 bg-secondary p-7">
             <div
@@ -153,13 +139,9 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
               className="w-full max-w-md h-40 cursor-pointer rounded-2xl border-2 border-dashed border-gray-300 hover:border-blue-500 bg-white hover:bg-blue-50 flex flex-col items-center justify-center transition-all"
             >
               <GrUploadOption className="text-4xl text-gray-500 hover:text-blue-500" />
-              <p className="mt-2 text-sm text-gray-600">
-                Энд дарж бичлэг оруулна уу!
-              </p>
+              <p className="mt-2 text-sm text-gray-600">Энд дарж бичлэг оруулна уу!</p>
             </div>
-            <p className="text-xs text-gray-500">
-              Зөвшөөрөгдөх өргөтгөлүүд: .mp4
-            </p>
+            <p className="text-xs text-gray-500">Зөвшөөрөгдөх өргөтгөлүүд: .mp4</p>
 
             {progress > 0 && (
               <div className="w-full max-w-md">
@@ -177,12 +159,8 @@ const VideoUploadAccordion = ({ id, setRefresh }: Props) => {
               />
             )}
 
-            <Button
-              disabled={VideoUploading}
-              onClick={handleSubmit}
-              className=" w-full"
-            >
-              {VideoUploading ? <LoadingText /> : "Нэмэх"}
+            <Button disabled={VideoUploading} onClick={handleSubmit} className=" w-full">
+              {VideoUploading ? <LoadingText /> : 'Нэмэх'}
             </Button>
             <input
               ref={inputRef}

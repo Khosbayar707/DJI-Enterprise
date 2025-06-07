@@ -1,15 +1,9 @@
-"use client";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ResponseType } from "@/lib/types";
-import { TextField } from "@mui/material";
-import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+'use client';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { ResponseType } from '@/lib/types';
+import { TextField } from '@mui/material';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 type Props = {
   email: string;
@@ -26,19 +20,19 @@ const UserProfileConfirmPassword = ({
   setResponse,
   setLoading,
 }: Props) => {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [open, setOpen] = useState(false); // <-- added state
 
   const handleChangeEmail = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("/api/auth/current-user/change-email", {
+      const res = await axios.post('/api/auth/current-user/change-email', {
         email,
         password,
       });
       if (res.data.success) {
         setRefresh((prev) => !prev);
-        setOpen(false); // <-- close dialog on success
+        setOpen(false);
       }
       setResponse(res.data);
     } catch (err) {
@@ -51,9 +45,7 @@ const UserProfileConfirmPassword = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <div className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-          Хадгалах
-        </div>
+        <div className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Хадгалах</div>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Өөрийгөө баталгаажуулна уу!</DialogTitle>
@@ -65,7 +57,7 @@ const UserProfileConfirmPassword = ({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === 'Enter') {
               handleChangeEmail();
             }
           }}

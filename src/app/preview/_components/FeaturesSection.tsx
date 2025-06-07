@@ -1,7 +1,7 @@
-"use client";
-import { CustomDroneClient } from "@/lib/types";
-import { motion } from "framer-motion";
-import { useMemo } from "react";
+'use client';
+import { CustomDroneClient } from '@/lib/types';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 type Props = {
   drone: CustomDroneClient;
@@ -14,13 +14,17 @@ export default function FeaturesSection({ drone }: Props) {
           {drone.PreviewDescription}
         </p>
         {drone.images.length > 0 ? (
-          <img
-            className="w-full h-auto"
-            src={drone.images[0].url}
-            alt="DJI Mavic 3M"
-          />
+          <div className="relative w-full h-[500px]">
+            <Image
+              src={drone.images[0].url}
+              alt="DJI Mavic 3M"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         ) : (
-          "asdfasd"
+          'asdfasd'
         )}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent"></div>
       </div>
@@ -36,9 +40,7 @@ export default function FeaturesSection({ drone }: Props) {
               transition={{ delay: index * 0.2 }}
               className="p-6 rounded-xl shadow-md text-center bg-black transition-colors flex flex-col justify-between"
             >
-              <h3 className="text-xl font-semibold mb-2 text-white">
-                {description.highlight}
-              </h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">{description.highlight}</h3>
               <p className="text-gray-400">{description.description}</p>
             </motion.div>
           ))
@@ -64,22 +66,16 @@ export default function FeaturesSection({ drone }: Props) {
           <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80"></div>
 
           <div className="relative text-center text-white px-6 max-w-3xl z-10">
-            <p className="text-blue-400 text-sm uppercase tracking-widest mb-2">
-              RTK модуль
-            </p>
+            <p className="text-blue-400 text-sm uppercase tracking-widest mb-2">RTK модуль</p>
             <div>
-              <h3 className="text-4xl font-bold mb-6 drop-shadow-md">
-                {drone.rtk.title}
-              </h3>
+              <h3 className="text-4xl font-bold mb-6 drop-shadow-md">{drone.rtk.title}</h3>
               {drone.rtk.briefDescription && (
                 <h6 className="text-xl font-bold mb-6 drop-shadow-md text-background">
                   {drone.rtk.briefDescription}
                 </h6>
               )}
             </div>
-            <p className="text-lg text-gray-200 drop-shadow-md py-16">
-              {drone.rtk.description}
-            </p>
+            <p className="text-lg text-gray-200 drop-shadow-md py-16">{drone.rtk.description}</p>
           </div>
         </div>
       )}

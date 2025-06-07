@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -6,27 +6,27 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const orders = [
   {
-    id: "ORD-001",
-    customer: "John Doe",
-    status: "Амжилттай",
+    id: 'ORD-001',
+    customer: 'John Doe',
+    status: 'Амжилттай',
     total: 4300000,
   },
   {
-    id: "ORD-002",
-    customer: "Jane Smith",
-    status: "Хүлээгдэж байгаа",
+    id: 'ORD-002',
+    customer: 'Jane Smith',
+    status: 'Хүлээгдэж байгаа',
     total: 8200000,
   },
   {
-    id: "ORD-003",
-    customer: "Bob Johnson",
-    status: "Цуцласан",
+    id: 'ORD-003',
+    customer: 'Bob Johnson',
+    status: 'Цуцласан',
     total: 4000000,
   },
 ];
@@ -56,11 +56,11 @@ const OrderCard = () => {
                 <TableCell>
                   <Badge
                     variant={
-                      order.status === "Хүлээгдэж байгаа"
-                        ? "default"
-                        : order.status === "Цуцласан"
-                          ? "destructive"
-                          : "secondary"
+                      order.status === 'Хүлээгдэж байгаа'
+                        ? 'default'
+                        : order.status === 'Цуцласан'
+                          ? 'destructive'
+                          : 'secondary'
                     }
                   >
                     {order.status}
@@ -68,11 +68,7 @@ const OrderCard = () => {
                 </TableCell>
                 <TableCell>{order.total.toLocaleString()}</TableCell>
                 <TableCell>
-                  <Button
-                    className=" cursor-pointer"
-                    size="sm"
-                    variant="outline"
-                  >
+                  <Button className=" cursor-pointer" size="sm" variant="outline">
                     Харах
                   </Button>
                 </TableCell>

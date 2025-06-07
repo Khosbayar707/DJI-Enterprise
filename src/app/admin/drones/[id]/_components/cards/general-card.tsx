@@ -1,10 +1,10 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { EditDroneGeneralInfo } from "../../utils/edit-drone-form";
-import { CustomDrone, CustomSpec, ResponseType } from "@/lib/types";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, TextField } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { EditDroneGeneralInfo } from '../../utils/edit-drone-form';
+import { CustomDrone, CustomSpec, ResponseType } from '@/lib/types';
 import {
   Form,
   FormControl,
@@ -12,30 +12,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import z from "zod";
-import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
-import LoadingText from "@/app/_component/LoadingText";
-import { useParams } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { CustomSnackbar } from "@/app/admin/_components/snackbar";
-import { DroneCategory, DroneModel, Spec } from "@/generated/prisma";
-import { Badge } from "@/components/ui/badge";
-import AddSpecDialog from "@/app/admin/_components/_dialogs/add-spec-category";
-import { FaRegEdit } from "react-icons/fa";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SpecEditInfo from "./_components/spec-edit-general-info";
-import SpecAddDescription from "./_components/spec-edit-descriptions";
-import { ImNewTab } from "react-icons/im";
-import Link from "next/link";
-import SpecAllDescriptions from "./_components/spec-all-descriptions";
+} from '@/components/ui/form';
+import z from 'zod';
+import { Textarea } from '@/components/ui/textarea';
+import axios from 'axios';
+import LoadingText from '@/app/_component/LoadingText';
+import { useParams } from 'next/navigation';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { DroneCategory, DroneModel, Spec } from '@/generated/prisma';
+import { Badge } from '@/components/ui/badge';
+import AddSpecDialog from '@/app/admin/_components/_dialogs/add-spec-category';
+import { FaRegEdit } from 'react-icons/fa';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import SpecEditInfo from './_components/spec-edit-general-info';
+import SpecAddDescription from './_components/spec-edit-descriptions';
+import { ImNewTab } from 'react-icons/im';
+import Link from 'next/link';
+import SpecAllDescriptions from './_components/spec-all-descriptions';
 
 type Props = {
   drone: CustomDrone | undefined;
@@ -58,7 +53,7 @@ const DroneInfoCard = ({
   const [response, setResponse] = useState<ResponseType>();
   const [cat1, setcat1] = useState<DroneCategory[]>(drone?.categories || []);
   const [cat2, setcat2] = useState<Spec[]>(drone?.specs || []);
-  const [currentModel, setModel] = useState(drone?.modelId || "");
+  const [currentModel, setModel] = useState(drone?.modelId || '');
   const params = useParams();
   const { id } = params;
   const form = useForm<z.infer<typeof EditDroneGeneralInfo>>({
@@ -66,18 +61,18 @@ const DroneInfoCard = ({
     defaultValues: {
       name: drone?.name,
       description: drone?.description,
-      price: drone?.price ? String(drone?.price) : "0",
-      discount: String(drone?.discount) || "0",
+      price: drone?.price ? String(drone?.price) : '0',
+      discount: String(drone?.discount) || '0',
       previewText: drone?.PreviewDescription,
       briefDescription: drone?.briefDescription,
       stock: String(drone?.stock),
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = async (values: z.infer<typeof EditDroneGeneralInfo>) => {
     try {
-      const res = await axios.post("/api/product/drones/change-general-info", {
+      const res = await axios.post('/api/product/drones/change-general-info', {
         ...values,
         id,
         cat1,
@@ -127,12 +122,7 @@ const DroneInfoCard = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <TextField
-                        variant="standard"
-                        label="Дроны нэр"
-                        {...field}
-                        type="text"
-                      />
+                      <TextField variant="standard" label="Дроны нэр" {...field} type="text" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -144,11 +134,7 @@ const DroneInfoCard = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <TextField
-                        label="Богино тайлбар"
-                        {...field}
-                        variant="standard"
-                      />
+                      <TextField label="Богино тайлбар" {...field} variant="standard" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -208,13 +194,9 @@ const DroneInfoCard = ({
                   )}
                 />
                 <div className=" text-md">
-                  Одоо зарагдаж байгаа үнэ(хямдралыг хасаад):{" "}
+                  Одоо зарагдаж байгаа үнэ(хямдралыг хасаад):{' '}
                   <span className=" text-green-500 text-2xl">
-                    {(drone?.price
-                      ? drone.price - drone.discount
-                      : 0
-                    ).toLocaleString()}
-                    ₮
+                    {(drone?.price ? drone.price - drone.discount : 0).toLocaleString()}₮
                   </span>
                 </div>
                 <FormField
@@ -223,11 +205,7 @@ const DroneInfoCard = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <TextField
-                          {...field}
-                          variant="standard"
-                          label="Барааны үлдэгдэл"
-                        />
+                        <TextField {...field} variant="standard" label="Барааны үлдэгдэл" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -241,28 +219,20 @@ const DroneInfoCard = ({
                   <div className=" flex flex-col gap-3">
                     <div>
                       Категори
-                      <span className=" text-xs text-gray-500 italic">
-                        *олныг сонгох боломжтой
-                      </span>
+                      <span className=" text-xs text-gray-500 italic">*олныг сонгох боломжтой</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {droneCategories.length > 0 ? (
                         droneCategories.map((category) => {
-                          const isSelected = cat1.some(
-                            (item) => item.id === category.id
-                          );
+                          const isSelected = cat1.some((item) => item.id === category.id);
                           return (
                             <Badge
                               key={category.id}
                               onClick={() => {
                                 setcat1((prev) => {
-                                  const exists = prev.some(
-                                    (item) => item.id === category.id
-                                  );
+                                  const exists = prev.some((item) => item.id === category.id);
                                   if (exists) {
-                                    return prev.filter(
-                                      (item) => item.id !== category.id
-                                    );
+                                    return prev.filter((item) => item.id !== category.id);
                                   } else {
                                     return [...prev, category];
                                   }
@@ -270,8 +240,8 @@ const DroneInfoCard = ({
                               }}
                               className={`text-xs cursor-pointer transition-all duration-200 ${
                                 isSelected
-                                  ? "bg-green-600 text-white"
-                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                  ? 'bg-green-600 text-white'
+                                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                               }`}
                             >
                               {category.name}
@@ -285,11 +255,11 @@ const DroneInfoCard = ({
                   </div>
                   <div className=" flex flex-col gap-3">
                     <div>
-                      Модел{" "}
+                      Модел{' '}
                       <span className=" text-xs text-gray-500 italic">
                         *нэгийг л сонгох боломжтой
                       </span>
-                      <Button onClick={() => setModel("")}>Арилгах</Button>
+                      <Button onClick={() => setModel('')}>Арилгах</Button>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {droneModels.length > 0 ? (
@@ -301,8 +271,8 @@ const DroneInfoCard = ({
                               onClick={() => setModel(model.id)}
                               className={`text-xs cursor-pointer transition-all duration-200 ${
                                 isSelected
-                                  ? "bg-purple-600 text-white"
-                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                  ? 'bg-purple-600 text-white'
+                                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                               }`}
                             >
                               {model.name}
@@ -316,26 +286,21 @@ const DroneInfoCard = ({
                   </div>
                   <div className=" flex flex-col gap-3">
                     <div className=" flex justify-between">
-                      {" "}
+                      {' '}
                       <div>
-                        Эд ангиуд{" "}
+                        Эд ангиуд{' '}
                         <span className=" text-xs text-gray-500 italic">
                           *олныг сонгох боломжтой
                         </span>
                       </div>
                       <div className="text-xs">
-                        <AddSpecDialog
-                          refresh={refresh}
-                          setRefresh={setRefresh}
-                        />
+                        <AddSpecDialog refresh={refresh} setRefresh={setRefresh} />
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-5">
                       {specs.length > 0 ? (
                         specs.map((spec) => {
-                          const isSelected = cat2.some(
-                            (item) => item.id === spec.id
-                          );
+                          const isSelected = cat2.some((item) => item.id === spec.id);
                           return (
                             <div
                               key={spec.id}
@@ -344,8 +309,8 @@ const DroneInfoCard = ({
                               <Badge
                                 className={`flex items-center justify-center ${
                                   isSelected
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                                 }`}
                               >
                                 <Dialog>
@@ -357,20 +322,14 @@ const DroneInfoCard = ({
                                       <div className="truncate">
                                         Эд анги {spec.name} -г засах гэж байна!
                                       </div>
-                                      <Link
-                                        target="_blank"
-                                        href={`/admin/specs/${spec.id}`}
-                                      >
+                                      <Link target="_blank" href={`/admin/specs/${spec.id}`}>
                                         <ImNewTab className="text-xs" />
                                       </Link>
                                     </DialogTitle>
                                     <div className="relative">
                                       <Tabs>
                                         <TabsList className=" w-full ">
-                                          <TabsTrigger
-                                            className=" cursor-pointer"
-                                            value="general"
-                                          >
+                                          <TabsTrigger className=" cursor-pointer" value="general">
                                             Ерөнхий
                                           </TabsTrigger>
                                           <TabsTrigger
@@ -386,32 +345,21 @@ const DroneInfoCard = ({
                                             Бүх дэлгэрэнгүй мэдээлэл
                                           </TabsTrigger>
                                         </TabsList>
-                                        <SpecEditInfo
-                                          setRefresh={setRefresh}
-                                          spec={spec}
-                                        />
-                                        <SpecAddDescription
-                                          spec={spec}
-                                          setRefresh={setRefresh}
-                                        />
-                                        <SpecAllDescriptions
-                                          spec={spec}
-                                          setRefresh={setRefresh}
-                                        />
+                                        <SpecEditInfo setRefresh={setRefresh} spec={spec} />
+                                        <SpecAddDescription spec={spec} setRefresh={setRefresh} />
+                                        <SpecAllDescriptions spec={spec} setRefresh={setRefresh} />
                                       </Tabs>
                                     </div>
                                   </DialogContent>
                                 </Dialog>
                                 <div
+                                  role="button"
+                                  tabIndex={0}
                                   onClick={() => {
                                     setcat2((prev) => {
-                                      const exists = prev.some(
-                                        (item) => item.id === spec.id
-                                      );
+                                      const exists = prev.some((item) => item.id === spec.id);
                                       if (exists) {
-                                        return prev.filter(
-                                          (item) => item.id !== spec.id
-                                        );
+                                        return prev.filter((item) => item.id !== spec.id);
                                       } else {
                                         return [...prev, spec];
                                       }
@@ -434,11 +382,9 @@ const DroneInfoCard = ({
               <Button
                 type="submit"
                 className=" w-full"
-                disabled={
-                  !form.formState.isValid || form.formState.isSubmitting
-                }
+                disabled={!form.formState.isValid || form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? <LoadingText /> : "Өөрчлөх"}
+                {form.formState.isSubmitting ? <LoadingText /> : 'Өөрчлөх'}
               </Button>
             </div>
           </form>
