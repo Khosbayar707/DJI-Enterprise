@@ -15,7 +15,6 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { CustomSnackbar } from '../snackbar';
-import LoadingText from '../loading';
 import _ from 'lodash';
 
 type Props = {
