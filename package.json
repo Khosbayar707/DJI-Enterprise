@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
-    "postbuild": "next-sitemap"
+    "sitemap": "next-sitemap --config next-sitemap.config.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
