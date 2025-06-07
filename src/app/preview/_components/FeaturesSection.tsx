@@ -7,11 +7,6 @@ type Props = {
   drone: CustomDroneClient;
 };
 export default function FeaturesSection({ drone }: Props) {
-  const randomVideo = useMemo(() => {
-    if (drone.videos.length === 0) return null;
-    const randomIndex = Math.floor(Math.random() * drone.videos.length);
-    return drone.videos[randomIndex];
-  }, [drone.videos]);
   return (
     <section className="bg-black text-white">
       <div className="relative">

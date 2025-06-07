@@ -18,8 +18,5 @@ export const EditDroneGeneralInfo = z.object({
     .string()
     .min(2, { message: "Дор хаяж 2 үсэг оруулна уу!" })
     .optional(),
-  stock: z
-    .string()
-    .min(2, { message: "Дор хаяж 2 үсэг оруулна уу!" })
-    .optional(),
+  stock: z.string().min(1, { message: "Дор хаяж 1 оруулна уу!" }).optional(),
 });
