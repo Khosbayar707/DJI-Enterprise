@@ -197,21 +197,21 @@ const HeaderMain = () => {
               </Link>
               <button
                 onClick={logout}
-                className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition"
+                className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition cursor-pointer"
               >
                 Гарах
               </button>
             </>
           ) : (
             <Link href={`/auth/login?redir=${pathname}`}>
-              <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition">
+              <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
                 Нэвтрэх / Бүртгүүлэх
               </button>
             </Link>
           )}
 
           <Link href="/where-to-buy">
-            <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition">
+            <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
               Холбоо барих
             </button>
           </Link>
@@ -306,7 +306,7 @@ const HeaderMain = () => {
                     logout();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium hover:bg-gray-200 flex items-center gap-2 justify-center"
+                  className="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium hover:bg-gray-200 flex items-center gap-2 justify-center cursor-pointer"
                   variants={hoverVariants}
                   whileHover="hover"
                 >
@@ -315,7 +315,7 @@ const HeaderMain = () => {
                 </motion.button>
                 <Link href="/where-to-buy">
                   <motion.div
-                    className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center cursor-pointer"
                     variants={hoverVariants}
                     whileHover="hover"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -327,7 +327,7 @@ const HeaderMain = () => {
             ) : (
               <Link href={`/auth/login?redir=${pathname}`}>
                 <motion.div
-                  className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center cursor-pointer"
                   variants={hoverVariants}
                   whileHover="hover"
                   onClick={() => setIsMobileMenuOpen(false)}
