@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
       success: false,
       message: 'Сервэрийн тохиргооны алдаа (ENV)',
       code: 'NO_ENV',
-      data: {},
+      data: null,
     });
   }
   if (!session || !session.user?.email) {
