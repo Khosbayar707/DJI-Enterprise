@@ -9,6 +9,8 @@ export async function GET(req: NextRequest) {
     const drones = await prisma.drone.findMany({
       where: { name: { contains: search, mode: 'insensitive' } },
       include: { images: true },
+      orderBy: { createdAt: 'desc' },
+      omit: { price: true, discount: true },
     });
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Илэрц олдлоо!', { drones });
   } catch (err) {

@@ -6,6 +6,8 @@ export async function GET() {
     const drones = await prisma.drone.findMany({
       where: { featured: true },
       include: { images: true },
+      omit: { price: true, discount: true },
+      orderBy: { createdAt: 'desc' },
     });
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Хүсэлт амжиллттай', {
       drones,

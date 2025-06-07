@@ -11,11 +11,10 @@ import DJIProductsSection from './_component/DJIProductsSection';
 import HeroSection from './_component/HeroSection';
 import ServicesSection from './_component/ServicesSection';
 import ProductCard from './_component/ProductCard';
-import LoadingText from './_component/LoadingText';
-
 import { CustomDroneClient } from '@/lib/types';
 import DroneServiceTrainingSection from './_component/DroneServiceTrainingSection ';
 import Head from 'next/head';
+import ProductCardSkeleton from './_component/skeleton/search-skeleton';
 
 const App = () => {
   const search = useSearchParams().get('search');
@@ -50,7 +49,13 @@ const App = () => {
       </Head>
       {search ? (
         loading ? (
-          <LoadingText />
+          <section className="p-4 md:p-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          </section>
         ) : drones && drones.length > 0 ? (
           <section className="p-4 md:p-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

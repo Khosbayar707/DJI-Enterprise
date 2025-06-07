@@ -8,6 +8,7 @@
     "alefragnani.project-manager", // Project Manager
     "alefragnani.bookmarks", // Bookmarks
     "xabikos.javascriptsnippets", // JavaScript (ES6) code snippets
-    "aaron-bond.better-comments" // Better Comments
+    "aaron-bond.better-comments", // Better Comments
+    "dbaeumer.vscode-eslint" // ✅ ESLint extension
   ]
 }
