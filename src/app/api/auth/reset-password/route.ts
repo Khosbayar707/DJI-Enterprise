@@ -56,16 +56,33 @@ export async function POST(req: NextRequest) {
 
     await prisma.oTP.create({ data: { otp, userId: user.id } });
     await transporter.sendMail({
-      from: `"DJI Mongolia" <${process.env.EMAIL}>`, // sender address
-      to: user.email, // list of receivers
-      subject: 'DJI - Нууц үг солих хүсэлт ирлээ!', // Subject line
-      text: 'Нууц үг солих', // plain text body
-      html: `<b>  Сайн байна уу!
-      </b>
-      <h3>Нууц үг солих холбоос!</h3>
-      <strong>
-      <a href="${`${process.env.NEXT_PUBLIC_BASE_URL}/auth/reset-password/${otp}`}" target="_blank">Энд дарна уу!</a>
-      </strong>`, // html body
+      from: `"DJI Mongolia" <${process.env.EMAIL}>`,
+      to: user.email,
+      subject: 'DJI - Нууц үг солих хүсэлт ирлээ!',
+      text:
+        'Нууц үг солих холбоос: ' +
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/reset-password/${otp}`,
+      html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;">
+      <h2 style="color: #0070f3;">DJI Mongolia</h2>
+      <p>Сайн байна уу,</p>
+      <p>Та нууц үг сэргээх хүсэлт илгээсэн байна.</p>
+      
+      <div style="margin: 20px 0; text-align: center;">
+        <a href="${process.env.NEXT_PUBLIC_BASE_URL}/auth/reset-password/${otp}" 
+           style="display: inline-block; background-color: #0070f3; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold;">
+          Нууц үг солих
+        </a>
+      </div>
+
+      <p style="font-size: 14px; color: #555;">
+        Хэрвээ та энэ хүсэлтийг явуулаагүй бол тоохгүй орхиж болно.<br />
+        Холбоос нь 10 минутын дотор хүчинтэй байна.
+      </p>
+
+      <p style="margin-top: 30px; font-size: 14px; color: #777;">Хүндэтгэсэн,<br />DJI Mongolia баг</p>
+    </div>
+  `,
     });
 
     return CustomResponse(

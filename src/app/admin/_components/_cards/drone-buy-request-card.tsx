@@ -25,6 +25,7 @@ type Props = {
 
 const DroneBuyRequestCard = ({ requests, setRefresh }: Props) => {
   const [changing, setChanging] = useState(false);
+  const [id, setId] = useState('');
   const [response, setResponse] = useState<ResponseType>();
   const [sorted, setSorted] = useState<CustomDroneBuyRequest[]>(requests);
 
@@ -116,7 +117,7 @@ const DroneBuyRequestCard = ({ requests, setRefresh }: Props) => {
                     </TableCell>
                     <TableCell>
                       <Badge variant={request.resolved ? 'default' : 'destructive'}>
-                        {request.resolved ? 'Холбоо барьсан' : 'Холбоо бариагүй'}
+                        {request.resolved ? 'Майл авуулсан!' : 'Майл явуулаагүй!'}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -125,9 +126,12 @@ const DroneBuyRequestCard = ({ requests, setRefresh }: Props) => {
                         className="cursor-pointer"
                         size="sm"
                         variant="outline"
-                        onClick={() => handleButton(request.id)}
+                        onClick={() => {
+                          handleButton(request.id);
+                          setId(request.id);
+                        }}
                       >
-                        {changing ? <LoadingText /> : 'Төлөв өөрчлөх'}
+                        {changing && id === request.id ? <div>Илгээж байна!</div> : 'Майл илгээх'}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -135,7 +139,7 @@ const DroneBuyRequestCard = ({ requests, setRefresh }: Props) => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center py-4">
-                    Холбоо барих хүсэлт алга!
+                    Худалдан авах хүсэлт алга!
                   </TableCell>
                 </TableRow>
               )}
