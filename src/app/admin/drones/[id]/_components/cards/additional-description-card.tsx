@@ -5,8 +5,10 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Button as ButtonShadcn } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { AddDroneDescriptionSchema } from '../../utils/add-drone-description-schema';
-import z from 'zod';
+import {
+  DroneDescriptionSchema,
+  DroneDescriptionSchemaType,
+} from '../../utils/drone-description-schema';
 import { Button, TextField } from '@mui/material';
 import PriorityForm from '@/app/_component/priority-form';
 import axios from 'axios';
@@ -18,6 +20,7 @@ import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
 import { mn } from 'date-fns/locale';
 import LoadingText from '@/app/_component/LoadingText';
+import DescriptionEditDialog from '../dialogs/description-edit-dialog';
 
 const DroneAdditionalDescriptions = ({
   setRefresh,
@@ -29,8 +32,8 @@ const DroneAdditionalDescriptions = ({
   const [response, setResponse] = useState<ResponseType>();
   const [deleting, setDeleting] = useState(false);
   const [id, setId] = useState('');
-  const form = useForm<z.infer<typeof AddDroneDescriptionSchema>>({
-    resolver: zodResolver(AddDroneDescriptionSchema),
+  const form = useForm<DroneDescriptionSchemaType>({
+    resolver: zodResolver(DroneDescriptionSchema),
     defaultValues: {
       highlight: '',
       description: '',
@@ -38,7 +41,7 @@ const DroneAdditionalDescriptions = ({
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof AddDroneDescriptionSchema>) => {
+  const onSubmit = async (values: DroneDescriptionSchemaType) => {
     try {
       const res = await axios.post('/api/product/drones/additional-descriptions', {
         ...values,
@@ -153,9 +156,7 @@ const DroneAdditionalDescriptions = ({
                     {deleting && id === description.id ? <LoadingText /> : 'Устгах'}
                   </ButtonShadcn>
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg font-semibold text-gray-800">
-                      {description.highlight}
-                    </CardTitle>
+                    <DescriptionEditDialog description={description} setRefresh={setRefresh} />
                     <span
                       className={`text-xs font-medium px-2 py-1 rounded w-max mt-1
                           ${

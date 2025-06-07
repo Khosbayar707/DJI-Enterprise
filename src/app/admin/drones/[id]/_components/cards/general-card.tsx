@@ -107,7 +107,7 @@ const DroneInfoCard = ({
       <CardHeader>
         <CardTitle>
           <div className=" flex items-center w-full justify-between">
-            <div>Дрон</div>
+            <div>Ерөнхий мэдээлэл</div>
           </div>
         </CardTitle>
       </CardHeader>
