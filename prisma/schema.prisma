@@ -15,11 +15,11 @@ model User {
   isAdmin    Boolean           @default(false)
   sub_news   Boolean           @default(false)
   isActive   Boolean           @default(true)
-  isVerified Boolean           @default(false)
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
-  requests   DroneBuyRequest[]
+  isVerified Boolean           @default(false)
   drones     Drone[]
+  requests   DroneBuyRequest[]
   Otps       OTP[]
   reviewee   Review[]
   specs      Spec[]
@@ -76,12 +76,12 @@ model Drone {
   stock              Int                @default(0)
   PreviewDescription String             @default("")
   briefDescription   String             @default("")
-  userRequests       DroneBuyRequest[]
   admin              User               @relation(fields: [adminId], references: [id])
   featuredImage      Image?             @relation("DroneFeaturedImage", fields: [featuredImageId], references: [id])
   featuredVideo      Video?             @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id])
   model              DroneModel?        @relation(fields: [modelId], references: [id])
   advantages         DroneAdvantage[]
+  userRequests       DroneBuyRequest[]
   descriptions       DroneDescription[]
   inTheBox           DroneInTheBox[]
   tech               DroneTech?         @relation("DroneAndDroneTech")
@@ -89,8 +89,8 @@ model Drone {
   reviews            Review[]
   specs              Spec[]
   videos             Video[]            @relation("videos")
-  categories         DroneCategory[]    @relation("DroneToDroneCategory")
   rtk                rtkModule?
+  categories         DroneCategory[]    @relation("DroneToDroneCategory")
 }
 
 model rtkModule {
@@ -100,9 +100,9 @@ model rtkModule {
   description      String
   videoId          String   @unique
   droneId          String   @unique
-  drone            Drone    @relation(references: [id], fields: [droneId])
-  video            Video    @relation(references: [id], fields: [videoId])
   createdAt        DateTime @default(now())
+  drone            Drone    @relation(fields: [droneId], references: [id])
+  video            Video    @relation(fields: [videoId], references: [id])
 }
 
 model DroneTech {
@@ -212,8 +212,8 @@ model Image {
   priority           Int            @default(0)
   DroneFeaturedImage Drone?         @relation("DroneFeaturedImage")
   drone              Drone?         @relation(fields: [droneId], references: [id], onDelete: Cascade)
-  spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
   garmins            GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
+  spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
 }
 
 model Video {
@@ -253,15 +253,15 @@ model GarminProduct {
   discountPrice  Float?
   featured       Boolean         @default(false)
   description    String
-  images         Image[]
   features       String[]
   isNew          Boolean         @default(false)
   rating         Float
   reviewCount    Int             @default(0)
   inStock        Boolean         @default(true)
-  specifications Specification[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  images         Image[]
+  specifications Specification[]
 
   @@index([category])
   @@index([name])
@@ -271,6 +271,6 @@ model Specification {
   id        String        @id @default(nanoid())
   label     String
   value     String
-  product   GarminProduct @relation(fields: [productId], references: [id])
   productId String
+  product   GarminProduct @relation(fields: [productId], references: [id])
 }

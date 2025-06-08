@@ -30,6 +30,8 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
             key={index}
             onClick={() => setSelectedImage(img.url)}
             className={`border rounded-md overflow-hidden ${selectedImage === img.url ? 'ring-2 ring-blue-500' : ''}`}
+            aria-label={`Select image ${index + 1}`}
+            title={`Select image ${index + 1}`}
           >
             <div className="relative w-full h-20 bg-gray-50">
               <Image

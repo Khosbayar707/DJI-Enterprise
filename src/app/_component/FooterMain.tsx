@@ -1,86 +1,195 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaPhoneAlt, FaFacebookF, FaYoutube } from 'react-icons/fa';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from '@/components/ui/accordion'; // Radix-ui wrapper
 
 const footerLinks = [
   {
-    title: 'Products',
-    links: ['Matrice Series', 'Mavic Series', 'Phantom Series', 'Payloads', 'Software'],
+    title: 'Бүтээгдэхүүн',
+    links: [
+      {
+        name: 'Matrice Series',
+        info: 'DJI-ийн аж үйлдвэрийн зориулалттай дрон, өндөр чанар, удаан нислэгийн хугацаа',
+      },
+      {
+        name: 'Mavic Series',
+        info: 'Хувийн хэрэглээнд зориулсан боловсруулсан дрон, нимгэн, хөнгөн загвар',
+      },
+      {
+        name: 'Phantom Series',
+        info: 'Мэргэжлийн гэрэл зургийн дрон, өндөр нарийвчлалтай камер',
+      },
+      {
+        name: 'Дагалдах хэрэгсэл',
+        info: 'Дронд зориулсан нэмэлт хэрэгсэл, батерей, сэнс, хайрцаг гэх мэт',
+      },
+      {
+        name: 'Программ хангамж',
+        info: 'Дроны удирдлага, өгөгдөл боловсруулалтын программууд',
+      },
+    ],
   },
   {
-    title: 'Solutions',
-    links: ['Public Safety', 'Energy', 'Agriculture', 'Construction', 'Infrastructure'],
+    title: 'Шийдлүүд',
+    links: [
+      {
+        name: 'Аюулгүй байдал',
+        info: 'Онцгой байдлын үед хяналт тавих дроны шийдлүүд',
+      },
+      {
+        name: 'Эрчим хүч',
+        info: 'Цахилгаан дамжуулах шугам, сэргээгдэх эрчим хүчний байгууламжийн хяналт',
+      },
+      {
+        name: 'Хөдөө аж ахуй',
+        info: 'Тариалангийн талбайн мониторинг, ургацын тооцоо',
+      },
+      {
+        name: 'Барилга',
+        info: 'Барилгын талбайн дээд хяналт, явцын мониторинг',
+      },
+      {
+        name: 'Дэд бүтэц',
+        info: 'Зам гүүр, дэд бүтцийн барилгын хяналт',
+      },
+    ],
   },
   {
-    title: 'Support',
-    links: ['Product Support', 'Repair Services', 'Firmware Updates', 'Contact Us'],
+    title: 'Дэмжлэг',
+    links: [
+      {
+        name: 'Бүтээгдэхүүний дэмжлэг',
+        info: 'Бүх төрлийн техникийн асуулт, лавлагааны үйлчилгээ',
+      },
+      {
+        name: 'Засвар үйлчилгээ',
+        info: 'Албан ёсны засварын төв, мэргэжлийн инженерүүд',
+      },
+      {
+        name: 'Программ шинэчлэлт',
+        info: 'Сүүлийн үеийн firmware болон программ хангамжийн шинэчлэлт',
+      },
+      {
+        name: 'Холбоо барих',
+        info: 'Бидэнтэй холбогдох: info@engineer-geodesy.mn, 7011-2233',
+      },
+    ],
   },
   {
-    title: 'About DJI',
-    links: ['Who We Are', 'Newsroom', 'Careers', 'Compliance'],
+    title: 'Инженер Геодези',
+    links: [
+      {
+        name: 'Бидний тухай',
+        info: '2018 оноос хойш DJI бүтээгдэхүүний албан ёсны дистрибьютер',
+      },
+      {
+        name: 'Мэдээ мэдээлэл',
+        info: 'Сүүлийн үеийн мэдээ, арга хэмжээний мэдээлэл',
+      },
+      {
+        name: 'Ажлын байр',
+        info: 'Манай багт нэгдэх боломжууд',
+      },
+      {
+        name: 'Хамтын ажиллагаа',
+        info: 'Түншлэлийн хөтөлбөр, дилерүүдэд зориулсан мэдээлэл',
+      },
+    ],
   },
 ];
 
 const socialLinks = [
-  { name: 'YouTube', href: 'https://youtube.com', icon: '/icons/youtube.svg' },
+  {
+    name: 'YouTube',
+    href: 'https://youtube.com',
+    icon: <FaYoutube className="w-5 h-5" />,
+  },
   {
     name: 'Facebook',
     href: 'https://facebook.com',
-    icon: '/icons/facebook.svg',
+    icon: <FaFacebookF className="w-5 h-5" />,
   },
   {
     name: 'Phone',
-    href: '90005889',
-    icon: '/icons/phone.svg',
+    href: 'tel:90005889',
+    icon: <FaPhoneAlt className="w-5 h-5" />,
   },
 ];
 
-const FooterMain = () => {
+const MainFooter = () => {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 mt-12">
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-        {footerLinks.map((section, idx) => (
-          <div key={idx}>
-            <h4 className="text-sm font-semibold text-gray-800 mb-4">{section.title}</h4>
-            <ul className="space-y-2">
-              {section.links.map((link, i) => (
-                <li key={i}>
-                  <Link
-                    href={link}
-                    className="text-sm text-gray-600 hover:text-red-600 transition-colors"
-                  >
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+    <footer className="bg-gray-50 border-t border-gray-200 mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {footerLinks.map((section, idx) => (
+            <div key={idx}>
+              <h4 className="text-lg font-semibold text-gray-800 mb-4">{section.title}</h4>
+              <Accordion type="single" collapsible className="space-y-2">
+                {section.links.map((link, i) => (
+                  <AccordionItem key={i} value={`item-${idx}-${i}`}>
+                    <AccordionTrigger className="text-left text-gray-700 hover:text-blue-600 text-sm">
+                      {link.name}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-600 text-sm">
+                      {link.info}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          ))}
+        </div>
 
-      <div className="border-t border-gray-200 mt-8 py-6 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} DJI. All Rights Reserved.
-          </p>
+        <div className="border-t border-gray-200 my-10"></div>
+
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center space-x-4">
+            <Link href="/" className="flex items-center">
+              <div className="relative h-10 w-10">
+                <Image
+                  src="/image/logo.png"
+                  alt="Инженер Геодези ХХК"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className="ml-2 text-gray-800 font-medium">Инженер Геодези ХХК</span>
+            </Link>
+            <p className="text-sm text-gray-500">
+              &copy; {new Date().getFullYear()} Бүх эрх хуулиар хамгаалагдсан.
+            </p>
+          </div>
+
           <div className="flex items-center space-x-4">
             {socialLinks.map((social, idx) => (
-              <a key={idx} href={social.href} target="_blank" rel="noopener noreferrer">
-                <div className="relative h-5 w-5">
-                  <Image
-                    src={social.icon}
-                    alt={social.name}
-                    fill
-                    className="hover:opacity-75 transition-opacity object-contain"
-                    sizes="20px"
-                  />
-                </div>
-              </a>
+              <Link
+                key={idx}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white rounded-full shadow hover:shadow-md text-gray-500 hover:text-blue-600 transition"
+                aria-label={social.name}
+              >
+                {social.icon}
+              </Link>
             ))}
           </div>
+        </div>
+        <div className="mt-6 text-center md:text-left text-sm text-gray-500">
+          Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3
+          <br />
+          И-мэйл: info@engineer-geodesy.mn | Утас: +976 7011 2233
         </div>
       </div>
     </footer>
   );
 };
 
-export default FooterMain;
+export default MainFooter;
