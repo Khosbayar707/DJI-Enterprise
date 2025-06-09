@@ -30,7 +30,6 @@ import { useSearchDebounce } from './debounce/search';
 
 const navItems = [
   { href: '/dji', label: 'DJI', items: ['DJI Enterprise'] },
-  { href: '/autel', label: 'Autel', items: ['Autel EVO', 'Autel Robotics'] },
   { href: '/garmin', label: 'Garmin', items: ['Smartwatch'] },
 ];
 
@@ -173,7 +172,7 @@ const HeaderMain = () => {
             <SearchIconWrapper>
               <label
                 htmlFor="desktop-search"
-                className="p-2 text-gray-600 hover:text-blue-600 cursor-pointer"
+                className="p-2 text-gray-600 hover:text-blue-600 cursor-pointer text-sm"
               >
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </label>
@@ -197,7 +196,7 @@ const HeaderMain = () => {
               </Link>
               <button
                 onClick={logout}
-                className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition cursor-pointer"
+                className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer"
               >
                 Гарах
               </button>
@@ -209,12 +208,6 @@ const HeaderMain = () => {
               </button>
             </Link>
           )}
-
-          <Link href="/where-to-buy">
-            <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
-              Холбоо барих
-            </button>
-          </Link>
         </div>
 
         <div className="lg:hidden">
@@ -270,7 +263,7 @@ const HeaderMain = () => {
             ))}
 
             <motion.div
-              className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 shadow-sm border border-gray-300"
+              className="flex items-center gap-2 bg-gray-100 text-sm rounded-full px-3 py-2 shadow-sm border border-gray-300"
               variants={hoverVariants}
               whileHover="hover"
             >
@@ -306,23 +299,13 @@ const HeaderMain = () => {
                     logout();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium hover:bg-gray-200 flex items-center gap-2 justify-center cursor-pointer"
+                  className="px-4 py-2 bg-blue-600 rounded-full text-sm font-medium hover:bg-blue-700 flex items-center gap-2 justify-center cursor-pointer"
                   variants={hoverVariants}
                   whileHover="hover"
                 >
                   <ArrowRightStartOnRectangleIcon className="text-blue-600 h-5 w-5" />
                   Гарах
                 </motion.button>
-                <Link href="/where-to-buy">
-                  <motion.div
-                    className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center cursor-pointer"
-                    variants={hoverVariants}
-                    whileHover="hover"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Холбоо барих
-                  </motion.div>
-                </Link>
               </div>
             ) : (
               <Link href={`/auth/login?redir=${pathname}`}>
