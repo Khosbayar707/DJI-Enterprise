@@ -42,3 +42,8 @@ next-env.d.ts
 
 # prisma
 /src/generated
+
+# sitemap
+/public/sitemap.xml
+/public/sitemap-0.xml
+/public/robots.txt
