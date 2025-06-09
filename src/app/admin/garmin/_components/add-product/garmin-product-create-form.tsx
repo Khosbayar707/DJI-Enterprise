@@ -16,12 +16,20 @@ import {
 } from '@/components/ui/form';
 import { Snackbar, Alert, Checkbox } from '@mui/material';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   AddGarminProductSchema,
   AddGarminProductSchemaType,
 } from '../../utlis/add-garmin-product-schema';
 import axios from 'axios';
 import CircularProgressWithLabel from '@/app/dji/utils/loading-circle';
 import Image from 'next/image';
+import { Trash2 } from 'lucide-react';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -33,21 +41,25 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [progress, setProgress] = useState(0);
   const [imageUploading, setImageUploading] = useState(false);
+
   const form = useForm<AddGarminProductSchemaType>({
     resolver: zodResolver(AddGarminProductSchema),
     defaultValues: {
       name: '',
       category: '',
+      type: 'SMARTWATCH',
       price: 0,
       images: [],
       description: '',
       features: '',
       isNew: false,
       rating: 0,
+      specifications: [],
     },
   });
 
-  const { setValue } = form;
+  const { setValue, watch } = form;
+  const specifications = watch('specifications');
 
   const onSubmit = async (data: AddGarminProductSchemaType) => {
     try {
@@ -131,6 +143,17 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
     }
   };
 
+  const addSpecification = () => {
+    setValue('specifications', [...(specifications || []), { label: '', value: '' }]);
+  };
+
+  const removeSpecification = (index: number) => {
+    setValue(
+      'specifications',
+      (specifications || []).filter((_, i) => i !== index)
+    );
+  };
+
   return (
     <Form {...form}>
       <Snackbar
@@ -177,6 +200,32 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Бүтээгдэхүүний төрөл</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={form.formState.isSubmitting}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Төрөл сонгох" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="SMARTWATCH">Ухаалаг цаг</SelectItem>
+                    <SelectItem value="GPS">GPS</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -231,7 +280,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
           name="images"
           render={({ field }) => (
             <FormItem>
-              <div className=" flex justify-between">
+              <div className="flex justify-between">
                 <FormLabel>Бүтээгдэхүүний зураг</FormLabel>
                 {progress > 0 && <CircularProgressWithLabel value={progress} />}
               </div>
@@ -301,6 +350,67 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
             </FormItem>
           )}
         />
+
+        <FormItem>
+          <FormLabel>Тодорхойлолтууд</FormLabel>
+          <div className="space-y-4">
+            {specifications?.map((_, index) => (
+              <div key={index} className="flex gap-4 items-end">
+                <FormField
+                  control={form.control}
+                  name={`specifications.${index}.label`}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Нэр</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={form.formState.isSubmitting}
+                          placeholder="Жишээ: Батерейны хугацаа"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`specifications.${index}.value`}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Утга</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={form.formState.isSubmitting}
+                          placeholder="Жишээ: 18 хоног"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => removeSpecification(index)}
+                  disabled={form.formState.isSubmitting}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addSpecification}
+              disabled={form.formState.isSubmitting}
+            >
+              Тодорхойлолт нэмэх
+            </Button>
+          </div>
+        </FormItem>
 
         <FormField
           control={form.control}

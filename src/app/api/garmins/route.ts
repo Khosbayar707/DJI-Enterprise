@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
     const {
       name,
       category,
+      type,
       price,
       description,
       images,
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
       rating,
       reviewCount,
       inStock,
+      specifications,
     } = body;
 
     if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
@@ -50,10 +52,39 @@ export async function POST(req: NextRequest) {
       return CustomResponse(false, 'INVALID_IMAGES', 'Зураг буруу форматтай', null);
     }
 
+    if (!type || !['SMARTWATCH', 'GPS'].includes(type)) {
+      return CustomResponse(
+        false,
+        'INVALID_TYPE',
+        'Бүтээгдэхүүний төрөл буруу (SMARTWATCH эсвэл GPS байх ёстой)',
+        null
+      );
+    }
+
+    if (specifications) {
+      if (!Array.isArray(specifications)) {
+        return CustomResponse(
+          false,
+          'INVALID_SPECIFICATIONS',
+          'Тодорхойлолтууд массив байх ёстой',
+          null
+        );
+      }
+      if (!specifications.every((spec: any) => spec.label && spec.value)) {
+        return CustomResponse(
+          false,
+          'INVALID_SPECIFICATIONS',
+          'Тодорхойлолт бүрт нэр болон утга шаардлагатай',
+          null
+        );
+      }
+    }
+
     const product = await prisma.garminProduct.create({
       data: {
         name,
         category,
+        type,
         price,
         description,
         isNew,
@@ -69,6 +100,16 @@ export async function POST(req: NextRequest) {
             })),
           },
         },
+        specifications: specifications
+          ? {
+              createMany: {
+                data: specifications.map((spec: any) => ({
+                  label: spec.label,
+                  value: spec.value,
+                })),
+              },
+            }
+          : undefined,
       },
       include: {
         specifications: true,

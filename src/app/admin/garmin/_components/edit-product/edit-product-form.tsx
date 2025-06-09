@@ -16,6 +16,13 @@ import {
 } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Snackbar, Alert } from '@mui/material';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import axios from 'axios';
 import {
   AddGarminProductSchema,
@@ -24,10 +31,12 @@ import {
 import { GarminProduct } from '@/generated/prisma';
 import CircularProgressWithLabel from '@/app/dji/utils/loading-circle';
 import Image from 'next/image';
+import { Trash2 } from 'lucide-react';
 
 type Props = {
   product: GarminProduct & {
     images: { url: string; public_id: string }[];
+    specifications: { id: string; label: string; value: string }[];
   };
   setRefresh: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
@@ -45,27 +54,32 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
     defaultValues: {
       name: product.name,
       category: product.category,
+      type: product.type || 'SMARTWATCH',
       price: product.price,
       images: product.images || [],
       description: product.description || '',
       features: product.features?.join('\n') || '',
       isNew: product.isNew || false,
       rating: product.rating || 0,
+      specifications: product.specifications || [],
     },
   });
 
-  const { setValue } = form;
+  const { setValue, watch } = form;
+  const specifications = watch('specifications');
 
   useEffect(() => {
     setValue('images', product.images);
-  }, [product.images, setValue]);
+    setValue('specifications', product.specifications);
+  }, [product.images, product.specifications, setValue]);
 
   const imageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     setImageUploading(true);
     try {
       const files = Array.from(event.target.files);
-      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=Garmin/Smartwatch`);
+      const folder = `Garmin/${form.getValues('type')}`;
+      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=${folder}`);
       if (!response1.data.success) return;
 
       const { timestamp, signature, api_key } = response1.data.data;
@@ -79,7 +93,7 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
         data.append('signature', signature);
         data.append('api_key', api_key);
         data.append('resource_type', 'image');
-        data.append('folder', 'Garmin/Smartwatch');
+        data.append('folder', folder);
 
         const response2 = await axios.post(
           `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
@@ -110,9 +124,23 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
       setValue('images', updatedImages);
     } catch (err) {
       console.error(err);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Зураг хуулахад алдаа гарлаа');
+      setSnackbarOpen(true);
     } finally {
       setImageUploading(false);
     }
+  };
+
+  const addSpecification = () => {
+    setValue('specifications', [...(specifications || []), { label: '', value: '' }]);
+  };
+
+  const removeSpecification = (index: number) => {
+    setValue(
+      'specifications',
+      (specifications || []).filter((_, i) => i !== index)
+    );
   };
 
   const onSubmit = async (data: AddGarminProductSchemaType) => {
@@ -194,6 +222,31 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
           />
           <FormField
             control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Бүтээгдэхүүний төрөл</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={form.formState.isSubmitting}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Төрөл сонгох" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="SMARTWATCH">Ухаалаг цаг</SelectItem>
+                    <SelectItem value="GPS">GPS</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="price"
             render={({ field }) => (
               <FormItem>
@@ -238,7 +291,7 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
           name="images"
           render={({ field }) => (
             <FormItem>
-              <div className=" flex justify-between">
+              <div className="flex justify-between">
                 <FormLabel>Бүтээгдэхүүний зургууд</FormLabel>
                 {progress > 0 && <CircularProgressWithLabel value={progress} />}
               </div>
@@ -304,6 +357,67 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
             </FormItem>
           )}
         />
+
+        <FormItem>
+          <FormLabel>Тодорхойлолтууд</FormLabel>
+          <div className="space-y-4">
+            {specifications?.map((_, index) => (
+              <div key={index} className="flex gap-4 items-end">
+                <FormField
+                  control={form.control}
+                  name={`specifications.${index}.label`}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Нэр</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={form.formState.isSubmitting}
+                          placeholder="Жишээ: Батерейны хугацаа"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`specifications.${index}.value`}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Утга</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={form.formState.isSubmitting}
+                          placeholder="Жишээ: 18 хоног"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => removeSpecification(index)}
+                  disabled={form.formState.isSubmitting}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addSpecification}
+              disabled={form.formState.isSubmitting}
+            >
+              Тодорхойлолт нэмэх
+            </Button>
+          </div>
+        </FormItem>
 
         <FormField
           control={form.control}

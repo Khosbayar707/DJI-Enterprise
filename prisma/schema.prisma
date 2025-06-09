@@ -245,10 +245,16 @@ model Review {
   reviewee    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum ProductType {
+  SMARTWATCH
+  GPS
+}
+
 model GarminProduct {
   id             String          @id @default(nanoid())
   name           String
   category       String
+  type           ProductType    
   price          Float
   discountPrice  Float?
   featured       Boolean         @default(false)
