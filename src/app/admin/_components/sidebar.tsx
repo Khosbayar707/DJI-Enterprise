@@ -61,12 +61,6 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
           icon={<Boxes size={20} />}
           section={AdminSideBarOptions.products}
         />
-        <NavButton label="Медиа" icon={<Images size={20} />} section={AdminSideBarOptions.images} />
-        <NavButton
-          label="Захиалгууд"
-          icon={<Package size={20} />}
-          section={AdminSideBarOptions.orders}
-        />
         <NavButton
           label="Дрон худалдан авах хүсэлт"
           icon={<Users size={20} />}
@@ -77,6 +71,7 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
           icon={<Users size={20} />}
           section={AdminSideBarOptions.ContactRequest}
         />
+        <NavButton label="Медиа" icon={<Images size={20} />} section={AdminSideBarOptions.images} />
       </div>
 
       <div className="flex flex-col gap-2">

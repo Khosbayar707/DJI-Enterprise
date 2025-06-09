@@ -14,7 +14,7 @@ import {
   SpecDescription,
   User,
   Video,
-  Specification, // Add the Specification model
+  Specification,
 } from '@/generated/prisma';
 
 export type ResponseType = {
@@ -26,7 +26,6 @@ export type ResponseType = {
 
 export enum AdminSideBarOptions {
   products,
-  orders,
   images,
   DroneBuyRequest,
   ContactRequest,
@@ -70,7 +69,7 @@ export type CustomRTK = rtkModule & {
 
 export type CustomSpec = Spec & {
   image: Image[];
-  vidoes: Video[]; // Note: Typo in 'vidoes', should be 'videos'
+  vidoes: Video[];
   drone: Drone;
   specCategories: SpecCategory[];
   descriptions: SpecDescription[];

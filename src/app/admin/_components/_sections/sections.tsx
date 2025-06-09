@@ -7,8 +7,7 @@ import ContactRequestSection from './contact-request-section';
 
 export const sectionComponents: Record<AdminSideBarOptions, React.ReactNode> = {
   [AdminSideBarOptions.products]: <ProductSection />,
-  [AdminSideBarOptions.orders]: <OrderSection />,
   [AdminSideBarOptions.DroneBuyRequest]: <DroneBuyRequestSection />,
-  [AdminSideBarOptions.images]: <MediaSection />,
   [AdminSideBarOptions.ContactRequest]: <ContactRequestSection />,
+  [AdminSideBarOptions.images]: <MediaSection />,
 };
