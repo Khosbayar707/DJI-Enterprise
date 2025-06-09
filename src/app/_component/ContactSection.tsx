@@ -61,14 +61,14 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-26 items-start">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white p-8 rounded-xl shadow-lg"
+            className="p-8 rounded-xl"
           >
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800">Бидэнтэй холбогдох</h3>
+            <h3 className="text-xl font-semibold mb-6 text-gray-800">Бидэнтэй холбогдох</h3>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -169,74 +169,61 @@ export default function ContactSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-6"
           >
-            <h3 className="text-2xl font-semibold text-gray-800">Холбоо барих мэдээлэл</h3>
-
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                <FaPhone className="text-blue-600 text-lg" />
+            <h3 className="text-xl font-semibold">Холбоо барих мэдээлэл</h3>{' '}
+            <div className="flex items-start space-x-4">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <FaPhone className="text-blue-600" />{' '}
               </div>
               <div>
-                <h4 className="font-medium text-lg text-gray-800">Утас</h4>
-                <p className="text-gray-600 hover:text-blue-600 transition-colors">
-                  <a href="tel:+97670112233">+976 7011 2233</a>
-                </p>
-                <p className="text-gray-600 hover:text-blue-600 transition-colors">
-                  <a href="tel:+97688114455">+976 8811 4455</a>
-                </p>
+                <h4 className="font-medium">Утас</h4>{' '}
+                <p className="text-gray-600">+976 7011 2233</p>{' '}
+                <p className="text-gray-600">+976 8811 4455</p>{' '}
               </div>
             </div>
-
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                <FaEnvelope className="text-blue-600 text-lg" />
+            <div className="flex items-start space-x-4">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <FaEnvelope className="text-blue-600" />{' '}
               </div>
               <div>
-                <h4 className="font-medium text-lg text-gray-800">И-мэйл</h4>
-                <p className="text-gray-600 hover:text-blue-600 transition-colors">
-                  <a href="mailto:info@engineer-geodesy.mn">info@engineer-geodesy.mn</a>
-                </p>
-                <p className="text-gray-600 hover:text-blue-600 transition-colors">
-                  <a href="mailto:sales@engineer-geodesy.mn">sales@engineer-geodesy.mn</a>
-                </p>
+                <h4 className="font-medium">И-мэйл</h4>{' '}
+                <p className="text-gray-600">info@engineer-geodesy.mn</p>{' '}
+                <p className="text-gray-600">sales@engineer-geodesy.mn</p>{' '}
               </div>
             </div>
-
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                <FaMapMarkerAlt className="text-blue-600 text-lg" />
+            <div className="flex items-start space-x-4">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <FaMapMarkerAlt className="text-blue-600" />{' '}
               </div>
               <div>
-                <h4 className="font-medium text-lg text-gray-800">Хаяг</h4>
+                <h4 className="font-medium">Хаяг</h4>{' '}
                 <p className="text-gray-600">
                   Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3,
-                  &quot;Инженер Геодези ХХК&quot; байр
+                  &quot;Инженер Геодези ХХК&quot; байр{' '}
                 </p>
               </div>
             </div>
-
-            <div className="flex items-start space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                <FaClock className="text-blue-600 text-lg" />
+            <div className="flex items-start space-x-4">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <FaClock className="text-blue-600" />{' '}
               </div>
               <div>
-                <h4 className="font-medium text-lg text-gray-800">Ажиллах цаг</h4>
-                <p className="text-gray-600">Даваа-Баасан: 09:00 - 18:00</p>
-                <p className="text-gray-600">Бямба-Ням: Амарна</p>
+                <h4 className="font-medium">Ажиллах цаг</h4>{' '}
+                <p className="text-gray-600">Даваа-Баасан: 09:00 - 18:00</p>{' '}
+                <p className="text-gray-600">Бямба-Ням: Амарна</p>{' '}
               </div>
             </div>
-
-            <div className="pt-2">
+            <div className="pt-4">
               <iframe
-                title="address"
+                title="addess"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2676.063079710459!2d106.8920424!3d47.9183684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96eccc00000001:0xd9419ff8407d6f3c!2z0JjQvdC20LXQvdC10YAg0LPQtdC-0LTQtdC5INCR0JDQlyDQodCQ0JcgLyBFbmdpbmVlcmluZyBnZW9kZXN5IExMQw!5e0!3m2!1smn!2smn!4v1716115200000!5m2!1smn!2smn"
                 width="100%"
                 height="300"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                className="rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                className="rounded-lg shadow"
               ></iframe>
             </div>
           </motion.div>
