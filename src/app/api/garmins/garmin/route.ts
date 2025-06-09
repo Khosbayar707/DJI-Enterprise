@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     }
     const product = await prisma.garminProduct.findUnique({
       where: { id },
-      include: { images: true },
+      include: { images: true, specifications: true },
     });
 
     if (!product) {

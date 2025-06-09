@@ -86,13 +86,11 @@ export default function Page() {
 
             <ProductTabs
               features={product.features}
-              // specifications={product.specifications}
               description={product.description}
+              specifications={product.specifications}
             />
 
             <ContactForm />
-
-            {/* <RelatedProducts /> */}
           </div>
         </div>
       </div>

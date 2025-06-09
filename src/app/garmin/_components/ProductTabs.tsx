@@ -2,15 +2,11 @@ import { useState } from 'react';
 
 interface ProductTabsProps {
   features: string[];
-  // specifications: { label: string; value: string }[];
+  specifications: { label: string; value: string }[];
   description: string;
 }
 
-export default function ProductTabs({
-  features,
-  // specifications,
-  description,
-}: ProductTabsProps) {
+export default function ProductTabs({ features, specifications, description }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState('description');
 
   return (
@@ -75,7 +71,7 @@ export default function ProductTabs({
         {activeTab === 'specs' && (
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Техникийн үзүүлэлт</h3>
-            {/* <div className="bg-gray-50 rounded-lg overflow-hidden">
+            <div className="bg-gray-50 rounded-lg overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200">
                 <tbody className="bg-white divide-y divide-gray-200">
                   {specifications.map((spec, index) => (
@@ -90,7 +86,7 @@ export default function ProductTabs({
                   ))}
                 </tbody>
               </table>
-            </div> */}
+            </div>
           </div>
         )}
       </div>

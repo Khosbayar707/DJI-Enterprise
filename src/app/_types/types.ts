@@ -35,14 +35,18 @@ export interface GarminProduct {
   id: string;
   name: string;
   category: string;
+  type: 'SMARTWATCH' | 'GPS';
   price: number;
   discountPrice?: number;
+  featured: boolean;
   description: string;
-  specifications: { label: string; value: string }[];
-  images: string[];
   features: string[];
-  isNew?: boolean;
+  isNew: boolean;
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  images: { url: string; public_id: string }[];
+  specifications: { id: string; label: string; value: string }[];
 }
