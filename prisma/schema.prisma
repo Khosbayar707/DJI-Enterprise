@@ -50,6 +50,13 @@ model ContactRequest {
   createdAt DateTime @default(now())
 }
 
+model InstructionRequest {
+  id String @id @unique @default(nanoid())
+  username String 
+  phone String
+  email String
+}
+
 model OTP {
   id        String   @id @unique @default(nanoid())
   otp       String   @unique

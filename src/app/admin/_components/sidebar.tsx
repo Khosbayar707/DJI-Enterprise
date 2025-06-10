@@ -40,9 +40,7 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
         fontWeight: 500,
         backgroundColor: activeSection === section ? 'rgba(59,130,246,0.1)' : 'transparent',
         color: activeSection === section ? '#2563EB' : 'rgba(0,0,0,0.7)',
-        '&:hover': {
-          backgroundColor: 'rgba(59,130,246,0.15)',
-        },
+        '&:hover': { backgroundColor: 'rgba(59,130,246,0.15)' },
       }}
       onClick={() => setActiveSection(section)}
       className="flex gap-3 items-center w-full"
@@ -70,6 +68,11 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
           label="Холбоо барих хүсэлт"
           icon={<Users size={20} />}
           section={AdminSideBarOptions.ContactRequest}
+        />
+        <NavButton
+          label="Зөвлөгөө авах хүсэлт"
+          icon={<Users size={20} />}
+          section={AdminSideBarOptions.InstructionRequest}
         />
         <NavButton label="Медиа" icon={<Images size={20} />} section={AdminSideBarOptions.images} />
       </div>
