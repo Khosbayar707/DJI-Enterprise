@@ -55,6 +55,9 @@ model InstructionRequest {
   username String 
   phone String
   email String
+  ip String 
+  resolved Boolean @default(false)
+  createdAt DateTime @default(now())
 }
 
 model OTP {
