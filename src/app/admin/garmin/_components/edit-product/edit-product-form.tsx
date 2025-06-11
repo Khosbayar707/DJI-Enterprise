@@ -53,7 +53,6 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
     resolver: zodResolver(AddGarminProductSchema),
     defaultValues: {
       name: product.name,
-      category: product.category,
       type: product.type || 'SMARTWATCH',
       price: product.price,
       images: product.images || [],
@@ -200,19 +199,6 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Бүтээгдэхүүний нэр</FormLabel>
-                <FormControl>
-                  <Input disabled={form.formState.isSubmitting} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ангилал</FormLabel>
                 <FormControl>
                   <Input disabled={form.formState.isSubmitting} {...field} />
                 </FormControl>

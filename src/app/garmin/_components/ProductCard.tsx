@@ -48,12 +48,6 @@ export default function GarminProductCard({ product, index }: GarminProductCardP
           </div>
         </div>
         <div className="p-6">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-bold line-clamp-2">{product.name}</h3>
-            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-              {product.category}
-            </span>
-          </div>
           <div className="flex items-center mb-3">
             <div className="flex">
               {[...Array(5)].map((_, starIndex) => (

@@ -83,7 +83,6 @@ export async function POST(req: NextRequest) {
     const product = await prisma.garminProduct.create({
       data: {
         name,
-        category,
         type,
         price,
         description,
@@ -128,7 +127,6 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     const {
       name,
-      category,
       price,
       description,
       images,
@@ -145,7 +143,6 @@ export async function PATCH(req: NextRequest) {
       where: { id },
       data: {
         name,
-        category,
         price,
         description,
         images,
