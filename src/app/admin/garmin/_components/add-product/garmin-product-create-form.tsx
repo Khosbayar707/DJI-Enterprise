@@ -46,7 +46,6 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
     resolver: zodResolver(AddGarminProductSchema),
     defaultValues: {
       name: '',
-      category: '',
       type: 'SMARTWATCH',
       price: 0,
       images: [],
@@ -179,24 +178,6 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
                   <Input
                     disabled={form.formState.isSubmitting}
                     placeholder="Жишээ: Garmin Fenix 7X"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ангилал</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={form.formState.isSubmitting}
-                    placeholder="Жишээ: Ухаалаг цаг"
                     {...field}
                   />
                 </FormControl>

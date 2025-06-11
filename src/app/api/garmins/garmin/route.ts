@@ -47,7 +47,6 @@ export async function PUT(req: NextRequest) {
     const body = await req.json();
     const {
       name,
-      category,
       price,
       description,
       images,
@@ -67,7 +66,6 @@ export async function PUT(req: NextRequest) {
       where: { id },
       data: {
         name,
-        category,
         price,
         description,
         isNew,

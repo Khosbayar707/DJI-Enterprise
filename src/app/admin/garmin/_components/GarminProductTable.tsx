@@ -140,7 +140,7 @@ export default function GarminProductTable() {
                         <div className="space-y-3">
                           <div className="flex items-center">
                             <span className="text-sm font-medium text-gray-500 mr-2">Төрөл:</span>
-                            <Badge variant="outline">{product.category}</Badge>
+                            <Badge variant="outline">{product.type}</Badge>
                           </div>
 
                           <div className="flex items-center">

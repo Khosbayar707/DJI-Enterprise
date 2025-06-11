@@ -12,7 +12,7 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-          <p className="text-gray-500 mt-1">{product.category}</p>
+          <p className="text-gray-500 mt-1">{product.type}</p>
         </div>
         {product.isNew && (
           <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">NEW</span>

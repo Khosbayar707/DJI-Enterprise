@@ -263,7 +263,6 @@ enum ProductType {
 model GarminProduct {
   id             String          @id @default(nanoid())
   name           String
-  category       String
   type           ProductType    
   price          Float
   discountPrice  Float?
@@ -279,7 +278,6 @@ model GarminProduct {
   images         Image[]
   specifications Specification[]
 
-  @@index([category])
   @@index([name])
 }
 
