@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Wrench, School } from 'lucide-react';
+import InstructionRequestDialog from './instruction-request-dialog';
 
 export default function DroneServiceTrainingSection() {
   return (
@@ -150,9 +151,7 @@ export default function DroneServiceTrainingSection() {
                 Хувийн болон бүлгийн сургалт
               </li>
             </ul>
-            <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
-              Сургалтанд бүртгүүлэх
-            </Button>
+            <InstructionRequestDialog />
           </div>
         </div>
       </div>

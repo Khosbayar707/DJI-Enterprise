@@ -17,18 +17,14 @@ import {
   Specification,
 } from '@/generated/prisma';
 
-export type ResponseType = {
-  success: boolean;
-  code: string;
-  message: string;
-  data: any;
-};
+export type ResponseType = { success: boolean; code: string; message: string; data: any };
 
 export enum AdminSideBarOptions {
   products,
   images,
   DroneBuyRequest,
   ContactRequest,
+  InstructionRequest,
 }
 
 export enum ProductTabOptions {
@@ -63,9 +59,7 @@ export type CustomDrone = Drone & {
   rtk: CustomRTK | undefined;
 };
 
-export type CustomRTK = rtkModule & {
-  video: Video;
-};
+export type CustomRTK = rtkModule & { video: Video };
 
 export type CustomSpec = Spec & {
   image: Image[];
@@ -83,10 +77,7 @@ export type CustomImage = Image & {
   updatedAt: string;
 };
 
-export type CustomDroneBuyRequest = DroneBuyRequest & {
-  drone: Drone;
-  user: User;
-};
+export type CustomDroneBuyRequest = DroneBuyRequest & { drone: Drone; user: User };
 
 export type CustomGarminProduct = GarminProduct & {
   images: Image[];
@@ -95,9 +86,7 @@ export type CustomGarminProduct = GarminProduct & {
 
 // client side types
 
-export type CustomUserClient = User & {
-  requests: CustomDroneBuyRequestClient[];
-};
+export type CustomUserClient = User & { requests: CustomDroneBuyRequestClient[] };
 
 export type CustomDroneClient = Drone & {
   images: Image[];
@@ -118,6 +107,4 @@ export type CustomSpecClient = Spec & {
   videos: Video[];
 };
 
-export type CustomDroneBuyRequestClient = DroneBuyRequest & {
-  drone: Drone;
-};
+export type CustomDroneBuyRequestClient = DroneBuyRequest & { drone: Drone };
