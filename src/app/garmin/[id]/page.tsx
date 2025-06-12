@@ -8,8 +8,6 @@ import LoadingText from '@/app/_component/LoadingText';
 import Breadcrumbs from '@/app/dji/_components/Breadcrumbs';
 import ProductGallery from '../_components/ProductGallery';
 import ProductInfo from '../_components/ProductInfo';
-import ProductTabs from '../_components/ProductTabs';
-import ContactForm from '@/app/dji/_components/ContactForm';
 import axios from 'axios';
 import { CustomGarminProduct } from '@/lib/types';
 
@@ -83,14 +81,6 @@ export default function Page() {
                 isLoading={isLoading}
               />
             </div>
-
-            <ProductTabs
-              features={product.features}
-              description={product.description}
-              specifications={product.specifications}
-            />
-
-            <ContactForm />
           </div>
         </div>
       </div>
