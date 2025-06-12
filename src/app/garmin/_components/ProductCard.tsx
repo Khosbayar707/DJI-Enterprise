@@ -83,26 +83,6 @@ export default function GarminProductCard({ product, index }: GarminProductCardP
                 <span className="line-clamp-2">{feature}</span>
               </li>
             ))}
-            {product.specifications.slice(0, 2).map((spec, idx) => (
-              <li key={idx} className="flex items-start text-sm">
-                <svg
-                  className="h-4 w-4 text-blue-500 mr-1.5 mt-0.5 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                <span className="line-clamp-2">
-                  {spec.label}: {spec.value}
-                </span>
-              </li>
-            ))}
           </ul>
           <button className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition">
             Дэлгэрэнгүй
