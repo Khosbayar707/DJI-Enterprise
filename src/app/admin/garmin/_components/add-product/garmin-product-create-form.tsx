@@ -166,7 +166,11 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
         </Alert>
       </Snackbar>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+        style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
