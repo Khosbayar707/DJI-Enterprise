@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 export const AddGarminProductSchema = z.object({
   name: z.string().min(2, { message: 'Бүтээгдэхүүний нэр дор хаяж 2 тэмдэгт байх ёстой!' }),
-  category: z.string().min(2, { message: 'Ангилал дор хаяж 2 тэмдэгт байх ёстой!' }),
   type: z.enum(['SMARTWATCH', 'GPS'], {
     message: 'Бүтээгдэхүүний төрөл SMARTWATCH эсвэл GPS байх ёстой!',
   }),
