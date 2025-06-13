@@ -30,7 +30,7 @@ import { useSearchDebounce } from './debounce/search';
 
 const navItems = [
   { href: '/dji', label: 'DJI', items: ['DJI Enterprise'] },
-  { href: '/garmin', label: 'Garmin', items: ['Smartwatch'] },
+  { href: '/garmin', label: 'Garmin', items: ['Smartwatch', 'GPS'] },
 ];
 
 const mobileMenuVariants = {
@@ -150,7 +150,11 @@ const HeaderMain = () => {
                       <MenuItem key={i}>
                         {({ active }) => (
                           <Link
-                            href={nav.href}
+                            href={
+                              nav.label === 'Garmin'
+                                ? `${nav.href}?type=${item.toUpperCase()}`
+                                : nav.href
+                            }
                             className={`${
                               active ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
                             } block px-4 py-2 text-sm font-medium`}
@@ -249,7 +253,11 @@ const HeaderMain = () => {
                       {nav.items.map((item, i) => (
                         <Link
                           key={i}
-                          href={nav.href}
+                          href={
+                            nav.label === 'Garmin'
+                              ? `${nav.href}?type=${item.toUpperCase()}`
+                              : nav.href
+                          }
                           className="block px-3 py-2 text-sm text-gray-700 hover:text-blue-600"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
