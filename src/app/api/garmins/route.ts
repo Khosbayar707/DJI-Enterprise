@@ -8,13 +8,24 @@ import {
 } from '@/lib/next-responses';
 import jwt from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
+import { ProductType } from '@/generated/prisma';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const type = req.nextUrl.searchParams.get('type')?.toUpperCase();
+
+    const where =
+      type && ['SMARTWATCH', 'GPS'].includes(type) ? { type: type as ProductType } : undefined;
+
     const products = await prisma.garminProduct.findMany({
-      include: { specifications: true, images: true },
+      where,
+      include: {
+        specifications: true,
+        images: true,
+      },
     });
-    return CustomResponse(true, 'REQUEST_SUCCESS', 'Бүх цагнууд', {
+
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Цагнуудыг амжилттай авч ирлээ', {
       products,
     });
   } catch (err) {
@@ -27,7 +38,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       name,
-      category,
       type,
       price,
       description,
