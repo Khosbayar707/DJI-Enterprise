@@ -43,36 +43,66 @@ const App = () => {
   return (
     <main className="bg-white min-h-screen">
       <Head>
-        <title>
-          {search
-            ? `Хайлтын илэрц: ${search} | Инженер Геодези ХХК`
-            : 'Инженер Геодези ХХК - Мэргэжлийн дрон худалдаа'}
-        </title>
+        <title>Холбоо барих - Инженер Геодези ХХК</title>
         <meta
           name="description"
-          content={
-            search
-              ? `${search} хайлтаар олдсон дронуудын жагсаалт`
-              : 'Мэргэжлийн DJI дронуудыг Монголд худалдаж аваарай.'
-          }
+          content="Бидэнтэй холбогдохын тулд утас, имэйл, хаягийн мэдээллийг ашиглана уу. Инженер Геодези ХХК - Мэргэжлийн дрон худалдаа."
         />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Инженер Геодези ХХК - DJI дронууд Монголд" />
+        <meta property="og:title" content="Холбоо барих - Инженер Геодези ХХК" />
         <meta
           property="og:description"
-          content="DJI-ийн хамгийн сүүлийн үеийн Enterprise дронуудыг Монголд худалдаж аваарай."
+          content="DJI дрон худалдан авах, үйлчилгээ авах талаар бидэнтэй холбогдоорой."
         />
         <meta property="og:image" content="/og-image.jpg" />
-        <meta
-          property="og:url"
-          content={`https://example.mn${search ? `?search=${search}` : ''}`}
-        />
+        <meta property="og:url" content="https://example.mn/contact" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Инженер Геодези ХХК - DJI дронууд" />
-        <meta name="twitter:description" content="DJI-ийн албан ёсны борлуулагч Монголд." />
+        <meta name="twitter:title" content="Инженер Геодези ХХК" />
+        <meta name="twitter:description" content="Холбоо барих хаяг, утас, и-мэйл мэдээлэл." />
         <meta name="twitter:image" content="/og-image.jpg" />
-        <link rel="canonical" href={`https://example.mn${search ? `?search=${search}` : ''}`} />
+        <link rel="canonical" href="https://example.mn/contact" />{' '}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Инженер Геодези ХХК',
+              url: 'https://example.mn',
+              logo: 'https://example.mn/logo.png',
+              contactPoint: [
+                {
+                  '@type': 'ContactPoint',
+                  telephone: '+976-90005559',
+                  contactType: 'customer service',
+                  areaServed: 'MN',
+                  availableLanguage: ['Mongolian'],
+                },
+                {
+                  '@type': 'ContactPoint',
+                  telephone: '+976-99095839',
+                  contactType: 'sales',
+                  areaServed: 'MN',
+                  availableLanguage: ['Mongolian'],
+                },
+              ],
+              address: {
+                '@type': 'PostalAddress',
+                streetAddress: 'Амарсанаагийн гудамж 52/3',
+                addressLocality: 'Баянгол дүүрэг',
+                addressRegion: 'Улаанбаатар',
+                postalCode: '16000',
+                addressCountry: 'MN',
+              },
+              sameAs: [
+                'https://www.djigeo.mn/',
+                'http://www.geo-mongol.mn/',
+                'https://www.facebook.com/DJIMongols',
+              ],
+            }),
+          }}
+        />
       </Head>
 
       {search ? (
