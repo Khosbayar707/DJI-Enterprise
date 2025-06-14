@@ -178,8 +178,8 @@ export default function ContactSection() {
               </div>
               <div>
                 <h4 className="font-medium">Утас</h4>{' '}
-                <p className="text-gray-600">+976 7011 2233</p>{' '}
-                <p className="text-gray-600">+976 8811 4455</p>{' '}
+                <p className="text-gray-600">+976 9000 5559</p>{' '}
+                <p className="text-gray-600">+976 9909 5839</p>{' '}
               </div>
             </div>
             <div className="flex items-start space-x-4">
@@ -188,8 +188,8 @@ export default function ContactSection() {
               </div>
               <div>
                 <h4 className="font-medium">И-мэйл</h4>{' '}
-                <p className="text-gray-600">info@engineer-geodesy.mn</p>{' '}
-                <p className="text-gray-600">sales@engineer-geodesy.mn</p>{' '}
+                <p className="text-gray-600">http://www.geo-mongol.mn/</p>{' '}
+                <p className="text-gray-600">https://www.djigeo.mn/</p>{' '}
               </div>
             </div>
             <div className="flex items-start space-x-4">
