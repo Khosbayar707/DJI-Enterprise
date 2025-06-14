@@ -43,10 +43,38 @@ const App = () => {
   return (
     <main className="bg-white min-h-screen">
       <Head>
-        <title>Инженер Геодези ХХК - Мэргэжлийн дрон худалдаа</title>
-        <meta name="description" content="Мэргэжлийн DJI дронуудыг Монголд худалдаж аваарай." />
-        ...
+        <title>
+          {search
+            ? `Хайлтын илэрц: ${search} | Инженер Геодези ХХК`
+            : 'Инженер Геодези ХХК - Мэргэжлийн дрон худалдаа'}
+        </title>
+        <meta
+          name="description"
+          content={
+            search
+              ? `${search} хайлтаар олдсон дронуудын жагсаалт`
+              : 'Мэргэжлийн DJI дронуудыг Монголд худалдаж аваарай.'
+          }
+        />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Инженер Геодези ХХК - DJI дронууд Монголд" />
+        <meta
+          property="og:description"
+          content="DJI-ийн хамгийн сүүлийн үеийн Enterprise дронуудыг Монголд худалдаж аваарай."
+        />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta
+          property="og:url"
+          content={`https://example.mn${search ? `?search=${search}` : ''}`}
+        />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Инженер Геодези ХХК - DJI дронууд" />
+        <meta name="twitter:description" content="DJI-ийн албан ёсны борлуулагч Монголд." />
+        <meta name="twitter:image" content="/og-image.jpg" />
+        <link rel="canonical" href={`https://example.mn${search ? `?search=${search}` : ''}`} />
       </Head>
+
       {search ? (
         loading ? (
           <section className="p-4 md:p-8">
