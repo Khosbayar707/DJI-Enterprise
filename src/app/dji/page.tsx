@@ -8,6 +8,7 @@ import ProductListSkeleton from './_components/skeleton';
 export default function ProductListPage() {
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,7 +17,7 @@ export default function ProductListPage() {
           setDrones(res.data.data.drones);
         }
       } catch (err) {
-        console.error(err);
+        console.error('DJI fetch error:', err);
       } finally {
         setLoading(false);
       }
@@ -24,28 +25,78 @@ export default function ProductListPage() {
     fetchData();
   }, []);
 
-  return loading ? (
-    <ProductListSkeleton />
-  ) : drones.length > 0 ? (
-    <div className="bg-white min-h-screen">
-      <section className="py-20 bg-white">
+  if (loading) return <ProductListSkeleton />;
+
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-16 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">DJI дронууд</h1>
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            Идэвхтэй амьдралын хэв маягт тань төгс тохирох технологийг олж нээгээрэй.
+          </p>
+        </div>
+      </div>
+
+      <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {drones.map((drone, i) => (
-              <ProductCard key={drone.id} drone={drone} index={i} />
-            ))}
-          </div>
+          {drones.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {drones.map((drone, i) => (
+                <div
+                  key={drone.id}
+                  className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
+                  style={{
+                    animation: `fadeInUp 0.5s ease-out ${i * 0.1}s`,
+                    animationFillMode: 'both',
+                  }}
+                >
+                  <ProductCard drone={drone} index={i} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <div className="mx-auto w-24 h-24 mb-6 text-gray-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1}
+                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-medium text-gray-700 mb-2">Бүтээгдэхүүн олдсонгүй</h3>
+              <p className="text-gray-500 max-w-md mx-auto">
+                Таны хайсан бүтээгдэхүүн одоогоор байхгүй байна. Дараа дахин шалгах эсвэл бүх
+                цуглуулгыг үзээрэй.
+              </p>
+            </div>
+          )}
         </div>
       </section>
-    </div>
-  ) : (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-700">Бараа дууссан</h2>
-        <p className="text-sm text-gray-500">
-          Одоогоор худалдаанд байгаа дрон алга байна. Дараа дахин шалгана уу.
-        </p>
-      </div>
+
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
