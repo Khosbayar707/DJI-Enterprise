@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Noto_Sans, Noto_Sans_Mono, Noto_Serif } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@mui/material';
 import { theme } from '@/lib/theme';
@@ -7,20 +7,11 @@ import Footer from './_component/Footer';
 import Header from './_component/Header';
 import { Suspense } from 'react';
 
-const notoSans = Noto_Sans({
+const montserrat = Montserrat({
+  subsets: ['latin', 'cyrillic'],
   weight: ['400', '500', '600', '700'],
-  subsets: ['cyrillic', 'latin'],
-  variable: '--font-noto-sans',
-});
-
-const notoSansMono = Noto_Sans_Mono({
-  subsets: ['cyrillic', 'latin'],
-  variable: '--font-noto-sans-mono',
-});
-
-const notoSerif = Noto_Serif({
-  subsets: ['cyrillic', 'latin'],
-  variable: '--font-noto-serif',
+  variable: '--font-montserrat',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -36,9 +27,7 @@ export default function RootLayout({
   return (
     <html lang="mn">
       <Suspense>
-        <body
-          className={`${notoSans.variable} ${notoSansMono.variable} ${notoSerif.variable} font-sans`}
-        >
+        <body className={`${montserrat.variable} font-sans`}>
           <Header />
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
           <Footer />
