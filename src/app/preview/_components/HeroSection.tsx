@@ -32,7 +32,7 @@ export default function HeroSection({ drone }: Props) {
           {drone.name}
         </motion.h1>
         <motion.p
-          className="mt-4 text-lg md:text-xl text-gray-300"
+          className="mt-4 text-lg md:text-xl text-gray-300 text-center px-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}

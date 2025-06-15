@@ -84,7 +84,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
           </svg>
           <span className="font-medium">Үнэгүй хүргэлт</span>
         </div>
-        <p className="text-sm text-blue-700 mt-1">Улаанбаатар хотод 24 цагийн дотор хүргэнэ</p>
       </div>
     </div>
   );

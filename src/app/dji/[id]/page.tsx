@@ -8,7 +8,6 @@ import ProductInfo from '../_components/ProductInfo';
 import ProductTabs from '../_components/ProductTabs';
 import ContactForm from '../_components/ContactForm';
 import RelatedProducts from '../_components/RelatedProducts';
-import Footer from '../_components/Footer';
 import { BreadcrumbItem } from '@/app/_types/types';
 import { CustomDroneClient } from '@/lib/types';
 import { useParams } from 'next/navigation';
@@ -98,7 +97,6 @@ export default function Page() {
             <ContactForm />
             <RelatedProducts />
           </div>
-          <Footer />
         </div>
       </div>
     </>
