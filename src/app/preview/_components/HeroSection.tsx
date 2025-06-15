@@ -37,7 +37,7 @@ export default function HeroSection({ drone }: Props) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1 }}
         >
-          {drone.PreviewDescription}
+          {drone.briefDescription}
         </motion.p>
       </div>
     </section>

@@ -37,7 +37,6 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
 
       <div className="p-6 md:p-8">
         {activeTab === 'features' && <FeaturesTab drone={drone} />}
-
         {activeTab === 'specs' && <SpecsTab drone={drone} />}
         {activeTab === 'accessories' && <AccessoriesTab drone={drone} />}
         {activeTab === 'reviews' && <ReviewsTab />}
@@ -53,14 +52,16 @@ type TabContentProps = {
 const FeaturesTab = ({ drone }: TabContentProps) => {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-gray-900">{drone.description}</h2>
-      {drone.descriptions.length > 0
-        ? drone.descriptions.map((description) => (
-            <p key={description.id} className="text-gray-700 leading-relaxed">
-              {description.description}
-            </p>
-          ))
-        : ''}
+      <h2 className="text-lg font-bold text-gray-900">{drone.description}</h2>
+      {drone.descriptions.length > 0 ? (
+        drone.descriptions.map((description) => (
+          <p key={description.id} className="text-gray-700 leading-relaxed text-justify text-sm">
+            {description.description}
+          </p>
+        ))
+      ) : (
+        <p className="text-gray-500 italic">Тайлбар оруулаагүй байна</p>
+      )}
 
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -108,7 +109,7 @@ const SpecsTab = ({ drone }: TabContentProps) => {
               </dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
-              <dt className="text-sm font-medium text-gray-500 capitalize">Дименшин</dt>
+              <dt className="text-sm font-medium text-gray-500 capitalize">Орон зай</dt>
               <dd className="mt-1 text-sm font-semibold text-gray-900">{drone.tech.dimensions}</dd>
             </div>
             <div className="border-b border-gray-100 pb-2">
