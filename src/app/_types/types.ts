@@ -50,3 +50,12 @@ export interface GarminProduct {
   images: { url: string; public_id: string }[];
   specifications: { id: string; label: string; value: string }[];
 }
+export interface DronePayload {
+  id: string;
+  name: string;
+  type: 'ZENMUSE' | 'LIDAR' | 'SPEAKER' | 'SPOTLIGHT' | 'TETHER' | 'OTHER';
+  description: string;
+  imageUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
