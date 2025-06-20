@@ -288,3 +288,22 @@ model Specification {
   productId String
   product   GarminProduct @relation(fields: [productId], references: [id])
 }
+
+model DronePayload {
+  id          String      @id @default(nanoid())
+  name        String
+  type        PayloadType
+  description String
+  imageUrl    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+enum PayloadType {
+  ZENMUSE
+  LIDAR
+  SPEAKER
+  SPOTLIGHT
+  TETHER
+  OTHER
+}
