@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, type, description, imageUrl } = body;
+    const { name, type, description, images, price, features } = body;
 
     if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
 
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as { isAdmin: boolean };
     if (!verify.isAdmin) return NextResponse_NotAnAdmin();
 
-    if (!name || !type || !imageUrl) {
+    if (!name || !type || !images || !Array.isArray(images)) {
       return CustomResponse(false, 'MISSING_FIELDS', 'Нэр, төрөл, зураг заавал хэрэгтэй', null);
     }
 
@@ -57,12 +57,26 @@ export async function POST(req: NextRequest) {
       return CustomResponse(false, 'INVALID_TYPE', 'Төрөл буруу байна', null);
     }
 
+    const parsedFeatures =
+      typeof features === 'string'
+        ? features.split('\n').filter((f: string) => f.trim() !== '')
+        : [];
+
     const payload = await prisma.dronePayload.create({
       data: {
         name,
         type: type.toUpperCase() as PayloadType,
         description,
-        imageUrl,
+        images: {
+          createMany: {
+            data: images.map((img) => ({
+              url: img.url,
+              public_id: img.public_id,
+            })),
+          },
+        },
+        price,
+        features: parsedFeatures,
       },
     });
 
@@ -76,19 +90,28 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, name, type, description, imageUrl } = body;
+    const { id, name, type, description, images, price, features } = body;
 
     if (!id) {
       return CustomResponse(false, 'NO_ID_PROVIDED', 'Payload ID алга байна', null);
     }
 
+    const parsedFeatures =
+      typeof features === 'string'
+        ? features.split('\n').filter((f: string) => f.trim() !== '')
+        : Array.isArray(features)
+          ? features
+          : [];
+
     const payload = await prisma.dronePayload.update({
       where: { id },
       data: {
         name,
-        type: type as PayloadType,
+        type: type.toUpperCase() as PayloadType,
         description,
-        imageUrl,
+        images,
+        price,
+        features: parsedFeatures,
       },
     });
 
