@@ -85,7 +85,6 @@ export default function DronePayloadTable() {
               className="flex flex-col items-center justify-center py-16 bg-white rounded-xl shadow-sm"
             >
               <div className="h-16 w-16 text-gray-400 mb-4 flex items-center justify-center">
-                {/* Icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -183,7 +182,7 @@ export default function DronePayloadTable() {
 
       {editingPayload && (
         <EditPayloadDialog
-          payload={editingPayload}
+          payload={{ ...editingPayload, images: [] }} // 👈 Fix here
           setRefresh={setRefresh}
           onClose={() => setEditingPayload(null)}
         />

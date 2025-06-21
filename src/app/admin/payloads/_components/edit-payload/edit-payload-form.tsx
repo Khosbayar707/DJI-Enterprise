@@ -1,20 +1,18 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState, ChangeEvent } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectTrigger,
@@ -22,17 +20,18 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 import { Snackbar, Alert } from '@mui/material';
 import Image from 'next/image';
+import axios from 'axios';
+import { Trash2 } from 'lucide-react';
+
 import { DronePayloadSchema, DronePayloadSchemaType } from '../../utils/add-pauload-schema';
+import { DronePayload } from '@/generated/prisma';
 
 type Props = {
-  payload: {
-    id: string;
-    name: string;
-    type: string;
-    description: string;
-    imageUrl: string;
+  payload: DronePayload & {
+    images: { url: string; public_id: string }[];
   };
   setRefresh: Dispatch<SetStateAction<boolean>>;
   onClose: () => void;
@@ -47,12 +46,21 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
   const form = useForm<DronePayloadSchemaType>({
     resolver: zodResolver(DronePayloadSchema),
     defaultValues: {
-      name: payload.name,
-      type: payload.type as DronePayloadSchemaType['type'],
-      description: payload.description,
-      imageUrl: payload.imageUrl,
+      name: payload.name || '',
+      price: payload.price || 0,
+      type: payload.type || 'ZENMUSE',
+      description: payload.description || '',
+      images: payload.images || [],
+      features: payload.features?.join('\n') || '',
     },
   });
+
+  const { setValue, watch } = form;
+  const images = watch('images');
+
+  useEffect(() => {
+    setValue('images', payload.images || []);
+  }, [payload.images, setValue]);
 
   const imageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -75,8 +83,14 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
         formData
       );
 
-      form.setValue('imageUrl', uploadRes.data.secure_url);
+      const newImage = {
+        url: uploadRes.data.secure_url,
+        public_id: uploadRes.data.public_id,
+      };
+
+      setValue('images', [...(form.getValues('images') || []), newImage]);
     } catch (err) {
+      console.error(err);
       setSnackbarMessage('Зураг хуулахад алдаа гарлаа');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
@@ -85,9 +99,18 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
     }
   };
 
+  const removeImage = (index: number) => {
+    const updated = images?.filter((_, i) => i !== index);
+    setValue('images', updated);
+  };
+
   const onSubmit = async (data: DronePayloadSchemaType) => {
     try {
-      const res = await axios.patch(`/api/payloads/payload?id=${payload.id}`, data);
+      const cleaned = {
+        ...data,
+        features: data.features ? data.features.split('\n').filter((f) => f.trim() !== '') : [],
+      };
+      const res = await axios.put(`/api/payloads/payload?id=${payload.id}`, cleaned);
       if (res.data.success) {
         setSnackbarMessage('Payload амжилттай шинэчлэгдлээ');
         setSnackbarSeverity('success');
@@ -97,6 +120,7 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
         throw new Error();
       }
     } catch (err) {
+      console.error(err);
       setSnackbarMessage('Шинэчлэхэд алдаа гарлаа');
       setSnackbarSeverity('error');
     } finally {
@@ -165,24 +189,52 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
 
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="price"
           render={({ field }) => (
+            <FormItem>
+              <FormLabel>Үнэ ($)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  disabled={form.formState.isSubmitting}
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="images"
+          render={() => (
             <FormItem>
               <FormLabel>Зураг</FormLabel>
               <FormControl>
                 <Input type="file" accept="image/*" disabled={uploading} onChange={imageUpload} />
               </FormControl>
-              {field.value && (
-                <div className="mt-2">
-                  <Image
-                    src={field.value}
-                    alt="payload image"
-                    width={100}
-                    height={100}
-                    className="rounded border"
-                  />
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2 mt-2">
+                {images?.map((img, idx) => (
+                  <div key={idx} className="relative w-24 h-24">
+                    <Image
+                      src={img.url}
+                      alt={`uploaded-${idx}`}
+                      fill
+                      className="object-cover rounded border"
+                      sizes="96px"
+                    />
+                    <Button
+                      type="button"
+                      className="absolute top-0 right-0 bg-white/80 text-red-600 p-1 rounded-bl"
+                      onClick={() => removeImage(idx)}
+                    >
+                      <Trash2 size={14} />
+                    </Button>
+                  </div>
+                ))}
+              </div>
               <FormMessage />
             </FormItem>
           )}
@@ -196,6 +248,24 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
               <FormLabel>Тайлбар</FormLabel>
               <FormControl>
                 <Textarea rows={4} {...field} disabled={form.formState.isSubmitting} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="features"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Онцлогууд (мөрөөр тусгаарлан бичнэ үү)</FormLabel>
+              <FormControl>
+                <Textarea
+                  disabled={form.formState.isSubmitting}
+                  className="min-h-[100px]"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

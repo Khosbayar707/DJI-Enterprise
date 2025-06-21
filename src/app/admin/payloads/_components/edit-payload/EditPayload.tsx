@@ -4,7 +4,9 @@ import EditPayloadForm from './edit-payload-form';
 import { DronePayload } from '@/generated/prisma';
 
 type Props = {
-  payload: DronePayload;
+  payload: DronePayload & {
+    images: { url: string; public_id: string }[];
+  };
   setRefresh: (value: React.SetStateAction<boolean>) => void;
   onClose: () => void;
 };

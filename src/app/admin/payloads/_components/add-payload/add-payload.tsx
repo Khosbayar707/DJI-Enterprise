@@ -25,6 +25,7 @@ import {
 import Image from 'next/image';
 import axios from 'axios';
 import { DronePayloadSchema, DronePayloadSchemaType } from '../../utils/add-pauload-schema';
+import CircularProgressWithLabel from '@/app/dji/utils/loading-circle';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -35,38 +36,61 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const form = useForm<DronePayloadSchemaType>({
     resolver: zodResolver(DronePayloadSchema),
     defaultValues: {
       name: '',
+      price: 0,
       type: 'ZENMUSE',
       description: '',
-      imageUrl: '',
+      images: [],
+      features: '',
     },
   });
 
+  const { setValue } = form;
+
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    if (!e.target.files) return;
     setUploading(true);
+
     try {
+      const files = Array.from(e.target.files);
       const signRes = await axios.get('/api/auth/cloudinary-sign?folder=DronePayloads');
       const { timestamp, signature, api_key } = signRes.data.data;
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('timestamp', timestamp.toString());
-      formData.append('signature', signature);
-      formData.append('api_key', api_key);
-      formData.append('folder', 'DronePayloads');
+      const uploaded = [];
 
-      const uploadRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
-        formData
-      );
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('timestamp', timestamp.toString());
+        formData.append('signature', signature);
+        formData.append('api_key', api_key);
+        formData.append('folder', 'DronePayloads');
 
-      form.setValue('imageUrl', uploadRes.data.secure_url);
+        const uploadRes = await axios.post(
+          `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
+          formData,
+          {
+            onUploadProgress: (progressEvent) => {
+              if (progressEvent.total) {
+                const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setProgress(percent);
+              }
+            },
+          }
+        );
+
+        uploaded.push({
+          url: uploadRes.data.secure_url,
+          public_id: uploadRes.data.public_id,
+        });
+      }
+
+      setValue('images', uploaded);
     } catch (err) {
       setSnackbarSeverity('error');
       setSnackbarMessage('Зураг хуулахад алдаа гарлаа');
@@ -78,7 +102,15 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
 
   const onSubmit = async (data: DronePayloadSchemaType) => {
     try {
-      const res = await axios.post('/api/payloads', data);
+      const features = data.features
+        ? data.features.split('\n').filter((line) => line.trim() !== '')
+        : [];
+
+      const res = await axios.post('/api/payloads', {
+        ...data,
+        features,
+      });
+
       if (res.data.success) {
         setSnackbarSeverity('success');
         setSnackbarMessage('Payload амжилттай үүслээ!');
@@ -156,29 +188,57 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
 
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="price"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Зураг</FormLabel>
+              <FormLabel>Үнэ ($)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  disabled={form.formState.isSubmitting}
+                  placeholder="0.00"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="images"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex justify-between">
+                <FormLabel>Бүтээгдэхүүний зураг</FormLabel>
+                {progress > 0 && <CircularProgressWithLabel value={progress} />}
+              </div>
               <FormControl>
                 <Input
                   type="file"
                   accept="image/*"
-                  disabled={uploading}
+                  multiple
+                  disabled={uploading || form.formState.isSubmitting}
                   onChange={handleImageUpload}
                 />
               </FormControl>
-              {field.value && (
-                <div className="mt-2">
-                  <Image
-                    src={field.value}
-                    alt="payload"
-                    width={120}
-                    height={120}
-                    className="rounded border"
-                  />
-                </div>
-              )}
+
+              <div className="flex flex-wrap gap-2 mt-2">
+                {field.value?.map((img, idx) => (
+                  <div key={idx} className="relative w-24 h-24">
+                    <Image
+                      src={img.url}
+                      alt={`uploaded-${idx}`}
+                      fill
+                      className="object-cover rounded border"
+                      sizes="96px"
+                    />
+                  </div>
+                ))}
+              </div>
+
               <FormMessage />
             </FormItem>
           )}
@@ -192,6 +252,25 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
               <FormLabel>Тайлбар</FormLabel>
               <FormControl>
                 <Textarea rows={4} {...field} disabled={form.formState.isSubmitting} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="features"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Онцлогууд (мөрөөр бичнэ үү)</FormLabel>
+              <FormControl>
+                <Textarea
+                  disabled={form.formState.isSubmitting}
+                  placeholder="20MP Zoom Camera\n1200m LRF\nThermal Camera"
+                  className="min-h-[100px]"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

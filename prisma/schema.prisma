@@ -216,6 +216,7 @@ model Image {
   droneId            String?
   specId             String?
   garminId           String?
+  payloadId String?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
   public_id          String
@@ -224,6 +225,7 @@ model Image {
   drone              Drone?         @relation(fields: [droneId], references: [id], onDelete: Cascade)
   garmins            GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
   spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
+  payload DronePayload?  @relation(fields: [payloadId], references: [id], onDelete: Cascade)
 }
 
 model Video {
@@ -293,8 +295,10 @@ model DronePayload {
   id          String      @id @default(nanoid())
   name        String
   type        PayloadType
+  price Float
+  features       String[]
   description String
-  imageUrl    String
+images         Image[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
