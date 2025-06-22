@@ -23,6 +23,9 @@ export async function GET(req: NextRequest) {
     const payloads = await prisma.dronePayload.findMany({
       where,
       orderBy: { createdAt: 'desc' },
+      include: {
+        images: true,
+      },
     });
 
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Пэйлоудууд амжилттай авч ирлээ', {

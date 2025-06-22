@@ -61,7 +61,8 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
       const signRes = await axios.get('/api/auth/cloudinary-sign?folder=DronePayloads');
       const { timestamp, signature, api_key } = signRes.data.data;
 
-      const uploaded = [];
+      const uploadedImageUrls: string[] = [];
+      const uploadedImagePublicIds: string[] = [];
 
       for (const file of files) {
         const formData = new FormData();
@@ -84,13 +85,16 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
           }
         );
 
-        uploaded.push({
-          url: uploadRes.data.secure_url,
-          public_id: uploadRes.data.public_id,
-        });
+        if (uploadRes.data) {
+          uploadedImageUrls.push(uploadRes.data.secure_url);
+          uploadedImagePublicIds.push(uploadRes.data.public_id);
+        }
       }
-
-      setValue('images', uploaded);
+      const combined = uploadedImageUrls.map((url, i) => ({
+        url,
+        public_id: uploadedImagePublicIds[i],
+      }));
+      setValue('images', combined);
     } catch (err) {
       setSnackbarSeverity('error');
       setSnackbarMessage('Зураг хуулахад алдаа гарлаа');
