@@ -26,6 +26,9 @@ export async function GET(req: NextRequest) {
 
     const payload = await prisma.dronePayload.findUnique({
       where: { id },
+      include: {
+        images: true,
+      },
     });
 
     if (!payload) {

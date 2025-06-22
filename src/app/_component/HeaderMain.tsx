@@ -29,8 +29,22 @@ import { Search, SearchIconWrapper, StyledInputBase } from '@/components/ui/sear
 import { useSearchDebounce } from './debounce/search';
 
 const navItems = [
-  { href: '/dji', label: 'DJI', items: ['DJI Enterprise'] },
-  { href: '/garmin', label: 'Garmin', items: ['Smartwatch', 'GPS'] },
+  {
+    href: '/dji',
+    label: 'DJI',
+    items: [
+      { label: 'Drone', path: '/dji' },
+      { label: 'Payload', path: '/payload' },
+    ],
+  },
+  {
+    href: '/garmin',
+    label: 'Garmin',
+    items: [
+      { label: 'Smartwatch', path: '/garmin?type=SMARTWATCH' },
+      { label: 'GPS', path: '/garmin?type=GPS' },
+    ],
+  },
 ];
 
 const mobileMenuVariants = {
@@ -123,11 +137,7 @@ const HeaderMain = () => {
           </div>
         </Link>
 
-        <nav
-          className="hidden lg:flex flex-1 justify-center space-x-6"
-          role="navigation"
-          aria-label="Main Navigation"
-        >
+        <nav className="hidden lg:flex flex-1 justify-center space-x-6" role="navigation">
           {navItems.map((nav, idx) => (
             <Menu as="div" key={idx} className="relative inline-block text-left">
               <MenuButton className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600 relative group">
@@ -150,16 +160,12 @@ const HeaderMain = () => {
                       <MenuItem key={i}>
                         {({ active }) => (
                           <Link
-                            href={
-                              nav.label === 'Garmin'
-                                ? `${nav.href}?type=${item.toUpperCase()}`
-                                : nav.href
-                            }
+                            href={item.path}
                             className={`${
                               active ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
                             } block px-4 py-2 text-sm font-medium`}
                           >
-                            {item}
+                            {item.label}
                           </Link>
                         )}
                       </MenuItem>
@@ -174,10 +180,7 @@ const HeaderMain = () => {
         <div className="hidden lg:flex items-center space-x-4">
           <Search>
             <SearchIconWrapper>
-              <label
-                htmlFor="desktop-search"
-                className="p-2 text-gray-600 hover:text-blue-600 cursor-pointer text-sm"
-              >
+              <label htmlFor="desktop-search" className="p-2 text-gray-600 cursor-pointer">
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </label>
             </SearchIconWrapper>
@@ -186,9 +189,9 @@ const HeaderMain = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Хайх"
-              inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+
           {logging ? (
             <LoadingText />
           ) : user ? (
@@ -200,14 +203,14 @@ const HeaderMain = () => {
               </Link>
               <button
                 onClick={logout}
-                className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer"
+                className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700"
               >
                 Гарах
               </button>
             </>
           ) : (
             <Link href={`/auth/login?redir=${pathname}`}>
-              <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition cursor-pointer">
+              <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700">
                 Нэвтрэх / Бүртгүүлэх
               </button>
             </Link>
@@ -241,27 +244,19 @@ const HeaderMain = () => {
               <Disclosure key={idx} as="div" className="py-2">
                 {({ open }) => (
                   <>
-                    <DisclosureButton
-                      className="flex justify-between w-full px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600 relative group"
-                      aria-expanded={open}
-                    >
+                    <DisclosureButton className="flex justify-between w-full px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600">
                       {nav.label}
                       <ChevronDownIcon className="h-4 w-4 text-gray-500" />
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
                     </DisclosureButton>
                     <DisclosurePanel className="pl-4 pt-2">
                       {nav.items.map((item, i) => (
                         <Link
                           key={i}
-                          href={
-                            nav.label === 'Garmin'
-                              ? `${nav.href}?type=${item.toUpperCase()}`
-                              : nav.href
-                          }
+                          href={item.path}
                           className="block px-3 py-2 text-sm text-gray-700 hover:text-blue-600"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
-                          {item}
+                          {item.label}
                         </Link>
                       ))}
                     </DisclosurePanel>
@@ -283,7 +278,6 @@ const HeaderMain = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Хайх"
-                  inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
             </motion.div>
@@ -307,18 +301,18 @@ const HeaderMain = () => {
                     logout();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="px-4 py-2 bg-blue-600 rounded-full text-sm font-medium hover:bg-blue-700 flex items-center gap-2 justify-center cursor-pointer"
+                  className="px-4 py-2 bg-blue-600 rounded-full text-sm font-medium hover:bg-blue-700 flex items-center gap-2 justify-center"
                   variants={hoverVariants}
                   whileHover="hover"
                 >
-                  <ArrowRightStartOnRectangleIcon className="text-blue-600 h-5 w-5" />
+                  <ArrowRightStartOnRectangleIcon className="text-white h-5 w-5" />
                   Гарах
                 </motion.button>
               </div>
             ) : (
               <Link href={`/auth/login?redir=${pathname}`}>
                 <motion.div
-                  className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center cursor-pointer"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center"
                   variants={hoverVariants}
                   whileHover="hover"
                   onClick={() => setIsMobileMenuOpen(false)}

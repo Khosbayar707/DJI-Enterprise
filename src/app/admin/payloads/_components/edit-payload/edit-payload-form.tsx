@@ -28,6 +28,7 @@ import { Trash2 } from 'lucide-react';
 
 import { DronePayloadSchema, DronePayloadSchemaType } from '../../utils/add-pauload-schema';
 import { DronePayload } from '@/generated/prisma';
+import CircularProgressWithLabel from '@/app/dji/utils/loading-circle';
 
 type Props = {
   payload: DronePayload & {
@@ -41,7 +42,8 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-  const [uploading, setUploading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const form = useForm<DronePayloadSchemaType>({
     resolver: zodResolver(DronePayloadSchema),
@@ -62,40 +64,62 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
     setValue('images', payload.images || []);
   }, [payload.images, setValue]);
 
-  const imageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
+  const imageUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    setImageUploading(true);
     try {
-      const signRes = await axios.get('/api/auth/cloudinary-sign?folder=DronePayloads');
-      const { timestamp, signature, api_key } = signRes.data.data;
+      const files = Array.from(event.target.files);
+      const folder = `Garmin/${form.getValues('type')}`;
+      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=${folder}`);
+      if (!response1.data.success) return;
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('timestamp', timestamp.toString());
-      formData.append('signature', signature);
-      formData.append('api_key', api_key);
-      formData.append('folder', 'DronePayloads');
+      const { timestamp, signature, api_key } = response1.data.data;
+      const uploadedImageUrls: string[] = [];
+      const uploadedImagePublicIds: string[] = [];
 
-      const uploadRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
-        formData
-      );
+      for (const file of files) {
+        const data = new FormData();
+        data.append('file', file);
+        data.append('timestamp', timestamp.toString());
+        data.append('signature', signature);
+        data.append('api_key', api_key);
+        data.append('resource_type', 'image');
+        data.append('folder', folder);
 
-      const newImage = {
-        url: uploadRes.data.secure_url,
-        public_id: uploadRes.data.public_id,
-      };
+        const response2 = await axios.post(
+          `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
+          data,
+          {
+            onUploadProgress: (progress) => {
+              if (progress.total) {
+                const percent = Math.round((progress.loaded * 100) / progress.total);
+                setProgress(percent);
+              }
+            },
+          }
+        );
 
-      setValue('images', [...(form.getValues('images') || []), newImage]);
+        if (response2.data) {
+          uploadedImageUrls.push(response2.data.secure_url);
+          uploadedImagePublicIds.push(response2.data.public_id);
+        }
+      }
+
+      const newImages = uploadedImageUrls.map((url, i) => ({
+        url,
+        public_id: uploadedImagePublicIds[i],
+      }));
+
+      const currentImages = form.getValues('images') || [];
+      const updatedImages = [...currentImages, ...newImages];
+      setValue('images', updatedImages);
     } catch (err) {
       console.error(err);
-      setSnackbarMessage('Зураг хуулахад алдаа гарлаа');
       setSnackbarSeverity('error');
+      setSnackbarMessage('Зураг хуулахад алдаа гарлаа');
       setSnackbarOpen(true);
     } finally {
-      setUploading(false);
+      setImageUploading(false);
     }
   };
 
@@ -209,29 +233,31 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
         <FormField
           control={form.control}
           name="images"
-          render={() => (
+          render={({ field }) => (
             <FormItem>
-              <FormLabel>Зураг</FormLabel>
+              <div className="flex justify-between">
+                <FormLabel>Бүтээгдэхүүний зургууд</FormLabel>
+                {progress > 0 && <CircularProgressWithLabel value={progress} />}
+              </div>
               <FormControl>
-                <Input type="file" accept="image/*" disabled={uploading} onChange={imageUpload} />
+                <Input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  disabled={imageUploading || form.formState.isSubmitting}
+                  onChange={imageUpload}
+                />
               </FormControl>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {images?.map((img, idx) => (
-                  <div key={idx} className="relative w-24 h-24">
+              <div className="flex gap-2 flex-wrap mt-2">
+                {field.value?.map((img, i) => (
+                  <div key={i} className="relative w-24 h-24">
                     <Image
                       src={img.url}
-                      alt={`uploaded-${idx}`}
+                      alt="uploaded"
                       fill
-                      className="object-cover rounded border"
+                      className="object-cover border rounded"
                       sizes="96px"
                     />
-                    <Button
-                      type="button"
-                      className="absolute top-0 right-0 bg-white/80 text-red-600 p-1 rounded-bl"
-                      onClick={() => removeImage(idx)}
-                    >
-                      <Trash2 size={14} />
-                    </Button>
                   </div>
                 ))}
               </div>

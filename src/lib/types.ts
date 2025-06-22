@@ -7,6 +7,7 @@ import {
   DroneInTheBox,
   DroneTech,
   GarminProduct,
+  DronePayload,
   Image,
   rtkModule,
   Spec,
@@ -82,6 +83,10 @@ export type CustomDroneBuyRequest = DroneBuyRequest & { drone: Drone; user: User
 export type CustomGarminProduct = GarminProduct & {
   images: Image[];
   specifications: Specification[];
+};
+
+export type CustomPayload = DronePayload & {
+  images: Image[];
 };
 
 // client side types
