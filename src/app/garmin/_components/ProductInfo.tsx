@@ -133,20 +133,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       )}
 
       <div className="space-y-3 pt-2">
-        <motion.button
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.98 }}
-          className={`w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-lg font-medium transition-all duration-200 ${
-            product.inStock
-              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg'
-              : 'bg-gray-100 text-gray-500 cursor-not-allowed'
-          }`}
-          disabled={!product.inStock}
-        >
-          <ShoppingCart className="w-5 h-5" />
-          {product.inStock ? 'Сагсанд нэмэх' : 'Нөөцгүй'}
-        </motion.button>
-
         <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
           <DialogTrigger asChild>
             <motion.button
