@@ -16,47 +16,69 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       viewport={{ once: true }}
-      className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white flex flex-col h-full"
+      className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white flex flex-col h-full border border-gray-100 hover:border-gray-200"
     >
       <div className="flex flex-col h-full">
-        <div className="relative">
-          <div className="h-64 bg-gray-50 flex justify-center items-center relative">
+        <div className="relative group">
+          <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center items-center relative overflow-hidden">
             {payload.images.length > 0 ? (
-              <Image
-                src={payload.images[0].url}
-                alt={payload.name}
-                fill
-                className="object-contain p-4"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              />
+              <>
+                <Image
+                  src={payload.images[0].url}
+                  alt={payload.name}
+                  fill
+                  className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  priority={index < 3}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </>
             ) : (
-              <div className="text-gray-400">Зураг байхгүй</div>
+              <div className="text-gray-400 flex flex-col items-center">
+                <svg
+                  className="w-12 h-12 mb-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                Зураг байхгүй
+              </div>
             )}
 
-            <div className="absolute top-2 right-2">
-              <span className="bg-gray-800 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+            <div className="absolute top-3 right-3">
+              <span className="bg-gray-800 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wider">
                 {payload.type}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="p-6 flex flex-col flex-grow">
-          <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2" title={payload.name}>
+        <div className="p-5 flex flex-col flex-grow">
+          <h3
+            className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-tight"
+            title={payload.name}
+          >
             {payload.name}
           </h3>
 
-          <div className="mb-4">
-            <span className="text-xl font-bold text-gray-900">
-              ${payload.price.toLocaleString()}
+          <div className="mb-4 flex items-center">
+            <span className="text-2xl font-bold text-gray-900">
+              {payload.price.toLocaleString()}₮
             </span>
           </div>
 
-          <ul className="space-y-2 mb-6 flex-grow">
+          <ul className="space-y-2.5 mb-6 flex-grow">
             {payload.features.slice(0, 3).map((feature, idx) => (
               <li key={idx} className="flex items-start text-sm text-gray-700">
                 <svg
-                  className="h-4 w-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0"
+                  className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -73,8 +95,16 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
             ))}
           </ul>
 
-          <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition transform hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-lg">
-            Дэлгэрэнгүй
+          <button className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-lg flex items-center justify-center">
+            <span>Дэлгэрэнгүй</span>
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
           </button>
         </div>
       </div>

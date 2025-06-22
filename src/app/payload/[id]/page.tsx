@@ -10,6 +10,7 @@ import PayloadGallery from '../_components/PayloadGallery';
 import PayloadInfo from '../_components/PayloadInfo';
 import axios from 'axios';
 import { CustomPayload } from '@/lib/types';
+import ContactSection from '@/app/_component/ContactSection';
 
 export default function Page() {
   const { id } = useParams();
@@ -81,6 +82,7 @@ export default function Page() {
                 isLoading={isLoading}
               />
             </div>
+            <ContactSection />
           </div>
         </div>
       </div>

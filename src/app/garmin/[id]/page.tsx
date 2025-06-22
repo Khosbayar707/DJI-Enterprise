@@ -10,6 +10,7 @@ import ProductGallery from '../_components/ProductGallery';
 import ProductInfo from '../_components/ProductInfo';
 import axios from 'axios';
 import { CustomGarminProduct } from '@/lib/types';
+import ContactSection from '@/app/_component/ContactSection';
 
 export default function Page() {
   const { id } = useParams();
@@ -81,6 +82,7 @@ export default function Page() {
                 isLoading={isLoading}
               />
             </div>
+            <ContactSection />
           </div>
         </div>
       </div>
