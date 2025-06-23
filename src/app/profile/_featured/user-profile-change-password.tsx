@@ -54,7 +54,6 @@ const UserProfileChangePassword = () => {
           className="space-y-4 flex flex-col gap-4 w-full"
         >
           <FormField
-            disabled={form.formState.isSubmitting}
             control={form.control}
             name="currentPassword"
             render={({ field }) => (
@@ -68,7 +67,6 @@ const UserProfileChangePassword = () => {
             )}
           />
           <FormField
-            disabled={form.formState.isSubmitting}
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -82,7 +80,6 @@ const UserProfileChangePassword = () => {
             )}
           />
           <FormField
-            disabled={form.formState.isSubmitting}
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
