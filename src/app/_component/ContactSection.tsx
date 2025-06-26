@@ -188,8 +188,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <h4 className="font-medium">И-мэйл</h4>{' '}
-                <p className="text-gray-600">http://www.geo-mongol.mn/</p>{' '}
-                <p className="text-gray-600">https://www.djigeo.mn/</p>{' '}
+                <p className="text-gray-600">dji.mongolia0@gmail.com</p>{' '}
               </div>
             </div>
             <div className="flex items-start space-x-4">
