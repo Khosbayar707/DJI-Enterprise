@@ -36,11 +36,12 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   const storeInfo = {
-    name: 'Garmin Албан ёсны дистрибьютер',
-    phone: '9911-2233',
-    location: 'Улаанбаатар, Сүхбаатар дүүрэг, 1-р хороо, Сөүл оффис 302',
-    workingHours: 'Даваа-Баасан: 09:00-18:00, Бямба: 10:00-15:00',
-    email: 'info@garmin.mn',
+    name: 'DJI Enterprise Албан ёсны дистрибьютер',
+    phone: '9000 5559',
+    location:
+      ' Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3, Инженер Геодези ХХК',
+    workingHours: 'Даваа-Баасан: 09:00-18:00',
+    email: 'dji.mongolia0@gmail.com',
   };
 
   return (

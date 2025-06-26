@@ -32,10 +32,11 @@ export default function PayloadInfo({ payload, onContactClick, isLoading }: Payl
 
   const storeInfo = {
     name: 'DJI Enterprise Албан ёсны дистрибьютер',
-    phone: '9911-1122',
-    location: 'Улаанбаатар, Сүхбаатар дүүрэг, 3-р хороо, DJI Center',
-    workingHours: 'Даваа-Баасан: 09:00-18:00, Бямба: 10:00-15:00',
-    email: 'info@dji.mn',
+    phone: '9000 5559',
+    location:
+      ' Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3, Инженер Геодези ХХК',
+    workingHours: 'Даваа-Баасан: 09:00-18:00',
+    email: 'dji.mongolia0@gmail.com',
     rating: 4.8,
     reviews: 124,
   };

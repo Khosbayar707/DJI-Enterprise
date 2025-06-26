@@ -48,8 +48,8 @@ export default function Page() {
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Нүүр', href: '/' },
-    { label: 'DJI Payload', href: '/dji/payload' },
-    { label: payload.name, href: `/dji/payload/${payload.id}` },
+    { label: 'DJI Payload', href: '/payload' },
+    { label: payload.name, href: `/payload/${payload.id}` },
   ];
 
   const handleContactClick = () => {
