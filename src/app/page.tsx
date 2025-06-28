@@ -127,7 +127,7 @@ const App = () => {
             <div className="text-4xl">😕</div>
             <h2 className="text-xl font-semibold text-gray-700">Илэрц олдсонгүй</h2>
             <p className="text-sm text-gray-500 text-center max-w-md">
-              “{search}” гэсэн хайлтаар тохирох дрон олдсонгүй.
+              “{search}” гэсэн хайлтаар тохирох илэрц олдсонгүй.
             </p>
           </section>
         )

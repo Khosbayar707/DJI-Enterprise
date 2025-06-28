@@ -146,7 +146,7 @@ const ContactForm = () => {
                 ) : (
                   <Link
                     href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login?redir=${process.env.NEXT_PUBLIC_BASE_URL + pathname}`}
-                    className="w-fit"
+                    className="w-fit px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center"
                   >
                     Нэвтрэх
                   </Link>
@@ -158,17 +158,19 @@ const ContactForm = () => {
             <ContactInfoItem
               icon={<PhoneIcon className="h-6 w-6 text-blue-600" />}
               title="Утас"
-              items={['+976 9999 9999', '+976 8888 8888']}
+              items={['+976 9000 5559', '+976 9909 5839', '+976 9000 6668', '+976 9190 2989']}
             />
             <ContactInfoItem
               icon={<EnvelopeIcon className="h-6 w-6 text-blue-600" />}
               title="И-мэйл"
-              items={['info@dronestore.mn', 'sales@dronestore.mn']}
+              items={['dji@geo-mongol.mn', 'dji.mongolia0@gmail.com', 'dji_service@geo-mongol.mn']}
             />
             <ContactInfoItem
               icon={<MapPinIcon className="h-6 w-6 text-blue-600" />}
               title="Хаяг"
-              items={['Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Жуулчны гудамж 34-1']}
+              items={[
+                'Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3, Инженер Геодези ХХК байр',
+              ]}
             />
             <div className="pt-4">
               <iframe

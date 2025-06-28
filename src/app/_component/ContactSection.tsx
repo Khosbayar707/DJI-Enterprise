@@ -179,6 +179,8 @@ export default function ContactSection() {
               <div>
                 <h4 className="font-medium">Утас</h4>{' '}
                 <p className="text-gray-600">+976 9000 5559</p>{' '}
+                <p className="text-gray-600">+976 9000 6668</p>{' '}
+                <p className="text-gray-600">+976 9190 2989</p>{' '}
                 <p className="text-gray-600">+976 9909 5839</p>{' '}
               </div>
             </div>
@@ -188,7 +190,9 @@ export default function ContactSection() {
               </div>
               <div>
                 <h4 className="font-medium">И-мэйл</h4>{' '}
+                <p className="text-gray-600">dji@geo-mongol.mn</p>
                 <p className="text-gray-600">dji.mongolia0@gmail.com</p>{' '}
+                <p className="text-gray-600">dji_service@geo-mongol.mn</p>{' '}
               </div>
             </div>
             <div className="flex items-start space-x-4">
