@@ -190,6 +190,7 @@ export default function ContactSection() {
               </div>
               <div>
                 <h4 className="font-medium">И-мэйл</h4>{' '}
+                <p className="text-gray-600">dji@geo-mongol.mn</p>
                 <p className="text-gray-600">dji.mongolia0@gmail.com</p>{' '}
                 <p className="text-gray-600">dji_service@geo-mongol.mn</p>{' '}
               </div>

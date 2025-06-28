@@ -163,7 +163,7 @@ const ContactForm = () => {
             <ContactInfoItem
               icon={<EnvelopeIcon className="h-6 w-6 text-blue-600" />}
               title="И-мэйл"
-              items={['dji.mongolia0@gmail.com', 'dji_service@geo-mongol.mn']}
+              items={['dji@geo-mongol.mn', 'dji.mongolia0@gmail.com', 'dji_service@geo-mongol.mn']}
             />
             <ContactInfoItem
               icon={<MapPinIcon className="h-6 w-6 text-blue-600" />}
