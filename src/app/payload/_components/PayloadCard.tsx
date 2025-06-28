@@ -68,12 +68,6 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
             {payload.name}
           </h3>
 
-          <div className="mb-4 flex items-center">
-            <span className="text-2xl font-bold text-gray-900">
-              {payload.price.toLocaleString()}₮
-            </span>
-          </div>
-
           <ul className="space-y-2.5 mb-6 flex-grow">
             {payload.features.slice(0, 3).map((feature, idx) => (
               <li key={idx} className="flex items-start text-sm text-gray-700">
