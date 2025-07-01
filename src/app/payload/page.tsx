@@ -1,16 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import ProductListSkeleton from '../dji/_components/skeleton';
 import PayloadCard from './_components/PayloadCard';
 import { CustomPayload } from '@/lib/types';
+import { useSearchParams } from 'next/navigation';
 
 export default function DronePayloadListPage() {
   const [payloads, setPayloads] = useState<CustomPayload[]>([]);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const types = searchParams.getAll('type').map((t) => t.toUpperCase());
+  const search = searchParams.get('search');
 
+  const filteredDrones = useMemo(() => {
+    if (types.length === 0 && !search) return payloads;
+    return payloads.filter((payload) => {
+      const matchesType = types.length === 0 || types.includes(payload.type.toUpperCase());
+      const matchesSearch = !search || payload.name.toLowerCase().includes(search.toLowerCase());
+      return matchesType && matchesSearch;
+    });
+  }, [payloads, types, search]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,7 +57,7 @@ export default function DronePayloadListPage() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {payloads.length > 0 ? (
+          {filteredDrones.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {payloads.map((payload, i) => (
                 <div
