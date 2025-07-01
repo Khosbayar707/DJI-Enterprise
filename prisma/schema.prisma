@@ -51,12 +51,12 @@ model ContactRequest {
 }
 
 model InstructionRequest {
-  id String @id @unique @default(nanoid())
-  username String 
-  phone String
-  email String
-  ip String 
-  resolved Boolean @default(false)
+  id        String   @id @unique @default(nanoid())
+  username  String
+  phone     String
+  email     String
+  ip        String
+  resolved  Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 
@@ -77,6 +77,7 @@ model Drone {
   featuredVideoId    String?            @unique
   featured           Boolean            @default(false)
   adminId            String
+  droneType          DroneType          @default(CONSUMER)
   visible            Boolean            @default(false)
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
@@ -216,7 +217,7 @@ model Image {
   droneId            String?
   specId             String?
   garminId           String?
-  payloadId String?
+  payloadId          String?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
   public_id          String
@@ -225,7 +226,7 @@ model Image {
   drone              Drone?         @relation(fields: [droneId], references: [id], onDelete: Cascade)
   garmins            GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
   spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
-  payload DronePayload?  @relation(fields: [payloadId], references: [id], onDelete: Cascade)
+  payload            DronePayload?  @relation(fields: [payloadId], references: [id], onDelete: Cascade)
 }
 
 model Video {
@@ -265,7 +266,7 @@ enum ProductType {
 model GarminProduct {
   id             String          @id @default(nanoid())
   name           String
-  type           ProductType    
+  type           ProductType
   price          Float
   discountPrice  Float?
   featured       Boolean         @default(false)
@@ -295,10 +296,10 @@ model DronePayload {
   id          String      @id @default(nanoid())
   name        String
   type        PayloadType
-  price Float
-  features       String[]
+  price       Float
+  features    String[]
   description String
-images         Image[]
+  images      Image[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -310,4 +311,12 @@ enum PayloadType {
   SPOTLIGHT
   TETHER
   OTHER
+}
+
+enum DroneType {
+  CONSUMER
+  AGRICULTURE
+  ENTERPRISE
+  PROGRAM
+  PAYLOAD
 }
