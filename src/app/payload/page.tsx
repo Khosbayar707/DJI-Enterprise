@@ -7,22 +7,37 @@ import ProductListSkeleton from '../dji/_components/skeleton';
 import PayloadCard from './_components/PayloadCard';
 import { CustomPayload } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
+import PayloadFilter from './_components/filter';
+import { PayloadType } from '@/generated/prisma';
+
+type PayloadLabel = 'Payload and Camera' | 'Program';
+
+const typeLabelToEnum: Record<PayloadLabel, PayloadType> = {
+  'Payload and Camera': 'PAYLOAD_AND_CAMERA',
+  Program: 'PROGRAM',
+};
 
 export default function DronePayloadListPage() {
   const [payloads, setPayloads] = useState<CustomPayload[]>([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
-  const types = searchParams.getAll('type').map((t) => t.toUpperCase());
-  const search = searchParams.get('search');
 
-  const filteredDrones = useMemo(() => {
-    if (types.length === 0 && !search) return payloads;
+  const selectedTypes = searchParams.getAll('type');
+  const enumTypes = selectedTypes
+    .map((label) => typeLabelToEnum[label as PayloadLabel])
+    .filter((v): v is PayloadType => !!v);
+
+  const search = searchParams.get('search')?.toLowerCase();
+
+  const filteredDronePayloads = useMemo(() => {
+    if (enumTypes.length === 0 && !search) return payloads;
     return payloads.filter((payload) => {
-      const matchesType = types.length === 0 || types.includes(payload.type.toUpperCase());
-      const matchesSearch = !search || payload.name.toLowerCase().includes(search.toLowerCase());
+      const matchesType = enumTypes.length === 0 || enumTypes.includes(payload.type);
+      const matchesSearch = !search || payload.name.toLowerCase().includes(search);
       return matchesType && matchesSearch;
     });
-  }, [payloads, types, search]);
+  }, [payloads, enumTypes, search]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,14 +72,18 @@ export default function DronePayloadListPage() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {filteredDrones.length > 0 ? (
+          <PayloadFilter />
+          {filteredDronePayloads.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {payloads.map((payload, i) => (
+              {filteredDronePayloads.map((payload, i) => (
                 <div
                   key={payload.id}
                   className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
                   style={{
-                    animation: `fadeInUp 0.5s ease-out ${i * 0.1}s`,
+                    animationName: 'fadeInUp',
+                    animationDuration: '0.5s',
+                    animationTimingFunction: 'ease-out',
+                    animationDelay: `${i * 0.1}s`,
                     animationFillMode: 'both',
                   }}
                 >

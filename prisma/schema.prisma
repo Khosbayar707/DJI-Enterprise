@@ -311,6 +311,8 @@ enum PayloadType {
   SPOTLIGHT
   TETHER
   OTHER
+  PROGRAM
+  PAYLOAD_AND_CAMERA
 }
 
 enum DroneType {
