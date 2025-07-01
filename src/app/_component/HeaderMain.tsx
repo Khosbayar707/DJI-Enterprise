@@ -57,28 +57,47 @@ const HeaderMain = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const debouncedSearchQuery = useSearchDebounce(searchQuery, 700);
 
-  const navItems = useMemo(
-    () => [
-      {
-        label: 'DJI',
-        items: [
-          { label: 'Drone', path: '/dji' },
-          { label: 'Payload', path: '/payload' },
-        ],
-      },
-      {
-        label: 'Garmin',
-        items: [
-          { label: 'Smartwatch', path: '/garmin?type=SMARTWATCH' },
-          { label: 'GPS', path: '/garmin?type=GPS' },
-        ],
-      },
-    ],
-    []
-  );
+  type SubItem = { label: string; path: string };
+  type NavItem = { label: string; path: string; subitems?: SubItem[] };
+
+  const navItems: {
+    label: string;
+    items: NavItem[];
+  }[] = [
+    {
+      label: 'DJI',
+      items: [
+        {
+          label: 'Drone',
+          path: '/dji',
+          subitems: [
+            { label: 'Agriculture', path: '/dji?type=Agriculture' },
+            { label: 'Enterprise', path: '/dji?type=Enterprise' },
+            { label: 'Consumer', path: '/dji?type=Consumer' },
+          ],
+        },
+        {
+          label: 'Payload',
+          path: '/payload',
+          subitems: [
+            { label: 'Program', path: '/payload?type=Program' },
+            { label: 'Payload', path: '/payload?type=Payload' },
+            { label: 'Camera', path: '/payload?type=Camera' },
+          ],
+        },
+      ],
+    },
+    {
+      label: 'Garmin',
+      items: [
+        { label: 'Smartwatch', path: '/garmin?type=SMARTWATCH' },
+        { label: 'GPS', path: '/garmin?type=GPS' },
+      ],
+    },
+  ];
 
   const searchTypeOptions = useMemo(
-    () => ['Agriculture', 'Enterprise', 'Program', 'Consumer', 'Payload'],
+    () => ['Agriculture', 'Enterprise', 'Program', 'Consumer', 'Payload', 'Camera'],
     []
   );
 
@@ -178,18 +197,27 @@ const HeaderMain = () => {
               >
                 <MenuItems className="absolute z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-gray-200">
                   {nav.items.map((item, i) => (
-                    <MenuItem key={i}>
-                      {({ active }) => (
-                        <Link
-                          href={item.path}
-                          className={`block px-4 py-2 text-sm font-medium ${
-                            active ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
+                    <div key={i}>
+                      <Link
+                        href={item.path}
+                        className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600"
+                      >
+                        {item.label}
+                      </Link>
+                      {Array.isArray(item.subitems) && item.subitems.length > 0 && (
+                        <div className="ml-4 mt-1 space-y-1">
+                          {item.subitems.map((sub, j) => (
+                            <Link
+                              key={j}
+                              href={sub.path}
+                              className="block px-4 py-1 text-sm text-gray-500 hover:text-blue-500"
+                            >
+                              {sub.label}
+                            </Link>
+                          ))}
+                        </div>
                       )}
-                    </MenuItem>
+                    </div>
                   ))}
                 </MenuItems>
               </Transition>

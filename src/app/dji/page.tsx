@@ -4,10 +4,19 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CustomDroneClient } from '@/lib/types';
 import ProductListSkeleton from './_components/skeleton';
+import { useSearchParams } from 'next/navigation';
+import FilterButtons from './_components/drone-page-filter';
 
 export default function ProductListPage() {
+  const types = useSearchParams()
+    .getAll('type')
+    .map((t) => t.toUpperCase());
+
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const filteredDrones =
+    types.length > 0 ? drones.filter((drone) => types.includes(drone.droneType)) : drones;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,14 +49,19 @@ export default function ProductListPage() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {drones.length > 0 ? (
+          <FilterButtons />
+
+          {filteredDrones.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {drones.map((drone, i) => (
+              {filteredDrones.map((drone, i) => (
                 <div
                   key={drone.id}
                   className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
                   style={{
-                    animation: `fadeInUp 0.5s ease-out ${i * 0.1}s`,
+                    animationName: 'fadeInUp',
+                    animationDuration: '0.5s',
+                    animationTimingFunction: 'ease-out',
+                    animationDelay: `${i * 0.1}s`,
                     animationFillMode: 'both',
                   }}
                 >
@@ -74,8 +88,14 @@ export default function ProductListPage() {
               </div>
               <h3 className="text-xl font-medium text-gray-700 mb-2">Бүтээгдэхүүн олдсонгүй</h3>
               <p className="text-gray-500 max-w-md mx-auto">
-                Таны хайсан бүтээгдэхүүн одоогоор байхгүй байна. Дараа дахин шалгах эсвэл бүх
-                цуглуулгыг үзээрэй.
+                {types.length > 0 ? (
+                  <>
+                    “<span className="font-semibold text-blue-600">{types.join(', ')}</span>”
+                    төрлийн дрон одоогоор бүртгэгдээгүй байна.
+                  </>
+                ) : (
+                  'Таны хайсан бүтээгдэхүүн одоогоор байхгүй байна.'
+                )}
               </p>
             </div>
           )}
