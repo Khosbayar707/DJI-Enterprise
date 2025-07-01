@@ -11,7 +11,7 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<ProductTabOptions>(ProductTabOptions.features);
 
   return (
-    <div className="mt-16 bg-white rounded-2lg shadow-lg overflow-hidden font-sans">
+    <div className="mt-16 bg-white rounded-xl shadow-lg overflow-hidden font-sans">
       <div className="border-b border-gray-200">
         <nav className="flex -mb-px">
           {[
@@ -35,7 +35,7 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
         </nav>
       </div>
 
-      <div className="p-6 md:p-8">
+      <div className="p-6 md:p-8 rounded-xl shadow-lg overflow-hidden border border-gray-100">
         {activeTab === 'features' && <FeaturesTab drone={drone} />}
         {activeTab === 'specs' && <SpecsTab drone={drone} />}
         {activeTab === 'accessories' && <AccessoriesTab drone={drone} />}
