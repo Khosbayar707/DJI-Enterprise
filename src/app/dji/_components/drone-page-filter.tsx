@@ -33,7 +33,7 @@ const FilterButtons = () => {
       types.forEach((t) => params.append('type', t));
     }
 
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const isAllSelected = selectedTypes.size === 0 || selectedTypes.size === allTypes.length;
