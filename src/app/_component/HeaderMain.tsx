@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Menu,
   MenuButton,
@@ -23,29 +23,19 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
+
 import { User } from '@/generated/prisma';
 import LoadingText from './LoadingText';
 import { Search, SearchIconWrapper, StyledInputBase } from '@/components/ui/search';
 import { useSearchDebounce } from './debounce/search';
-
-const navItems = [
-  {
-    href: '/dji',
-    label: 'DJI',
-    items: [
-      { label: 'Drone', path: '/dji' },
-      { label: 'Payload', path: '/payload' },
-    ],
-  },
-  {
-    href: '/garmin',
-    label: 'Garmin',
-    items: [
-      { label: 'Smartwatch', path: '/garmin?type=SMARTWATCH' },
-      { label: 'GPS', path: '/garmin?type=GPS' },
-    ],
-  },
-];
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectValue,
+  SelectTrigger,
+} from '@/components/ui/select';
 
 const mobileMenuVariants = {
   hidden: { opacity: 0, height: 0 },
@@ -58,22 +48,45 @@ const hoverVariants = {
 
 const HeaderMain = () => {
   const pathname = usePathname();
-  const search = useSearchParams().get('search');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
+  const initialSearch = useSearchParams().get('search') || '';
   const [user, setUser] = useState<User>();
   const [logging, setLogging] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(search || '');
-  const debouncedSearchQuery = useSearchDebounce(searchQuery, 1000);
-  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [searchType, setSearchType] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const debouncedSearchQuery = useSearchDebounce(searchQuery, 700);
+
+  const navItems = useMemo(
+    () => [
+      {
+        label: 'DJI',
+        items: [
+          { label: 'Drone', path: '/dji' },
+          { label: 'Payload', path: '/payload' },
+        ],
+      },
+      {
+        label: 'Garmin',
+        items: [
+          { label: 'Smartwatch', path: '/garmin?type=SMARTWATCH' },
+          { label: 'GPS', path: '/garmin?type=GPS' },
+        ],
+      },
+    ],
+    []
+  );
+
+  const searchTypeOptions = useMemo(
+    () => ['Agriculture', 'Enterprise', 'Program', 'Consumer', 'Payload'],
+    []
+  );
 
   const logout = useCallback(async () => {
     setLogging(true);
     try {
       const res = await axios.get('/api/auth/logout');
-      if (res.data.success) {
-        setUser(undefined);
-      }
+      if (res.data.success) setUser(undefined);
       setIsMobileMenuOpen(false);
     } catch (err) {
       console.error(err);
@@ -83,94 +96,101 @@ const HeaderMain = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUser = async () => {
       setLogging(true);
       try {
         const res = await axios.get('/api/auth/current-user');
-        if (res.data.success) {
-          setUser(res.data.data.user);
-        }
+        if (res.data.success) setUser(res.data.data.user);
       } catch (err) {
         console.error(err);
       } finally {
         setLogging(false);
       }
     };
-    fetchData();
-  }, [pathname, refresh]);
-
-  useEffect(() => {
-    const fetchRefresh = async () => {
-      try {
-        const res = await axios.get('/api/auth/refresh-token');
-        if (res.data.success) {
-          setRefresh((prev) => !prev);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchRefresh();
-  }, []);
+    fetchUser();
+  }, [pathname]);
 
   useEffect(() => {
     if (debouncedSearchQuery.trim()) {
-      router.push(`/?search=${debouncedSearchQuery}`);
+      const query = new URLSearchParams();
+      query.set('search', debouncedSearchQuery);
+      if (searchType) query.set('type', searchType);
+      router.push(`/?${query.toString()}`);
     }
-  }, [debouncedSearchQuery, router]);
+  }, [debouncedSearchQuery, searchType, router]);
+
+  const renderSearch = (
+    <div className="flex items-center gap-2 px-3 py-2 rounded-md relative z-30">
+      <div className="flex items-center text-gray-600">
+        <MagnifyingGlassIcon className="h-5 w-5" />
+      </div>
+      <StyledInputBase
+        className="min-w-[150px] sm:min-w-[200px] focus:outline-none"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Хайх"
+      />
+      <div className="relative z-50">
+        <Select value={searchType} onValueChange={setSearchType}>
+          <SelectTrigger className="w-[120px] bg-white border border-gray-300 rounded-md shadow-sm text-sm">
+            <SelectValue placeholder="Төрөл" />
+          </SelectTrigger>
+          <SelectContent className="z-50 bg-white shadow-lg border border-gray-200 rounded-md">
+            <SelectGroup>
+              {searchTypeOptions.map((type) => (
+                <SelectItem key={type} value={type}>
+                  {type}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="flex items-center justify-between px-4 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <Link href="/">
-          <div className="flex items-center space-x-2">
-            <Image
-              src="/image/dji-3.svg"
-              alt="DJI Logo"
-              width={24}
-              height={24}
-              className="h-5 w-auto transition-transform duration-300 hover:scale-105"
-            />
-            <span className="text-base font-bold tracking-tight text-gray-900 uppercase">
-              Enterprise
-            </span>
-          </div>
+        <Link href="/" className="flex items-center space-x-2">
+          <Image src="/image/dji-3.svg" alt="DJI Logo" width={24} height={24} />
+          <span className="text-base font-bold tracking-tight text-gray-900 uppercase">
+            Enterprise
+          </span>
         </Link>
 
-        <nav className="hidden lg:flex flex-1 justify-center space-x-6" role="navigation">
+        <nav className="hidden lg:flex flex-1 justify-center space-x-6">
           {navItems.map((nav, idx) => (
-            <Menu as="div" key={idx} className="relative inline-block text-left">
-              <MenuButton className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600 relative group">
+            <Menu as="div" key={idx} className="relative">
+              <MenuButton className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600 group">
                 {nav.label}
-                <ChevronDownIcon className="ml-1 h-4 w-4 text-gray-500" />
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+                <ChevronDownIcon className="ml-1 h-4 w-4" />
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
               </MenuButton>
               <Transition
                 as={Fragment}
                 enter="transition ease-out duration-150"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
                 leave="transition ease-in duration-100"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
               >
-                <MenuItems className="absolute z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-gray-200 focus:outline-none">
-                  <div className="py-1">
-                    {nav.items.map((item, i) => (
-                      <MenuItem key={i}>
-                        {({ active }) => (
-                          <Link
-                            href={item.path}
-                            className={`${
-                              active ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
-                            } block px-4 py-2 text-sm font-medium`}
-                          >
-                            {item.label}
-                          </Link>
-                        )}
-                      </MenuItem>
-                    ))}
-                  </div>
+                <MenuItems className="absolute z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-gray-200">
+                  {nav.items.map((item, i) => (
+                    <MenuItem key={i}>
+                      {({ active }) => (
+                        <Link
+                          href={item.path}
+                          className={`block px-4 py-2 text-sm font-medium ${
+                            active ? 'bg-gray-50 text-blue-600' : 'text-gray-700'
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </MenuItem>
+                  ))}
                 </MenuItems>
               </Transition>
             </Menu>
@@ -178,26 +198,13 @@ const HeaderMain = () => {
         </nav>
 
         <div className="hidden lg:flex items-center space-x-4">
-          <Search>
-            <SearchIconWrapper>
-              <label htmlFor="desktop-search" className="p-2 text-gray-600 cursor-pointer">
-                <MagnifyingGlassIcon className="h-5 w-5" />
-              </label>
-            </SearchIconWrapper>
-            <StyledInputBase
-              id="desktop-search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Хайх"
-            />
-          </Search>
-
+          {renderSearch}
           {logging ? (
             <LoadingText />
           ) : user ? (
             <>
-              <Link href={`/profile`}>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+              <Link href="/profile">
+                <div className="flex items-center px-3 py-2 bg-gray-100 rounded-full hover:bg-gray-200">
                   <span className="text-sm font-medium text-gray-800">{user.email}</span>
                 </div>
               </Link>
@@ -241,12 +248,12 @@ const HeaderMain = () => {
         >
           <div className="flex flex-col gap-4">
             {navItems.map((nav, idx) => (
-              <Disclosure key={idx} as="div" className="py-2">
+              <Disclosure key={idx} as="div">
                 {({ open }) => (
                   <>
                     <DisclosureButton className="flex justify-between w-full px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600">
                       {nav.label}
-                      <ChevronDownIcon className="h-4 w-4 text-gray-500" />
+                      <ChevronDownIcon className="h-4 w-4" />
                     </DisclosureButton>
                     <DisclosurePanel className="pl-4 pt-2">
                       {nav.items.map((item, i) => (
@@ -265,28 +272,13 @@ const HeaderMain = () => {
               </Disclosure>
             ))}
 
-            <motion.div
-              className="flex items-center gap-2 bg-gray-100 text-sm rounded-full px-3 py-2 shadow-sm border border-gray-300"
-              variants={hoverVariants}
-              whileHover="hover"
-            >
-              <Search>
-                <SearchIconWrapper>
-                  <MagnifyingGlassIcon className="h-5 w-5 text-gray-600" />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Хайх"
-                />
-              </Search>
-            </motion.div>
+            {renderSearch}
 
             {logging ? (
               <LoadingText />
             ) : user ? (
               <div className="flex flex-col gap-4">
-                <Link href={`/profile`}>
+                <Link href="/profile">
                   <motion.div
                     className="flex items-center gap-2 bg-gray-50 p-2 rounded-full hover:bg-gray-100"
                     variants={hoverVariants}
@@ -301,11 +293,11 @@ const HeaderMain = () => {
                     logout();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="px-4 py-2 bg-blue-600 rounded-full text-sm font-medium hover:bg-blue-700 flex items-center gap-2 justify-center"
+                  className="px-4 py-2 bg-blue-600 rounded-full text-sm font-medium text-white hover:bg-blue-700 flex items-center gap-2 justify-center"
                   variants={hoverVariants}
                   whileHover="hover"
                 >
-                  <ArrowRightStartOnRectangleIcon className="text-white h-5 w-5" />
+                  <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
                   Гарах
                 </motion.button>
               </div>
