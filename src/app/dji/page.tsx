@@ -1,6 +1,6 @@
 'use client';
 import ProductCard from '../_component/ProductCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { CustomDroneClient } from '@/lib/types';
 import ProductListSkeleton from './_components/skeleton';
@@ -8,15 +8,21 @@ import { useSearchParams } from 'next/navigation';
 import FilterButtons from './_components/drone-page-filter';
 
 export default function ProductListPage() {
-  const types = useSearchParams()
-    .getAll('type')
-    .map((t) => t.toUpperCase());
+  const searchParams = useSearchParams();
+  const types = searchParams.getAll('type').map((t) => t.toUpperCase());
+  const search = searchParams.get('search');
 
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const filteredDrones =
-    types.length > 0 ? drones.filter((drone) => types.includes(drone.droneType)) : drones;
+  const filteredDrones = useMemo(() => {
+    if (types.length === 0 && !search) return drones;
+    return drones.filter((drone) => {
+      const matchesType = types.length === 0 || types.includes(drone.droneType.toUpperCase());
+      const matchesSearch = !search || drone.name.toLowerCase().includes(search.toLowerCase());
+      return matchesType && matchesSearch;
+    });
+  }, [drones, types, search]);
 
   useEffect(() => {
     const fetchData = async () => {

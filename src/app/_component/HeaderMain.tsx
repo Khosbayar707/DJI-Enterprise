@@ -81,8 +81,7 @@ const HeaderMain = () => {
           path: '/payload',
           subitems: [
             { label: 'Program', path: '/payload?type=Program' },
-            { label: 'Payload', path: '/payload?type=Payload' },
-            { label: 'Camera', path: '/payload?type=Camera' },
+            { label: 'Payload and Camera', path: '/payload?type=Payload+and+Camera' },
           ],
         },
       ],
@@ -134,7 +133,11 @@ const HeaderMain = () => {
       const query = new URLSearchParams();
       query.set('search', debouncedSearchQuery);
       if (searchType) query.set('type', searchType);
-      router.push(`/?${query.toString()}`);
+      if (searchType === 'Payload and Camera' || searchType === 'Program') {
+        router.push(`/payload?${query.toString()}`);
+      } else {
+        router.push(`/dji?${query.toString()}`);
+      }
     }
   }, [debouncedSearchQuery, searchType, router]);
 
