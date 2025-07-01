@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { useMemo } from 'react';
 
-const allTypes = ['Agriculture', 'Enterprise', 'Program', 'Consumer', 'Payload', 'Camera'];
+const allTypes = ['Agriculture', 'Enterprise', 'Consumer'];
 
 const FilterButtons = () => {
   const router = useRouter();

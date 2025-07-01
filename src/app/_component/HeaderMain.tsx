@@ -97,7 +97,7 @@ const HeaderMain = () => {
   ];
 
   const searchTypeOptions = useMemo(
-    () => ['Agriculture', 'Enterprise', 'Program', 'Consumer', 'Payload', 'Camera'],
+    () => ['Agriculture', 'Enterprise', 'Consumer', 'Program', 'Payload and Camera'],
     []
   );
 
