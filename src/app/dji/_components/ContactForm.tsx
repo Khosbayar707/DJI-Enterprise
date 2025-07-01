@@ -1,7 +1,4 @@
 'use client';
-
-import { ContactInfoItemProps } from '@/app/_types/types';
-import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ContactInfoSchema } from '../utils/contact-info-schema';
@@ -16,6 +13,7 @@ import { useParams, usePathname } from 'next/navigation';
 import LoadingText from '@/app/_component/LoadingText';
 import { ResponseType } from '@/lib/types';
 import { CustomSnackbar } from '@/app/admin/_components/snackbar';
+import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/solid';
 
 const ContactForm = () => {
   const pathname = usePathname();
@@ -40,6 +38,7 @@ const ContactForm = () => {
         id,
       });
       setResponse(res.data);
+      form.reset();
     } catch (err) {
       console.error(err);
     } finally {
@@ -72,26 +71,39 @@ const ContactForm = () => {
   }, [response]);
 
   return (
-    <div id="contact-form" className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mt-16">
       {response && <CustomSnackbar value={response} />}
-      <div className="p-8 md:p-10">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Бидэнтэй холбогдох</h2>
-        <div className="grid md:grid-cols-2 gap-10">
-          <div>
+      <div className="p-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Бидэнтэй холбогдох</h2>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <TextField variant="standard" label="Нэр" fullWidth {...field} />
+                        <TextField
+                          variant="outlined"
+                          label="Нэр"
+                          fullWidth
+                          {...field}
+                          className="bg-gray-50 rounded-lg"
+                          InputProps={{
+                            style: {
+                              borderRadius: '12px',
+                            },
+                          }}
+                        />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="phone"
@@ -99,17 +111,24 @@ const ContactForm = () => {
                     <FormItem>
                       <FormControl>
                         <TextField
-                          variant="standard"
+                          variant="outlined"
                           label="Утасны дугаар"
                           fullWidth
-                          type="number"
+                          type="tel"
                           {...field}
+                          className="bg-gray-50 rounded-lg"
+                          InputProps={{
+                            style: {
+                              borderRadius: '12px',
+                            },
+                          }}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="description"
@@ -117,36 +136,45 @@ const ContactForm = () => {
                     <FormItem>
                       <FormControl>
                         <TextField
-                          variant="standard"
+                          variant="outlined"
                           label="Нэмэлт тайлбар"
                           fullWidth
                           multiline
-                          minRows={3}
+                          rows={4}
                           {...field}
+                          className="bg-gray-50 rounded-lg"
+                          InputProps={{
+                            style: {
+                              borderRadius: '12px',
+                            },
+                          }}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
+
                 {loading ? (
                   <LoadingText />
                 ) : user ? (
-                  <div className=" flex justify-between">
+                  <div className="pt-2">
                     <Button
                       type="submit"
                       variant="contained"
-                      disabled={!form.formState.isValid}
-                      className="w-fit"
+                      fullWidth
+                      size="large"
+                      disabled={!form.formState.isValid || form.formState.isSubmitting}
+                      className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg shadow-md"
                     >
-                      Холбоо барих
+                      {form.formState.isSubmitting ? 'Илгээж байна...' : 'Илгээх'}
                     </Button>
-                    <div>{user.email}</div>
+                    <p className="text-gray-500 text-sm mt-2">Нэвтэрсэн: {user.email}</p>
                   </div>
                 ) : (
                   <Link
                     href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login?redir=${process.env.NEXT_PUBLIC_BASE_URL + pathname}`}
-                    className="w-fit px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 text-center"
+                    className="block w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded-lg shadow-md transition-colors"
                   >
                     Нэвтрэх
                   </Link>
@@ -154,35 +182,124 @@ const ContactForm = () => {
               </form>
             </Form>
           </div>
+
           <div className="space-y-6">
-            <ContactInfoItem
-              icon={<PhoneIcon className="h-6 w-6 text-blue-600" />}
-              title="Утас"
-              items={['+976 9000 5559', '+976 9909 5839', '+976 9000 6668', '+976 9190 2989']}
-            />
-            <ContactInfoItem
-              icon={<EnvelopeIcon className="h-6 w-6 text-blue-600" />}
-              title="И-мэйл"
-              items={['dji@geo-mongol.mn', 'dji.mongolia0@gmail.com', 'dji_service@geo-mongol.mn']}
-            />
-            <ContactInfoItem
-              icon={<MapPinIcon className="h-6 w-6 text-blue-600" />}
-              title="Хаяг"
-              items={[
-                'Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3, Инженер Геодези ХХК байр',
-              ]}
-            />
-            <div className="pt-4">
+            <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <PhoneIcon className="h-5 w-5 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">Утасны дугаар</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-2">Мэдээлэл авах:</p>
+                  <ul className="space-y-1 pl-4">
+                    {['+976 9000 5559', '+976 9190 2989', '+976 9909 5839'].map((phone, i) => (
+                      <li key={i} className="flex items-center">
+                        <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
+                        <a
+                          href={`tel:${phone.replace(/\s/g, '')}`}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {phone}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-2">Засвар үйлчилгээ:</p>
+                  <ul className="space-y-1 pl-4">
+                    <li className="flex items-center">
+                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
+                      <a href="tel:+97690006668" className="text-blue-600 hover:underline">
+                        +976 9000 6668
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <EnvelopeIcon className="h-5 w-5 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">И-мэйл</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-2">Мэдээлэл авах:</p>
+                  <ul className="space-y-1 pl-4">
+                    {['dji@geo-mongol.mn', 'dji.mongolia0@gmail.com'].map((email, i) => (
+                      <li key={i} className="flex items-center">
+                        <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
+                        <a href={`mailto:${email}`} className="text-blue-600 hover:underline">
+                          {email}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-2">Засвар үйлчилгээ:</p>
+                  <ul className="space-y-1 pl-4">
+                    <li className="flex items-center">
+                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
+                      <a
+                        href="mailto:dji_service@geo-mongol.mn"
+                        className="text-blue-600 hover:underline"
+                      >
+                        dji_service@geo-mongol.mn
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <MapPinIcon className="h-5 w-5 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">Хаяг</h3>
+              </div>
+              <p className="text-gray-600 pl-4">
+                Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3, "Инженер
+                Геодези ХХК" байр
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <ClockIcon className="h-5 w-5 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">Ажиллах цаг</h3>
+              </div>
+              <div className="space-y-1 pl-4">
+                <p className="text-gray-600">Даваа-Баасан: 09:00 - 18:00</p>
+                <p className="text-gray-600">Бямба-Ням: Амарна</p>
+              </div>
+            </div>
+
+            <div className="rounded-xl overflow-hidden shadow-sm border border-gray-200">
               <iframe
-                title="addess"
+                title="address"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2676.063079710459!2d106.8920424!3d47.9183684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96eccc00000001:0xd9419ff8407d6f3c!2z0JjQvdC20LXQvdC10YAg0LPQtdC-0LTQtdC5INCR0JDQlyDQodCQ0JcgLyBFbmdpbmVlcmluZyBnZW9kZXN5IExMQw!5e0!3m2!1smn!2smn!4v1716115200000!5m2!1smn!2smn"
                 width="100%"
                 height="200"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                className="rounded-lg shadow"
-              ></iframe>
+              />
             </div>
           </div>
         </div>
@@ -190,19 +307,5 @@ const ContactForm = () => {
     </div>
   );
 };
-
-const ContactInfoItem = ({ icon, title, items }: ContactInfoItemProps) => (
-  <div className="flex items-start">
-    <div className="flex-shrink-0 bg-blue-100 p-3 rounded-full">{icon}</div>
-    <div className="ml-4">
-      <h3 className="text-lg font-medium text-gray-900">{title}</h3>
-      {items.map((item, index) => (
-        <p key={index} className="text-gray-600">
-          {item}
-        </p>
-      ))}
-    </div>
-  </div>
-);
 
 export default ContactForm;

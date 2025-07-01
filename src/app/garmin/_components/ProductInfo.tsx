@@ -45,7 +45,7 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8Я">
       <div className="flex justify-between items-start gap-4">
         <div className="space-y-3">
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight leading-tight">
