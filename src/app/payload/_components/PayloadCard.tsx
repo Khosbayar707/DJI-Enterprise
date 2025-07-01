@@ -3,11 +3,23 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { CustomPayload } from '@/lib/types';
+import { PayloadType } from '@/generated/prisma';
 
 interface PayloadCardProps {
   payload: CustomPayload;
   index: number;
 }
+
+const payloadTypeLabel: Record<PayloadType, string> = {
+  ZENMUSE: 'Zenmuse',
+  LIDAR: 'Lidar',
+  SPEAKER: 'Speaker',
+  SPOTLIGHT: 'Spotlight',
+  TETHER: 'Tether',
+  OTHER: 'Other',
+  PROGRAM: 'Program',
+  PAYLOAD_AND_CAMERA: 'Payload & Camera',
+};
 
 export default function PayloadCard({ payload, index }: PayloadCardProps) {
   return (
@@ -54,7 +66,7 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
 
             <div className="absolute top-3 right-3">
               <span className="bg-gray-800 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wider">
-                {payload.type}
+                {payloadTypeLabel[payload.type]}
               </span>
             </div>
           </div>

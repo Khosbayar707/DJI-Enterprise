@@ -1,8 +1,9 @@
+import { PayloadType } from '@/generated/prisma'; // Make sure this is the actual enum, not just a type
 import { z } from 'zod';
 
 export const DronePayloadSchema = z.object({
   name: z.string().min(1, 'Нэр шаардлагатай'),
-  type: z.enum(['ZENMUSE', 'LIDAR', 'SPEAKER', 'SPOTLIGHT', 'TETHER', 'OTHER']),
+  type: z.nativeEnum(PayloadType),
   price: z.number().min(0, { message: 'Үнэ 0-ээс бага байж болохгүй!' }),
   description: z.string().optional(),
   images: z.array(
