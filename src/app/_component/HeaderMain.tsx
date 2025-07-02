@@ -286,16 +286,31 @@ const HeaderMain = () => {
                       {nav.label}
                       <ChevronDownIcon className="h-4 w-4" />
                     </DisclosureButton>
-                    <DisclosurePanel className="pl-4 pt-2">
+                    <DisclosurePanel className="pl-2 pt-2 flex flex-col gap-1">
                       {nav.items.map((item, i) => (
-                        <Link
-                          key={i}
-                          href={item.path}
-                          className="block px-3 py-2 text-sm text-gray-700 hover:text-blue-600"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
+                        <div key={i}>
+                          <Link
+                            href={item.path}
+                            className="block px-3 py-2 text-sm font-medium text-gray-800 hover:text-blue-600"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {item.label}
+                          </Link>
+                          {Array.isArray(item.subitems) && item.subitems?.length > 0 && (
+                            <div className="ml-4 mt-1 space-y-1">
+                              {item.subitems.map((sub, j) => (
+                                <Link
+                                  key={j}
+                                  href={sub.path}
+                                  className="block px-3 py-1 text-sm text-gray-500 hover:text-blue-500"
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                  {sub.label}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       ))}
                     </DisclosurePanel>
                   </>
