@@ -176,8 +176,8 @@ const HeaderMain = () => {
       <div className="flex items-center justify-between px-4 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center space-x-2">
           <Image src="/image/dji-3.svg" alt="DJI Logo" width={24} height={24} />
-          <span className="text-base font-bold tracking-tight text-gray-900 uppercase">
-            Enterprise
+          <span className="text-sm font-bold tracking-tight text-gray-900 uppercase">
+            Enterprise Mongolia
           </span>
         </Link>
 

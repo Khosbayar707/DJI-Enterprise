@@ -10,6 +10,7 @@ import LoadingText from './LoadingText';
 export default function DJIProductsSection() {
   const [drones, setDrones] = useState<CustomDroneClient[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,6 +26,9 @@ export default function DJIProductsSection() {
     };
     fetchData();
   }, []);
+
+  const enterpriseDrones = drones.filter((d) => d.droneType === 'ENTERPRISE').slice(0, 3);
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -45,8 +49,8 @@ export default function DJIProductsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {loading ? (
             <LoadingText />
-          ) : drones.length > 0 ? (
-            drones.slice(0, 3).map((product, index) => (
+          ) : enterpriseDrones.length > 0 ? (
+            enterpriseDrones.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -58,10 +62,11 @@ export default function DJIProductsSection() {
               </motion.div>
             ))
           ) : (
-            <div>Бараа дууссан байна!</div>
+            <div>Enterprise төрлийн бараа олдсонгүй!</div>
           )}
         </div>
       </div>
+
       <div className="text-center mt-12">
         <Link href="/dji">
           <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">

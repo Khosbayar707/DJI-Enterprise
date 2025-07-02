@@ -77,7 +77,6 @@ model Drone {
   featuredVideoId    String?            @unique
   featured           Boolean            @default(false)
   adminId            String
-  droneType          DroneType          @default(CONSUMER)
   visible            Boolean            @default(false)
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
@@ -87,6 +86,7 @@ model Drone {
   stock              Int                @default(0)
   PreviewDescription String             @default("")
   briefDescription   String             @default("")
+  droneType          DroneType          @default(CONSUMER)
   admin              User               @relation(fields: [adminId], references: [id])
   featuredImage      Image?             @relation("DroneFeaturedImage", fields: [featuredImageId], references: [id])
   featuredVideo      Video?             @relation("DroneFeaturedVideo", fields: [featuredVideoId], references: [id])
@@ -217,16 +217,16 @@ model Image {
   droneId            String?
   specId             String?
   garminId           String?
-  payloadId          String?
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
   public_id          String
   priority           Int            @default(0)
+  payloadId          String?
   DroneFeaturedImage Drone?         @relation("DroneFeaturedImage")
   drone              Drone?         @relation(fields: [droneId], references: [id], onDelete: Cascade)
   garmins            GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
-  spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
   payload            DronePayload?  @relation(fields: [payloadId], references: [id], onDelete: Cascade)
+  spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
 }
 
 model Video {
@@ -258,15 +258,9 @@ model Review {
   reviewee    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum ProductType {
-  SMARTWATCH
-  GPS
-}
-
 model GarminProduct {
   id             String          @id @default(nanoid())
   name           String
-  type           ProductType
   price          Float
   discountPrice  Float?
   featured       Boolean         @default(false)
@@ -278,6 +272,7 @@ model GarminProduct {
   inStock        Boolean         @default(true)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  type           ProductType
   images         Image[]
   specifications Specification[]
 
@@ -296,12 +291,17 @@ model DronePayload {
   id          String      @id @default(nanoid())
   name        String
   type        PayloadType
-  price       Float
-  features    String[]
   description String
-  images      Image[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+  features    String[]
+  price       Float
+  images      Image[]
+}
+
+enum ProductType {
+  SMARTWATCH
+  GPS
 }
 
 enum PayloadType {

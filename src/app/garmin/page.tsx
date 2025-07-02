@@ -16,13 +16,7 @@ export default function GarminProductListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const search = searchParams.get('search');
-        const queryParams = new URLSearchParams();
-
-        if (type) queryParams.set('type', type);
-        if (search) queryParams.set('search', search);
-
-        const res = await axios.get(`/api/garmins?${queryParams.toString()}`);
+        const res = await axios.get(`/api/garmins${type ? `?type=${type}` : ''}`);
         if (res.data.success) {
           setGarmin(res.data.data.products);
         }
@@ -32,9 +26,8 @@ export default function GarminProductListPage() {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [type, searchParams]);
+  }, [type]);
 
   if (loading) return <ProductListSkeleton />;
 
