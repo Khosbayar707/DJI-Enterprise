@@ -13,6 +13,7 @@ import { CustomDroneClient } from '@/lib/types';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import DroneDetailSkeleton from '@/app/_component/skeleton/dji-page-skeleton';
+import LoanChances from '@/app/_component/LoanChances';
 
 export default function Page() {
   const { id } = useParams();
@@ -94,6 +95,7 @@ export default function Page() {
               />
             </div>
             <ProductTabs drone={drone} />
+            <LoanChances />
             <ContactForm />
             <RelatedProducts />
           </div>
