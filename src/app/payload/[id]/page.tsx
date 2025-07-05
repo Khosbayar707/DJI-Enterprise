@@ -11,6 +11,7 @@ import PayloadInfo from '../_components/PayloadInfo';
 import axios from 'axios';
 import { CustomPayload } from '@/lib/types';
 import ContactSection from '@/app/_component/ContactSection';
+import LoanChances from '@/app/_component/LoanChances';
 
 export default function Page() {
   const { id } = useParams();
@@ -82,6 +83,7 @@ export default function Page() {
                 isLoading={isLoading}
               />
             </div>
+            <LoanChances />
             <ContactSection />
           </div>
         </div>
