@@ -85,7 +85,6 @@ export default function Page() {
         <div className="max-w-7xl mx-auto">
           <div className=" min-h-screen">
             <Breadcrumbs items={breadcrumbItems} />
-
             <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
               <ProductGallery drone={drone} />
               <ProductInfo
@@ -94,8 +93,8 @@ export default function Page() {
                 isLoading={isLoading}
               />
             </div>
-            <ProductTabs drone={drone} />
             <LoanChances />
+            <ProductTabs drone={drone} />
             <ContactForm />
             <RelatedProducts />
           </div>

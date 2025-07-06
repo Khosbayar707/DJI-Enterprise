@@ -37,11 +37,13 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
 
   const storeInfo = {
     name: 'DJI Enterprise Албан ёсны дистрибьютер',
-    phone: '9000 5559',
+    phone: '+976 9000 5559',
     location:
-      ' Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3, Инженер Геодези ХХК',
-    workingHours: 'Даваа-Баасан: 09:00-18:00',
-    email: 'dji.mongolia0@gmail.com',
+      'Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот, "Инженер Геодези ХХК" байр',
+    workingHours: 'Даваа-Баасан: 09:00-18:00, Бямба-Ням: Амарна',
+    email: 'dji@geo-mongol.mn',
+    rating: 4.8,
+    reviews: 124,
   };
 
   return (

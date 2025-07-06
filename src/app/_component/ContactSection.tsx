@@ -310,7 +310,7 @@ export default function ContactSection() {
                 <div className="flex-1">
                   <h4 className="font-medium text-lg mb-3 text-gray-800">Хаяг</h4>
                   <p className="text-gray-600 leading-relaxed">
-                    Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3,
+                    Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот,
                     &quot;Инженер Геодези ХХК&quot; байр
                   </p>
                 </div>

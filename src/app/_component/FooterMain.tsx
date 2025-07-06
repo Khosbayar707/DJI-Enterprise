@@ -171,7 +171,7 @@ const MainFooter = () => {
           </div>
         </div>
         <div className="mt-6 text-center md:text-left text-sm text-gray-500">
-          Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52/3
+          Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот
           <br />
           И-мэйл: info@engineer-geodesy.mn | Утас: +976 7011 2233
         </div>
