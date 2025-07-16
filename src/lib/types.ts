@@ -16,6 +16,7 @@ import {
   User,
   Video,
   Specification,
+  SurveyEquipment,
 } from '@/generated/prisma';
 
 export type ResponseType = { success: boolean; code: string; message: string; data: any };
@@ -87,6 +88,11 @@ export type CustomGarminProduct = GarminProduct & {
 
 export type CustomPayload = DronePayload & {
   images: Image[];
+};
+
+export type CustomSurveyEquipment = SurveyEquipment & {
+  images: Image[];
+  specifications: Specification[];
 };
 
 // client side types
