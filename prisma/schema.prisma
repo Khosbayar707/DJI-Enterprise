@@ -222,8 +222,10 @@ model Image {
   public_id          String
   priority           Int            @default(0)
   payloadId          String?
+  surveyEquipmentId  String? 
   DroneFeaturedImage Drone?         @relation("DroneFeaturedImage")
   drone              Drone?         @relation(fields: [droneId], references: [id], onDelete: Cascade)
+  survey             SurveyEquipment?    @relation(fields: [surveyEquipmentId], references: [id], onDelete: Cascade)
   garmins            GarminProduct? @relation(fields: [garminId], references: [id], onDelete: Cascade)
   payload            DronePayload?  @relation(fields: [payloadId], references: [id], onDelete: Cascade)
   spec               Spec?          @relation(fields: [specId], references: [id], onDelete: Cascade)
@@ -319,4 +321,35 @@ enum DroneType {
   CONSUMER
   AGRICULTURE
   ENTERPRISE
+}
+
+model SurveyEquipment {
+  id            String     @id @default(nanoid())
+  name          String
+  price         Float
+  type          EquipmentType
+  brand         String?
+  description   String
+  features      String[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  specifications SurveySpec[]
+  images        Image[]
+
+  @@index([name])
+}
+
+model SurveySpec {
+  id          String          @id @default(nanoid())
+  label       String
+  value       String
+  equipmentId String
+  equipment   SurveyEquipment @relation(fields: [equipmentId], references: [id])
+}
+
+enum EquipmentType {
+  GNSS
+  TOTAL_STATION
+  THEODOLITE
+  AUTO_LEVEL
 }
