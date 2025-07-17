@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const type = req.nextUrl.searchParams.get('type')?.toUpperCase();
 
     const where =
-      type && ['GNSS', 'TOTAL_STATION', ' THEODOLITE', 'AUTO_LEVEL'].includes(type)
+      type && ['GNSS', 'TOTAL_STATION', 'THEODOLITE', 'AUTO_LEVEL'].includes(type)
         ? { type: type as EquipmentType }
         : undefined;
 
