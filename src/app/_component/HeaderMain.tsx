@@ -93,10 +93,19 @@ const HeaderMain = () => {
         { label: 'GPS', path: '/garmin?type=GPS' },
       ],
     },
+    {
+      label: 'Геодезийн багаж',
+      items: [
+        { label: 'GNSS хүлээн авагч', path: '/hitarget?type=GNSS' },
+        { label: 'Тотал станц', path: '/hitarget?type=TOTAL_STATION' },
+        { label: 'Теодолит', path: '/hitarget?type=THEODOLITE' },
+        { label: 'Автомат нивелир', path: '/hitarget?type=AUTO_LEVEL' },
+      ],
+    },
   ];
 
   const searchTypeOptions = useMemo(
-    () => ['Agriculture', 'Enterprise', 'Consumer', 'Program', 'Payload and Camera'],
+    () => ['Agriculture', 'Enterprise', 'Consumer', 'Program', 'Payload and Camera', 'Equipment'],
     []
   );
 
@@ -181,7 +190,7 @@ const HeaderMain = () => {
           </span>
         </Link>
 
-        <nav className="hidden lg:flex flex-1 justify-center space-x-6">
+        <nav className="hidden lg:flex flex-1 justify-center space-x-4">
           {navItems.map((nav, idx) => (
             <Menu as="div" key={idx} className="relative">
               <MenuButton className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-800 hover:text-blue-600 group">
@@ -198,7 +207,7 @@ const HeaderMain = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <MenuItems className="absolute z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-gray-200">
+                <MenuItems className="absolute z-10 mt-2 w-56 rounded-md bg-white shadow-lg ring-1 ring-gray-200 p-2 space-y-2">
                   {nav.items.map((item, i) => (
                     <div key={i}>
                       <Link
@@ -208,7 +217,7 @@ const HeaderMain = () => {
                         {item.label}
                       </Link>
                       {Array.isArray(item.subitems) && item.subitems.length > 0 && (
-                        <div className="ml-4 mt-1 space-y-1">
+                        <div className="ml-4 mt-2 space-y-1 pl-2 border-l border-gray-100">
                           {item.subitems.map((sub, j) => (
                             <Link
                               key={j}
@@ -286,7 +295,7 @@ const HeaderMain = () => {
                       {nav.label}
                       <ChevronDownIcon className="h-4 w-4" />
                     </DisclosureButton>
-                    <DisclosurePanel className="pl-2 pt-2 flex flex-col gap-1">
+                    <DisclosurePanel className="pl-2 pt-2 flex flex-col gap-2">
                       {nav.items.map((item, i) => (
                         <div key={i}>
                           <Link
