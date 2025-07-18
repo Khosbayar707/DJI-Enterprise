@@ -65,6 +65,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
 
   const { setValue, watch } = form;
   const specifications = watch('specifications');
+  const images = watch('images'); // 👈 Used to trigger re-render on image update
 
   const onSubmit = async (data: AddSurveyEquipmentSchemaType) => {
     try {
@@ -116,7 +117,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
         data.append('signature', signature);
         data.append('api_key', api_key);
         data.append('resource_type', 'image');
-        data.append('folder', 'Garmin/Smartwatch');
+        data.append('folder', 'SurveyEquipment');
 
         const response2 = await axios.post(
           `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
@@ -141,7 +142,9 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
         url,
         public_id: uploadedImagePublicIds[i],
       }));
-      setValue('images', combined);
+
+      // ✅ Ensure form re-renders after image upload
+      setValue('images', combined, { shouldDirty: true });
     } catch (err) {
       console.error(err, 'server error');
     } finally {
@@ -178,7 +181,9 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
         className="space-y-6"
         style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
       >
+        {/* Form fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Name */}
           <FormField
             control={form.control}
             name="name"
@@ -192,7 +197,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
-
+          {/* Type */}
           <FormField
             control={form.control}
             name="type"
@@ -217,7 +222,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
-
+          {/* Brand */}
           <FormField
             control={form.control}
             name="brand"
@@ -231,7 +236,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
-
+          {/* Price */}
           <FormField
             control={form.control}
             name="price"
@@ -252,10 +257,11 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           />
         </div>
 
+        {/* Image Upload */}
         <FormField
           control={form.control}
           name="images"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Зураг</FormLabel>
               {progress > 0 && <CircularProgressWithLabel value={progress} />}
@@ -269,7 +275,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
                 />
               </FormControl>
               <div className="flex gap-2 flex-wrap mt-2">
-                {field.value?.map((img, idx) => (
+                {images?.map((img, idx) => (
                   <div key={idx} className="relative w-24 h-24">
                     <Image
                       src={img.url}
@@ -286,6 +292,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* Description */}
         <FormField
           control={form.control}
           name="description"
@@ -304,6 +311,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* Features */}
         <FormField
           control={form.control}
           name="features"
@@ -322,6 +330,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* Specifications */}
         <FormItem>
           <FormLabel>Үзүүлэлтүүд</FormLabel>
           <div className="space-y-4">
@@ -366,6 +375,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
             </Button>
           </div>
         </FormItem>
+
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
