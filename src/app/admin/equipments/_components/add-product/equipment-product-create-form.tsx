@@ -143,7 +143,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
         public_id: uploadedImagePublicIds[i],
       }));
 
-      // ✅ Ensure form re-renders after image upload
       setValue('images', combined, { shouldDirty: true });
     } catch (err) {
       console.error(err, 'server error');
@@ -181,9 +180,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
         className="space-y-6"
         style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
       >
-        {/* Form fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Name */}
           <FormField
             control={form.control}
             name="name"
@@ -197,7 +194,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
-          {/* Type */}
           <FormField
             control={form.control}
             name="type"
@@ -222,7 +218,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
-          {/* Brand */}
           <FormField
             control={form.control}
             name="brand"
@@ -236,7 +231,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
               </FormItem>
             )}
           />
-          {/* Price */}
           <FormField
             control={form.control}
             name="price"
@@ -257,7 +251,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           />
         </div>
 
-        {/* Image Upload */}
         <FormField
           control={form.control}
           name="images"
@@ -292,7 +285,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           )}
         />
 
-        {/* Description */}
         <FormField
           control={form.control}
           name="description"
@@ -311,7 +303,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           )}
         />
 
-        {/* Features */}
         <FormField
           control={form.control}
           name="features"
@@ -330,7 +321,6 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
           )}
         />
 
-        {/* Specifications */}
         <FormItem>
           <FormLabel>Үзүүлэлтүүд</FormLabel>
           <div className="space-y-4">

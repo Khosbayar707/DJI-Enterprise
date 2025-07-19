@@ -38,10 +38,17 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight leading-tight">
             {product.name}
           </h1>
-          <div className="flex items-center gap-3">
+
+          <div className="flex items-center gap-3 flex-wrap">
             <p className="text-gray-500 text-sm uppercase tracking-wider bg-gray-100 px-2.5 py-1 rounded-full">
               {product.type.toLowerCase()}
             </p>
+
+            {product.brand && (
+              <p className="text-gray-600 text-sm tracking-wider bg-blue-50 px-2.5 py-1 rounded-full">
+                Бренд: {product.brand}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -54,7 +61,7 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         <div className="space-y-4 bg-gray-50 p-4 rounded-xl">
           <h3 className="font-semibold text-gray-900 text-lg">Гол онцлогууд:</h3>
           <ul className="space-y-3">
-            {product.features.slice(0, 3).map((feature, index) => (
+            {product.features.map((feature, index) => (
               <motion.li
                 key={index}
                 className="flex items-start"
