@@ -2,94 +2,50 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaPhoneAlt, FaFacebookF, FaYoutube } from 'react-icons/fa';
+import { FaPhoneAlt, FaFacebookF, FaYoutube, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from '@/components/ui/accordion'; // Radix-ui wrapper
+} from '@/components/ui/accordion';
 
 const footerLinks = [
   {
     title: 'Бүтээгдэхүүн',
     links: [
-      {
-        name: 'Matrice Series',
-        info: 'DJI-ийн аж үйлдвэрийн зориулалттай дрон, өндөр чанар, удаан нислэгийн хугацаа',
-      },
-      {
-        name: 'Mavic Series',
-        info: 'Хувийн хэрэглээнд зориулсан боловсруулсан дрон, нимгэн, хөнгөн загвар',
-      },
-      {
-        name: 'Phantom Series',
-        info: 'Мэргэжлийн гэрэл зургийн дрон, өндөр нарийвчлалтай камер',
-      },
-      {
-        name: 'Дагалдах хэрэгсэл',
-        info: 'Дронд зориулсан нэмэлт хэрэгсэл, батерей, сэнс, хайрцаг гэх мэт',
-      },
-      {
-        name: 'Программ хангамж',
-        info: 'Дроны удирдлага, өгөгдөл боловсруулалтын программууд',
-      },
+      { name: 'Matrice Series', info: 'DJI-ийн аж үйлдвэрийн зориулалттай дрон' },
+      { name: 'Mavic Series', info: 'Хувийн хэрэглээнд зориулсан хөнгөн дрон' },
+      { name: 'Phantom Series', info: 'Мэргэжлийн гэрэл зургийн дрон' },
+      { name: 'Дагалдах хэрэгсэл', info: 'Батерей, хайрцаг, сэнс гэх мэт' },
+      { name: 'Программ хангамж', info: 'Удирдлага, өгөгдөл боловсруулалт' },
     ],
   },
   {
     title: 'Шийдлүүд',
     links: [
-      {
-        name: 'Аюулгүй байдал',
-        info: 'Онцгой байдлын үед хяналт тавих дроны шийдлүүд',
-      },
-      {
-        name: 'Эрчим хүч',
-        info: 'Цахилгаан дамжуулах шугам, сэргээгдэх эрчим хүчний байгууламжийн хяналт',
-      },
-      {
-        name: 'Хөдөө аж ахуй',
-        info: 'Тариалангийн талбайн мониторинг, ургацын тооцоо',
-      },
-      {
-        name: 'Барилга',
-        info: 'Барилгын талбайн дээд хяналт, явцын мониторинг',
-      },
-      {
-        name: 'Дэд бүтэц',
-        info: 'Зам гүүр, дэд бүтцийн барилгын хяналт',
-      },
+      { name: 'Аюулгүй байдал', info: 'Хяналт, онцгой байдлын шийдлүүд' },
+      { name: 'Эрчим хүч', info: 'Шугам, сэргээгдэх эрчим хүчний хяналт' },
+      { name: 'Хөдөө аж ахуй', info: 'Талбайн мониторинг, ургацын тооцоо' },
+      { name: 'Барилга', info: 'Барилгын явцын хяналт' },
+      { name: 'Дэд бүтэц', info: 'Зам, гүүрийн хяналт' },
     ],
   },
   {
     title: 'Дэмжлэг',
     links: [
-      {
-        name: 'Бүтээгдэхүүний дэмжлэг',
-        info: 'Бүх төрлийн техникийн асуулт, лавлагааны үйлчилгээ',
-      },
-      {
-        name: 'Засвар үйлчилгээ',
-        info: 'Албан ёсны засварын төв, мэргэжлийн инженерүүд',
-      },
-      {
-        name: 'Программ шинэчлэлт',
-        info: 'Сүүлийн үеийн firmware болон программ хангамжийн шинэчлэлт',
-      },
+      { name: 'Бүтээгдэхүүний дэмжлэг', info: 'Техникийн тусламж' },
+      { name: 'Засвар үйлчилгээ', info: 'Мэргэжлийн инженерийн засвар' },
+      { name: 'Программ шинэчлэлт', info: 'Firmware, програм хангамж' },
       {
         name: 'Холбоо барих',
-        info: 'Бидэнтэй холбогдох: dji@geo-mongol.mn, +976 9000 5559',
+        info: 'dji@geo-mongol.mn, +976 9000 5559 / +976 9190 2989 / +976 9909 5839',
       },
     ],
   },
   {
     title: 'Инженер Геодези',
-    links: [
-      {
-        name: 'Бидний тухай',
-        info: '2018 оноос хойш DJI бүтээгдэхүүний албан ёсны дистрибьютер',
-      },
-    ],
+    links: [{ name: 'Бидний тухай', info: 'DJI-ийн албан ёсны дистрибьютер (2018-оноос)' }],
   },
 ];
 
@@ -106,7 +62,7 @@ const socialLinks = [
   },
   {
     name: 'Phone',
-    href: 'tel:90005889',
+    href: 'tel:+97690005559',
     icon: <FaPhoneAlt className="w-5 h-5" />,
   },
 ];
@@ -170,10 +126,42 @@ const MainFooter = () => {
             ))}
           </div>
         </div>
-        <div className="mt-6 text-center md:text-left text-sm text-gray-500">
-          Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот
-          <br />
-          И-мэйл: info@engineer-geodesy.mn | Утас: +976 7011 2233
+
+        {/* Contact Details */}
+        <div className="mt-6 text-center md:text-left text-sm text-gray-600 space-y-2">
+          <p className="flex items-center justify-center md:justify-start gap-2">
+            <FaMapMarkerAlt className="text-blue-500" />
+            Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот
+          </p>
+          <p className="flex items-center justify-center md:justify-start gap-2">
+            <FaEnvelope className="text-blue-500" />
+            <span>И-мэйл: </span>
+            <a href="mailto:dji@geo-mongol.mn" className="text-blue-600 hover:underline">
+              dji@geo-mongol.mn
+            </a>
+            ,{' '}
+            <a href="mailto:dji_service@geo-mongol.mn" className="text-blue-600 hover:underline">
+              dji_service@geo-mongol.mn
+            </a>
+          </p>
+          <p className="flex items-center justify-center md:justify-start gap-2">
+            <FaPhoneAlt className="text-blue-500" />
+            <span>Утас: </span>
+            <a href="tel:+97690005559" className="text-blue-600 hover:underline">
+              +976 9000 5559
+            </a>{' '}
+            |{' '}
+            <a href="tel:+97691902989" className="text-blue-600 hover:underline">
+              +976 9190 2989
+            </a>{' '}
+            |{' '}
+            <a href="tel:+97699095839" className="text-blue-600 hover:underline">
+              +976 9909 5839
+            </a>
+          </p>
+          <p className="text-gray-500">
+            Ажиллах цаг: Даваа-Баасан 09:00 - 18:00 / Бямба-Ням: Амарна
+          </p>
         </div>
       </div>
     </footer>
