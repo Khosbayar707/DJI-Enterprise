@@ -136,6 +136,12 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
     }
   };
 
+  const removeImage = (index: number) => {
+    const currentImages = form.getValues('images') || [];
+    const updated = currentImages.filter((_, i) => i !== index);
+    setValue('images', updated);
+  };
+
   const addSpecification = () =>
     setValue('specifications', [...(specifications || []), { label: '', value: '' }]);
 
@@ -183,8 +189,12 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
         </Alert>
       </Snackbar>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+        style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <FormField
             control={form.control}
             name="name"
@@ -198,7 +208,6 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="type"
@@ -223,6 +232,19 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Брэнд</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled={form.formState.isSubmitting} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
         <FormField
@@ -238,7 +260,6 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="price"
@@ -278,7 +299,7 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
               </FormControl>
               <div className="flex gap-2 mt-2 flex-wrap">
                 {field.value?.map((img, idx) => (
-                  <div key={idx} className="relative w-24 h-24">
+                  <div key={idx} className="relative w-24 h-24 group">
                     <Image
                       src={img.url}
                       alt={`img-${idx}`}
@@ -286,6 +307,15 @@ export default function EditSurveyEquipmentForm({ product, setRefresh, onClose }
                       className="object-cover rounded border"
                       sizes="96px"
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="absolute top-1 right-1 bg-white rounded-full p-1 shadow group-hover:opacity-100 opacity-0 transition"
+                      disabled={imageUploading || form.formState.isSubmitting}
+                      title="Зураг устгах"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </button>
                   </div>
                 ))}
               </div>

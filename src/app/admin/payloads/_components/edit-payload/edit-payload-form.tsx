@@ -258,9 +258,17 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
                       className="object-cover border rounded"
                       sizes="96px"
                     />
+                    <Button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      className="absolute top-0 right-0 p-1 bg-white bg-opacity-70 rounded-full hover:bg-opacity-100"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-600" />
+                    </Button>
                   </div>
                 ))}
               </div>
+
               <FormMessage />
             </FormItem>
           )}
