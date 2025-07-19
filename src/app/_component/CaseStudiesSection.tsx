@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+
 import { motion } from 'framer-motion';
 
 const caseStudies = [
@@ -11,7 +11,6 @@ const caseStudies = [
       '10 см-ийн нарийвчлалтай орто зураг',
       'Газрын хэвлий, дэд бүтцийн мэдээллийн сан',
     ],
-    image: '/image/Geographic.jpg',
     tags: ['Газар зүй', 'DJI Phantom 4 RTK', '2023'],
   },
   {
@@ -22,7 +21,6 @@ const caseStudies = [
       'Хэт халсан цэгүүдийг илрүүлэх',
       'Урьдчилан сэргийлэх засварын төлөвлөгөө',
     ],
-    image: '/image/Geographic.jpg',
     tags: ['Эрчим хүч', 'DJI Mavic 3T', '2024'],
   },
   {
@@ -33,7 +31,6 @@ const caseStudies = [
       '3D загварчлал ба эзлэхүүний тооцоо',
       'Гүйцэтгэлийн график тайлангууд',
     ],
-    image: '/image/Geographic.jpg',
     tags: ['Барилга', 'DJI Matrice 300', '2023'],
   },
 ];
@@ -65,55 +62,44 @@ export default function CaseStudiesSection() {
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col h-full"
+              className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full p-6"
             >
-              <div className="h-56 relative">
-                <Image
-                  src={study.image}
-                  alt={study.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="flex flex-wrap gap-2 mb-4">
+                {study.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-              <div className="p-6 flex flex-col flex-grow">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {study.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">{study.title}</h3>
-                <p className="text-gray-600 mb-4">{study.description}</p>
 
-                <div className="mb-5 flex-grow">
-                  <h4 className="text-sm font-semibold text-gray-500 mb-2">ГҮЙЦЭТГЭЛ:</h4>
-                  <ul className="space-y-2">
-                    {study.details.map((detail, i) => (
-                      <li key={i} className="flex items-start">
-                        <svg
-                          className="w-4 h-4 mt-1 mr-2 text-blue-500 flex-shrink-0"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                          ></path>
-                        </svg>
-                        <span className="text-gray-700 text-sm">{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <h3 className="text-xl font-bold mb-2 text-gray-800">{study.title}</h3>
+              <p className="text-gray-600 mb-4 text-sm">{study.description}</p>
+
+              <div className="flex-grow">
+                <h4 className="text-sm font-semibold text-gray-500 mb-2">ГҮЙЦЭТГЭЛ:</h4>
+                <ul className="space-y-2">
+                  {study.details.map((detail, i) => (
+                    <li key={i} className="flex items-start">
+                      <svg
+                        className="w-4 h-4 mt-1 mr-2 text-blue-500 flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="text-gray-700 text-sm">{detail}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
           ))}
