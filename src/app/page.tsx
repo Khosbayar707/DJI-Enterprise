@@ -12,10 +12,10 @@ import HeroSection from './_component/HeroSection';
 import ServicesSection from './_component/ServicesSection';
 import ProductCard from './_component/ProductCard';
 import { CustomDroneClient } from '@/lib/types';
-import DroneServiceTrainingSection from './_component/DroneServiceTrainingSection ';
 import Head from 'next/head';
 import ProductCardSkeleton from './_component/skeleton/search-skeleton';
 import { motion } from 'framer-motion';
+import DroneServiceTrainingSection from './_component/DroneServiceTrainingSection ';
 
 const App = () => {
   const search = useSearchParams().get('search');
@@ -73,7 +73,6 @@ const App = () => {
                 <span className="text-red-500 font-semibold">олдсонгүй</span>.
               </>
             )}
-            <br />
           </p>
         </section>
       );
@@ -98,25 +97,25 @@ const App = () => {
   return (
     <main className="bg-white min-h-screen">
       <Head>
-        <title>Холбоо барих - Инженер Геодези ХХК</title>
+        <title>Инженер Геодези ХХК - Дрон худалдаа, үйлчилгээ</title>
         <meta
           name="description"
-          content="Мэргэжлийн дрон худалдаа, үйлчилгээний талаар бидэнтэй холбогдоорой."
+          content="Инженер Геодези ХХК - Дрон худалдаа, сургалт, засвар үйлчилгээний цогц шийдэл."
         />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Инженер Геодези ХХК - Холбоо барих" />
+        <meta property="og:title" content="Инженер Геодези ХХК - Дрон худалдаа, үйлчилгээ" />
         <meta
           property="og:description"
-          content="DJI дрон, сургалт, засвар үйлчилгээтэй холбоотой бидэнтэй холбогдоорой."
+          content="DJI дрон, сургалт, засвар үйлчилгээтэй холбоотой бүх мэдээллийг эндээс."
         />
         <meta property="og:image" content="/og-image.jpg" />
-        <meta property="og:url" content="https://example.mn/contact" />
+        <meta property="og:url" content="https://example.mn" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Инженер Геодези ХХК" />
         <meta name="twitter:description" content="Дрон худалдаа болон үйлчилгээний мэдээлэл." />
         <meta name="twitter:image" content="/og-image.jpg" />
-        <link rel="canonical" href="https://example.mn/contact" />
+        <link rel="canonical" href="https://example.mn" />
       </Head>
 
       {search ? (

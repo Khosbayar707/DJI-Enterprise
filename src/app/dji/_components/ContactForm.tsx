@@ -71,7 +71,10 @@ const ContactForm = () => {
   }, [response]);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mt-16">
+    <div
+      id="contact-form"
+      className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mt-16"
+    >
       {response && <CustomSnackbar value={response} />}
       <div className="p-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Бидэнтэй холбогдох</h2>
