@@ -141,7 +141,7 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-3 py-3.5 px-6 rounded-lg font-medium border-2 transition-all duration-200 bg-white hover:bg-gray-50 text-gray-800 border-gray-300 hover:border-gray-400"
+              className="w-full bg-black text-white flex items-center justify-center gap-3 py-3.5 px-6 rounded-lg font-medium border-2 transition-all duration-200 hover:bg-gray-900 border-gray-300 hover:border-gray-400"
             >
               <MessageSquare className="w-5 h-5" />
               Худалдагчтай холбогдох
