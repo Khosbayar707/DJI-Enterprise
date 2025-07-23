@@ -141,7 +141,9 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-black text-white flex items-center justify-center gap-3 py-3.5 px-6 rounded-lg font-medium border-2 transition-all duration-200 hover:bg-gray-900 border-gray-300 hover:border-gray-400"
+              onClick={onContactClick}
+              disabled={isLoading}
+              className="w-full px-6 py-5 gap-3 cursor-pointer bg-gradient-to-r from-blue-600 to-black text-white font-semibold text-base rounded-lg transition-all duration-500 ease-in-out shadow-md hover:shadow-lg hover:from-black hover:to-black active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
             >
               <MessageSquare className="w-5 h-5" />
               Худалдагчтай холбогдох

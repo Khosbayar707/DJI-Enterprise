@@ -46,19 +46,21 @@ export default function ProductListPage() {
     <div className="bg-gray-50 min-h-screen">
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-16 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">DJI дронууд</h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+            DJI дронууд
+          </h1>
+          <p className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto">
             Идэвхтэй амьдралын хэв маягт тань төгс тохирох технологийг олж нээгээрэй.
           </p>
         </div>
       </div>
 
-      <section className="py-12">
+      <section className="py-10 sm:py-12 px-4 sm:px-0">
         <div className="container mx-auto px-4">
           <FilterButtons />
 
           {filteredDrones.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
               {filteredDrones.map((drone, i) => (
                 <div
                   key={drone.id}

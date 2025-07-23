@@ -102,10 +102,9 @@ export default function PayloadInfo({ payload, onContactClick, isLoading }: Payl
         <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
           <DialogTrigger asChild>
             <Button
-              variant="default"
-              size="lg"
-              className="w-full gap-3 py-6 text-base font-medium"
               onClick={onContactClick}
+              disabled={isLoading}
+              className="w-full px-6 py-6 gap-3 cursor-pointer bg-gradient-to-r from-blue-600 to-black text-white font-semibold text-base rounded-lg transition-all duration-800 ease-in-out shadow-md hover:shadow-lg hover:from-black hover:to-black active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
             >
               <MessageSquare className="w-5 h-5" />
               Худалдагчтай холбогдох

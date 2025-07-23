@@ -73,7 +73,7 @@ export default function EquipmentProductCard({ product, index }: EquipmentProduc
             ))}
           </ul>
 
-          <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition transform hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-lg">
+          <button className="w-full py-3 px-4 text-sm sm:text-base font-semibold text-white rounded-lg bg-gradient-to-r from-blue-600 to-black hover:from-black hover:to-black transition-all duration-500 ease-in-out shadow-md hover:shadow-lg active:scale-[0.98]">
             Дэлгэрэнгүй
           </button>
         </div>
