@@ -106,10 +106,19 @@ const HeaderMain = () => {
     },
   ];
 
-  const searchTypeOptions = useMemo(
-    () => ['Agriculture', 'Enterprise', 'Consumer', 'Program', 'Payload and Camera', 'Equipment'],
-    []
-  );
+  const searchTypeLabelMap: { [key: string]: string } = {
+    'Agriculture drone': 'Agriculture',
+    'Enterprise drone': 'Enterprise',
+    'Consumer drone': 'Consumer',
+    'Дронын нэмэлт хэрэгсэл': 'Payload and Camera',
+    'Нэмэлт программ': 'Program',
+    'GNSS хүлээн авагч': 'GNSS',
+    'Тотал станц': 'TOTAL_STATION',
+    'Теодолит багаж': 'THEODOLITE',
+    'Автомат нивелир': 'AUTO_LEVEL',
+  };
+
+  const searchTypeOptions = useMemo(() => Object.keys(searchTypeLabelMap), []);
 
   const logout = useCallback(async () => {
     setLogging(true);
@@ -140,17 +149,25 @@ const HeaderMain = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (debouncedSearchQuery.trim()) {
+    const delayDebounceFn = setTimeout(() => {
+      if (!searchQuery) return;
+
+      const mappedType = searchTypeLabelMap[searchType];
+
       const query = new URLSearchParams();
-      query.set('search', debouncedSearchQuery);
-      if (searchType) query.set('type', searchType);
-      if (searchType === 'Payload and Camera' || searchType === 'Program') {
+      query.set('search', searchQuery);
+
+      if (['Payload and Camera', 'Program'].includes(mappedType)) {
         router.push(`/payload?${query.toString()}`);
+      } else if (['GNSS', 'TOTAL_STATION', 'THEODOLITE', 'AUTO_LEVEL'].includes(mappedType)) {
+        router.push(`/hitarget?${query.toString()}`);
       } else {
         router.push(`/dji?${query.toString()}`);
       }
-    }
-  }, [debouncedSearchQuery, searchType, router]);
+    }, 400);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, searchType, router]);
 
   const renderSearch = (
     <div className="flex flex-col sm:flex-row items-center gap-2 px-3 py-2 rounded-md relative z-30 w-full sm:w-auto">

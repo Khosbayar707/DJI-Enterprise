@@ -16,7 +16,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// GET one payload by ID
 export async function GET(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get('id');
@@ -41,7 +40,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PUT: update payload
 export async function PUT(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get('id');
@@ -82,7 +80,6 @@ export async function PUT(req: NextRequest) {
   }
 }
 
-// DELETE: delete payload and cloudinary images
 export async function DELETE(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get('id');

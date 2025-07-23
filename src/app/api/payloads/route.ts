@@ -10,7 +10,6 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
 import { PayloadType } from '@/generated/prisma';
 
-// GET: fetch all payloads, optionally filtered by type
 export async function GET(req: NextRequest) {
   try {
     const type = req.nextUrl.searchParams.get('type')?.toUpperCase();
@@ -36,7 +35,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST: create new payload (admin only)
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -89,7 +87,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// PATCH: update payload (admin only)
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
