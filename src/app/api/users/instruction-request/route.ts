@@ -5,7 +5,9 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const requests = await prisma.instructionRequest.findMany({ orderBy: { createdAt: 'desc' } });
+  const requests = await prisma.instructionRequest.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
   return CustomResponse(true, 'REQUEST_SUCCESS', 'Хүсэлт амжилттай!', { requests });
 }
 
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const { username, phone, email } = parsed.data;
+    const { username, phone, email, instructionType } = parsed.data;
     const forwarded = req.headers.get('x-forwarded-for');
     const ip = forwarded?.split(',')[0].trim() || 'unknown';
 
@@ -33,9 +35,8 @@ export async function POST(req: NextRequest) {
     if (existingRequest) {
       return CustomResponse(false, 'POSSIBLE_SPAM', 'Та өмнө нь хүсэлт илгээсэн байна.', null);
     }
-
     const newRequest = await prisma.instructionRequest.create({
-      data: { username, phone, email, ip },
+      data: { username, phone, email, ip, instructionType },
     });
 
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай илгээлээ!', {

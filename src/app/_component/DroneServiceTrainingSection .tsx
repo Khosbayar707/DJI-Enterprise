@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Wrench, School } from 'lucide-react';
 import InstructionRequestDialog from './instruction-request-dialog';
+import Link from 'next/link';
 
 export default function DroneServiceTrainingSection() {
   return (
@@ -78,9 +79,6 @@ export default function DroneServiceTrainingSection() {
                 Хурдан шуурхай засвар
               </li>
             </ul>
-            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
-              Дэлгэрэнгүй мэдээлэл
-            </Button>
           </div>
 
           <div className="bg-white p-8 rounded-lg shadow-md">
@@ -151,7 +149,9 @@ export default function DroneServiceTrainingSection() {
                 Хувийн болон бүлгийн сургалт
               </li>
             </ul>
-            <InstructionRequestDialog />
+            <Button variant="outline" className="border-green-600 text-green-600 hover:bg-blue-50">
+              <Link href="/trainings">Дэлгэрэнгүй мэдээлэл</Link>
+            </Button>
           </div>
         </div>
       </div>

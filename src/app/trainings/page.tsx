@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Select, MenuItem, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import InstructionRequestDialog from '../_component/instruction-request-dialog';
 
 const trainings = [
   {
@@ -94,7 +95,6 @@ export default function DronesTrainingPage() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-12">
-      {/* Hero Section */}
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800">
@@ -105,8 +105,6 @@ export default function DronesTrainingPage() {
           Өөрийн хэрэгцээнд тохирсон мэргэжлийн сургалтаа сонгоно уу
         </p>
       </div>
-
-      {/* Filter and Search Section */}
       <div className="mb-12 flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <div className="w-full md:w-auto flex items-center gap-2">
           <FilterAltIcon className="text-gray-500" />
@@ -139,8 +137,6 @@ export default function DronesTrainingPage() {
           size="small"
         />
       </div>
-
-      {/* Training Cards Grid */}
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {filteredTrainings.map((training, index) => (
           <div
@@ -158,7 +154,7 @@ export default function DronesTrainingPage() {
               </div>
 
               <h2 className="text-xl font-bold text-gray-800 mb-3">{training.title}</h2>
-              <p className="text-gray-600 mb-5 line-clamp-3">{training.description}</p>
+              <p className="text-gray-600 mb-5">{training.description}</p>
 
               <div className="flex justify-between text-sm text-gray-500 mb-5">
                 <div>
@@ -170,24 +166,10 @@ export default function DronesTrainingPage() {
                   <div className="text-blue-600 font-semibold">{training.price}</div>
                 </div>
               </div>
-
-              <div className="flex justify-between items-center">
-                <a
-                  href={training.link}
-                  className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors"
-                >
-                  Дэлгэрэнгүй
-                </a>
-                <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                  Бүртгүүлэх
-                </button>
-              </div>
             </div>
           </div>
         ))}
       </div>
-
-      {/* Empty State */}
       {filteredTrainings.length === 0 && (
         <div className="text-center py-16">
           <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
@@ -200,15 +182,12 @@ export default function DronesTrainingPage() {
         </div>
       )}
 
-      {/* CTA Section */}
       <div className="mt-20 text-center">
         <h3 className="text-2xl font-bold text-gray-800 mb-4">Сургалтанд бүртгүүлэхэд бэлэн үү?</h3>
         <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
           Манай мэргэжлийн баг танд тохирсон сургалтыг сонгож, амжилтанд хүрэхэд туслах болно.
         </p>
-        <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
-          Бүртгүүлэх хүсэлт илгээх
-        </button>
+        <InstructionRequestDialog />
       </div>
     </main>
   );

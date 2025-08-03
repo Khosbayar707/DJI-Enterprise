@@ -12,10 +12,7 @@ const InstructionRequestDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="border-green-600 text-green-600 hover:bg-green-100 transition-all cursor-pointer"
-        >
+        <Button className="py-3 px-4 text-sm sm:text-base font-semibold text-white rounded-lg bg-gradient-to-r from-blue-600 to-black hover:from-black hover:to-black transition-all duration-500 ease-in-out shadow-md hover:shadow-lg active:scale-[0.98]">
           Сургалтанд бүртгүүлэх
         </Button>
       </DialogTrigger>

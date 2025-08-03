@@ -92,7 +92,7 @@ const InstructionRequestCard = () => {
   return (
     <Card className="shadow-2xl">
       <CardHeader>
-        <CardTitle>Зөвлөгөө авах хүсэлтүүд</CardTitle>
+        <CardTitle>Сургалт авах хүсэлтүүд</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -102,6 +102,7 @@ const InstructionRequestCard = () => {
                 <TableHead>Нэр</TableHead>
                 <TableHead>Емайл</TableHead>
                 <TableHead>Утас</TableHead>
+                <TableHead>Сургалтын төрөл</TableHead>
                 <TableHead
                   className="cursor-pointer select-none"
                   onClick={() => toggleSort('createdAt')}
@@ -161,6 +162,7 @@ const InstructionRequestCard = () => {
                           <TableCell>{req.username}</TableCell>
                           <TableCell>{req.email}</TableCell>
                           <TableCell>{req.phone}</TableCell>
+                          <TableCell>{req.instructionType}</TableCell>
                           <TableCell>
                             {format(new Date(req.createdAt), 'yyyy-MM-dd HH:mm')}
                           </TableCell>
