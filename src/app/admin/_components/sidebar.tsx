@@ -70,7 +70,7 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
           section={AdminSideBarOptions.ContactRequest}
         />
         <NavButton
-          label="Зөвлөгөө авах хүсэлт"
+          label="Сургалт авах хүсэлт"
           icon={<Users size={20} />}
           section={AdminSideBarOptions.InstructionRequest}
         />

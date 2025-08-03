@@ -51,13 +51,23 @@ model ContactRequest {
 }
 
 model InstructionRequest {
-  id        String   @id @unique @default(nanoid())
-  username  String
-  phone     String
-  email     String
-  ip        String
-  resolved  Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id             String          @id @unique @default(nanoid())
+  username       String
+  phone          String
+  email          String
+  ip             String
+  instructionType InstructionType
+  resolved       Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+}
+
+enum InstructionType {
+  HOBBY_DRONE               
+  PROFESSIONAL_DRONE         
+  AERIAL_MAPPING            
+  AGRICULTURAL_DRONE         
+  FORESTRY_DRONE           
+  MINING_DRONE             
 }
 
 model OTP {

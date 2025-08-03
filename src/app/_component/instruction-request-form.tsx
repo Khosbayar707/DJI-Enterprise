@@ -20,6 +20,13 @@ import { useEffect, useState } from 'react';
 import { ResponseType } from '@/lib/types';
 import { CustomSnackbar } from '../admin/_components/snackbar';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const InstructionRequestForm = () => {
   const [response, setResponse] = useState<ResponseType>();
@@ -29,6 +36,7 @@ const InstructionRequestForm = () => {
       username: '',
       phone: '',
       email: '',
+      instructionType: undefined,
     },
   });
 
@@ -61,7 +69,7 @@ const InstructionRequestForm = () => {
               <FormItem>
                 <FormLabel>Таны нэр</FormLabel>
                 <FormControl>
-                  <Input placeholder="Жишээ: Балдан" {...field} />
+                  <Input placeholder="Нэр" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,8 +97,34 @@ const InstructionRequestForm = () => {
               <FormItem>
                 <FormLabel>Таны майл</FormLabel>
                 <FormControl>
-                  <Input placeholder="Жишээ: baldan@gmail.com" {...field} />
+                  <Input placeholder="Жишээ: example@gmail.com" {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="instructionType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Сургалтын төрөл</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Сургалтын төрөл сонгоно уу" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="HOBBY_DRONE">Сонирхогчийн дрон</SelectItem>
+                    <SelectItem value="PROFESSIONAL_DRONE">Мэргэжлийн дрон</SelectItem>
+                    <SelectItem value="AERIAL_MAPPING">Агаарын зураглал</SelectItem>
+                    <SelectItem value="AGRICULTURAL_DRONE">Хөдөө аж ахуй</SelectItem>
+                    <SelectItem value="FORESTRY_DRONE">Ойн салбар</SelectItem>
+                    <SelectItem value="MINING_DRONE">Уул уурхайн салбар</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
