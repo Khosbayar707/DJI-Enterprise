@@ -89,6 +89,10 @@ const HeaderMain = () => {
       ],
     },
     {
+      label: 'Дронын сургалт',
+      items: [{ label: 'Training', path: '/trainings' }],
+    },
+    {
       label: 'Garmin',
       items: [
         { label: 'Smartwatch', path: '/garmin?type=SMARTWATCH' },
@@ -216,58 +220,74 @@ const HeaderMain = () => {
           </motion.div>
 
           <nav className="hidden xl:flex items-center space-x-6 ml-8">
-            {navItems.map((nav, idx) => (
-              <Menu as="div" key={idx} className="relative">
-                {({ open }) => (
-                  <>
-                    <MenuButton className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 group">
-                      {nav.label}
-                      <ChevronDownIcon
-                        className={`ml-1 h-4 w-4 transition-transform duration-200 ${
-                          open ? 'rotate-180' : ''
-                        }`}
-                      />
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
-                    </MenuButton>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-150"
-                      enterFrom="opacity-0 scale-95"
-                      enterTo="opacity-100 scale-100"
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100 scale-100"
-                      leaveTo="opacity-0 scale-95"
+            {navItems.map((nav, idx) => {
+              const singleItem = nav.items.length === 1 && !nav.items[0].subitems;
+              if (singleItem) {
+                return (
+                  <motion.div key={idx} whileHover={{ scale: 1.05 }}>
+                    <Link
+                      href={nav.items[0].path}
+                      className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
                     >
-                      <MenuItems className="absolute z-10 mt-2 w-56 origin-top-left rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-2 space-y-1">
-                        {nav.items.map((item, i) => (
-                          <div key={i} className="space-y-1">
-                            <Link
-                              href={item.path}
-                              className="block px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600 rounded-md"
-                            >
-                              {item.label}
-                            </Link>
-                            {Array.isArray(item.subitems) && item.subitems.length > 0 && (
-                              <div className="ml-4 space-y-1 pl-2 border-l border-gray-100">
-                                {item.subitems.map((sub, j) => (
-                                  <Link
-                                    key={j}
-                                    href={sub.path}
-                                    className="block px-4 py-1.5 text-sm text-gray-600 hover:text-blue-500 hover:bg-gray-50 rounded-md"
-                                  >
-                                    {sub.label}
-                                  </Link>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </MenuItems>
-                    </Transition>
-                  </>
-                )}
-              </Menu>
-            ))}
+                      {nav.label}
+                    </Link>
+                  </motion.div>
+                );
+              }
+
+              return (
+                <Menu as="div" key={idx} className="relative">
+                  {({ open }) => (
+                    <>
+                      <MenuButton className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 group">
+                        {nav.label}
+                        <ChevronDownIcon
+                          className={`ml-1 h-4 w-4 transition-transform duration-200 ${
+                            open ? 'rotate-180' : ''
+                          }`}
+                        />
+                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
+                      </MenuButton>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-150"
+                        enterFrom="opacity-0 scale-95"
+                        enterTo="opacity-100 scale-100"
+                        leave="transition ease-in duration-100"
+                        leaveFrom="opacity-100 scale-100"
+                        leaveTo="opacity-0 scale-95"
+                      >
+                        <MenuItems className="absolute z-10 mt-2 w-56 origin-top-left rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-2 space-y-1">
+                          {nav.items.map((item, i) => (
+                            <div key={i} className="space-y-1">
+                              <Link
+                                href={item.path}
+                                className="block px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 hover:text-blue-600 rounded-md"
+                              >
+                                {item.label}
+                              </Link>
+                              {Array.isArray(item.subitems) && item.subitems.length > 0 && (
+                                <div className="ml-4 space-y-1 pl-2 border-l border-gray-100">
+                                  {item.subitems.map((sub, j) => (
+                                    <Link
+                                      key={j}
+                                      href={sub.path}
+                                      className="block px-4 py-1.5 text-sm text-gray-600 hover:text-blue-500 hover:bg-gray-50 rounded-md"
+                                    >
+                                      {sub.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </MenuItems>
+                      </Transition>
+                    </>
+                  )}
+                </Menu>
+              );
+            })}
           </nav>
 
           <div className="hidden xl:flex items-center space-x-4 ml-auto">
