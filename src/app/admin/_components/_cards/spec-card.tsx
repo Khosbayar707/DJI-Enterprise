@@ -59,13 +59,11 @@ const SpecCard = () => {
     <div className="flex flex-col gap-6">
       {response && <CustomSnackbar value={response} />}
 
-      {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Эд ангийн жагсаалт</h2>
         <AddSpecDialog refresh={refresh} setRefresh={setRefresh} />
       </div>
 
-      {/* Specs List */}
       {loading ? (
         <div className="w-full flex justify-center">
           <LoadingText />

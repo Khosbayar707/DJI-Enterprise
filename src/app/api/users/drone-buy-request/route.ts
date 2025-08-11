@@ -69,6 +69,9 @@ export async function PATCH(req: NextRequest) {
     if (!request) {
       return CustomResponse(false, 'REQUEST_NOT_FOUND', 'Хүсэлт олдсонгүй!', null);
     }
+
+    const signatureImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/image/za_signature.png`;
+
     await transporter.sendMail({
       from: `"DJI Mongolia" <${process.env.EMAIL}>`,
       to: request.user.email,
@@ -93,28 +96,24 @@ export async function PATCH(req: NextRequest) {
           <td style="font-weight: bold; padding: 8px;">Тайлбар:</td>
           <td style="padding: 8px;">${request.drone.description}</td>
         </tr>
-        <tr style="background-color: #f9f9f9;">
-          <td style="font-weight: bold; padding: 8px;">Жин:</td>
-          <td style="padding: 8px;">${request.drone.weight}</td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold; padding: 8px;">Хямдрал:</td>
-          <td style="padding: 8px;">${request.drone.discount}%</td>
-        </tr>
-        <tr style="background-color: #f9f9f9;">
-          <td style="font-weight: bold; padding: 8px;">Нөөц:</td>
-          <td style="padding: 8px;">${request.drone.stock} ширхэг</td>
-        </tr>
       </table>
 
-      <div style="margin-top: 20px;">
+      <div style="margin-top: 20px; display: flex; align-items: center; gap: 20px;">
         <a href="${process.env.NEXT_PUBLIC_BASE_URL}/dji/${request.drone.id}" 
            style="display: inline-block; background-color: #0070f3; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px;">
           Дэлгэрэнгүй харах
         </a>
+        <div style="border-left: 1px solid #ddd; height: 40px;"></div>
+        <img 
+          src="${signatureImageUrl}" 
+          alt="Signature" 
+          style="max-height: 60px; object-fit: contain;"
+        />
       </div>
 
-      <p style="margin-top: 30px; font-size: 14px; color: #555;">Баярлалаа!<br />DJI Mongolia</p>
+      <p style="margin-top: 30px; font-size: 14px; color: #555;">
+        Баярлалаа!<br />DJI Mongolia
+      </p>
     </div>
   `,
     });
