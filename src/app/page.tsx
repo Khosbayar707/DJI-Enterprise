@@ -126,7 +126,7 @@ const App = () => {
           <ServicesSection />
           <DJIProductsSection />
           <DroneServiceTrainingSection />
-          <CaseStudiesSection />
+          {/* <CaseStudiesSection /> */}
           <AboutCompanySection />
           <ContactSection />
         </>
