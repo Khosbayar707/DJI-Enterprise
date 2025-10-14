@@ -48,6 +48,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
       name: '',
       type: 'SMARTWATCH',
       price: 0,
+      stock: 0,
       images: [],
       description: '',
       features: '',
@@ -238,6 +239,28 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
 
           <FormField
             control={form.control}
+            name="stock"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Үлдэгдэл (ш)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    disabled={form.formState.isSubmitting}
+                    placeholder="0"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="rating"
             render={({ field }) => (
               <FormItem>
@@ -405,7 +428,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
               <FormControl>
                 <Checkbox
                   checked={field.value}
-                  onChange={field.onChange}
+                  onChange={(_, checked) => field.onChange(checked)}
                   disabled={form.formState.isSubmitting}
                 />
               </FormControl>
