@@ -1,8 +1,9 @@
 export interface Drone {
   id: string;
   name: string;
-  price: string;
-  discountPrice?: string;
+  price: number;
+  discount?: number;
+  stock: number;
   mainImage: string;
   images: string[];
   description: string;
@@ -15,20 +16,9 @@ export interface Drone {
 export interface Product {
   id: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
   image: string;
-}
-
-export interface BreadcrumbItem {
-  label: string;
-  href: string;
-}
-
-export interface ContactInfoItemProps {
-  icon: React.ReactNode;
-  title: string;
-  items: string[];
 }
 
 export interface GarminProduct {
@@ -45,26 +35,43 @@ export interface GarminProduct {
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  stock: number;
   createdAt: Date;
   updatedAt: Date;
   images: { url: string; public_id: string }[];
   specifications: { id: string; label: string; value: string }[];
 }
+
 export interface DronePayload {
   id: string;
   name: string;
   price: number;
-  type: 'ZENMUSE' | 'LIDAR' | 'SPEAKER' | 'SPOTLIGHT' | 'TETHER' | 'OTHER';
+  type:
+    | 'ZENMUSE'
+    | 'LIDAR'
+    | 'SPEAKER'
+    | 'SPOTLIGHT'
+    | 'TETHER'
+    | 'OTHER'
+    | 'PROGRAM'
+    | 'PAYLOAD_AND_CAMERA';
   description: string;
   features: string[];
   images: { url: string; public_id: string }[];
+  stock: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type LoanProvider = {
-  name: string;
-  description: string;
-  logo: string;
-  link: string;
-};
+export type LoanProvider = { name: string; description: string; logo: string; link: string };
+
+export interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
+export interface ContactInfoItemProps {
+  icon: React.ReactNode;
+  title: string;
+  items: string[];
+}

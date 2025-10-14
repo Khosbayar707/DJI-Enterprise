@@ -57,6 +57,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
       brand: '',
       description: '',
       price: 0,
+      stock: 0,
       features: '',
       images: [],
       specifications: [],
@@ -65,7 +66,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
 
   const { setValue, watch } = form;
   const specifications = watch('specifications');
-  const images = watch('images'); // 👈 Used to trigger re-render on image update
+  const images = watch('images');
 
   const onSubmit = async (data: AddSurveyEquipmentSchemaType) => {
     try {
@@ -250,7 +251,29 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
             )}
           />
         </div>
-
+        <FormField
+          control={form.control}
+          name="stock"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Үлдэгдэл (ш)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  {...field}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    field.onChange(v === '' ? '' : Math.max(0, Math.floor(Number(v))));
+                  }}
+                  placeholder="0"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="images"
