@@ -55,6 +55,7 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
       name: product.name,
       type: product.type || 'SMARTWATCH',
       price: product.price,
+      stock: product.stock,
       images: product.images || [],
       description: product.description || '',
       features: product.features?.join('\n') || '',
@@ -253,6 +254,31 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="stock"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Үлдэгдэл (ш)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    step={1}
+                    disabled={form.formState.isSubmitting}
+                    {...field}
+                    onChange={(e) => {
+                      const n = Math.max(0, Math.floor(Number(e.target.value || 0)));
+                      field.onChange(n);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="rating"
