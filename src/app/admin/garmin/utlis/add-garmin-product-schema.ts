@@ -6,6 +6,7 @@ export const AddGarminProductSchema = z.object({
     message: 'Бүтээгдэхүүний төрөл SMARTWATCH эсвэл GPS байх ёстой!',
   }),
   price: z.number().min(0, { message: 'Үнэ 0-ээс бага байж болохгүй!' }),
+  stock: z.number().min(0, { message: 'Тоо хэмжээ 0-ээс бага байж болохгүй!' }),
   images: z.array(
     z.object({
       url: z.string(),
