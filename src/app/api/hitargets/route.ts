@@ -38,7 +38,17 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, price, type, brand, description, features, images, specifications } = body;
+    const {
+      name,
+      price,
+      stock = 0,
+      type,
+      brand,
+      description,
+      features,
+      images,
+      specifications,
+    } = body;
 
     if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
 
@@ -48,8 +58,17 @@ export async function POST(req: NextRequest) {
     const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as { isAdmin: boolean };
     if (!verify.isAdmin) return NextResponse_NotAnAdmin();
 
-    if (!name || !type || !price || !Array.isArray(features)) {
+    if (!name || !type || price == null || !Array.isArray(features)) {
       return CustomResponse(false, 'INVALID_INPUT', 'Шаардлагатай талбарууд дутуу байна', null);
+    }
+
+    if (typeof stock !== 'number' || !Number.isInteger(stock) || stock < 0) {
+      return CustomResponse(
+        false,
+        'INVALID_STOCK',
+        'Үлдэгдэл буруу байна (0 буюу түүнээс их бүхэл тоо)',
+        null
+      );
     }
 
     if (!Object.values(EquipmentType).includes(type)) {
@@ -60,26 +79,31 @@ export async function POST(req: NextRequest) {
       data: {
         name,
         price,
+        stock,
         type,
         brand,
         description,
         features,
-        images: {
-          createMany: {
-            data: images.map((img: any) => ({
-              url: img.url,
-              public_id: img.public_id,
-            })),
-          },
-        },
-        specifications: {
-          createMany: {
-            data: specifications.map((spec: any) => ({
-              label: spec.label,
-              value: spec.value,
-            })),
-          },
-        },
+        images: images?.length
+          ? {
+              createMany: {
+                data: images.map((img: any) => ({
+                  url: img.url,
+                  public_id: img.public_id,
+                })),
+              },
+            }
+          : undefined,
+        specifications: specifications?.length
+          ? {
+              createMany: {
+                data: specifications.map((spec: any) => ({
+                  label: spec.label,
+                  value: spec.value,
+                })),
+              },
+            }
+          : undefined,
       },
       include: {
         images: true,
@@ -96,15 +120,28 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { id, name, price, brand, description, features, images, specifications } = body;
+    const { id, name, price, stock, brand, description, features, images, specifications } = body;
 
     if (!id) return CustomResponse(false, 'MISSING_ID', 'ID заавал байх ёстой', null);
+
+    if (
+      stock !== undefined &&
+      (typeof stock !== 'number' || !Number.isInteger(stock) || stock < 0)
+    ) {
+      return CustomResponse(
+        false,
+        'INVALID_STOCK',
+        'Үлдэгдэл буруу байна (0 буюу түүнээс их бүхэл тоо)',
+        null
+      );
+    }
 
     const updated = await prisma.surveyEquipment.update({
       where: { id },
       data: {
         name,
         price,
+        stock,
         brand,
         description,
         features,

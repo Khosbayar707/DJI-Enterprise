@@ -36,7 +36,7 @@ const DroneAdvantagesCard = ({ drone, setRefresh, id }: Props) => {
       });
       if (res.data.success) {
         setRefresh((prev) => !prev);
-        form.reset(); // clear input
+        form.reset();
       }
       setResponse(res.data);
     } catch (err) {
