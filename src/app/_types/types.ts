@@ -64,3 +64,14 @@ export interface DronePayload {
 }
 
 export type LoanProvider = { name: string; description: string; logo: string; link: string };
+
+export interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
+export interface ContactInfoItemProps {
+  icon: React.ReactNode;
+  title: string;
+  items: string[];
+}
