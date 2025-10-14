@@ -62,3 +62,5 @@ export interface DronePayload {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type LoanProvider = { name: string; description: string; logo: string; link: string };

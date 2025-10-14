@@ -66,7 +66,7 @@ export default function SurveyEquipmentCreateForm({ setRefresh }: Props) {
 
   const { setValue, watch } = form;
   const specifications = watch('specifications');
-  const images = watch('images'); // 👈 Used to trigger re-render on image update
+  const images = watch('images');
 
   const onSubmit = async (data: AddSurveyEquipmentSchemaType) => {
     try {
