@@ -44,10 +44,17 @@ export async function PUT(req: NextRequest) {
       return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга байна!', null);
     }
 
+    if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
+    const accessToken = req.cookies.get('accessToken')?.value;
+    if (!accessToken) return NextResponse_NoToken();
+    const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as { isAdmin: boolean };
+    if (!verify.isAdmin) return NextResponse_NotAnAdmin();
+
     const body = await req.json();
     const {
       name,
       price,
+      stock,
       description,
       images,
       features,
@@ -56,46 +63,101 @@ export async function PUT(req: NextRequest) {
       reviewCount,
       inStock,
       specifications,
+      type,
     } = body;
 
-    if (!Array.isArray(images) || !images.every((img) => img.url && img.public_id)) {
+    if (price !== undefined && (price == null || Number.isNaN(Number(price)))) {
+      return CustomResponse(false, 'INVALID_PRICE', 'Үнэ буруу байна', null);
+    }
+    if (stock !== undefined && (!Number.isInteger(stock) || stock < 0)) {
+      return CustomResponse(
+        false,
+        'INVALID_STOCK',
+        'Үлдэгдэл 0 буюу түүнээс их бүхэл тоо байх ёстой',
+        null
+      );
+    }
+    if (rating !== undefined && (typeof rating !== 'number' || rating < 0 || rating > 5)) {
+      return CustomResponse(false, 'INVALID_RATING', 'Үнэлгээ 0-5 хооронд байх ёстой', null);
+    }
+    if (reviewCount !== undefined && (!Number.isInteger(reviewCount) || reviewCount < 0)) {
+      return CustomResponse(
+        false,
+        'INVALID_REVIEW_COUNT',
+        'Сэтгэгдлийн тоо 0 буюу түүнээс их бүхэл тоо',
+        null
+      );
+    }
+    if (type !== undefined && !['SMARTWATCH', 'GPS'].includes(type)) {
+      return CustomResponse(false, 'INVALID_TYPE', 'Бүтээгдэхүүний төрөл буруу', null);
+    }
+
+    if (!Array.isArray(images) || !images.every((img: any) => img?.url && img?.public_id)) {
       return CustomResponse(false, 'INVALID_IMAGES', 'Зураг буруу форматтай байна', null);
     }
+    if (specifications !== undefined) {
+      if (!Array.isArray(specifications)) {
+        return CustomResponse(
+          false,
+          'INVALID_SPECIFICATIONS',
+          'Тодорхойлолт массив байх ёстой',
+          null
+        );
+      }
+      if (!specifications.every((s: any) => s?.label && s?.value)) {
+        return CustomResponse(
+          false,
+          'INVALID_SPECIFICATIONS',
+          'Тодорхойлолт бүрт нэр/утга шаардлагатай',
+          null
+        );
+      }
+    }
+
+    const data: any = {
+      name,
+      type,
+      description,
+      isNew,
+      rating,
+      reviewCount,
+      features: Array.isArray(features) ? features : [],
+    };
+    if (price !== undefined) data.price = Number(price);
+
+    if (stock !== undefined) {
+      data.stock = stock;
+      data.inStock = stock > 0;
+    } else if (inStock !== undefined) {
+      data.inStock = !!inStock;
+    }
+
+    data.specifications = {
+      deleteMany: {},
+      createMany: {
+        data: (specifications ?? []).map((spec: any) => ({
+          label: spec.label,
+          value: spec.value,
+        })),
+      },
+    };
+    data.images = {
+      deleteMany: {},
+      createMany: {
+        data: images.map((img: any) => ({
+          url: img.url,
+          public_id: img.public_id,
+        })),
+      },
+    };
 
     const updatedProduct = await prisma.garminProduct.update({
       where: { id },
-      data: {
-        name,
-        price,
-        description,
-        isNew,
-        rating,
-        reviewCount,
-        inStock,
-        features: Array.isArray(features) ? features : [],
-        specifications: {
-          deleteMany: {},
-          create: specifications || [],
-        },
-        images: {
-          deleteMany: {},
-          createMany: {
-            data: images.map((img) => ({
-              url: img.url,
-              public_id: img.public_id,
-            })),
-          },
-        },
-      },
-      include: {
-        specifications: true,
-        images: true,
-      },
+      data,
+      include: { specifications: true, images: true },
     });
 
-    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай', {
-      updatedProduct,
-    });
+    return CustomResponse(true, 'REQUEST_SUCCESS', 'Амжилттай', { updatedProduct });
   } catch (err) {
     return NextResponse_CatchError(err);
   }

@@ -232,7 +232,7 @@ export async function PATCH(req: NextRequest) {
     if (price !== undefined) data.price = Number(price);
     if (stock !== undefined) {
       data.stock = stock;
-      data.inStock = stock > 0; // ⬅️ keep in sync
+      data.inStock = stock > 0;
     } else if (inStock !== undefined) {
       data.inStock = !!inStock;
     }
