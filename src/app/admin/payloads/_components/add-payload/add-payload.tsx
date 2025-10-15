@@ -43,6 +43,7 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
     defaultValues: {
       name: '',
       price: 0,
+      stock: 0,
       type: 'ZENMUSE',
       description: '',
       images: [],
