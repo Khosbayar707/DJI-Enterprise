@@ -43,14 +43,31 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get('id');
-    if (!id) {
-      return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга байна!', null);
-    }
+    if (!id) return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга байна!', null);
+
+    if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
+    const accessToken = req.cookies.get('accessToken')?.value;
+    if (!accessToken) return NextResponse_NoToken();
+    const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as { isAdmin: boolean };
+    if (!verify.isAdmin) return NextResponse_NotAnAdmin();
 
     const body = await req.json();
-    const { name, type, description, price, images, features } = body;
+    const { name, type, description, price, images, features, stock } = body;
 
-    if (!Array.isArray(images) || !images.every((img) => img.url && img.public_id)) {
+    if (price !== undefined && (price == null || Number.isNaN(Number(price)))) {
+      return CustomResponse(false, 'INVALID_PRICE', 'Үнэ буруу байна', null);
+    }
+
+    if (stock !== undefined && (!Number.isInteger(stock) || stock < 0)) {
+      return CustomResponse(
+        false,
+        'INVALID_STOCK',
+        'Үлдэгдэл 0 буюу түүнээс их бүхэл тоо байх ёстой',
+        null
+      );
+    }
+
+    if (!Array.isArray(images) || !images.every((img: any) => img?.url && img?.public_id)) {
       return CustomResponse(false, 'INVALID_IMAGES', 'Зураг буруу форматтай байна', null);
     }
 
@@ -60,18 +77,20 @@ export async function PUT(req: NextRequest) {
         name,
         type,
         description,
-        price,
+        price: price !== undefined ? Number(price) : undefined,
+        stock,
+        features: Array.isArray(features) ? features : [],
         images: {
           deleteMany: {},
           createMany: {
-            data: images.map((img) => ({
+            data: images.map((img: any) => ({
               url: img.url,
               public_id: img.public_id,
             })),
           },
         },
-        features: Array.isArray(features) ? features : [],
       },
+      include: { images: true },
     });
 
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Payload шинэчиллээ!', { updatedPayload });
@@ -83,15 +102,11 @@ export async function PUT(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   try {
     const id = req.nextUrl.searchParams.get('id');
-    if (!id) {
-      return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга байна!', null);
-    }
+    if (!id) return CustomResponse(false, 'NO_ID_PROVIDED', 'Таних тэмдэг алга байна!', null);
 
     if (!process.env.JWT_SECRET) return NextResponse_NoEnv();
-
     const accessToken = req.cookies.get('accessToken')?.value;
     if (!accessToken) return NextResponse_NoToken();
-
     const verify = jwt.verify(accessToken, process.env.JWT_SECRET) as { isAdmin: boolean };
     if (!verify.isAdmin) return NextResponse_NotAnAdmin();
 
@@ -101,7 +116,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     const images = await prisma.image.findMany({
-      where: { garminId: id },
+      where: { payloadId: id },
     });
 
     for (const img of images) {
@@ -118,6 +133,7 @@ export async function DELETE(req: NextRequest) {
       }
     }
 
+    await prisma.image.deleteMany({ where: { payloadId: id } });
     const deleted = await prisma.dronePayload.delete({ where: { id } });
 
     return CustomResponse(true, 'REQUEST_SUCCESS', 'Payload устгалаа!', { deleted });
