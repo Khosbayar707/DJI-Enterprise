@@ -49,10 +49,11 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
   return (
     <div className="space-y-8Я">
       <div className="flex justify-between items-start gap-4">
-        <div className="space-y-3">
+        <div className="space-y-2">
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight leading-tight">
             {product.name}
           </h1>
+
           <div className="flex items-center gap-3">
             <p className="text-gray-500 text-sm uppercase tracking-wider bg-gray-100 px-2.5 py-1 rounded-full">
               {product.type.toLowerCase()}
@@ -63,6 +64,79 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
               </span>
             )}
           </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span
+            className={[
+              'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium shadow-sm transition-all duration-300',
+              product.stock > 10
+                ? 'bg-green-50 text-green-700 border border-green-300'
+                : product.stock > 0
+                  ? 'bg-amber-50 text-amber-700 border border-amber-300'
+                  : 'bg-red-50 text-red-700 border border-red-300',
+            ].join(' ')}
+          >
+            {product.stock > 10 ? (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Бэлэн: {product.stock} ш
+              </>
+            ) : product.stock > 0 ? (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 text-amber-600"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8V6h2v4H9zm0 4v-2h2v2H9z" />
+                </svg>
+                Үлдэгдэл: {product.stock} ш
+              </>
+            ) : (
+              <>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Түр дууссан
+              </>
+            )}
+          </span>
+
+          {product.stock > 0 && product.stock <= 5 && (
+            <div className="flex items-center gap-1 text-xs text-amber-700 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full shadow-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-3.5 h-3.5 text-amber-600"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8В6h2v4H9zm0 4v-2h2v2H9z" />
+              </svg>
+              <span>Яараарай, үлдэгдэл бага байна!</span>
+            </div>
+          )}
         </div>
       </div>
 
