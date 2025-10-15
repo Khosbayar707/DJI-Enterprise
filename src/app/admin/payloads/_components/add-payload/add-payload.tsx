@@ -43,6 +43,7 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
     defaultValues: {
       name: '',
       price: 0,
+      stock: 0,
       type: 'ZENMUSE',
       description: '',
       images: [],
@@ -201,6 +202,28 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
                   type="number"
                   disabled={form.formState.isSubmitting}
                   placeholder="0.00"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="stock"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Үлдэгдэл (ш)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  disabled={form.formState.isSubmitting}
+                  placeholder="0"
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />

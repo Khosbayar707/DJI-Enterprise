@@ -5,6 +5,7 @@ export const DronePayloadSchema = z.object({
   name: z.string().min(1, 'Нэр шаардлагатай'),
   type: z.nativeEnum(PayloadType),
   price: z.number().min(0, { message: 'Үнэ 0-ээс бага байж болохгүй!' }),
+  stock: z.number().min(0, { message: 'Тоо хэмжээ 0-ээс бага байж болохгүй!' }),
   description: z.string().optional(),
   images: z.array(
     z.object({
