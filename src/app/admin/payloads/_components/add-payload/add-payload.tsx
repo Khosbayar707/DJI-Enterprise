@@ -213,6 +213,28 @@ export default function DronePayloadCreateForm({ setRefresh }: Props) {
 
         <FormField
           control={form.control}
+          name="stock"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Үлдэгдэл (ш)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  disabled={form.formState.isSubmitting}
+                  placeholder="0"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="images"
           render={({ field }) => (
             <FormItem>

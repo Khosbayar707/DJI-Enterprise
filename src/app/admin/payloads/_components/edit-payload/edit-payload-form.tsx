@@ -54,6 +54,7 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
       description: payload.description || '',
       images: payload.images || [],
       features: payload.features?.join('\n') || '',
+      stock: payload.stock ?? 0,
     },
   });
 
@@ -223,6 +224,31 @@ export default function EditPayloadForm({ payload, setRefresh, onClose }: Props)
                   disabled={form.formState.isSubmitting}
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="stock"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Үлдэгдэл (ш)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  step={1}
+                  disabled={form.formState.isSubmitting}
+                  {...field}
+                  onChange={(e) => {
+                    const n = Math.max(0, Math.floor(Number(e.target.value || 0)));
+                    field.onChange(n);
+                  }}
                 />
               </FormControl>
               <FormMessage />
