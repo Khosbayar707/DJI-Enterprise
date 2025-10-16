@@ -18,12 +18,10 @@ const TABS: { id: ProductTabOptions; label: string }[] = [
 export default function ProductTabs({ drone }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState<ProductTabOptions>(ProductTabOptions.features);
 
-  // For the moving active-indicator width/left
   const activeIndex = useMemo(() => TABS.findIndex((t) => t.id === activeTab), [activeTab]);
 
   return (
     <div className="mt-6 sm:mt-10 bg-white rounded-2xl shadow-lg overflow-hidden">
-      {/* Tab bar */}
       <div className="relative border-b border-gray-200">
         <nav
           className="flex gap-2 overflow-x-auto no-scrollbar px-2 py-2 sm:px-4 sm:py-3"
@@ -39,13 +37,10 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
                 role="tab"
                 aria-selected={isActive}
                 className={[
-                  // size & shape
                   'px-3 py-2 sm:px-4 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium',
-                  // colors
                   isActive
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-                  // interaction
                   'transition-colors whitespace-nowrap',
                 ].join(' ')}
               >
@@ -54,11 +49,9 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
             );
           })}
         </nav>
-        {/* Thin underline on desktop to echo structure (mobile pills already distinct) */}
         <div className="hidden sm:block absolute bottom-0 left-0 right-0 h-px bg-gray-200" />
       </div>
 
-      {/* Tab content container */}
       <div className="p-4 sm:p-6 md:p-8">
         {activeTab === ProductTabOptions.features && <FeaturesTab drone={drone} />}
         {activeTab === ProductTabOptions.specs && <SpecsTab drone={drone} />}
@@ -69,14 +62,11 @@ export default function ProductTabs({ drone }: ProductTabsProps) {
   );
 }
 
-/* -------------------- Content Tabs -------------------- */
-
 type TabContentProps = { drone: CustomDroneClient };
 
 function FeaturesTab({ drone }: TabContentProps) {
   return (
     <div className="space-y-5 sm:space-y-6">
-      {/* Title/lede on mobile kept tight */}
       <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
         {drone.description}
       </h2>
@@ -96,7 +86,6 @@ function FeaturesTab({ drone }: TabContentProps) {
         <p className="text-xs sm:text-sm text-gray-500 italic py-2">Тайлбар оруулаагүй байна</p>
       )}
 
-      {/* Video */}
       <section className="pt-2 sm:pt-4">
         <h3 className="text-sm sm:text-base font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-gray-900">
           <PlayCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
@@ -104,7 +93,6 @@ function FeaturesTab({ drone }: TabContentProps) {
         </h3>
         {drone.videos.length > 0 ? (
           <div className="relative overflow-hidden rounded-xl shadow-md bg-black">
-            {/* Aspect-ratio responsive container for mobile-first */}
             <div className="relative w-full aspect-video sm:aspect-[16/9]">
               <video
                 muted
@@ -202,7 +190,6 @@ function ReviewsTab() {
   );
 }
 
-/* Hide native scrollbar on mobile for the tab row */
 <style jsx global>{`
   .no-scrollbar::-webkit-scrollbar {
     display: none;
