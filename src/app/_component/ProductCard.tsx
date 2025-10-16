@@ -6,45 +6,89 @@ import { CustomDroneClient } from '@/lib/types';
 type ProductCardProps = { drone: CustomDroneClient; index: number };
 
 export default function ProductCard({ drone, index }: ProductCardProps) {
+  const firstImage = drone.images?.[0];
+
+  const typeLabelMap: Record<string, string> = {
+    ENTERPRISE: 'Enterprise',
+    CONSUMER: 'Consumer',
+    FPV: 'FPV',
+    PAYLOAD: 'Payload',
+  };
+
+  const price =
+    drone.droneType === 'CONSUMER'
+      ? new Intl.NumberFormat('mn-MN', {
+          style: 'currency',
+          currency: 'MNT',
+          maximumFractionDigits: 0,
+        }).format(drone.price)
+      : '';
+
   return (
-    <Link href={`/dji/${drone.id}`} target="_blank">
+    <Link href={`/dji/${drone.id}`} aria-label={`${drone.name} дэлгэрэнгүй`} target="_blank">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.1 }}
-        viewport={{ once: true }}
-        className="rounded-2xl border border-gray-200 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 p-3 sm:p-4 flex-1 flex flex-col justify-between"
+        transition={{ delay: index * 0.06, duration: 0.4, ease: 'easeOut' }}
+        viewport={{ once: true, margin: '-10% 0px' }}
+        className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus-within:ring-2 focus-within:ring-blue-500"
       >
-        <div className="relative w-full aspect-[4/3] bg-gray-200">
-          {drone.images.length > 0 ? (
-            <Image
-              src={drone.images[0].url}
-              alt={drone.images[0].name}
-              fill
-              className="object-cover"
-              priority={index < 3}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-500">
-              Зураг алга
-            </div>
-          )}
-        </div>
-        <div className="p-4 flex-1 flex flex-col justify-between">
-          <div>
-            <h3 className="text-base sm:text-lg font-bold mb-2 break-words">{drone.name}</h3>
-            <p className="text-gray-600 text-sm line-clamp-1">{drone.briefDescription}</p>
+        {/* Image */}
+        <div className="relative w-full overflow-hidden rounded-t-2xl bg-white">
+          {/* Тогтмол харьцаа – бүх карт ижил өндөртэй */}
+          <div className="relative aspect-[4/3]">
+            {firstImage ? (
+              <Image
+                src={firstImage.url}
+                alt={firstImage.name || drone.name}
+                fill
+                // ЧУХАЛ: дүүргэх, төвд тайрах
+                className="object-cover"
+                priority={index < 3}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-xs text-gray-400 bg-gray-50">
+                Зураг байхгүй
+              </div>
+            )}
           </div>
-          {drone.droneType === 'CONSUMER' && (
-            <p className="mt-2 text-blue-600 font-semibold text-lg">
-              {new Intl.NumberFormat('mn-MN', {
-                style: 'currency',
-                currency: 'MNT',
-                maximumFractionDigits: 0,
-              }).format(drone.price)}
-            </p>
-          )}
-          <button className="mt-3 sm:mt-4 w-full py-2 px-3 text-sm sm:text-base font-semibold text-white rounded-lg bg-gradient-to-r from-blue-600 to-black hover:from-black hover:to-black transition-all duration-500 ease-in-out shadow-md hover:shadow-lg active:scale-[0.98]">
+
+          {/* Type badge */}
+          <span className="pointer-events-none absolute right-2 top-2 inline-flex items-center rounded-full bg-gray-900/90 px-2 py-0.5 text-[10px] font-semibold text-white sm:left-3 sm:top-3">
+            {typeLabelMap[drone.droneType] ?? drone.droneType}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="flex flex-1 flex-col p-3 sm:p-4">
+          <h3
+            className="mb-1.5 line-clamp-2 text-sm font-semibold text-gray-900 sm:text-base"
+            title={drone.name}
+          >
+            {drone.name}
+          </h3>
+
+          <p className="min-h-[44px] text-xs leading-relaxed text-gray-600 line-clamp-3 sm:min-h-[60px] sm:text-sm sm:line-clamp-4">
+            {drone.briefDescription ||
+              'DJI дрон нь өндөр чанартай зураг, видеогоор таны ажлыг шинэ түвшинд хүргэнэ. Тогтвортой нислэг, ухаалаг функцуудтай.'}
+          </p>
+
+          <div className="mt-2 flex items-center justify-between">
+            <span
+              className={`text-sm font-bold ${
+                drone.droneType === 'CONSUMER' ? 'text-blue-700' : 'text-gray-900'
+              } sm:text-lg`}
+            >
+              {price}
+            </span>
+          </div>
+
+          <button
+            className="mt-3 w-full rounded-lg bg-gradient-to-r from-blue-600 to-black px-3 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:from-black hover:to-black hover:shadow-lg active:scale-[0.98] sm:mt-4 sm:px-4 sm:py-2.5 sm:text-base"
+            aria-hidden
+            tabIndex={-1}
+          >
             Дэлгэрэнгүй
           </button>
         </div>
