@@ -28,9 +28,7 @@ export default function ProductListPage() {
     const fetchData = async () => {
       try {
         const res = await axios.get('/api/client/products/drones');
-        if (res.data.success) {
-          setDrones(res.data.data.drones);
-        }
+        if (res.data.success) setDrones(res.data.data.drones);
       } catch (err) {
         console.error('DJI fetch error:', err);
       } finally {
@@ -44,32 +42,44 @@ export default function ProductListPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+      {/* HERO */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
             DJI дронууд
           </h1>
-          <p className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-lg text-blue-100 max-w-2xl mx-auto">
             Идэвхтэй амьдралын хэв маягт тань төгс тохирох технологийг олж нээгээрэй.
           </p>
         </div>
       </div>
 
-      <section className="py-10 sm:py-12 px-4 sm:px-0">
-        <div className="container mx-auto px-4">
-          <FilterButtons />
+      <section className="py-6 sm:py-10">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="sticky top-0 z-20 -mx-3 sm:mx-0 mb-4 sm:mb-6 bg-gray-50/80 sm:bg-transparent backdrop-blur supports-[backdrop-filter]:backdrop-blur px-3 sm:px-0 py-2 sm:py-0 border-b sm:border-0">
+            <div className="max-w-7xl mx-auto overflow-x-auto sm:overflow-visible scrollbar-hide">
+              <div className="min-w-max sm:min-w-0">
+                <FilterButtons />
+              </div>
+            </div>
+          </div>
 
           {filteredDrones.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+            <div
+              className={`
+    grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+    gap-3 sm:gap-5 lg:gap-8
+  `}
+            >
               {filteredDrones.map((drone, i) => (
                 <div
                   key={drone.id}
-                  className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
+                  className="group bg-white rounded-xl overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all duration-300 touch-manipulation"
                   style={{
                     animationName: 'fadeInUp',
                     animationDuration: '0.5s',
                     animationTimingFunction: 'ease-out',
-                    animationDelay: `${i * 0.1}s`,
+                    animationDelay: `${i * 0.06}s`,
                     animationFillMode: 'both',
                   }}
                 >
@@ -78,8 +88,8 @@ export default function ProductListPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <div className="mx-auto w-24 h-24 mb-6 text-gray-300">
+            <div className="text-center py-16 sm:py-20">
+              <div className="mx-auto w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6 text-gray-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -94,8 +104,10 @@ export default function ProductListPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-medium text-gray-700 mb-2">Бүтээгдэхүүн олдсонгүй</h3>
-              <p className="text-gray-500 max-w-md mx-auto">
+              <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2">
+                Бүтээгдэхүүн олдсонгүй
+              </h3>
+              <p className="text-gray-500 max-w-md mx-auto text-sm sm:text-base">
                 {types.length > 0 ? (
                   <>
                     “<span className="font-semibold text-blue-600">{types.join(', ')}</span>”
@@ -123,6 +135,14 @@ export default function ProductListPage() {
         }
         .animate-fade-in {
           animation: fadeIn 0.6s ease-out;
+        }
+        /* mobile scrollbar hide helper (optional) */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
