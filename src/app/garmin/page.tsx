@@ -86,13 +86,16 @@ export default function GarminProductListPage() {
           </div>
 
           {garmin.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {garmin.map((product, i) => (
                 <div
                   key={product.id}
                   className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
                   style={{
-                    animation: `fadeInUp 0.5s ease-out ${i * 0.1}s`,
+                    animationName: 'fadeInUp',
+                    animationDuration: '0.5s',
+                    animationTimingFunction: 'ease-out',
+                    animationDelay: `${i * 0.1}s`,
                     animationFillMode: 'both',
                   }}
                 >
@@ -140,8 +143,19 @@ export default function GarminProductListPage() {
             transform: translateY(0);
           }
         }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
         .animate-fade-in {
-          animation: fadeIn 0.6s ease-out;
+          animation-name: fadeIn;
+          animation-duration: 0.6s;
+          animation-timing-function: ease-out;
+          animation-fill-mode: both;
         }
       `}</style>
     </div>

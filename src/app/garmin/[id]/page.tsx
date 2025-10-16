@@ -72,18 +72,23 @@ export default function Page() {
       </Head>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-sans">
         <div className="max-w-7xl mx-auto">
-          <div className="min-h-screen">
-            <Breadcrumbs items={breadcrumbItems} />
+          <Breadcrumbs items={breadcrumbItems} />
 
-            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-              <ProductGallery product={product} />
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
+            <ProductGallery product={product} />
+
+            <div className="lg:sticky lg:top-4">
               <ProductInfo
                 product={product}
                 onContactClick={handleContactClick}
                 isLoading={isLoading}
               />
             </div>
+          </div>
+          <div className="mt-10 sm:mt-12">
             <LoanChances />
+          </div>
+          <div id="contact-form" className="scroll-mt-24 mt-10 sm:mt-12">
             <ContactSection />
           </div>
         </div>
