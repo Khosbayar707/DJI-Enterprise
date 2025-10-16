@@ -9,13 +9,12 @@ type ProductGalleryProps = { drone: CustomDroneClient };
 export default function ProductGallery({ drone }: ProductGalleryProps) {
   const images = useMemo(() => drone.images ?? [], [drone.images]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isZoomed, setIsZoomed] = useState(false); // desktop only
+  const [isZoomed, setIsZoomed] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const selectedImage = images[selectedIndex]?.url ?? '/image/placeholder.jpg';
 
-  // Swipe (mobile)
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setTouchStartX(e.touches[0].clientX);
   };
@@ -38,7 +37,6 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
     setSelectedIndex((i) => (i - 1 + images.length) % images.length);
   }, [images.length]);
 
-  // Keyboard (desktop)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') goNext();
@@ -49,9 +47,8 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
     return () => window.removeEventListener('keydown', onKey);
   }, [goNext, goPrev]);
 
-  // Zoom (desktop only)
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 768) return; // md breakpoint
+    if (window.innerWidth < 768) return;
     const rect = e.currentTarget.getBoundingClientRect();
     setZoomOrigin({
       x: ((e.clientX - rect.left) / rect.width) * 100,
@@ -63,7 +60,6 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
 
   return (
     <div className="space-y-3 sm:space-y-4">
-      {/* Main image */}
       <div
         className="relative bg-white rounded-2xl shadow-lg overflow-hidden group transition-all duration-300"
         onTouchStart={onTouchStart}
@@ -71,30 +67,24 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
       >
-        {/* Square on mobile, taller on md+ like Garmin */}
         <div className="relative w-full aspect-square md:h-[480px] lg:h-[520px]">
           <Image
             src={selectedImage}
             alt={drone.name}
             fill
-            className={`transition-transform duration-300 ${
-              // Cover on mobile so card looks consistent; contain on desktop for accuracy
-              'object-cover md:object-contain'
-            } ${isZoomed ? 'md:scale-150' : 'scale-100'}`}
+            className={`transition-transform duration-300 ${'object-cover md:object-contain'} ${isZoomed ? 'md:scale-150' : 'scale-100'}`}
             style={{ transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%` }}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 640px"
             priority
           />
         </div>
 
-        {/* Discount badge */}
         {drone.discount > 0 && (
           <span className="absolute top-2 left-2 md:top-3 md:left-3 bg-red-600 text-white text-xs md:text-sm font-bold px-2.5 py-1 rounded-full shadow-md">
             Хямдрал
           </span>
         )}
 
-        {/* Arrows (hidden if 1 image) */}
         {images.length > 1 && (
           <>
             <button
@@ -112,7 +102,6 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
               <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </button>
 
-            {/* Counter (desktop) */}
             <div className="hidden md:block absolute top-3 left-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">
               {selectedIndex + 1} / {images.length}
             </div>
@@ -120,7 +109,6 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
         )}
       </div>
 
-      {/* Thumbnails — horizontal scroller on mobile, grid on md+ */}
       {images.length > 1 && (
         <div className="relative">
           <div
@@ -140,7 +128,6 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
                       : 'border-gray-200 hover:border-blue-400 hover:scale-[1.03] active:scale-95',
                   ].join(' ')}
                   style={{
-                    // Mobile: consistent squares that scale with viewport; Desktop: fixed
                     width: 'clamp(64px, 20vw, 96px)',
                     height: 'clamp(64px, 20vw, 96px)',
                   }}
@@ -162,7 +149,6 @@ export default function ProductGallery({ drone }: ProductGalleryProps) {
             })}
           </div>
 
-          {/* Right fade hint on mobile to indicate scroll */}
           <div className="pointer-events-none md:hidden absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent" />
         </div>
       )}
