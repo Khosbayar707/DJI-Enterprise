@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 function formatTugrug(amount: number): string {
   return amount.toLocaleString('mn-MN') + ' ₮';
@@ -31,84 +31,105 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
     workingHours: 'Даваа-Баасан: 09:00-18:00, Бямба-Ням: Амарна',
   };
 
+  const stockPill = useMemo(() => {
+    const base =
+      'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs sm:text-sm font-medium shadow-sm border';
+    if (product.stock > 10) {
+      return {
+        cls: `${base} bg-green-50 text-green-700 border-green-300`,
+        text: `Бэлэн: ${product.stock} ш`,
+        icon: 'check',
+      };
+    }
+    if (product.stock > 0) {
+      return {
+        cls: `${base} bg-amber-50 text-amber-700 border-amber-300`,
+        text: `Үлдэгдэл: ${product.stock} ш`,
+        icon: 'warn',
+      };
+    }
+    return {
+      cls: `${base} bg-red-50 text-red-700 border-red-300`,
+      text: 'Түр дууссан',
+      icon: 'info',
+    };
+  }, [product.stock]);
+
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-start gap-4">
-        <div className="space-y-3">
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight leading-tight">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+        <div className="min-w-0 space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight leading-tight line-clamp-2">
             {product.name}
           </h1>
 
-          <div className="flex items-center gap-3 flex-wrap">
-            <p className="text-gray-500 text-sm uppercase tracking-wider bg-gray-100 px-2.5 py-1 rounded-full">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <p className="text-gray-600 text-[11px] sm:text-xs uppercase tracking-wider bg-gray-100 px-2 sm:px-2.5 py-0.5 rounded-full">
               {product.type.toLowerCase()}
             </p>
-
             {product.brand && (
-              <p className="text-gray-600 text-sm tracking-wider bg-blue-50 px-2.5 py-1 rounded-full">
-                Бренд: {product.brand}
+              <p className="text-gray-700 text-[11px] sm:text-xs tracking-wider bg-blue-50 px-2 sm:px-2.5 py-0.5 rounded-full">
+                Брэнд: {product.brand}
               </p>
+            )}
+
+            {product.stock > 0 && product.stock <= 5 && (
+              <span className="sm:hidden inline-flex items-center gap-1 text-[10px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-3 h-3"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8V6h2v4H9zm0 4v-2h2v2H9z" />
+                </svg>
+                Үлдэгдэл бага
+              </span>
             )}
           </div>
         </div>
 
-        {/* STOCK BADGE (same style as other pages) */}
         <div className="flex items-center gap-2">
-          <span
-            className={[
-              'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium shadow-sm transition-all duration-300',
-              product.stock > 10
-                ? 'bg-green-50 text-green-700 border border-green-300'
-                : product.stock > 0
-                  ? 'bg-amber-50 text-amber-700 border border-amber-300'
-                  : 'bg-red-50 text-red-700 border border-red-300',
-            ].join(' ')}
-          >
-            {product.stock > 10 ? (
-              <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                Бэлэн: {product.stock} ш
-              </>
-            ) : product.stock > 0 ? (
-              <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4 text-amber-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8V6h2v4H9zm0 4v-2h2v2H9z" />
-                </svg>
-                Үлдэгдэл: {product.stock} ш
-              </>
-            ) : (
-              <>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Түр дууссан
-              </>
+          <span className={stockPill.cls}>
+            {stockPill.icon === 'check' && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
             )}
+            {stockPill.icon === 'warn' && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4 text-amber-600"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8V6h2v4H9zm0 4v-2h2v2H9z" />
+              </svg>
+            )}
+            {stockPill.icon === 'info' && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            )}
+            {stockPill.text}
           </span>
 
           {product.stock > 0 && product.stock <= 5 && (
@@ -116,8 +137,8 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-3.5 h-3.5 text-amber-600"
-                fill="currentColor"
                 viewBox="0 0 20 20"
+                fill="currentColor"
               >
                 <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8V6h2v4H9zm0 4v-2h2v2H9z" />
               </svg>
@@ -127,33 +148,57 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         </div>
       </div>
 
-      <div className="space-y-3">
-        <span className="text-3xl font-bold text-gray-900">{formatTugrug(product.price)}</span>
+      <div className="space-y-1">
+        <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+          {formatTugrug(product.price)}
+        </span>
       </div>
 
       {product.features.length > 0 && (
-        <div className="space-y-4 bg-gray-50 p-4 rounded-xl">
-          <h3 className="font-semibold text-gray-900 text-lg">Гол онцлогууд:</h3>
-          <ul className="space-y-3">
-            {product.features.map((feature, index) => (
-              <motion.li
-                key={index}
-                className="flex items-start"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <span className="text-blue-500 mr-2 mt-1">
-                  <ChevronRight className="w-4 h-4" />
-                </span>
-                <span className="text-gray-700">{feature}</span>
-              </motion.li>
-            ))}
+        <div className="space-y-4 bg-gray-50 p-3 sm:p-4 rounded-xl">
+          <h3 className="font-semibold text-gray-900 text-base sm:text-lg">Гол онцлогууд:</h3>
+          <ul className="space-y-2 sm:space-y-3">
+            {(product.features.length > 3 ? product.features.slice(0, 3) : product.features).map(
+              (feature, index) => (
+                <motion.li
+                  key={index}
+                  className="flex items-start"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.06 }}
+                >
+                  <span className="text-blue-500 mr-2 mt-1">
+                    <ChevronRight className="w-4 h-4" />
+                  </span>
+                  <span className="text-gray-700 text-sm sm:text-base">{feature}</span>
+                </motion.li>
+              )
+            )}
+            {product.features.length > 3 && (
+              <div className="hidden md:block">
+                <ul className="mt-1 space-y-2">
+                  {product.features.slice(3).map((feature, idx) => (
+                    <motion.li
+                      key={`more-${idx}`}
+                      className="flex items-start"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: (idx + 3) * 0.04 }}
+                    >
+                      <span className="text-blue-500 mr-2 mt-1">
+                        <ChevronRight className="w-4 h-4" />
+                      </span>
+                      <span className="text-gray-700">{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </ul>
         </div>
       )}
 
-      <div className="space-y-3 pt-2">
+      <div className="pt-1 sm:pt-2">
         <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
           <DialogTrigger asChild>
             <motion.button
@@ -161,12 +206,13 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
               whileTap={{ scale: 0.98 }}
               onClick={onContactClick}
               disabled={isLoading}
-              className="w-full px-6 py-5 gap-3 cursor-pointer bg-gradient-to-r from-blue-600 to-black text-white font-semibold text-base rounded-lg transition-all duration-500 ease-in-out shadow-md hover:shadow-lg hover:from-black hover:to-black active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
+              className="w-full px-5 sm:px-6 py-4 sm:py-5 gap-3 cursor-pointer bg-gradient-to-r from-blue-600 to-black text-white font-semibold text-base rounded-lg transition-all duration-500 ease-in-out shadow-md hover:shadow-lg hover:from-black hover:to-black active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
             >
               <MessageSquare className="w-5 h-5" />
               Худалдагчтай холбогдох
             </motion.button>
           </DialogTrigger>
+
           <DialogContent className="sm:max-w-md rounded-lg">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
@@ -222,21 +268,23 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       </div>
 
       {product.specifications.length > 0 && (
-        <div className="pt-6 border-t border-gray-200">
-          <h3 className="font-semibold text-gray-900 text-lg mb-4">Техникийн үзүүлэлтүүд:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="pt-5 sm:pt-6 border-t border-gray-200">
+          <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-3 sm:mb-4">
+            Техникийн үзүүлэлтүүд:
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {product.specifications.map((spec, index) => (
               <motion.div
                 key={index}
                 className="flex gap-3 items-baseline p-2 hover:bg-gray-50 rounded-lg transition-colors"
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ delay: index * 0.04 }}
               >
-                <span className="text-gray-500 font-medium text-sm min-w-[120px]">
+                <span className="text-gray-500 font-medium text-xs sm:text-sm min-w-[110px] sm:min-w-[120px]">
                   {spec.label}:
                 </span>
-                <span className="text-gray-700 font-medium">{spec.value}</span>
+                <span className="text-gray-700 font-medium text-sm sm:text-base">{spec.value}</span>
               </motion.div>
             ))}
           </div>

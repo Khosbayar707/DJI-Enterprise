@@ -10,13 +10,6 @@ import { CustomSurveyEquipment } from '@/lib/types';
 
 type EquipmentLabel = 'GNSS' | 'TOTAL_STATION' | 'THEODOLITE' | 'AUTO_LEVEL';
 
-const equipmentLabels: { label: string; value: EquipmentLabel }[] = [
-  { label: 'GNSS', value: 'GNSS' },
-  { label: 'Тотал станц', value: 'TOTAL_STATION' },
-  { label: 'Теодолит', value: 'THEODOLITE' },
-  { label: 'Автомат нивелир', value: 'AUTO_LEVEL' },
-];
-
 export default function SurveyEquipmentListPage() {
   const [equipments, setEquipments] = useState<CustomSurveyEquipment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,42 +76,71 @@ export default function SurveyEquipmentListPage() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center mb-8 overflow-x-auto pb-2">
+          <div className="flex justify-center mb-10 overflow-x-auto pb-2">
             <div className="inline-flex rounded-md shadow-sm" role="group">
               <Link
                 href="/hitarget"
-                className={`px-4 py-2 text-sm font-medium border rounded-l-lg ${
+                className={`px-6 py-3 text-sm font-medium rounded-l-lg border ${
                   !selectedType
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
-                }`}
+                } transition-colors duration-200`}
               >
                 Бүгд
               </Link>
-              {equipmentLabels.map(({ label, value }, idx) => (
-                <Link
-                  key={value}
-                  href={`/hitarget?type=${value}`}
-                  className={`px-4 py-2 text-sm font-medium border ${
-                    idx === equipmentLabels.length - 1 ? 'rounded-r-lg' : ''
-                  } ${
-                    selectedType === value
-                      ? 'bg-indigo-600 text-white border-indigo-600'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
+
+              <Link
+                href="/hitarget?type=GNSS"
+                className={`px-6 py-3 text-sm font-medium border-t border-b ${
+                  selectedType === 'GNSS'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                } transition-colors duration-200`}
+              >
+                GNSS
+              </Link>
+
+              <Link
+                href="/hitarget?type=TOTAL_STATION"
+                className={`px-6 py-3 text-sm font-medium border-t border-b ${
+                  selectedType === 'TOTAL_STATION'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                } transition-colors duration-200`}
+              >
+                Тотал станц
+              </Link>
+
+              <Link
+                href="/hitarget?type=THEODOLITE"
+                className={`px-6 py-3 text-sm font-medium border-t border-b ${
+                  selectedType === 'THEODOLITE'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                } transition-colors duration-200`}
+              >
+                Теодолит
+              </Link>
+
+              <Link
+                href="/hitarget?type=AUTO_LEVEL"
+                className={`px-6 py-3 text-sm font-medium rounded-r-lg border ${
+                  selectedType === 'AUTO_LEVEL'
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                } transition-colors duration-200`}
+              >
+                Автомат нивелир
+              </Link>
             </div>
           </div>
 
           {filteredEquipments.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {filteredEquipments.map((equipment, i) => (
                 <div
                   key={equipment.id}
-                  className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
+                  className="group rounded-xl overflow-hidden bg-white border border-gray-200 hover:border-indigo-300 hover:shadow-xl transition-all duration-300"
                   style={{
                     animationName: 'fadeInUp',
                     animationDuration: '0.5s',
@@ -127,9 +149,11 @@ export default function SurveyEquipmentListPage() {
                     animationFillMode: 'both',
                   }}
                 >
-                  <Link href={`/hitarget/${equipment.id}`} className="block h-full">
-                    <SurveyEquipmentCard product={equipment} index={i} />
-                  </Link>
+                  <SurveyEquipmentCard
+                    product={equipment}
+                    index={i}
+                    href={`/hitarget/${equipment.id}`}
+                  />
                 </div>
               ))}
             </div>
@@ -170,8 +194,19 @@ export default function SurveyEquipmentListPage() {
             transform: translateY(0);
           }
         }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
         .animate-fade-in {
-          animation: fadeIn 0.6s ease-out;
+          animation-name: fadeIn;
+          animation-duration: 0.6s;
+          animation-timing-function: ease-out;
+          animation-fill-mode: both;
         }
       `}</style>
     </div>
