@@ -1,6 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaPaperPlane } from 'react-icons/fa';
 import ContactRequestFromUserSchema, {
@@ -15,8 +15,11 @@ import { CustomSnackbar } from '../admin/_components/snackbar';
 
 export default function ContactSection() {
   const [response, setResponse] = useState<ResponseType>();
-  const form = useForm({
+  const shouldReduceMotion = useReducedMotion();
+
+  const form = useForm<ContactRequestFromUserSchemaType>({
     resolver: zodResolver(ContactRequestFromUserSchema),
+    mode: 'onTouched',
     defaultValues: {
       name: '',
       email: '',
@@ -36,44 +39,54 @@ export default function ContactSection() {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setResponse(undefined);
-    }, 5000);
-
+    if (!response) return;
+    const timeout = setTimeout(() => setResponse(undefined), 5000);
     return () => clearTimeout(timeout);
   }, [response]);
 
+  const fadeIn = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 16 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+      };
+
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+    <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 text-base sm:text-lg md:text-[1.05rem] lg:text-[1.1rem]">
       {response && <CustomSnackbar value={response} />}
-      <div className="container mx-auto px-2 max-w-8xl">
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+          {...(shouldReduceMotion
+            ? {}
+            : { initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true } })}
+          className="text-center mb-10 md:mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-gray-800">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
             <span className="text-blue-600">Холбоо</span> барих
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="mt-4 text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Бидэнтэй холбогдохын тулд доорх мэдээллийг ашиглана уу
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10 lg:gap-12 xl:gap-16 items-start">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="bg-white p-8 rounded-xl shadow-lg border border-gray-100"
+            {...fadeIn}
+            transition={{ duration: 0.45 }}
+            className="bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-gray-200/60 dark:ring-gray-800 p-5 sm:p-6 md:p-8 text-sm sm:text-base md:text-lg"
           >
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800 border-b pb-4">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-800 pb-3">
               Бидэнтэй холбогдох
             </h3>
+
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-5 sm:space-y-6"
+                aria-busy={form.formState.isSubmitting}
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -84,16 +97,14 @@ export default function ContactSection() {
                           variant="outlined"
                           label="Нэр"
                           fullWidth
+                          autoComplete="name"
+                          inputProps={{ 'aria-label': 'Таны нэр' }}
                           {...field}
-                          className="bg-gray-50"
-                          InputProps={{
-                            style: {
-                              borderRadius: '12px',
-                            },
-                          }}
+                          className="bg-gray-50 dark:bg-gray-800 rounded-xl text-sm sm:text-base md:text-lg"
+                          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-red-500 text-xs sm:text-sm mt-1" />
                     </FormItem>
                   )}
                 />
@@ -107,17 +118,16 @@ export default function ContactSection() {
                         <TextField
                           variant="outlined"
                           label="И-мэйл"
+                          type="email"
                           fullWidth
+                          autoComplete="email"
+                          inputProps={{ 'aria-label': 'И-мэйл хаяг' }}
                           {...field}
-                          className="bg-gray-50"
-                          InputProps={{
-                            style: {
-                              borderRadius: '12px',
-                            },
-                          }}
+                          className="bg-gray-50 dark:bg-gray-800 rounded-xl text-sm sm:text-base md:text-lg"
+                          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-red-500 text-xs sm:text-sm mt-1" />
                     </FormItem>
                   )}
                 />
@@ -133,16 +143,16 @@ export default function ContactSection() {
                           variant="outlined"
                           label="Утасны дугаар"
                           fullWidth
+                          autoComplete="tel"
+                          inputMode="tel"
+                          placeholder="+976 9000 0000"
+                          inputProps={{ pattern: '[+0-9\s-]*', 'aria-label': 'Утасны дугаар' }}
                           {...field}
-                          className="bg-gray-50"
-                          InputProps={{
-                            style: {
-                              borderRadius: '12px',
-                            },
-                          }}
+                          className="bg-gray-50 dark:bg-gray-800 rounded-xl text-sm sm:text-base md:text-lg"
+                          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-red-500 text-xs sm:text-sm mt-1" />
                     </FormItem>
                   )}
                 />
@@ -157,18 +167,17 @@ export default function ContactSection() {
                           variant="outlined"
                           label="Зурвас"
                           multiline
-                          rows={4}
+                          minRows={4}
+                          maxRows={8}
                           fullWidth
+                          autoComplete="off"
+                          inputProps={{ 'aria-label': 'Таны зурвас' }}
                           {...field}
-                          className="bg-gray-50"
-                          InputProps={{
-                            style: {
-                              borderRadius: '12px',
-                            },
-                          }}
+                          className="bg-gray-50 dark:bg-gray-800 rounded-xl text-sm sm:text-base md:text-lg"
+                          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-red-500 text-xs sm:text-sm mt-1" />
                     </FormItem>
                   )}
                 />
@@ -176,75 +185,76 @@ export default function ContactSection() {
                 <Button
                   type="submit"
                   variant="contained"
-                  color="primary"
                   size="large"
                   disabled={!form.formState.isValid || form.formState.isSubmitting}
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 transition-colors duration-300 rounded-xl shadow-md"
                   startIcon={<FaPaperPlane />}
+                  className="!w-full !py-3 !rounded-xl !shadow-md text-sm sm:text-base md:text-lg"
                   sx={{
                     textTransform: 'none',
-                    fontSize: '1rem',
-                    fontWeight: '600',
+                    fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
+                    fontWeight: 600,
                   }}
                 >
-                  {form.formState.isSubmitting ? 'Илгээж байна...' : 'Илгээх'}
+                  {form.formState.isSubmitting ? 'Илгээж байна…' : 'Илгээх'}
                 </Button>
               </form>
             </Form>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="space-y-6"
+            {...fadeIn}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="space-y-6 text-sm sm:text-base md:text-lg"
           >
-            <h3 className="text-2xl font-semibold text-gray-800 border-b pb-4">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-800 pb-3">
               Холбоо барих мэдээлэл
             </h3>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <FaPhone className="text-blue-600 text-lg" />
+            <div className="bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-gray-200/60 dark:ring-gray-800 p-5 sm:p-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-full flex-shrink-0">
+                  <FaPhone className="text-blue-600 dark:text-blue-400 text-lg" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-lg mb-4 text-gray-800">Утасны дугаар</h4>
-                  <div className="space-y-4">
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <p className="text-gray-800 font-semibold mb-3 flex items-center">
-                        <span className="bg-blue-100 p-1 rounded-full mr-2">
-                          <FaPhone className="text-blue-600 text-xs" />
+                  <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-4">
+                    Утасны дугаар
+                  </h4>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-900 dark:text-white font-medium mb-3 flex items-center gap-2">
+                        <span className="bg-blue-100 dark:bg-blue-900/40 p-1 rounded-full">
+                          <FaPhone className="text-blue-600 dark:text-blue-400 text-xs" />
                         </span>
                         Мэдээлэл авах
                       </p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <ul className="space-y-2">
                         {['+976 9000 5559', '+976 9190 2989', '+976 9909 5839'].map((phone) => (
-                          <a
-                            key={phone}
-                            href={`tel:${phone.replace(/\s/g, '')}`}
-                            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
-                          >
-                            <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                            {phone}
-                          </a>
+                          <li key={phone} className="truncate">
+                            <a
+                              href={`tel:${phone.replace(/\s/g, '')}`}
+                              className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              <span className="w-2 h-2 bg-blue-400 rounded-full mr-2" />
+                              {phone}
+                            </a>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <p className="text-gray-800 font-semibold mb-3 flex items-center">
-                        <span className="bg-orange-100 p-1 rounded-full mr-2">
-                          <FaPhone className="text-orange-600 text-xs" />
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-900 dark:text-white font-medium mb-3 flex items-center gap-2">
+                        <span className="bg-orange-100 dark:bg-orange-900/30 p-1 rounded-full">
+                          <FaPhone className="text-orange-600 dark:text-orange-400 text-xs" />
                         </span>
                         Засвар үйлчилгээ
                       </p>
                       <a
                         href="tel:+97690006668"
-                        className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+                        className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2" />
                         +976 9000 6668
                       </a>
                     </div>
@@ -253,47 +263,51 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <FaEnvelope className="text-blue-600 text-lg" />
+            <div className="bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-gray-200/60 dark:ring-gray-800 p-5 sm:p-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-full flex-shrink-0">
+                  <FaEnvelope className="text-blue-600 dark:text-blue-400 text-lg" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-lg mb-4 text-gray-800">И-мэйл</h4>
-                  <div className="space-y-4">
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <p className="text-gray-800 font-semibold mb-3 flex items-center">
-                        <span className="bg-blue-100 p-1 rounded-full mr-2">
-                          <FaEnvelope className="text-blue-600 text-xs" />
+                  <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-4">
+                    И-мэйл
+                  </h4>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-900 dark:text-white font-medium mb-3 flex items-center gap-2">
+                        <span className="bg-blue-100 dark:bg-blue-900/40 p-1 rounded-full">
+                          <FaEnvelope className="text-blue-600 dark:text-blue-400 text-xs" />
                         </span>
                         Мэдээлэл авах
                       </p>
-                      <div className="space-y-2">
+                      <ul className="space-y-2">
                         {['dji@geo-mongol.mn', 'dji.mongolia0@gmail.com'].map((email) => (
-                          <a
-                            key={email}
-                            href={`mailto:${email}`}
-                            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
-                          >
-                            <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                            {email}
-                          </a>
+                          <li key={email} className="truncate">
+                            <a
+                              href={`mailto:${email}`}
+                              className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              <span className="w-2 h-2 bg-blue-400 rounded-full mr-2" />
+                              {email}
+                            </a>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <p className="text-gray-800 font-semibold mb-3 flex items-center">
-                        <span className="bg-orange-100 p-1 rounded-full mr-2">
-                          <FaEnvelope className="text-orange-600 text-xs" />
+                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                      <p className="text-gray-900 dark:text-white font-medium mb-3 flex items-center gap-2">
+                        <span className="bg-orange-100 dark:bg-orange-900/30 p-1 rounded-full">
+                          <FaEnvelope className="text-orange-600 dark:text-orange-400 text-xs" />
                         </span>
                         Засвар үйлчилгээ
                       </p>
                       <a
                         href="mailto:dji_service@geo-mongol.mn"
-                        className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+                        className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2" />
                         dji_service@geo-mongol.mn
                       </a>
                     </div>
@@ -302,14 +316,14 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <FaMapMarkerAlt className="text-blue-600 text-lg" />
+            <div className="bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-gray-200/60 dark:ring-gray-800 p-5 sm:p-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-full flex-shrink-0">
+                  <FaMapMarkerAlt className="text-blue-600 dark:text-blue-400 text-lg" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-lg mb-3 text-gray-800">Хаяг</h4>
-                  <p className="text-gray-600 leading-relaxed">
+                  <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-3">Хаяг</h4>
+                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                     Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот,
                     &quot;Инженер Геодези ХХК&quot; байр
                   </p>
@@ -317,37 +331,41 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
-                  <FaClock className="text-blue-600 text-lg" />
+            <div className="bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-gray-200/60 dark:ring-gray-800 p-5 sm:p-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-100 dark:bg-blue-900/40 p-3 rounded-full flex-shrink-0">
+                  <FaClock className="text-blue-600 dark:text-blue-400 text-lg" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-lg mb-3 text-gray-800">Ажиллах цаг</h4>
-                  <div className="space-y-2">
-                    <p className="text-gray-600 flex items-center">
-                      <span className="inline-block w-28 font-medium">Даваа-Баасан:</span>
-                      <span>09:00 - 18:00</span>
-                    </p>
-                    <p className="text-gray-600 flex items-center">
-                      <span className="inline-block w-28 font-medium">Бямба-Ням:</span>
-                      <span>Амарна</span>
-                    </p>
-                  </div>
+                  <h4 className="font-semibold text-lg text-gray-900 dark:text-white mb-3">
+                    Ажиллах цаг
+                  </h4>
+                  <dl className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-700 dark:text-gray-300">
+                    <div className="flex items-center justify-between sm:justify-start sm:gap-3">
+                      <dt className="font-medium w-32">Даваа–Баасан:</dt>
+                      <dd>09:00 – 18:00</dd>
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-start sm:gap-3">
+                      <dt className="font-medium w-32">Бямба–Ням:</dt>
+                      <dd>Амарна</dd>
+                    </div>
+                  </dl>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white p-0 rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-              <iframe
-                title="address"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2676.063079710459!2d106.8920424!3d47.9183684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96eccc00000001:0xd9419ff8407d6f3c!2z0JjQvdC20LXQvdC10YAg0LPQtdC-0LTQtdC5INCR0JDQlyDQodCQ0JcgLyBFbmdpbmVlcmluZyBnZW9kZXN5IExMQw!5e0!3m2!1smn!2smn!4v1716115200000!5m2!1smn!2smn"
-                width="100%"
-                height="300"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-              />
+            <div className="bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-gray-200/60 dark:ring-gray-800 overflow-hidden">
+              <div className="relative w-full aspect-[4/3] sm:aspect-[16/9]">
+                <iframe
+                  title="address"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2676.063079710459!2d106.8920424!3d47.9183684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96eccc00000001:0xd9419ff8407d6f3c!2z0JjQvdC20LXQvdC10YAg0LPQtdC-0LTQtdC5INCR0JDQlyDQodCQ0JcgLyBFbmdpbmVlcmluZyBnZW9kZXN5IExMQw!5e0!3m2!1smn!2smn!4v1716115200000!5m2!1smn!2smn"
+                  className="absolute inset-0 w-full h-full"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
             </div>
           </motion.div>
         </div>
