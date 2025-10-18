@@ -54,8 +54,29 @@ export default function ProductCard({ drone, index }: ProductCardProps) {
             )}
           </div>
 
-          {/* Type badge */}
-          <span className="pointer-events-none absolute right-2 top-2 inline-flex items-center rounded-full bg-gray-900/90 px-2 py-0.5 text-[10px] font-semibold text-white sm:left-3 sm:top-3">
+          <span
+            className="
+    pointer-events-none
+    absolute top-2 right-2
+    inline-flex items-center
+    rounded-full
+    bg-gray-900/85 text-white
+    backdrop-blur
+    ring-1 ring-white/15 shadow-sm
+
+    /* size & spacing by breakpoint */
+    px-1.5 py-0.5 text-[10px]
+    sm:px-2 sm:py-0.5 sm:text-xs
+    md:px-2.5 md:py-1 md:text-sm
+    lg:px-3 lg:py-1 lg:text-sm
+
+    /* prevent long text overflow on small/tablet */
+    max-w-[70%] sm:max-w-[60%] md:max-w-none
+    whitespace-nowrap truncate
+  "
+            title={typeLabelMap[drone.droneType] ?? drone.droneType}
+            aria-hidden
+          >
             {typeLabelMap[drone.droneType] ?? drone.droneType}
           </span>
         </div>
