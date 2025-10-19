@@ -25,7 +25,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
-import { User } from '@/generated/prisma';
+import type { User } from '@/generated/prisma';
 import LoadingText from './LoadingText';
 import { StyledInputBase } from '@/components/ui/search';
 import { useSearchDebounce } from './debounce/search';
@@ -59,6 +59,7 @@ export default function HeaderMain() {
   const [searchType, setSearchType] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [showDesktopSearch, setShowDesktopSearch] = useState(false);
   const debouncedSearchQuery = useSearchDebounce(searchQuery, 700);
 
   type SubItem = { label: string; path: string };
@@ -148,24 +149,20 @@ export default function HeaderMain() {
   }, [pathname]);
 
   useEffect(() => {
-    const id = setTimeout(() => {
-      if (!searchQuery) return;
-      const mappedType = searchTypeLabelMap[searchType];
-      const query = new URLSearchParams();
-      query.set('search', searchQuery);
+    if (!debouncedSearchQuery) return;
+    const mappedType = searchTypeLabelMap[searchType];
+    const query = new URLSearchParams();
+    query.set('search', debouncedSearchQuery);
 
-      if (['Payload and Camera', 'Program'].includes(mappedType)) {
-        router.push(`/payload?${query.toString()}`);
-      } else if (['GNSS', 'TOTAL_STATION', 'THEODOLITE', 'AUTO_LEVEL'].includes(mappedType)) {
-        router.push(`/hitarget?${query.toString()}`);
-      } else {
-        router.push(`/dji?${query.toString()}`);
-      }
-    }, 400);
-    return () => clearTimeout(id);
-  }, [searchQuery, searchType, router]);
+    if (['Payload and Camera', 'Program'].includes(mappedType)) {
+      router.push(`/payload?${query.toString()}`);
+    } else if (['GNSS', 'TOTAL_STATION', 'THEODOLITE', 'AUTO_LEVEL'].includes(mappedType)) {
+      router.push(`/hitarget?${query.toString()}`);
+    } else {
+      router.push(`/dji?${query.toString()}`);
+    }
+  }, [debouncedSearchQuery, searchType, router]);
 
-  // Lock scroll when mobile menu is open
   useEffect(() => {
     if (typeof document === 'undefined') return;
     const root = document.documentElement;
@@ -181,18 +178,22 @@ export default function HeaderMain() {
           <MagnifyingGlassIcon className="h-5 w-5" />
         </div>
         <StyledInputBase
-          className="w-full pl-10 pr-3 py-2 sm:min-w-[200px] focus:outline-none rounded-md text-xs sm:text-sm"
+          className="w-full pl-10 pr-3 py-2 sm:min-w-[200px] focus:outline-none rounded-md text-[11px] sm:text-sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Хайх"
+          inputProps={{ 'aria-label': 'Search', autoComplete: 'off' }}
         />
       </div>
       <div className="w-full sm:w-auto">
         <Select value={searchType} onValueChange={setSearchType}>
-          <SelectTrigger className="w-full sm:w-[170px] bg-white border border-gray-300 rounded-md shadow-sm text-xs sm:text-sm">
+          <SelectTrigger className="w-full sm:w-[170px] bg-white border border-gray-300 rounded-md shadow-sm text-[11px] sm:text-sm">
             <SelectValue placeholder="Төрөл" />
           </SelectTrigger>
-          <SelectContent className="z-50 bg-white shadow-lg border border-gray-200 rounded-md">
+          <SelectContent
+            position="popper"
+            className="z-[60] bg-white shadow-lg border border-gray-200 rounded-md"
+          >
             <SelectGroup>
               {searchTypeOptions.map((type) => (
                 <SelectItem key={type} value={type}>
@@ -209,18 +210,14 @@ export default function HeaderMain() {
   const isActive = (path: string) => pathname === path;
 
   const headerBlurClass =
-    isMobileMenuOpen || showMobileSearch
-      ? 'bg-white/80 backdrop-blur-md'
-      : 'bg-white/85 backdrop-blur';
+    isMobileMenuOpen || showMobileSearch || showDesktopSearch
+      ? 'bg-white supports-[backdrop-filter]:bg-white shadow-sm'
+      : 'bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70';
 
   return (
-    <header
-      className={`sticky top-0 z-50 border-b border-gray-100 ${headerBlurClass} supports-[backdrop-filter]:bg-white/70`}
-    >
+    <header className={`sticky top-0 z-50 border-b border-gray-100 ${headerBlurClass}`}>
       <div className="mx-auto max-w-7xl px-3 sm:px-6">
-        {/* BAR */}
         <div className="flex lg:flex-wrap h-auto min-h-14 sm:min-h-16 items-center justify-between gap-x-2 py-1">
-          {/* Logo */}
           <motion.div
             whileHover={{ scale: prefersReducedMotion ? 1 : 1.04 }}
             className="flex-shrink-0"
@@ -236,7 +233,6 @@ export default function HeaderMain() {
             </Link>
           </motion.div>
 
-          {/* Desktop nav (xl+) */}
           <nav className="hidden xl:flex items-center gap-2 ml-6">
             {navGroups.map((group, idx) => {
               const single = group.items.length === 1 && !group.items[0].subitems;
@@ -310,47 +306,78 @@ export default function HeaderMain() {
             })}
           </nav>
 
-          {/* Actions area */}
-          <div className="hidden xl:flex items-center gap-4 ml-auto flex-nowrap">
-            {renderSearch}
+          <div className="hidden xl:flex items-center gap-2 ml-auto">
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setShowDesktopSearch((s) => !s);
+              }}
+              className="p-2 rounded-full text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+              aria-label="Search"
+            >
+              <MagnifyingGlassIcon className="h-5 w-5" />
+            </button>
+
             {logging ? (
               <LoadingText />
             ) : user ? (
-              <>
-                <motion.div whileHover="hover" variants={hoverVariants}>
-                  <Link href="/profile">
-                    <div className="flex items-center px-4 py-2 bg-gray-50 rounded-full hover:bg-gray-100">
-                      <UserIcon className="h-5 w-5 text-gray-500 mr-2" />
-                      <span className="text-xs sm:text-sm font-medium text-gray-700 truncate max-w-[120px] xl:max-w-[160px]">
-                        {user.email.split('@')[0]}
-                      </span>
-                    </div>
-                  </Link>
-                </motion.div>
-                <motion.button
-                  onClick={logout}
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                  whileHover="hover"
-                  variants={hoverVariants}
+              <Menu as="div" className="relative">
+                <MenuButton
+                  className="p-2 bg-gray-50 rounded-full hover:bg-gray-100"
+                  aria-label="User menu"
                 >
-                  Гарах
-                </motion.button>
-              </>
+                  <UserIcon className="h-5 w-5 text-gray-600" />
+                </MenuButton>
+                <Transition
+                  enter="transition ease-out duration-150"
+                  enterFrom="opacity-0 translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-100"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 translate-y-1"
+                >
+                  <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none p-2">
+                    <MenuItem>
+                      {({ active }) => (
+                        <Link
+                          href="/profile"
+                          className={`block px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100' : ''}`}
+                          onClick={() => setShowDesktopSearch(false)}
+                        >
+                          Профайл
+                        </Link>
+                      )}
+                    </MenuItem>
+                    <MenuItem>
+                      {({ active }) => (
+                        <button
+                          onClick={logout}
+                          className={`w-full text-left px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100' : ''}`}
+                        >
+                          Гарах
+                        </button>
+                      )}
+                    </MenuItem>
+                  </MenuItems>
+                </Transition>
+              </Menu>
             ) : (
               <motion.div whileHover="hover" variants={hoverVariants}>
-                <Link href={`/auth/login?redir=${pathname}`}>
-                  <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                    Нэвтрэх
+                <Link href={`/auth/login?redir=${pathname}`} aria-label="Нэвтрэх / Бүртгүүлэх">
+                  <button className="p-2 rounded-full text-gray-700 hover:bg-gray-100">
+                    <UserIcon className="h-5 w-5" />
                   </button>
                 </Link>
               </motion.div>
             )}
           </div>
 
-          {/* Tablet (lg to <xl): compact nav + icons */}
           <div className="hidden lg:flex xl:hidden items-center gap-3 ml-auto flex-wrap">
             <button
-              onClick={() => setShowMobileSearch((s) => !s)}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setShowDesktopSearch((s) => !s);
+              }}
               className="p-2 rounded-full text-gray-700 hover:bg-gray-100 hover:text-blue-600"
               aria-label="Search"
             >
@@ -380,10 +407,12 @@ export default function HeaderMain() {
             </button>
           </div>
 
-          {/* Mobile (<lg): only icons */}
           <div className="flex lg:hidden items-center gap-2">
             <button
-              onClick={() => setShowMobileSearch((s) => !s)}
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setShowDesktopSearch((s) => !s);
+              }}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
               aria-label="Toggle search"
             >
@@ -403,38 +432,35 @@ export default function HeaderMain() {
           </div>
         </div>
 
-        {/* Collapsible search for mobile/tablet */}
-        {(showMobileSearch || isMobileMenuOpen) && (
+        {false && (
           <motion.div
             key="collapsible-search"
             variants={drawerVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="xl:hidden pb-3"
+            className="lg:hidden pb-3 lg:px-2"
           >
             {renderSearch}
           </motion.div>
         )}
       </div>
 
-      {/* ======= BLUR OVERLAY (behind header) ======= */}
-      {(isMobileMenuOpen || showMobileSearch) && (
+      {(isMobileMenuOpen || showMobileSearch || showDesktopSearch) && (
         <motion.div
           aria-hidden
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-40 bg-black/25 backdrop-blur-sm"
+          className="fixed inset-x-0 top-14 sm:top-16 bottom-0 z-40 bg-black/25 backdrop-blur-md"
           onClick={() => {
-            // click outside to close
             setIsMobileMenuOpen(false);
             setShowMobileSearch(false);
+            setShowDesktopSearch(false);
           }}
         />
       )}
 
-      {/* Mobile/Tablet drawer nav */}
       {isMobileMenuOpen && (
         <motion.div
           key="mobile-menu"
@@ -457,7 +483,6 @@ export default function HeaderMain() {
                         />
                       </DisclosureButton>
 
-                      {/* Smooth accordion + subtle blur on open/close */}
                       <Transition
                         show={open}
                         enter="transition-all duration-300 ease-out"
@@ -552,6 +577,32 @@ export default function HeaderMain() {
                   </Link>
                 </motion.div>
               )}
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {showDesktopSearch && (
+        <motion.div
+          key="desktop-search"
+          className="block fixed inset-x-0 top-20 sm:top-24 z-50"
+          variants={drawerVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <div className="mx-auto max-w-full sm:max-w-3xl px-4">
+            <div className="rounded-xl border border-gray-200 shadow-lg bg-white p-3">
+              <div className="flex items-center justify-between">
+                {renderSearch}
+                <button
+                  onClick={() => setShowDesktopSearch(false)}
+                  className="ml-2 p-2 rounded-full text-gray-500 hover:bg-gray-100"
+                  aria-label="Close search"
+                >
+                  <XMarkIcon className="h-5 w-5" />
+                </button>
+              </div>
             </div>
           </div>
         </motion.div>
