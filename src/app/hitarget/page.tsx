@@ -65,22 +65,26 @@ export default function SurveyEquipmentListPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">{getTitle()}</h1>
-          <p className="text-xl text-indigo-100 max-w-2xl mx-auto">
+      {/* Header — DJI/Garmin typography-той тааруулсан */}
+      <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white">
+        <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
+            {getTitle()}
+          </h1>
+          <p className="text-sm sm:text-lg text-indigo-100 max-w-2xl mx-auto">
             Геодезийн хэмжилт, инженерчлэлд зориулсан өндөр нарийвчлалтай багажуудыг үзнэ үү.
           </p>
         </div>
       </div>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center mb-10 overflow-x-auto pb-2">
+      <section className="py-6 sm:py-10">
+        <div className="container mx-auto px-3 sm:px-4">
+          {/* Filter buttons — mobile-д багтахуйц хэмжээтэй */}
+          <div className="flex justify-center mb-4 sm:mb-10 overflow-x-auto pb-2 scrollbar-hide">
             <div className="inline-flex rounded-md shadow-sm" role="group">
               <Link
                 href="/hitarget"
-                className={`px-6 py-3 text-sm font-medium rounded-l-lg border ${
+                className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-l-lg border ${
                   !selectedType
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
@@ -91,7 +95,7 @@ export default function SurveyEquipmentListPage() {
 
               <Link
                 href="/hitarget?type=GNSS"
-                className={`px-6 py-3 text-sm font-medium border-t border-b ${
+                className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-t border-b ${
                   selectedType === 'GNSS'
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
@@ -102,7 +106,7 @@ export default function SurveyEquipmentListPage() {
 
               <Link
                 href="/hitarget?type=TOTAL_STATION"
-                className={`px-6 py-3 text-sm font-medium border-t border-b ${
+                className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-t border-b ${
                   selectedType === 'TOTAL_STATION'
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
@@ -113,7 +117,7 @@ export default function SurveyEquipmentListPage() {
 
               <Link
                 href="/hitarget?type=THEODOLITE"
-                className={`px-6 py-3 text-sm font-medium border-t border-b ${
+                className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-t border-b ${
                   selectedType === 'THEODOLITE'
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
@@ -124,7 +128,7 @@ export default function SurveyEquipmentListPage() {
 
               <Link
                 href="/hitarget?type=AUTO_LEVEL"
-                className={`px-6 py-3 text-sm font-medium rounded-r-lg border ${
+                className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-r-lg border ${
                   selectedType === 'AUTO_LEVEL'
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
@@ -136,16 +140,21 @@ export default function SurveyEquipmentListPage() {
           </div>
 
           {filteredEquipments.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            <div
+              className={`
+                grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+                gap-3 sm:gap-5 lg:gap-8
+              `}
+            >
               {filteredEquipments.map((equipment, i) => (
                 <div
                   key={equipment.id}
-                  className="group rounded-xl overflow-hidden bg-white border border-gray-200 hover:border-indigo-300 hover:shadow-xl transition-all duration-300"
+                  className="group rounded-xl overflow-hidden bg-white border border-gray-200 hover:border-indigo-300 hover:shadow-lg lg:hover:shadow-xl transition-all duration-300"
                   style={{
                     animationName: 'fadeInUp',
                     animationDuration: '0.5s',
                     animationTimingFunction: 'ease-out',
-                    animationDelay: `${i * 0.1}s`,
+                    animationDelay: `${i * 0.06}s`,
                     animationFillMode: 'both',
                   }}
                 >
@@ -158,8 +167,8 @@ export default function SurveyEquipmentListPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <div className="w-24 h-24 mx-auto mb-6 text-gray-300">
+            <div className="text-center py-16 sm:py-20">
+              <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 text-gray-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -174,8 +183,10 @@ export default function SurveyEquipmentListPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-medium text-gray-700 mb-2">Бүтээгдэхүүн олдсонгүй</h3>
-              <p className="text-gray-500 max-w-md mx-auto">
+              <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2">
+                Бүтээгдэхүүн олдсонгүй
+              </h3>
+              <p className="text-gray-500 max-w-md mx-auto text-sm sm:text-base">
                 Тухайн хайлт болон төрлөөр тохирох бүтээгдэхүүн байхгүй байна.
               </p>
             </div>
@@ -207,6 +218,14 @@ export default function SurveyEquipmentListPage() {
           animation-duration: 0.6s;
           animation-timing-function: ease-out;
           animation-fill-mode: both;
+        }
+        /* mobile scrollbar hide helper */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
