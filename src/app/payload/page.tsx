@@ -42,9 +42,7 @@ export default function DronePayloadListPage() {
     const fetchData = async () => {
       try {
         const res = await axios.get('/api/payloads');
-        if (res.data.success) {
-          setPayloads(res.data.data.payloads);
-        }
+        if (res.data.success) setPayloads(res.data.data.payloads);
       } catch (err) {
         console.error('Payload fetch error:', err);
       } finally {
@@ -58,32 +56,46 @@ export default function DronePayloadListPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-16 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+      {/* Header — same rhythm as DJI page */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
             DJI Payload бүтээгдэхүүнүүд
           </h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            Дрон технологид нэмэлт хүч оруулах зориулалттай Zenmuse, Lidar болон бусад Payload
+          <p className="text-sm sm:text-lg text-blue-100 max-w-2xl mx-auto">
+            Дрон технологид нэмэлт хүч оруулах зориулалттай Zenmuse, LiDAR болон бусад Payload
             бүтээгдэхүүнүүдийг үзнэ үү.
           </p>
         </div>
       </div>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <PayloadFilter />
+      <section className="py-6 sm:py-10">
+        <div className="container mx-auto px-3 sm:px-4">
+          {/* Sticky filter bar — mirrors DJI drones page */}
+          <div className="sticky top-0 z-20 -mx-3 sm:mx-0 mb-4 sm:mb-6 bg-gray-50/80 sm:bg-transparent supports-[backdrop-filter]:backdrop-blur px-3 sm:px-0 py-2 sm:py-0 border-b sm:border-0">
+            <div className="max-w-7xl mx-auto overflow-x-auto sm:overflow-visible scrollbar-hide">
+              <div className="min-w-max sm:min-w-0">
+                <PayloadFilter />
+              </div>
+            </div>
+          </div>
+
           {filteredDronePayloads.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div
+              className={`
+                grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+                gap-3 sm:gap-5 lg:gap-8
+              `}
+            >
               {filteredDronePayloads.map((payload, i) => (
                 <div
                   key={payload.id}
-                  className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden bg-white"
+                  className="group bg-white rounded-xl overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all duration-300 touch-manipulation"
                   style={{
                     animationName: 'fadeInUp',
                     animationDuration: '0.5s',
                     animationTimingFunction: 'ease-out',
-                    animationDelay: `${i * 0.1}s`,
+                    animationDelay: `${i * 0.06}s`,
                     animationFillMode: 'both',
                   }}
                 >
@@ -94,8 +106,8 @@ export default function DronePayloadListPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <div className="mx-auto w-24 h-24 mb-6 text-gray-300">
+            <div className="text-center py-16 sm:py-20">
+              <div className="mx-auto w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6 text-gray-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -110,9 +122,11 @@ export default function DronePayloadListPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-medium text-gray-700 mb-2">Payload олдсонгүй</h3>
-              <p className="text-gray-500 max-w-md mx-auto">
-                Таны хайсан payload одоогоор байхгүй байна. Дараа дахин шалгана уу.
+              <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2">
+                Payload олдсонгүй
+              </h3>
+              <p className="text-gray-500 max-w-md mx-auto text-sm sm:text-base">
+                Таны хайсан payload одоогоор байхгүй байна.
               </p>
             </div>
           )}
@@ -130,8 +144,24 @@ export default function DronePayloadListPage() {
             transform: translateY(0);
           }
         }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
         .animate-fade-in {
           animation: fadeIn 0.6s ease-out;
+        }
+        /* mobile scrollbar hide helper to match DJI page feel */
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>

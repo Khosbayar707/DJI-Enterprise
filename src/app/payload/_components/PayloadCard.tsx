@@ -22,95 +22,91 @@ const payloadTypeLabel: Record<PayloadType, string> = {
 };
 
 export default function PayloadCard({ payload, index }: PayloadCardProps) {
+  const firstImage = payload.images?.[0];
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white flex flex-col h-full border border-gray-100 hover:border-gray-200"
+      transition={{ delay: index * 0.06, duration: 0.4, ease: 'easeOut' }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus-within:ring-2 focus-within:ring-blue-500"
     >
-      <div className="flex flex-col h-full">
-        <div className="relative group">
-          <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex justify-center items-center relative overflow-hidden">
-            {payload.images.length > 0 ? (
-              <>
-                <Image
-                  src={payload.images[0].url}
-                  alt={payload.name}
-                  fill
-                  className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  priority={index < 3}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </>
-            ) : (
-              <div className="text-gray-400 flex flex-col items-center">
-                <svg
-                  className="w-12 h-12 mb-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                Зураг байхгүй
-              </div>
-            )}
-
-            <div className="absolute top-3 right-3">
-              <span className="bg-gray-800 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm uppercase tracking-wider">
-                {payloadTypeLabel[payload.type]}
-              </span>
+      {/* Image block — fixed aspect ratio like DJI cards */}
+      <div className="relative w-full overflow-hidden rounded-t-2xl bg-white">
+        <div className="relative aspect-[4/3]">
+          {firstImage ? (
+            <Image
+              src={firstImage.url}
+              alt={firstImage.name || payload.name}
+              fill
+              className="object-cover"
+              priority={index < 3}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-gray-50 text-xs text-gray-400">
+              Зураг байхгүй
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="p-5 flex flex-col flex-grow">
-          <h3
-            className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-tight"
-            title={payload.name}
+        {/* Type badge — same responsive style as DJI card */}
+        <span
+          className="
+            pointer-events-none absolute top-2 right-2 inline-flex items-center
+            rounded-full bg-gray-900/85 text-white backdrop-blur ring-1 ring-white/15 shadow-sm
+            px-1.5 py-0.5 text-[10px]
+            sm:px-2 sm:py-0.5 sm:text-xs
+            md:px-2.5 md:py-1 md:text-sm
+            lg:px-3 lg:py-1 lg:text-sm
+            max-w-[70%] sm:max-w-[60%] md:max-w-none whitespace-nowrap truncate
+          "
+          title={payloadTypeLabel[payload.type]}
+          aria-hidden
+        >
+          {payloadTypeLabel[payload.type]}
+        </span>
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
+        <h3
+          className="mb-1.5 line-clamp-2 text-sm font-semibold text-gray-900 sm:text-base"
+          title={payload.name}
+        >
+          {payload.name}
+        </h3>
+
+        {/* Feature bullets (trimmed & clamped like DJI brief) */}
+        <ul className="mb-3 space-y-1.5 sm:mb-4">
+          {payload.features.slice(0, 3).map((feature, i) => (
+            <li key={i} className="flex items-start text-xs text-gray-600 sm:text-sm">
+              <svg
+                className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span className="line-clamp-2">{feature}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-auto">
+          <button
+            className="mt-2 w-full rounded-lg bg-gradient-to-r from-blue-600 to-black px-3 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:from-black hover:to-black hover:shadow-lg active:scale-[0.98] sm:mt-3 sm:px-4 sm:py-2.5 sm:text-base"
+            aria-hidden
+            tabIndex={-1}
           >
-            {payload.name}
-          </h3>
-
-          <ul className="space-y-2.5 mb-6 flex-grow">
-            {payload.features.slice(0, 3).map((feature, idx) => (
-              <li key={idx} className="flex items-start text-sm text-gray-700">
-                <svg
-                  className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                <span className="line-clamp-2">{feature}</span>
-              </li>
-            ))}
-          </ul>
-
-          <button className="w-full py-3 px-4 text-sm sm:text-base font-semibold text-white rounded-lg bg-gradient-to-r from-blue-600 to-black hover:from-black hover:to-black transition-all duration-500 ease-in-out shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center">
-            <span>Дэлгэрэнгүй</span>
-            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              />
-            </svg>
+            Дэлгэрэнгүй
           </button>
         </div>
       </div>
