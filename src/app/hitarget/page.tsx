@@ -65,7 +65,6 @@ export default function SurveyEquipmentListPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Header — DJI/Garmin typography-той тааруулсан */}
       <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white">
         <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
@@ -79,7 +78,6 @@ export default function SurveyEquipmentListPage() {
 
       <section className="py-6 sm:py-10">
         <div className="container mx-auto px-3 sm:px-4">
-          {/* Filter buttons — mobile-д багтахуйц хэмжээтэй */}
           <div className="flex justify-center mb-4 sm:mb-10 overflow-x-auto pb-2 scrollbar-hide">
             <div className="inline-flex rounded-md shadow-sm" role="group">
               <Link
