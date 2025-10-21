@@ -56,7 +56,6 @@ export default function DronePayloadListPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Header — same rhythm as DJI page */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
@@ -71,7 +70,6 @@ export default function DronePayloadListPage() {
 
       <section className="py-6 sm:py-10">
         <div className="container mx-auto px-3 sm:px-4">
-          {/* Sticky filter bar — mirrors DJI drones page */}
           <div className="sticky top-0 z-20 -mx-3 sm:mx-0 mb-4 sm:mb-6 bg-gray-50/80 sm:bg-transparent supports-[backdrop-filter]:backdrop-blur px-3 sm:px-0 py-2 sm:py-0 border-b sm:border-0">
             <div className="max-w-7xl mx-auto overflow-x-auto sm:overflow-visible scrollbar-hide">
               <div className="min-w-max sm:min-w-0">
