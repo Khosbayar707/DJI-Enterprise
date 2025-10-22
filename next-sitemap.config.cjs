@@ -5,9 +5,9 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: true,
   sitemapSize: 5000,
-
   trailingSlash: false,
 
+  // Эдгээрийг sitemap-д бүү оруул
   exclude: [
     '/admin',
     '/admin/*',
@@ -17,8 +17,10 @@ module.exports = {
     '/_next/*',
     '/404',
     '/500',
-    '/sitemap.xml', // өөрөө үүсгэнэ
-    '/robots.txt', // өөрөө үүсгэнэ
+    '/sitemap.xml',
+    '/robots.txt',
+    '/auth/*',
+    '/profile',
   ],
 
   robotsTxtOptions: {
@@ -26,14 +28,35 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin', '/admin/*', '/dashboard', '/dashboard/*', '/api/*', '/_next/*'],
+        // Crawl-д хориглох зүйлс
+        disallow: [
+          '/admin',
+          '/admin/*',
+          '/dashboard',
+          '/dashboard/*',
+          '/api/*',
+          '/_next/*',
+          '/auth/*',
+          '/profile',
+          // 🔎 Query параметртэй хайлтын/фасеттай хуудсуудыг бүгдийг нь хориглоно
+          '/*?search=',
+          '/*?*search=',
+          '/*?type=',
+          '/*?*type=',
+          '/*?page=',
+          '/*?*page=',
+          // хэрэв өөр параметр хэрэглэдэг бол энд нэмж болно (brand, q, sort, filter …)
+        ],
       },
     ],
+    // Хэрэв тусдаа sitemap-ууд нэмэх бол энд зааж өгнө:
+    // additionalSitemaps: ['https://www.djigeo.mn/sitemap-1.xml', ...],
   },
 
   changefreq: 'weekly',
   priority: 0.7,
 
+  // Sitemap дахь priority/changefreq-ээ төрөл тус бүрээр нарийвчилна
   transform: async (config, path) => {
     let priority = 0.7;
     let changefreq = 'weekly';
@@ -42,7 +65,6 @@ module.exports = {
       priority = 1.0;
       changefreq = 'weekly';
     } else if (path.startsWith('/dji') || path.startsWith('/products')) {
-      // Бүтээгдэхүүний ангилал/дэлгэрэнгүй
       priority = 0.85;
       changefreq = 'weekly';
     } else if (path.startsWith('/blog') || path.startsWith('/news')) {
@@ -61,20 +83,19 @@ module.exports = {
     };
   },
 
-  additionalPaths: async (config) => {
+  // Хүсвэл эндээс dynamic замуудаа нэмж өгөөрэй
+  additionalPaths: async () => {
     try {
-      // Жишээ: таны бүтээгдэхүүний slugs-г API-аас авах (build үед ажиллана)
-      // const res = await fetch('https://djigeo.mn/api/client/products/drones');
+      // Ж: build үед API-гаас slug-уудаа татаж sitemap-д нэмэх
+      // const res = await fetch('https://djigeo.mn/api/client/products/drones', { cache: 'no-store' });
       // const { data } = await res.json();
-      // const productUrls = (data?.drones || []).map(d => ({
+      // return (data?.drones || []).map(d => ({
       //   loc: `/dji/${d.slug || d.id}`,
       //   changefreq: 'weekly',
       //   priority: 0.85,
       //   lastmod: new Date().toISOString(),
       // }));
-      // return productUrls;
-
-      return []; // Одоохондоо хоосон; дээрхийг идэвхжүүлээрэй.
+      return [];
     } catch (e) {
       console.error('additionalPaths error:', e);
       return [];
