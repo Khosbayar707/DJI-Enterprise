@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "djigeo.mn" }],
+      "destination": "https://www.djigeo.mn/:path*",
+      "permanent": true
+    }
+  ]
+}
