@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@mui/material';
@@ -14,25 +14,71 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://djigeo.mn';
+const siteName = 'Djigeo';
+const siteTitle = 'Djigeo — DJI Enterprise Mongolia | Дрон, Геодезийн Технологи';
+const siteDescription =
+  'Инженер Геодези ХХК нь DJI Enterprise-ийн Монгол дахь албан ёсны дистрибьютер. Дрон, геодезийн тоног төхөөрөмж, сургалт, засвар үйлчилгээ, мэргэжлийн зөвлөгөө.';
+
 export const metadata: Metadata = {
-  title: 'Инженер Геодези ХХК | DJI Enterprise албан ёсны дистрибьютер',
-  description: 'Дэвшилтэт дрон технологи, газар зүйн зураглал, барилгын мониторингийн шийдлүүд',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteTitle,
+    template: '%s | Djigeo',
+  },
+  description: siteDescription,
+  applicationName: siteName,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: siteUrl,
+    siteName,
+    title: siteTitle,
+    description: siteDescription,
+    images: [{ url: '/og/djigeo-og.jpg' }],
+    locale: 'mn_MN',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteTitle,
+    description: siteDescription,
+    images: ['/og/djigeo-og.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  icons: { icon: '/favicon.ico', apple: '/apple-touch-icon.png' },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="mn">
-      <Suspense>
-        <body className={`${montserrat.variable} font-sans`}>
-          <Header />
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-          <Footer />
-        </body>
-      </Suspense>
+      <body className={`${montserrat.variable} font-sans`} suppressHydrationWarning>
+        <Header />
+        <ThemeProvider theme={theme}>
+          <Suspense>{children}</Suspense>
+        </ThemeProvider>
+        <Footer />
+      </body>
     </html>
   );
 }

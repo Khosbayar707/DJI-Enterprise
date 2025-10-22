@@ -17,7 +17,6 @@ export default function ProductListSkeleton({
 }: ProductListSkeletonProps) {
   return (
     <div className={`bg-gray-50 min-h-screen ${className}`}>
-      {/* Header hero */}
       {showHeader && (
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
           <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
@@ -41,7 +40,6 @@ export default function ProductListSkeleton({
 
       <section className="py-6 sm:py-10">
         <div className="container mx-auto px-3 sm:px-4">
-          {/* Sticky filter bar */}
           {showFilterBar && (
             <div className="sticky top-0 z-20 -mx-3 sm:mx-0 mb-4 sm:mb-6 bg-gray-50/80 sm:bg-transparent supports-[backdrop-filter]:backdrop-blur px-3 sm:px-0 py-2 sm:py-0 border-b sm:border-0">
               <div className="max-w-7xl mx-auto overflow-x-auto sm:overflow-visible scrollbar-hide">
@@ -59,7 +57,6 @@ export default function ProductListSkeleton({
             </div>
           )}
 
-          {/* Cards grid */}
           <div
             className={`
               grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
@@ -78,7 +75,6 @@ export default function ProductListSkeleton({
                   animationFillMode: 'both',
                 }}
               >
-                {/* Image block with fixed aspect ratio */}
                 <div className="relative w-full overflow-hidden rounded-t-xl bg-white">
                   <div className="relative aspect-[4/3]">
                     <Skeleton variant="rectangular" className="absolute inset-0 h-full w-full" />
@@ -88,7 +84,6 @@ export default function ProductListSkeleton({
                   </div>
                 </div>
 
-                {/* Content block */}
                 <div className="p-3 sm:p-4">
                   <Skeleton variant="text" height={24} className="w-4/5" />
                   <div className="mt-2 space-y-2">
