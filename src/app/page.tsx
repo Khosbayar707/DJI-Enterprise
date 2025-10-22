@@ -17,6 +17,8 @@ import ProductCardSkeleton from './_component/skeleton/search-skeleton';
 import { motion } from 'framer-motion';
 import DroneServiceTrainingSection from './_component/DroneServiceTrainingSection ';
 
+export const dynamic = 'force-static';
+
 const App = () => {
   const search = useSearchParams().get('search');
   const type = useSearchParams().get('type');
