@@ -69,16 +69,22 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="mn">
-      <Suspense>
-        <body className={`${montserrat.variable} font-sans`} suppressHydrationWarning>
+      <body className={`${montserrat.variable} font-sans`} suppressHydrationWarning>
+        <Suspense fallback={null}>
           <Header />
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </Suspense>
+
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={null}>{children}</Suspense>
+        </ThemeProvider>
+
+        <Suspense fallback={null}>
           <Footer />
-        </body>
-      </Suspense>
+        </Suspense>
+      </body>
     </html>
   );
 }
