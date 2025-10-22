@@ -72,13 +72,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="mn">
-      <body className={`${montserrat.variable} font-sans`} suppressHydrationWarning>
-        <Header />
-        <ThemeProvider theme={theme}>
-          <Suspense>{children}</Suspense>
-        </ThemeProvider>
-        <Footer />
-      </body>
+      <Suspense>
+        <body className={`${montserrat.variable} font-sans`} suppressHydrationWarning>
+          <Header />
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <Footer />
+        </body>
+      </Suspense>
     </html>
   );
 }
