@@ -70,7 +70,6 @@ module.exports = {
   },
   additionalPaths: async () => {
     try {
-      // Дараа нь API-аас dynamic slug-уудыг татаж болно
       return [];
     } catch (e) {
       console.error('additionalPaths error:', e);
