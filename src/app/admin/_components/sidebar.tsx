@@ -81,7 +81,6 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
             position: 'relative',
           }}
         >
-          {/* Active indicator bar */}
           <span
             className={`absolute left-0 top-1/2 -translate-y-1/2 h-7 w-1.5 rounded-r-lg transition-all ${
               isActive ? 'bg-blue-600 opacity-100' : 'bg-blue-600 opacity-0 group-hover:opacity-60'
