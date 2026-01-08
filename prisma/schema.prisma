@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -273,6 +272,7 @@ model Review {
 model GarminProduct {
   id             String          @id @default(nanoid())
   name           String
+   partNumber     String          @unique
   price          Float
   discountPrice  Float?
   featured       Boolean         @default(false)
