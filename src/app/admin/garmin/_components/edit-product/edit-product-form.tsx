@@ -53,6 +53,7 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
     resolver: zodResolver(AddGarminProductSchema),
     defaultValues: {
       name: product.name,
+      partNumber: product.partNumber,
       type: product.type || 'SMARTWATCH',
       price: product.price,
       stock: product.stock,
@@ -272,6 +273,24 @@ export default function EditProductForm({ product, setRefresh, onClose }: Props)
                       const n = Math.max(0, Math.floor(Number(e.target.value || 0)));
                       field.onChange(n);
                     }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="partNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Part Number</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={form.formState.isSubmitting}
+                    placeholder="Жишээ: 010-02064-00"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />

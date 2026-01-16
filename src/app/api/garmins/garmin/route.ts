@@ -53,6 +53,7 @@ export async function PUT(req: NextRequest) {
     const body = await req.json();
     const {
       name,
+      partNumber,
       price,
       stock,
       description,
@@ -76,6 +77,23 @@ export async function PUT(req: NextRequest) {
         'Үлдэгдэл 0 буюу түүнээс их бүхэл тоо байх ёстой',
         null
       );
+    }
+    if (partNumber) {
+      const exists = await prisma.garminProduct.findFirst({
+        where: {
+          partNumber,
+          NOT: { id },
+        },
+      });
+
+      if (exists) {
+        return CustomResponse(
+          false,
+          'DUPLICATE_PART_NUMBER',
+          'Ийм Part Number аль хэдийн бүртгэгдсэн байна',
+          null
+        );
+      }
     }
     if (rating !== undefined && (typeof rating !== 'number' || rating < 0 || rating > 5)) {
       return CustomResponse(false, 'INVALID_RATING', 'Үнэлгээ 0-5 хооронд байх ёстой', null);
@@ -116,6 +134,7 @@ export async function PUT(req: NextRequest) {
 
     const data: any = {
       name,
+      partNumber,
       type,
       description,
       isNew,

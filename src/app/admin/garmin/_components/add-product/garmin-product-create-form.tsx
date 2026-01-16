@@ -46,6 +46,7 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
     resolver: zodResolver(AddGarminProductSchema),
     defaultValues: {
       name: '',
+      partNumber: '',
       type: 'SMARTWATCH',
       price: 0,
       stock: 0,
@@ -252,6 +253,24 @@ export default function GraminProductCreateForm({ setRefresh }: Props) {
                     placeholder="0"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="partNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Part Number</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={form.formState.isSubmitting}
+                    placeholder="Жишээ: 010-02064-00"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
