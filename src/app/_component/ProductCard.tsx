@@ -33,16 +33,13 @@ export default function ProductCard({ drone, index }: ProductCardProps) {
         viewport={{ once: true, margin: '-10% 0px' }}
         className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus-within:ring-2 focus-within:ring-blue-500"
       >
-        {/* Image */}
         <div className="relative w-full overflow-hidden rounded-t-2xl bg-white">
-          {/* Тогтмол харьцаа – бүх карт ижил өндөртэй */}
           <div className="relative aspect-[4/3]">
             {firstImage ? (
               <Image
                 src={firstImage.url}
                 alt={firstImage.name || drone.name}
                 fill
-                // ЧУХАЛ: дүүргэх, төвд тайрах
                 className="object-cover"
                 priority={index < 3}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -81,7 +78,6 @@ export default function ProductCard({ drone, index }: ProductCardProps) {
           </span>
         </div>
 
-        {/* Content */}
         <div className="flex flex-1 flex-col p-3 sm:p-4">
           <h3
             className="mb-1.5 line-clamp-2 text-sm font-semibold text-gray-900 sm:text-base"

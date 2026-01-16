@@ -90,7 +90,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       animate="visible"
       variants={containerVariants}
     >
-      {/* Header Section */}
       <motion.div variants={itemVariants} className="space-y-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="space-y-3 flex-1">
@@ -98,7 +97,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
               {product.name}
             </h1>
 
-            {/* Badges and Tags */}
             <div className="flex flex-wrap items-center gap-2">
               {product.partNumber && (
                 <motion.div
@@ -139,7 +137,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             </div>
           </div>
 
-          {/* Stock Status */}
           <motion.div variants={itemVariants} className="flex items-center gap-3">
             <div className="relative">
               <div
@@ -197,7 +194,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
           </motion.div>
         </div>
 
-        {/* Rating */}
         <motion.div variants={itemVariants} className="flex items-center gap-3">
           <div className="flex items-center bg-gradient-to-r from-amber-50 to-yellow-50 px-3 py-2 rounded-lg border border-amber-100">
             <div className="flex items-center mr-2">
@@ -220,21 +216,15 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             </div>
           </div>
 
-          {/* Trust Badges */}
           <div className="hidden sm:flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-lg border border-blue-100">
               <Shield className="w-4 h-4 text-blue-600" />
               <span className="text-xs font-medium text-blue-700">Баталгаатай</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50 rounded-lg border border-emerald-100">
-              <Truck className="w-4 h-4 text-emerald-600" />
-              <span className="text-xs font-medium text-emerald-700">Хүргэлт</span>
-            </div>
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Price Section */}
       <motion.div variants={itemVariants} className="space-y-4">
         <div className="flex flex-wrap items-baseline gap-3">
           {product.discountPrice ? (
@@ -275,7 +265,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         )}
       </motion.div>
 
-      {/* Key Features */}
       {product.features.length > 0 && (
         <motion.div variants={itemVariants} className="space-y-4">
           <div className="flex items-center gap-2">
@@ -307,7 +296,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         </motion.div>
       )}
 
-      {/* Contact Button */}
       <motion.div variants={itemVariants} className="space-y-4">
         <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
           <DialogTrigger asChild>
@@ -318,7 +306,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
               disabled={isLoading}
               className="relative w-full px-8 py-5 gap-3 cursor-pointer bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 disabled:opacity-70 flex items-center justify-center group overflow-hidden"
             >
-              {/* Animated background */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 animate-[shimmer_2s_infinite] opacity-0 group-hover:opacity-20" />
 
@@ -349,7 +336,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             </DialogHeader>
 
             <div className="space-y-6 py-6">
-              {/* Store Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -372,7 +358,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
                   </div>
                 </div>
 
-                {/* Contact Details */}
                 <div className="space-y-4">
                   <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-100 hover:border-blue-200 transition-colors">
                     <div className="p-2 bg-blue-50 rounded-lg">
@@ -436,7 +421,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         </Dialog>
       </motion.div>
 
-      {/* Specifications */}
       {product.specifications.length > 0 && (
         <motion.div variants={itemVariants} className="pt-8 border-t border-gray-200">
           <div className="flex items-center gap-2 mb-6">
@@ -475,7 +459,6 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         </motion.div>
       )}
 
-      {/* Add CSS for shimmer animation */}
       <style jsx>{`
         @keyframes shimmer {
           0% {
