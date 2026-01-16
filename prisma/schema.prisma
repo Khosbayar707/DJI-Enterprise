@@ -273,6 +273,7 @@ model Review {
 model GarminProduct {
   id             String          @id @default(nanoid())
   name           String
+  partNumber     String          @default("part number оруулаагүй")
   price          Float
   discountPrice  Float?
   featured       Boolean         @default(false)
