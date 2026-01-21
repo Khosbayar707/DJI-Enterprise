@@ -3,8 +3,6 @@ import {
   CheckCircleIcon,
   ArrowPathIcon,
   StarIcon,
-  FireIcon,
-  BoltIcon,
   ShieldCheckIcon,
   TruckIcon,
   ClockIcon,
@@ -12,7 +10,7 @@ import {
   ChevronRightIcon,
   DocumentTextIcon,
 } from '@heroicons/react/24/solid';
-import { StarIcon as StarOutlineIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { StarIcon as ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
