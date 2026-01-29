@@ -17,7 +17,7 @@ import LoanChances from '@/app/_component/LoanChances';
 
 export default function Page() {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [drone, setDrone] = useState<CustomDroneClient>();
 
@@ -52,7 +52,12 @@ export default function Page() {
   }, [loading, drone]);
 
   if (loading) return <DroneDetailSkeleton />;
-  if (!drone) return <div className="flex justify-center min-h-screen">Бараа олдсонгүй!</div>;
+  if (!drone)
+    return (
+      <div className="flex items-center justify-center min-h-screen text-base sm:text-lg">
+        Бараа олдсонгүй!
+      </div>
+    );
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Нүүр', href: '/' },
@@ -65,7 +70,9 @@ export default function Page() {
     setTimeout(() => {
       setIsLoading(false);
       const contactForm = document.getElementById('contact-form');
-      if (contactForm) contactForm.scrollIntoView({ behavior: 'smooth' });
+      if (contactForm) {
+        contactForm.scrollIntoView({ behavior: 'smooth' });
+      }
     }, 800);
   };
 
@@ -76,17 +83,19 @@ export default function Page() {
         <meta name="description" content={drone.description} />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 text-[15px] sm:text-base lg:text-[17px]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="py-8 sm:py-10 lg:py-12">
-            <Breadcrumbs items={breadcrumbItems} />
+          <div className="py-8 sm:py-10 lg:py-14">
+            <div className="text-sm sm:text-base">
+              <Breadcrumbs items={breadcrumbItems} />
+            </div>
 
-            <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
-              <div className="order-1 lg:order-none">
+            <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-14 items-start">
+              <div className="order-1">
                 <ProductGallery drone={drone} />
               </div>
 
-              <div className="order-2 lg:order-none lg:sticky lg:top-4">
+              <div className="order-2 lg:sticky lg:top-6">
                 <ProductInfo
                   drone={drone}
                   onContactClick={handleContactClick}
@@ -96,12 +105,17 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="space-y-10 sm:space-y-12 lg:space-y-16 pb-12">
+          <div className="space-y-12 sm:space-y-16 lg:space-y-20 pb-16">
             <LoanChances />
 
-            <ProductTabs drone={drone} />
+            <div className="max-w-5xl mx-auto text-sm sm:text-base lg:text-lg">
+              <ProductTabs drone={drone} />
+            </div>
 
-            <div id="contact-form">
+            <div
+              id="contact-form"
+              className="scroll-mt-24 max-w-4xl mx-auto text-sm sm:text-base lg:text-lg"
+            >
               <ContactForm />
             </div>
 
