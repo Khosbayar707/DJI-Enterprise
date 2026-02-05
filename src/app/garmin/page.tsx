@@ -31,7 +31,7 @@ export default function GarminProductListPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900 text-white">
         <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
             {type === 'SMARTWATCH'
