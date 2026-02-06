@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider as NextThemeProvider } from 'next-themes';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { theme } from '@/lib/theme';
 import Footer from './_component/Footer';
 import Header from './_component/Header';
 import { Suspense } from 'react';
+import { Providers } from './providers';
 
 const montserrat = Montserrat({
   subsets: ['latin', 'cyrillic'],
@@ -71,19 +73,28 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="mn">
-      <body className={`${montserrat.variable} font-sans`} suppressHydrationWarning>
-        <Suspense fallback={null}>
-          <Header />
-        </Suspense>
+    <html lang="mn" suppressHydrationWarning>
+      <body className={`${montserrat.variable} font-sans`}>
+        <NextThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <MuiThemeProvider theme={theme}>
+            <Suspense fallback={null}>
+              <Header />
+            </Suspense>
 
-        <ThemeProvider theme={theme}>
-          <Suspense fallback={null}>{children}</Suspense>
-        </ThemeProvider>
+            <Suspense fallback={null}>
+              <Providers>{children}</Providers>
+            </Suspense>
 
-        <Suspense fallback={null}>
-          <Footer />
-        </Suspense>
+            <Suspense fallback={null}>
+              <Footer />
+            </Suspense>
+          </MuiThemeProvider>
+        </NextThemeProvider>
       </body>
     </html>
   );

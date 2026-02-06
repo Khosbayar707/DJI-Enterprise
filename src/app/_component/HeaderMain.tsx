@@ -38,6 +38,8 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { Button } from '@mui/material';
+import { useTheme } from 'next-themes';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 const hoverVariants = { hover: { scale: 1.02, transition: { duration: 0.18 } } };
 
@@ -47,11 +49,41 @@ const drawerVariants = {
   exit: { opacity: 0, y: -12, transition: { duration: 0.2 } },
 };
 
+// ThemeToggle Component
+function ThemeToggle({ size = 20 }: { size?: number }) {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <button
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      aria-label="Toggle dark mode"
+      className="relative flex items-center justify-center
+                 rounded-full p-2
+                 text-gray-700 dark:text-gray-300
+                 hover:bg-gray-100 dark:hover:bg-zinc-800
+                 transition-colors"
+    >
+      {isDark ? (
+        <SunIcon style={{ width: size, height: size }} />
+      ) : (
+        <MoonIcon style={{ width: size, height: size }} />
+      )}
+    </button>
+  );
+}
+
 export default function HeaderMain() {
   const pathname = usePathname();
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
   const initialSearch = useSearchParams().get('search') || '';
+  const { theme } = useTheme();
 
   const [user, setUser] = useState<User>();
   const [logging, setLogging] = useState(false);
@@ -178,7 +210,7 @@ export default function HeaderMain() {
           <MagnifyingGlassIcon className="h-5 w-5" />
         </div>
         <StyledInputBase
-          className="w-full pl-10 pr-3 py-2 sm:min-w-[200px] focus:outline-none rounded-md text-[11px] sm:text-sm"
+          className="w-full pl-10 pr-3 py-2 sm:min-w-[200px] focus:outline-none rounded-md text-[11px] sm:text-sm dark:bg-zinc-800 dark:text-gray-200"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Хайх"
@@ -187,12 +219,12 @@ export default function HeaderMain() {
       </div>
       <div className="w-full sm:w-auto">
         <Select value={searchType} onValueChange={setSearchType}>
-          <SelectTrigger className="w-full sm:w-[170px] bg-white border border-gray-300 rounded-md shadow-sm text-[11px] sm:text-sm">
+          <SelectTrigger className="w-full sm:w-[170px] bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm text-[11px] sm:text-sm dark:text-gray-200">
             <SelectValue placeholder="Төрөл" />
           </SelectTrigger>
           <SelectContent
             position="popper"
-            className="z-[60] bg-white shadow-lg border border-gray-200 rounded-md"
+            className="z-[60] bg-white dark:bg-zinc-800 shadow-lg border border-gray-200 dark:border-zinc-700 rounded-md"
           >
             <SelectGroup>
               {searchTypeOptions.map((type) => (
@@ -211,11 +243,13 @@ export default function HeaderMain() {
 
   const headerBlurClass =
     isMobileMenuOpen || showMobileSearch || showDesktopSearch
-      ? 'bg-white supports-[backdrop-filter]:bg-white shadow-sm'
-      : 'bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70';
+      ? 'bg-white dark:bg-zinc-900 supports-[backdrop-filter]:bg-white dark:supports-[backdrop-filter]:bg-zinc-900 shadow-sm'
+      : 'bg-white/85 dark:bg-zinc-900/85 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-zinc-900/70';
 
   return (
-    <header className={`sticky top-0 z-50 border-b border-gray-100 ${headerBlurClass}`}>
+    <header
+      className={`sticky top-0 z-50 border-b border-gray-100 dark:border-zinc-800 ${headerBlurClass}`}
+    >
       <div className="mx-auto max-w-7xl px-3 sm:px-6">
         <div className="flex lg:flex-wrap h-auto min-h-14 sm:min-h-16 items-center justify-between gap-x-2 py-1">
           <motion.div
@@ -223,11 +257,11 @@ export default function HeaderMain() {
             className="flex-shrink-0"
           >
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/image/dji-3.svg" alt="DJI Logo" width={28} height={28} />
-              <span className="hidden sm:block text-[clamp(12px,1.6vw,18px)] font-bold text-gray-900">
+              <Image src={'/image/dji-3.svg'} alt="DJI Logo" width={28} height={28} />
+              <span className="hidden sm:block text-[clamp(12px,1.6vw,18px)] font-bold text-gray-900 dark:text-white">
                 Enterprise Mongolia
               </span>
-              <span className="sm:hidden text-[clamp(11px,3.3vw,15px)] font-bold text-gray-900">
+              <span className="sm:hidden text-[clamp(11px,3.3vw,15px)] font-bold text-gray-900 dark:text-white">
                 EM
               </span>
             </Link>
@@ -243,8 +277,8 @@ export default function HeaderMain() {
                       href={group.items[0].path}
                       className={`px-3 py-2 text-[clamp(11px,1.1vw,14px)] font-medium rounded-md transition-colors ${
                         isActive(group.items[0].path)
-                          ? 'text-blue-700 bg-blue-50'
-                          : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                          ? 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30'
+                          : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-zinc-800'
                       }`}
                     >
                       {group.label}
@@ -257,12 +291,12 @@ export default function HeaderMain() {
                 <Menu as="div" key={idx} className="relative">
                   {({ open }) => (
                     <>
-                      <MenuButton className="group flex items-center px-3 py-2 text-[clamp(11px,1.1vw,14px)] font-medium text-gray-700 hover:text-blue-600 rounded-md">
+                      <MenuButton className="group flex items-center px-3 py-2 text-[clamp(11px,1.1vw,14px)] font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-md">
                         {group.label}
                         <ChevronDownIcon
                           className={`ml-1 h-4 w-4 transition-transform ${open ? 'rotate-180' : ''}`}
                         />
-                        <span className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                        <span className="absolute -bottom-0.5 left-0 w-full h-0.5 bg-blue-600 dark:bg-blue-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                       </MenuButton>
                       <Transition
                         as={Fragment}
@@ -273,22 +307,22 @@ export default function HeaderMain() {
                         leaveFrom="opacity-100 translate-y-0"
                         leaveTo="opacity-0 translate-y-1"
                       >
-                        <MenuItems className="absolute z-20 mt-2 w-64 origin-top-left rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none p-3 space-y-2">
+                        <MenuItems className="absolute z-20 mt-2 w-64 origin-top-left rounded-xl bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none p-3 space-y-2">
                           {group.items.map((item, i) => (
                             <div key={i} className="space-y-2">
                               <Link
                                 href={item.path}
-                                className="block px-3 py-2 text-sm font-medium text-gray-900 rounded-md hover:bg-gray-50 hover:text-blue-600"
+                                className="block px-3 py-2 text-sm font-medium text-gray-900 dark:text-white rounded-md hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400"
                               >
                                 {item.label}
                               </Link>
                               {Array.isArray(item.subitems) && item.subitems.length > 0 && (
-                                <div className="ml-2 space-y-1 pl-2 border-l border-gray-100">
+                                <div className="ml-2 space-y-1 pl-2 border-l border-gray-100 dark:border-zinc-700">
                                   {item.subitems.map((sub, j) => (
                                     <Link
                                       key={j}
                                       href={sub.path}
-                                      className="block px-3 py-1.5 text-sm text-gray-600 hover:text-blue-500 hover:bg-gray-50 rounded-md"
+                                      className="block px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-300 hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-md"
                                     >
                                       {sub.label}
                                     </Link>
@@ -312,21 +346,24 @@ export default function HeaderMain() {
                 setIsMobileMenuOpen(false);
                 setShowDesktopSearch((s) => !s);
               }}
-              className="p-2 rounded-full text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400"
               aria-label="Search"
             >
               <MagnifyingGlassIcon className="h-5 w-5" />
             </button>
+
+            {/* Dark Mode Toggle for Desktop */}
+            <ThemeToggle size={20} />
 
             {logging ? (
               <LoadingText />
             ) : user ? (
               <Menu as="div" className="relative">
                 <MenuButton
-                  className="p-2 bg-gray-50 rounded-full hover:bg-gray-100"
+                  className="p-2 bg-gray-50 dark:bg-zinc-800 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700"
                   aria-label="User menu"
                 >
-                  <UserIcon className="h-5 w-5 text-gray-600" />
+                  <UserIcon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
                 </MenuButton>
                 <Transition
                   enter="transition ease-out duration-150"
@@ -336,12 +373,12 @@ export default function HeaderMain() {
                   leaveFrom="opacity-100 translate-y-0"
                   leaveTo="opacity-0 translate-y-1"
                 >
-                  <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none p-2">
+                  <MenuItems className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-black/5 dark:ring-white/10 focus:outline-none p-2">
                     <MenuItem>
                       {({ active }) => (
                         <Link
                           href="/profile"
-                          className={`block px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100' : ''}`}
+                          className={`block px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100 dark:bg-zinc-800' : ''} text-gray-900 dark:text-white`}
                           onClick={() => setShowDesktopSearch(false)}
                         >
                           Профайл
@@ -352,7 +389,7 @@ export default function HeaderMain() {
                       {({ active }) => (
                         <button
                           onClick={logout}
-                          className={`w-full text-left px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100' : ''}`}
+                          className={`w-full text-left px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100 dark:bg-zinc-800' : ''} text-gray-900 dark:text-white`}
                         >
                           Гарах
                         </button>
@@ -364,7 +401,7 @@ export default function HeaderMain() {
             ) : (
               <motion.div whileHover="hover" variants={hoverVariants}>
                 <Link href={`/auth/login?redir=${pathname}`} aria-label="Нэвтрэх / Бүртгүүлэх">
-                  <button className="p-2 rounded-full text-gray-700 hover:bg-gray-100">
+                  <button className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800">
                     <UserIcon className="h-5 w-5" />
                   </button>
                 </Link>
@@ -378,21 +415,28 @@ export default function HeaderMain() {
                 setIsMobileMenuOpen(false);
                 setShowDesktopSearch((s) => !s);
               }}
-              className="p-2 rounded-full text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400"
               aria-label="Search"
             >
               <MagnifyingGlassIcon className="h-4 w-4" />
             </button>
+
+            {/* Dark Mode Toggle for Medium Screens */}
+            <ThemeToggle size={18} />
+
             {user ? (
               <motion.div whileHover="hover" variants={hoverVariants}>
-                <Link href="/profile" className="p-2 bg-gray-50 rounded-full hover:bg-gray-100">
-                  <UserIcon className="h-4 w-4 text-gray-600" />
+                <Link
+                  href="/profile"
+                  className="p-2 bg-gray-50 dark:bg-zinc-800 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700"
+                >
+                  <UserIcon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                 </Link>
               </motion.div>
             ) : (
               <motion.div whileHover="hover" variants={hoverVariants}>
                 <Link href={`/auth/login?redir=${pathname}`}>
-                  <Button className="p-2 rounded-full text-gray-700 hover:bg-gray-100">
+                  <Button className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800">
                     <UserIcon className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -400,7 +444,7 @@ export default function HeaderMain() {
             )}
             <button
               onClick={() => setIsMobileMenuOpen((o) => !o)}
-              className="p-2 rounded-full text-gray-700 hover:bg-gray-100"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
               aria-label="Menu"
             >
               <Bars3Icon className="h-5 w-5" />
@@ -413,14 +457,18 @@ export default function HeaderMain() {
                 setIsMobileMenuOpen(false);
                 setShowDesktopSearch((s) => !s);
               }}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-zinc-800"
               aria-label="Toggle search"
             >
               <MagnifyingGlassIcon className="h-5 w-5" />
             </button>
+
+            {/* Dark Mode Toggle for Mobile */}
+            <ThemeToggle size={18} />
+
             <button
               onClick={() => setIsMobileMenuOpen((o) => !o)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-zinc-800"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
@@ -464,7 +512,7 @@ export default function HeaderMain() {
       {isMobileMenuOpen && (
         <motion.div
           key="mobile-menu"
-          className="xl:hidden fixed inset-x-0 top-14 sm:top-16 z-50 bg-white border-t border-gray-200 shadow-lg max-h-[calc(100dvh-56px)] sm:max-h-[calc(100dvh-64px)] overflow-y-auto"
+          className="xl:hidden fixed inset-x-0 top-14 sm:top-16 z-50 bg-white dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-800 shadow-lg max-h-[calc(100dvh-56px)] sm:max-h-[calc(100dvh-64px)] overflow-y-auto"
           variants={drawerVariants}
           initial="hidden"
           animate="visible"
@@ -473,10 +521,14 @@ export default function HeaderMain() {
           <div className="mx-auto max-w-7xl px-4 py-4 space-y-4">
             <nav className="space-y-2">
               {navGroups.map((group, idx) => (
-                <Disclosure key={idx} as="div" className="border-b border-gray-100 pb-2">
+                <Disclosure
+                  key={idx}
+                  as="div"
+                  className="border-b border-gray-100 dark:border-zinc-800 pb-2"
+                >
                   {({ open }) => (
                     <>
-                      <DisclosureButton className="flex justify-between w-full px-3 py-3 text-sm sm:text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50 rounded-md">
+                      <DisclosureButton className="flex justify-between w-full px-3 py-3 text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-md">
                         {group.label}
                         <ChevronDownIcon
                           className={`h-5 w-5 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
@@ -497,18 +549,18 @@ export default function HeaderMain() {
                             <div key={i} className="space-y-1">
                               <Link
                                 href={item.path}
-                                className="block px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                                className="block px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-md"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 {item.label}
                               </Link>
                               {Array.isArray(item.subitems) && item.subitems?.length > 0 && (
-                                <div className="ml-3 mt-1 space-y-1 border-l border-gray-200 pl-3">
+                                <div className="ml-3 mt-1 space-y-1 border-l border-gray-200 dark:border-zinc-700 pl-3">
                                   {item.subitems.map((sub, j) => (
                                     <Link
                                       key={j}
                                       href={sub.path}
-                                      className="block px-3 py-1.5 text-xs sm:text-sm text-gray-600 hover:text-blue-500 hover:bg-gray-50 rounded-md"
+                                      className="block px-3 py-1.5 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-300 hover:bg-gray-50 dark:hover:bg-zinc-800 rounded-md"
                                       onClick={() => setIsMobileMenuOpen(false)}
                                     >
                                       {sub.label}
@@ -527,6 +579,11 @@ export default function HeaderMain() {
             </nav>
 
             <div className="pt-2 space-y-3">
+              {/* Dark Mode Toggle in Mobile Menu */}
+              <div className="px-4 py-3">
+                <ThemeToggle size={20} />
+              </div>
+
               {logging ? (
                 <LoadingText />
               ) : user ? (
@@ -539,13 +596,13 @@ export default function HeaderMain() {
                   >
                     <Link
                       href="/profile"
-                      className="flex items-center justify-between w-full px-4 py-3 text-xs sm:text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-md"
+                      className="flex items-center justify-between w-full px-4 py-3 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-md"
                     >
                       <div className="flex items-center">
-                        <UserIcon className="h-5 w-5 mr-2 text-gray-500" />
+                        <UserIcon className="h-5 w-5 mr-2 text-gray-500 dark:text-gray-400" />
                         <span>{user.email.split('@')[0]}</span>
                       </div>
-                      <span className="text-blue-600">Профайл</span>
+                      <span className="text-blue-600 dark:text-blue-400">Профайл</span>
                     </Link>
                   </motion.div>
                   <motion.button
@@ -592,12 +649,12 @@ export default function HeaderMain() {
           exit="exit"
         >
           <div className="mx-auto max-w-full sm:max-w-3xl px-4">
-            <div className="rounded-xl border border-gray-200 shadow-lg bg-white p-3">
+            <div className="rounded-xl border border-gray-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-900 p-3">
               <div className="flex items-center justify-between">
                 {renderSearch}
                 <button
                   onClick={() => setShowDesktopSearch(false)}
-                  className="ml-2 p-2 rounded-full text-gray-500 hover:bg-gray-100"
+                  className="ml-2 p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800"
                   aria-label="Close search"
                 >
                   <XMarkIcon className="h-5 w-5" />
