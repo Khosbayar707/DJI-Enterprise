@@ -84,7 +84,14 @@ export default function ServicesAndDepartmentsSection() {
   }, [openIndex]);
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-blue-50 to-white">
+    <section
+      className="
+  py-12 sm:py-16 md:py-20
+  bg-gradient-to-b
+  from-blue-50 to-white
+  dark:from-zinc-950 dark:to-zinc-900
+"
+    >
       <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
         <motion.div
           initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -99,7 +106,7 @@ export default function ServicesAndDepartmentsSection() {
               <span className="absolute bottom-0 left-0 w-full h-1 sm:h-2 bg-blue-200 opacity-50 -z-0 translate-y-1"></span>
             </span>
           </h2>
-          <p className="text-gray-600 mx-auto text-sm sm:text-lg leading-relaxed max-w-[60ch] px-2">
+          <p className="text-gray-600 dark:text-gray-400 mx-auto text-sm sm:text-lg leading-relaxed max-w-[60ch] px-2">
             "Инженер Геодези" ХХК-ийн үндсэн хэлтэс, үйлчилгээний чиглэлүүдийг танилцуулж байна.
           </p>
         </motion.div>
@@ -118,9 +125,17 @@ export default function ServicesAndDepartmentsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.06, duration: 0.45 }}
                 viewport={{ once: true, margin: '-50px' }}
-                className={`group bg-white p-4 sm:p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 focus-within:ring-4 focus-within:ring-blue-300 ${
-                  expanded ? 'ring-4 ring-blue-300' : 'hover:border-blue-200'
-                }`}
+                className={`group
+  bg-white dark:bg-zinc-900
+  p-4 sm:p-6
+  rounded-2xl
+  shadow-md hover:shadow-lg
+  dark:shadow-black/40
+  transition-all duration-300
+  border border-gray-100 dark:border-zinc-800
+  focus-within:ring-4 focus-within:ring-blue-300
+  ${expanded ? 'ring-4 ring-blue-300' : 'hover:border-blue-200'}
+`}
               >
                 <button
                   type="button"
@@ -136,12 +151,14 @@ export default function ServicesAndDepartmentsSection() {
                   className="w-full text-left outline-none"
                 >
                   <div className="flex flex-col items-center text-center sm:text-left sm:items-start">
-                    <div className="mb-4 p-3 sm:p-3.5 bg-blue-50 rounded-full">
+                    <div className="mb-4 p-3 sm:p-3.5 bg-blue-50 dark:bg-zinc-800 rounded-full">
                       <Icon className="text-2xl sm:text-4xl text-blue-600" />
                     </div>
 
                     <div className="flex items-center justify-center sm:justify-between gap-2 mb-1 sm:mb-2 w-full">
-                      <h3 className="text-base sm:text-xl font-bold text-gray-800">{item.title}</h3>
+                      <h3 className="text-base sm:text-xl font-bold text-gray-800 dark:text-gray-100">
+                        {item.title}
+                      </h3>
                       <motion.div
                         animate={{ rotate: expanded ? 180 : 0 }}
                         transition={{ duration: 0.25 }}
@@ -151,7 +168,7 @@ export default function ServicesAndDepartmentsSection() {
                       </motion.div>
                     </div>
 
-                    <p className="text-gray-600 text-sm sm:text-base mb-2 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base mb-2 sm:mb-4">
                       {item.short}
                     </p>
                   </div>
@@ -169,7 +186,16 @@ export default function ServicesAndDepartmentsSection() {
                       transition={{ duration: 0.3 }}
                       className="w-full overflow-hidden"
                     >
-                      <div className="mt-2 sm:mt-4 text-gray-700 bg-blue-50 p-3 sm:p-4 rounded-xl border border-blue-100">
+                      <div
+                        className="
+  mt-2 sm:mt-4
+  text-gray-700 dark:text-gray-300
+  bg-blue-50 dark:bg-zinc-800
+  p-3 sm:p-4
+  rounded-xl
+  border border-blue-100 dark:border-zinc-700
+"
+                      >
                         <p className="text-xs sm:text-base leading-relaxed">{item.details}</p>
                         {item.link && (
                           <a
