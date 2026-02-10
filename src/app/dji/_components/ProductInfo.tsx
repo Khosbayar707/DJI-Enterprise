@@ -22,9 +22,6 @@ type ProductInfoProps = {
 };
 
 export default function ProductInfo({ drone, onContactClick, isLoading }: ProductInfoProps) {
-  const [isHoveringContact, setIsHoveringContact] = useState(false);
-  const [isHoveringPreview, setIsHoveringPreview] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -38,7 +35,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
         border border-gray-100
       "
     >
-      {/* TITLE + STATUS */}
       <div className="space-y-6">
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
@@ -57,7 +53,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
           </div>
         </div>
 
-        {/* STOCK */}
         <div className="flex items-center gap-3 px-5 py-4 rounded-2xl border text-sm sm:text-base">
           {drone.stock > 0 ? (
             <>
@@ -75,7 +70,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
         </div>
       </div>
 
-      {/* RATING */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1">
           {[1, 2, 3, 4, 5].map((i) => (
@@ -85,7 +79,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
         <span className="text-sm sm:text-base text-gray-600">4.8 (12 үнэлгээ)</span>
       </div>
 
-      {/* DESCRIPTION */}
       <div className="space-y-3">
         <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
           Бүтээгдэхүүний тодорхойлолт
@@ -95,7 +88,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
         </p>
       </div>
 
-      {/* ADVANTAGES */}
       <div className="space-y-4">
         <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Үндсэн давуу талууд</h3>
 
@@ -121,7 +113,6 @@ export default function ProductInfo({ drone, onContactClick, isLoading }: Produc
         </AnimatePresence>
       </div>
 
-      {/* CTA */}
       <div className="space-y-4 pt-4">
         <button
           onClick={onContactClick}
