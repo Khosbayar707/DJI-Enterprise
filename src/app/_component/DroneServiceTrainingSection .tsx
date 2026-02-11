@@ -46,10 +46,11 @@ export default function DroneServiceTrainingSection() {
   };
 
   return (
-    <section className="relative bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900 py-16 sm:py-24 lg:py-32 transition-colors overflow-hidden">
+    <section className="relative bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 py-16 sm:py-20 lg:py-24 transition-colors overflow-hidden">
+      {/* Same background as DJIProductsSection */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-500/5 dark:bg-green-500/10 rounded-full blur-3xl" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-600/5 dark:bg-blue-400/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -64,11 +65,11 @@ export default function DroneServiceTrainingSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center justify-center gap-2 mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-900/20 dark:to-green-900/20 border border-blue-100 dark:border-blue-800/30"
+            className="inline-flex items-center justify-center gap-2 mb-4 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800/50"
           >
             <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-green-600 dark:from-blue-400 dark:to-green-400 bg-clip-text text-transparent">
-              Certified Services & Training
+            <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+              Professional Services
             </span>
           </motion.div>
 
@@ -78,7 +79,7 @@ export default function DroneServiceTrainingSection() {
               <span className="absolute inset-0 bg-blue-100 dark:bg-blue-900/30 blur-xl opacity-70" />
             </span>
             <span className="relative inline-block ml-2">
-              <span className="relative z-10 bg-gradient-to-r from-blue-600 to-green-600 dark:from-blue-400 dark:to-green-400 bg-clip-text text-transparent">
+              <span className="relative z-10 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-500 dark:to-blue-700 bg-clip-text text-transparent">
                 Засвар Үйлчилгээ & Сургалт
               </span>
             </span>
@@ -160,27 +161,6 @@ export default function DroneServiceTrainingSection() {
                     </motion.div>
                   ))}
                 </div>
-
-                <Link href="/services">
-                  <Button
-                    className="
-                      w-full sm:w-auto
-                      bg-gradient-to-r from-blue-600 to-blue-700
-                      hover:from-blue-700 hover:to-blue-800
-                      dark:from-blue-500 dark:to-blue-600
-                      dark:hover:from-blue-600 dark:hover:to-blue-700
-                      text-white text-base font-semibold
-                      px-8 py-6 rounded-xl
-                      transition-all duration-300
-                      hover:scale-[1.02] active:scale-95
-                      shadow-lg hover:shadow-xl shadow-blue-500/25
-                      group/btn
-                    "
-                  >
-                    <span>Үйлчилгээний мэдээлэл</span>
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
             </div>
           </motion.div>
@@ -285,7 +265,7 @@ export default function DroneServiceTrainingSection() {
                 color: 'blue',
               },
               {
-                value: '50+',
+                value: '6+',
                 label: 'Сургалтын хөтөлбөр',
                 description: 'Бүрэн хүрээний курс',
                 icon: Calendar,
