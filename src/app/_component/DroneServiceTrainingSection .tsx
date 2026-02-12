@@ -103,7 +103,6 @@ export default function DroneServiceTrainingSection() {
           viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12"
         >
-          {/* Засвар Үйлчилгээ Card */}
           <motion.div
             variants={itemVariants}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
@@ -165,7 +164,6 @@ export default function DroneServiceTrainingSection() {
             </div>
           </motion.div>
 
-          {/* Сургалт Card */}
           <motion.div
             variants={itemVariants}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
