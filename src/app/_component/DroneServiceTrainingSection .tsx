@@ -161,27 +161,6 @@ export default function DroneServiceTrainingSection() {
                     </motion.div>
                   ))}
                 </div>
-
-                <Link href="/services/repair">
-                  <Button
-                    className="
-                      w-full sm:w-auto
-                      bg-gradient-to-r from-blue-600 to-blue-700
-                      hover:from-blue-700 hover:to-blue-800
-                      dark:from-blue-500 dark:to-blue-600
-                      dark:hover:from-blue-600 dark:hover:to-blue-700
-                      text-white text-xs sm:text-base font-semibold
-                      px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-6 rounded-xl
-                      transition-all duration-300
-                      hover:scale-[1.02] active:scale-95
-                      shadow-lg hover:shadow-xl shadow-blue-500/25
-                      group/btn
-                    "
-                  >
-                    <span>Дэлгэрэнгүй</span>
-                    <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 ml-1.5 sm:ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
             </div>
           </motion.div>
