@@ -69,9 +69,9 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
   }, [currentThumbIndex]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 transition-colors duration-300">
       <div
-        className="relative bg-white rounded-2xl shadow-lg overflow-hidden group transition-all duration-300"
+        className="relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden group transition-all duration-300"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -90,14 +90,25 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
           <>
             <button
               onClick={handlePrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-95 z-10 md:left-4"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 
+              bg-white/90 dark:bg-slate-800/90 
+              hover:bg-white dark:hover:bg-slate-700
+              text-gray-800 dark:text-gray-100
+              rounded-full p-2 shadow-lg transition-transform duration-200 
+              hover:scale-110 active:scale-95 z-10"
               aria-label="Previous image"
             >
               <ChevronLeft size={20} className="sm:size-6" />
             </button>
+
             <button
               onClick={handleNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-95 z-10 md:right-4"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 
+              bg-white/90 dark:bg-slate-800/90 
+              hover:bg-white dark:hover:bg-slate-700
+              text-gray-800 dark:text-gray-100
+              rounded-full p-2 shadow-lg transition-transform duration-200 
+              hover:scale-110 active:scale-95 z-10"
               aria-label="Next image"
             >
               <ChevronRight size={20} className="sm:size-6" />
@@ -106,7 +117,12 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
         )}
 
         {product.images.length > 1 && (
-          <div className="absolute top-4 left-4 bg-black/60 text-white text-sm px-3 py-1 rounded-full backdrop-blur-sm z-10">
+          <div
+            className="absolute top-4 left-4 
+            bg-black/60 dark:bg-black/70
+            text-white text-sm px-3 py-1 
+            rounded-full backdrop-blur-sm z-10"
+          >
             {currentThumbIndex + 1} / {product.images.length}
           </div>
         )}
@@ -120,6 +136,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
           >
             {product.images.map((img, index) => {
               const isActive = selectedImage === img.url;
+
               return (
                 <button
                   key={index}
@@ -127,11 +144,15 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
                     setSelectedImage(img.url);
                     setCurrentThumbIndex(index);
                   }}
-                  className={`relative flex-shrink-0 rounded-xl overflow-hidden transition-all duration-200 border-2 ${
-                    isActive
-                      ? 'border-blue-600 shadow-lg scale-105'
-                      : 'border-gray-200 hover:border-blue-400 hover:scale-105 active:scale-95'
-                  }`}
+                  className={`
+                    relative flex-shrink-0 rounded-xl overflow-hidden 
+                    transition-all duration-200 border-2
+                    ${
+                      isActive
+                        ? 'border-blue-600 dark:border-blue-500 shadow-lg scale-105'
+                        : 'border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:scale-105 active:scale-95'
+                    }
+                  `}
                   style={{
                     width: 'clamp(70px, 20vw, 90px)',
                     height: 'clamp(70px, 20vw, 90px)',
@@ -146,15 +167,20 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
                     className="object-cover"
                     sizes="(max-width: 640px) 20vw, 80px"
                   />
+
                   {isActive && (
-                    <div className="absolute inset-0 bg-blue-600/20 pointer-events-none" />
+                    <div className="absolute inset-0 bg-blue-600/20 dark:bg-blue-500/20 pointer-events-none" />
                   )}
                 </button>
               );
             })}
           </div>
 
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-l from-white to-transparent w-8 h-full pointer-events-none md:hidden" />
+          <div
+            className="absolute right-2 top-1/2 -translate-y-1/2 
+            bg-gradient-to-l from-white dark:from-slate-900 
+            to-transparent w-8 h-full pointer-events-none md:hidden"
+          />
         </div>
       )}
     </div>
