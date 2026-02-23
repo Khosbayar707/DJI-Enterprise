@@ -37,14 +37,18 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="flex justify-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-white dark:bg-[#0B1120] transition-colors duration-300">
         <LoadingText />
       </div>
     );
   }
 
   if (!product) {
-    return <div className="flex justify-center min-h-screen">Бараа олдсонгүй!</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white dark:bg-[#0B1120] text-gray-800 dark:text-gray-200 transition-colors duration-300">
+        Бараа олдсонгүй!
+      </div>
+    );
   }
 
   const breadcrumbItems: BreadcrumbItem[] = [
@@ -68,27 +72,49 @@ export default function Page() {
     <>
       <Head>
         <title>{`${product.name} | Манай компани`}</title>
-        <meta name="description" content={product.description} />
+        <meta
+          name="description"
+          content={product.description || `${product.name} - Garmin албан ёсны бүтээгдэхүүн`}
+        />
       </Head>
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+
+      <div
+        className="
+        min-h-screen
+        bg-gradient-to-b
+        from-gray-50 to-gray-100
+        dark:from-[#0B1120] dark:to-[#111827]
+        text-gray-900 dark:text-gray-100
+        py-10 sm:py-12
+        px-4 sm:px-6 lg:px-8
+        font-sans
+        transition-colors duration-300
+      "
+      >
         <div className="max-w-7xl mx-auto">
           <Breadcrumbs items={breadcrumbItems} />
 
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-            <ProductGallery product={product} />
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start mt-6">
+            <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-sm dark:shadow-lg transition-all duration-300">
+              <ProductGallery product={product} />
+            </div>
 
-            <div className="lg:sticky lg:top-4">
-              <ProductInfo
-                product={product}
-                onContactClick={handleContactClick}
-                isLoading={isLoading}
-              />
+            <div className="lg:sticky lg:top-6">
+              <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-sm dark:shadow-lg p-4 sm:p-6 transition-all duration-300">
+                <ProductInfo
+                  product={product}
+                  onContactClick={handleContactClick}
+                  isLoading={isLoading}
+                />
+              </div>
             </div>
           </div>
-          <div className="mt-10 sm:mt-12">
+
+          <div className="mt-12 sm:mt-16">
             <LoanChances />
           </div>
-          <div id="contact-form" className="scroll-mt-24 mt-10 sm:mt-12">
+
+          <div id="contact-form" className="scroll-mt-28 mt-12 sm:mt-16">
             <ContactSection />
           </div>
         </div>

@@ -199,7 +199,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-hidden">
+    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 rounded-2xl overflow-hidden">
       <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-800/20 bg-[size:40px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_80%)]" />
       <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-blue-50/50 to-transparent dark:from-blue-950/20 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-full h-64 bg-gradient-to-t from-indigo-50/50 to-transparent dark:from-indigo-950/20 pointer-events-none" />
