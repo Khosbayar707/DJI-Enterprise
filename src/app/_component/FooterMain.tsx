@@ -68,9 +68,12 @@ const socialLinks = [
   { name: 'Phone', href: 'tel:+97690005559', icon: <FaPhoneAlt className="h-5 w-5" /> },
 ];
 
-const MainFooter = () => {
+export const MainFooter = () => {
   return (
-    <footer role="contentinfo" className="bg-gray-50 border-t border-gray-200">
+    <footer
+      role="contentinfo"
+      className="bg-gray-50 border-t border-gray-200 dark:bg-gray-900 dark:border-gray-800"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center justify-between">
@@ -85,11 +88,11 @@ const MainFooter = () => {
                   src="/image/logo.png"
                   alt="Инженер Геодези ХХК"
                   fill
-                  className="object-contain"
+                  className="object-contain dark:brightness-90 dark:contrast-125"
                   sizes="40px"
                 />
               </div>
-              <span className="text-base sm:text-lg font-semibold text-gray-800">
+              <span className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200">
                 Инженер Геодези ХХК
               </span>
             </Link>
@@ -103,7 +106,7 @@ const MainFooter = () => {
                   href={s.href}
                   target={s.href.startsWith('http') ? '_blank' : undefined}
                   rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-gray-200 transition-all hover:shadow-md hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-gray-200 transition-all hover:shadow-md hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95 dark:bg-gray-800 dark:ring-gray-700 dark:text-gray-300 dark:hover:bg-gray-700"
                   aria-label={s.name}
                 >
                   {s.icon}
@@ -123,9 +126,9 @@ const MainFooter = () => {
               <AccordionItem
                 key={idx}
                 value={`mobile-${idx}`}
-                className="border border-gray-200 rounded-lg bg-white px-4 data-[state=open]:bg-gray-25 transition-colors"
+                className="border border-gray-200 rounded-lg bg-white px-4 data-[state=open]:bg-gray-25 transition-colors dark:border-gray-700 dark:bg-gray-800 dark:data-[state=open]:bg-gray-700/50"
               >
-                <AccordionTrigger className="py-4 text-left text-base font-semibold text-gray-800 hover:no-underline [&[data-state=open]]:text-blue-600">
+                <AccordionTrigger className="py-4 text-left text-base font-semibold text-gray-800 hover:no-underline [&[data-state=open]]:text-blue-600 dark:text-gray-200 dark:[&[data-state=open]]:text-blue-400">
                   {section.title}
                 </AccordionTrigger>
                 <AccordionContent className="pb-4">
@@ -133,10 +136,14 @@ const MainFooter = () => {
                     {section.links.map((link, i) => (
                       <li
                         key={i}
-                        className="rounded-lg bg-gray-50 p-3 border border-gray-100 hover:bg-gray-100 transition-colors"
+                        className="rounded-lg bg-gray-50 p-3 border border-gray-100 hover:bg-gray-100 transition-colors dark:bg-gray-700/50 dark:border-gray-600 dark:hover:bg-gray-700"
                       >
-                        <p className="text-[15px] font-medium text-gray-800 mb-1">{link.name}</p>
-                        <p className="text-sm leading-relaxed text-gray-600">{link.info}</p>
+                        <p className="text-[15px] font-medium text-gray-800 mb-1 dark:text-gray-200">
+                          {link.name}
+                        </p>
+                        <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                          {link.info}
+                        </p>
                       </li>
                     ))}
                   </ul>
@@ -146,39 +153,41 @@ const MainFooter = () => {
           </Accordion>
         </div>
 
-        <div className="my-6 border-t border-gray-200" />
+        <div className="my-6 border-t border-gray-200 dark:border-gray-800" />
 
         <Accordion type="single" collapsible defaultValue="contact-info">
           <AccordionItem value="contact-info" className="border-0">
-            <AccordionTrigger className="p-3 text-left text-sm font-semibold text-gray-700 hover:no-underline [&[data-state=open]]:text-blue-600 border-b border-gray-200">
+            <AccordionTrigger className="p-3 text-left text-sm font-semibold text-gray-700 hover:no-underline [&[data-state=open]]:text-blue-600 border-b border-gray-200 dark:text-gray-300 dark:[&[data-state=open]]:text-blue-400 dark:border-gray-800">
               <span className="flex items-center gap-2">
-                <FaMapMarkerAlt className="text-blue-500" />
+                <FaMapMarkerAlt className="text-blue-500 dark:text-blue-400" />
                 Холбоо барих мэдээлэл
               </span>
             </AccordionTrigger>
             <AccordionContent className="pt-4">
-              <div className="grid gap-6 text-sm text-gray-700 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 text-sm text-gray-700 md:grid-cols-2 lg:grid-cols-3 dark:text-gray-300">
                 <div className="flex items-start gap-3">
-                  <FaMapMarkerAlt className="mt-1 shrink-0 text-blue-500" />
+                  <FaMapMarkerAlt className="mt-1 shrink-0 text-blue-500 dark:text-blue-400" />
                   <span className="text-sm leading-relaxed">
                     Улаанбаатар хот, Баянгол дүүрэг, 16-р хороо, Амарсанаагийн гудамж 52-ын 3 тоот
                   </span>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <FaEnvelope className="mt-1 shrink-0 text-blue-500" />
+                  <FaEnvelope className="mt-1 shrink-0 text-blue-500 dark:text-blue-400" />
                   <div className="flex flex-col space-y-1">
-                    <span className="text-sm font-medium text-gray-600">И-мэйл:</span>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      И-мэйл:
+                    </span>
                     <div className="flex flex-col space-y-1">
                       <a
                         href="mailto:dji@geo-mongol.mn"
-                        className="text-blue-600 text-sm underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                        className="text-blue-600 text-sm underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400"
                       >
                         dji@geo-mongol.mn
                       </a>
                       <a
                         href="mailto:dji_service@geo-mongol.mn"
-                        className="text-blue-600 text-sm underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                        className="text-blue-600 text-sm underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-blue-400"
                       >
                         dji_service@geo-mongol.mn
                       </a>
@@ -188,8 +197,10 @@ const MainFooter = () => {
 
                 <div className="flex flex-col gap-3 md:col-span-2 lg:col-span-1">
                   <div className="flex items-center gap-3">
-                    <FaPhoneAlt className="shrink-0 text-blue-500" />
-                    <span className="text-sm font-medium text-gray-600">Утас:</span>
+                    <FaPhoneAlt className="shrink-0 text-blue-500 dark:text-blue-400" />
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Утас:
+                    </span>
                   </div>
                   <div className="flex flex-col gap-2">
                     {[
@@ -200,7 +211,7 @@ const MainFooter = () => {
                       <a
                         key={i}
                         href={p.href}
-                        className="inline-flex h-10 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-blue-700 shadow-sm ring-1 ring-blue-100 transition-all hover:bg-blue-50 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95"
+                        className="inline-flex h-10 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-blue-700 shadow-sm ring-1 ring-blue-100 transition-all hover:bg-blue-50 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95 dark:bg-gray-800 dark:text-blue-400 dark:ring-blue-900/50 dark:hover:bg-gray-700"
                       >
                         {p.label}
                       </a>
@@ -209,7 +220,7 @@ const MainFooter = () => {
                 </div>
 
                 <div className="md:col-span-2 lg:col-span-3">
-                  <p className="text-sm text-gray-500 bg-gray-100 rounded-lg p-3 text-center">
+                  <p className="text-sm text-gray-500 bg-gray-100 rounded-lg p-3 text-center dark:bg-gray-800 dark:text-gray-400">
                     Ажиллах цаг: Даваа-Баасан 09:00 - 18:00 / Бямба-Ням: Амарна
                   </p>
                 </div>
@@ -218,13 +229,13 @@ const MainFooter = () => {
           </AccordionItem>
         </Accordion>
 
-        <div className="mt-6 flex flex-col items-center gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:justify-between">
-          <p className="text-center text-xs text-gray-500 sm:text-left">
+        <div className="mt-6 flex flex-col items-center gap-4 border-t border-gray-200 pt-6 sm:flex-row sm:justify-between dark:border-gray-800">
+          <p className="text-center text-xs text-gray-500 sm:text-left dark:text-gray-400">
             &copy; {new Date().getFullYear()} Инженер Геодези ХХК. Бүх эрх хуулиар хамгаалагдсан.
           </p>
           <Link
             href="#top"
-            className="inline-flex h-10 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95"
+            className="inline-flex h-10 items-center justify-center rounded-full bg-white px-4 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-200 transition-all hover:bg-gray-50 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700 dark:hover:bg-gray-700"
           >
             ↑ Дээш буцах
           </Link>
@@ -233,5 +244,3 @@ const MainFooter = () => {
     </footer>
   );
 };
-
-export default MainFooter;
