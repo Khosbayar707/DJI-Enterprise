@@ -58,23 +58,40 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
-      {/* TITLE */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-8 sm:space-y-10"
+    >
       <div className="space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
+        <h1
+          className="
+      text-2xl sm:text-3xl lg:text-4xl
+      font-bold
+      text-gray-900 dark:text-gray-100
+      leading-tight
+    "
+        >
           {product.name}
         </h1>
 
         <div className="flex flex-wrap gap-3 items-center">
           {product.partNumber && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800">
+            <div
+              className="
+          flex items-center gap-2
+          px-3 py-1.5 rounded-lg
+          border border-gray-200 dark:border-gray-700
+          bg-gray-50 dark:bg-slate-800
+        "
+            >
               <span className="text-xs text-gray-500 dark:text-gray-400">PN</span>
               <span className="font-mono text-sm text-gray-800 dark:text-gray-200">
                 {product.partNumber}
               </span>
               <button
                 onClick={handleCopyPN}
-                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700"
+                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 transition"
               >
                 {copiedPN ? (
                   <Check className="w-4 h-4 text-green-500" />
@@ -85,14 +102,20 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             </div>
           )}
 
-          <span className="px-3 py-1.5 text-xs rounded-full border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+          <span
+            className="
+        px-3 py-1.5 text-xs rounded-full
+        border border-blue-200 dark:border-blue-700
+        bg-blue-50 dark:bg-blue-900/30
+        text-blue-700 dark:text-blue-300
+      "
+          >
             {product.type}
           </span>
         </div>
       </div>
 
-      {/* RATING */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
         <div className="flex items-center gap-1">
           {[...Array(fullStars)].map((_, i) => (
             <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
@@ -102,41 +125,73 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             <Star key={i} className="w-5 h-5 text-gray-300 dark:text-gray-600" />
           ))}
         </div>
-        <span className="text-gray-600 dark:text-gray-400 text-sm">
+
+        <span className="text-sm text-gray-600 dark:text-gray-400">
           {product.rating.toFixed(1)} ({product.reviewCount})
         </span>
       </div>
 
-      {/* PRICE */}
       <div>
         {product.discountPrice ? (
-          <div className="flex items-center gap-4">
-            <span className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+          <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-4">
+            <span
+              className="
+          text-3xl sm:text-4xl
+          font-bold
+          text-gray-900 dark:text-gray-100
+        "
+            >
               {formatTugrug(product.discountPrice)}
             </span>
-            <span className="line-through text-gray-400">{formatTugrug(product.price)}</span>
+            <span
+              className="
+          line-through
+          text-gray-400
+          text-lg sm:text-xl
+        "
+            >
+              {formatTugrug(product.price)}
+            </span>
           </div>
         ) : (
-          <span className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+          <span
+            className="
+        text-3xl sm:text-4xl
+        font-bold
+        text-gray-900 dark:text-gray-100
+      "
+          >
             {formatTugrug(product.price)}
           </span>
         )}
       </div>
 
-      {/* FEATURES */}
       {product.features.length > 0 && (
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
             Үндсэн онцлогууд
           </h3>
-          <div className="grid sm:grid-cols-2 gap-3">
+
+          <div
+            className="
+        grid gap-3
+        grid-cols-1
+        sm:grid-cols-2
+        lg:grid-cols-3
+      "
+          >
             {product.features.slice(0, 6).map((feature, index) => (
               <div
                 key={index}
-                className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800"
+                className="
+              p-4 rounded-xl
+              border border-gray-200 dark:border-gray-700
+              bg-white dark:bg-slate-800
+              transition hover:shadow-md
+            "
               >
-                <div className="flex items-center gap-2">
-                  <ChevronRight className="w-4 h-4 text-blue-500" />
+                <div className="flex items-start gap-2">
+                  <ChevronRight className="w-4 h-4 text-blue-500 mt-0.5" />
                   <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
                 </div>
               </div>
@@ -145,64 +200,56 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
         </div>
       )}
 
-      {/* CONTACT BUTTON */}
-      <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
-        <DialogTrigger asChild>
-          <button
-            onClick={onContactClick}
-            disabled={isLoading}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg hover:opacity-90 transition"
-          >
-            Худалдагчтай холбогдох
-          </button>
-        </DialogTrigger>
+      <div className="pt-4">
+        <button
+          onClick={onContactClick}
+          disabled={isLoading}
+          className="
+        w-full sm:max-w-md
+        py-4 rounded-xl
+        bg-gradient-to-r from-blue-600 to-purple-600
+        text-white font-semibold text-base sm:text-lg
+        hover:opacity-90 transition
+      "
+        >
+          Худалдагчтай холбогдох
+        </button>
+      </div>
 
-        <DialogContent className="bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 rounded-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Худалдагчийн мэдээлэл</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-4 mt-4">
-            <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-slate-800">
-              <h4 className="font-semibold">{storeInfo.name}</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{storeInfo.location}</p>
-              <p className="text-sm mt-1">{storeInfo.workingHours}</p>
-            </div>
-
-            <a
-              href={`tel:${storeInfo.phone}`}
-              className="block text-center py-3 rounded-lg bg-green-600 text-white font-medium"
-            >
-              {storeInfo.phone} — Дуудах
-            </a>
-
-            <button
-              onClick={() => setIsContactModalOpen(false)}
-              className="w-full py-3 rounded-lg bg-gray-200 dark:bg-slate-700 text-gray-800 dark:text-gray-200"
-            >
-              Хаах
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* SPECIFICATIONS */}
       {product.specifications.length > 0 && (
         <div className="pt-8 border-t border-gray-200 dark:border-gray-700">
-          <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
             Техникийн үзүүлэлтүүд
           </h3>
 
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div
+            className="
+        grid gap-4
+        grid-cols-1
+        sm:grid-cols-2
+        xl:grid-cols-3
+      "
+          >
             {product.specifications.map((spec, index) => (
               <div
                 key={index}
-                className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800"
+                className="
+              p-4 rounded-xl
+              border border-gray-200 dark:border-gray-700
+              bg-white dark:bg-slate-800
+            "
               >
                 <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">
                   {spec.label}
                 </span>
-                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-1">
+
+                <div
+                  className="
+              text-sm font-semibold
+              text-gray-900 dark:text-gray-100
+              mt-1
+            "
+                >
                   {spec.value}
                 </div>
               </div>
