@@ -4,7 +4,7 @@ export default function Footer() {
       <p>
         © 2025{' '}
         <a
-          href="https://dronestore.mn"
+          href="https://djigeo.mn"
           className="text-blue-600 hover:underline transition-colors duration-200 font-medium"
         >
           Инженер Геодези ХХК

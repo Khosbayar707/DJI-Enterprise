@@ -50,7 +50,6 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
   return (
     <div className="space-y-4">
-      {/* MAIN IMAGE */}
       <div
         className="
           relative rounded-2xl overflow-hidden
@@ -80,7 +79,6 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
         {images.length > 1 && (
           <>
-            {/* LEFT */}
             <button
               onClick={handlePrev}
               className="
@@ -134,7 +132,6 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
       {images.length > 1 && (
         <div className="relative">
-          {/* MOBILE GRID */}
           <div className="grid grid-cols-5 grid-rows-2 gap-2 sm:hidden">
             {images.slice(0, 10).map((img, index) => {
               const isActive = index === currentIndex;
@@ -155,7 +152,6 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
               );
             })}
 
-            {/* IF MORE THAN 10 */}
             {images.length > 10 && (
               <div
                 className="
@@ -169,7 +165,6 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
             )}
           </div>
 
-          {/* DESKTOP SCROLL */}
           <div
             className="
       hidden sm:flex gap-3 overflow-x-auto
