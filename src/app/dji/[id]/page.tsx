@@ -45,16 +45,17 @@ export default function Page() {
         if (el) {
           setTimeout(() => {
             el.scrollIntoView({ behavior: 'smooth' });
-          }, 300);
+          }, 250);
         }
       }
     }
   }, [loading, drone]);
 
   if (loading) return <DroneDetailSkeleton />;
+
   if (!drone)
     return (
-      <div className="flex items-center justify-center min-h-screen text-base sm:text-lg">
+      <div className="flex items-center justify-center min-h-screen text-base sm:text-lg dark:bg-slate-900 dark:text-white">
         Бараа олдсонгүй!
       </div>
     );
@@ -73,7 +74,7 @@ export default function Page() {
       if (contactForm) {
         contactForm.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 800);
+    }, 600);
   };
 
   return (
@@ -83,19 +84,26 @@ export default function Page() {
         <meta name="description" content={drone.description} />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 text-[15px] sm:text-base lg:text-[17px]">
+      <div
+        className="
+          min-h-screen
+          bg-gradient-to-b
+          from-gray-50 via-gray-100 to-gray-50
+          dark:from-slate-950 dark:via-slate-900 dark:to-slate-950
+          text-gray-900 dark:text-gray-100
+          transition-colors duration-300
+        "
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="py-8 sm:py-10 lg:py-14">
-            <div className="text-sm sm:text-base">
-              <Breadcrumbs items={breadcrumbItems} />
-            </div>
+          <div className="py-10 sm:py-14 lg:py-20 space-y-6">
+            <Breadcrumbs items={breadcrumbItems} />
 
-            <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-14 items-start">
-              <div className="order-1">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+              <div>
                 <ProductGallery drone={drone} />
               </div>
 
-              <div className="order-2 lg:sticky lg:top-6">
+              <div className="lg:sticky lg:top-8">
                 <ProductInfo
                   drone={drone}
                   onContactClick={handleContactClick}
@@ -105,21 +113,28 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="space-y-12 sm:space-y-16 lg:space-y-20 pb-16">
-            <LoanChances />
+          <div className="space-y-16 sm:space-y-20 lg:space-y-24 pb-24">
+            <section className="max-w-6xl mx-auto">
+              <LoanChances />
+            </section>
 
-            <div className="max-w-5xl mx-auto text-sm sm:text-base lg:text-lg">
+            <section className="max-w-5xl mx-auto">
               <ProductTabs drone={drone} />
-            </div>
+            </section>
 
-            <div
+            <section
               id="contact-form"
-              className="scroll-mt-24 max-w-4xl mx-auto text-sm sm:text-base lg:text-lg"
+              className="
+                scroll-mt-32
+                max-w-4xl mx-auto
+              "
             >
               <ContactForm />
-            </div>
+            </section>
 
-            <RelatedProducts />
+            <section className="max-w-6xl mx-auto">
+              <RelatedProducts />
+            </section>
           </div>
         </div>
       </div>
