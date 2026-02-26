@@ -55,13 +55,13 @@ export default function DronePayloadListPage() {
   if (loading) return <ProductListSkeleton />;
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-950 text-white">
         <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
             DJI Payload бүтээгдэхүүнүүд
           </h1>
-          <p className="text-sm sm:text-lg text-blue-100 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-lg text-blue-100 dark:text-blue-200 max-w-2xl mx-auto">
             Дрон технологид нэмэлт хүч оруулах зориулалттай Zenmuse, LiDAR болон бусад Payload
             бүтээгдэхүүнүүдийг үзнэ үү.
           </p>
@@ -70,7 +70,7 @@ export default function DronePayloadListPage() {
 
       <section className="py-6 sm:py-10">
         <div className="container mx-auto px-3 sm:px-4">
-          <div className="sticky top-0 z-20 -mx-3 sm:mx-0 mb-4 sm:mb-6 bg-gray-50/80 sm:bg-transparent supports-[backdrop-filter]:backdrop-blur px-3 sm:px-0 py-2 sm:py-0 border-b sm:border-0">
+          <div className="sticky top-0 z-20 -mx-3 sm:mx-0 mb-4 sm:mb-6 bg-gray-50/80 dark:bg-gray-900/80 sm:bg-transparent supports-[backdrop-filter]:backdrop-blur px-3 sm:px-0 py-2 sm:py-0 border-b dark:border-gray-800 sm:border-0">
             <div className="max-w-7xl mx-auto overflow-x-auto sm:overflow-visible scrollbar-hide">
               <div className="min-w-max sm:min-w-0">
                 <PayloadFilter />
@@ -88,7 +88,7 @@ export default function DronePayloadListPage() {
               {filteredDronePayloads.map((payload, i) => (
                 <div
                   key={payload.id}
-                  className="group bg-white rounded-xl overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all duration-300 touch-manipulation"
+                  className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-lg dark:hover:shadow-blue-900/20 transition-all duration-300 touch-manipulation border border-transparent dark:border-gray-700"
                   style={{
                     animationName: 'fadeInUp',
                     animationDuration: '0.5s',
@@ -105,7 +105,7 @@ export default function DronePayloadListPage() {
             </div>
           ) : (
             <div className="text-center py-16 sm:py-20">
-              <div className="mx-auto w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6 text-gray-300">
+              <div className="mx-auto w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-6 text-gray-300 dark:text-gray-600">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -120,10 +120,10 @@ export default function DronePayloadListPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2">
+              <h3 className="text-lg sm:text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Payload олдсонгүй
               </h3>
-              <p className="text-gray-500 max-w-md mx-auto text-sm sm:text-base">
+              <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto text-sm sm:text-base">
                 Таны хайсан payload одоогоор байхгүй байна.
               </p>
             </div>
