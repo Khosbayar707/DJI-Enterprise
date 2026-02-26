@@ -49,7 +49,6 @@ export default function ProductListPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0B1120] transition-colors duration-300">
-      {/* HERO */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-slate-900 text-white">
         <div className="container mx-auto px-4 py-12 sm:py-16 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3">DJI дронууд</h1>
@@ -59,17 +58,14 @@ export default function ProductListPage() {
         </div>
       </div>
 
-      {/* CONTENT */}
       <section className="py-6 sm:py-10">
         <div className="container mx-auto px-3 sm:px-4">
-          {/* FILTER */}
           <div className="sticky top-0 z-20 mb-6 bg-gray-50/90 dark:bg-[#0B1120]/90 backdrop-blur border-b border-gray-200 dark:border-gray-800">
             <div className="max-w-7xl mx-auto overflow-x-auto scrollbar-hide py-2">
               <FilterButtons />
             </div>
           </div>
 
-          {/* GRID */}
           {filteredDrones.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-8">
               {filteredDrones.map((drone, i) => (
@@ -118,7 +114,6 @@ export default function ProductListPage() {
         </div>
       </section>
 
-      {/* GLOBAL CSS SAFE */}
       <style global jsx>{`
         @keyframes fadeInUp {
           from {
