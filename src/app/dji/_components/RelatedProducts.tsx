@@ -18,7 +18,7 @@ export default function RelatedProducts() {
         if (res.data.success) {
           const all = res.data.data.drones as CustomDroneClient[];
 
-          const filtered = all.filter((drone) => drone.id !== id).slice(0, 6); // 🔥 MAX 6
+          const filtered = all.filter((drone) => drone.id !== id).slice(0, 6);
 
           setDrones(filtered);
         }
