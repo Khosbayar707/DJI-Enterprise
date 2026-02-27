@@ -32,7 +32,6 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
       viewport={{ once: true, margin: '-10% 0px' }}
       className="flex h-full flex-col rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm dark:shadow-gray-900/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg dark:hover:shadow-blue-900/20 focus-within:ring-2 focus-within:ring-blue-500"
     >
-      {/* Image block — fixed aspect ratio like DJI cards */}
       <div className="relative w-full overflow-hidden rounded-t-2xl bg-white dark:bg-gray-800">
         <div className="relative aspect-[4/3]">
           {firstImage ? (
@@ -51,7 +50,6 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
           )}
         </div>
 
-        {/* Type badge — same responsive style as DJI card */}
         <span
           className="
             pointer-events-none absolute top-2 right-2 inline-flex items-center
@@ -68,8 +66,6 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
           {payloadTypeLabel[payload.type]}
         </span>
       </div>
-
-      {/* Content */}
       <div className="flex flex-1 flex-col p-3 sm:p-4">
         <h3
           className="mb-1.5 line-clamp-2 text-sm font-semibold text-gray-900 dark:text-white sm:text-base"
@@ -78,7 +74,6 @@ export default function PayloadCard({ payload, index }: PayloadCardProps) {
           {payload.name}
         </h3>
 
-        {/* Feature bullets (trimmed & clamped like DJI brief) */}
         <ul className="mb-3 space-y-1.5 sm:mb-4">
           {payload.features.slice(0, 3).map((feature, i) => (
             <li
