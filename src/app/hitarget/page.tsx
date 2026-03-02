@@ -64,13 +64,13 @@ export default function SurveyEquipmentListPage() {
   if (loading) return <ProductListSkeleton />;
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200">
+      <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 dark:from-indigo-700 dark:to-indigo-900 text-white">
         <div className="container mx-auto px-4 py-10 sm:py-16 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 animate-fade-in">
             {getTitle()}
           </h1>
-          <p className="text-sm sm:text-lg text-indigo-100 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-lg text-indigo-100 dark:text-indigo-200 max-w-2xl mx-auto">
             Геодезийн хэмжилт, инженерчлэлд зориулсан өндөр нарийвчлалтай багажуудыг үзнэ үү.
           </p>
         </div>
@@ -79,13 +79,13 @@ export default function SurveyEquipmentListPage() {
       <section className="py-6 sm:py-10">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex justify-center mb-4 sm:mb-10 overflow-x-auto pb-2 scrollbar-hide">
-            <div className="inline-flex rounded-md shadow-sm" role="group">
+            <div className="inline-flex rounded-md shadow-sm dark:shadow-gray-800" role="group">
               <Link
                 href="/hitarget"
                 className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-l-lg border ${
                   !selectedType
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                    ? 'bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                 } transition-colors duration-200`}
               >
                 Бүгд
@@ -95,8 +95,8 @@ export default function SurveyEquipmentListPage() {
                 href="/hitarget?type=GNSS"
                 className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-t border-b ${
                   selectedType === 'GNSS'
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                    ? 'bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                 } transition-colors duration-200`}
               >
                 GNSS
@@ -106,8 +106,8 @@ export default function SurveyEquipmentListPage() {
                 href="/hitarget?type=TOTAL_STATION"
                 className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-t border-b ${
                   selectedType === 'TOTAL_STATION'
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                    ? 'bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                 } transition-colors duration-200`}
               >
                 Тотал станц
@@ -117,8 +117,8 @@ export default function SurveyEquipmentListPage() {
                 href="/hitarget?type=THEODOLITE"
                 className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium border-t border-b ${
                   selectedType === 'THEODOLITE'
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                    ? 'bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                 } transition-colors duration-200`}
               >
                 Теодолит
@@ -128,8 +128,8 @@ export default function SurveyEquipmentListPage() {
                 href="/hitarget?type=AUTO_LEVEL"
                 className={`px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium rounded-r-lg border ${
                   selectedType === 'AUTO_LEVEL'
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300'
+                    ? 'bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-600'
                 } transition-colors duration-200`}
               >
                 Автомат нивелир
@@ -147,7 +147,7 @@ export default function SurveyEquipmentListPage() {
               {filteredEquipments.map((equipment, i) => (
                 <div
                   key={equipment.id}
-                  className="group rounded-xl overflow-hidden bg-white border border-gray-200 hover:border-indigo-300 hover:shadow-lg lg:hover:shadow-xl transition-all duration-300"
+                  className="group rounded-xl overflow-hidden bg-white border border-gray-200 hover:border-indigo-300 hover:shadow-lg lg:hover:shadow-xl transition-all duration-300 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-indigo-600 dark:hover:shadow-indigo-900/20"
                   style={{
                     animationName: 'fadeInUp',
                     animationDuration: '0.5s',
@@ -166,7 +166,7 @@ export default function SurveyEquipmentListPage() {
             </div>
           ) : (
             <div className="text-center py-16 sm:py-20">
-              <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 text-gray-300">
+              <div className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 text-gray-300 dark:text-gray-600">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -181,10 +181,10 @@ export default function SurveyEquipmentListPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2">
+              <h3 className="text-lg sm:text-xl font-medium text-gray-700 mb-2 dark:text-gray-300">
                 Бүтээгдэхүүн олдсонгүй
               </h3>
-              <p className="text-gray-500 max-w-md mx-auto text-sm sm:text-base">
+              <p className="text-gray-500 max-w-md mx-auto text-sm sm:text-base dark:text-gray-400">
                 Тухайн хайлт болон төрлөөр тохирох бүтээгдэхүүн байхгүй байна.
               </p>
             </div>
