@@ -37,14 +37,18 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="flex justify-center min-h-screen">
+      <div className="flex justify-center min-h-screen dark:bg-gray-900">
         <LoadingText />
       </div>
     );
   }
 
   if (!product) {
-    return <div className="flex justify-center min-h-screen">Бараа олдсонгүй!</div>;
+    return (
+      <div className="flex justify-center min-h-screen dark:bg-gray-900 dark:text-gray-200">
+        Бараа олдсонгүй!
+      </div>
+    );
   }
 
   const breadcrumbItems: BreadcrumbItem[] = [
@@ -70,7 +74,7 @@ export default function Page() {
         <title>{`${product.name} | Манай компани`}</title>
         <meta name="description" content={product.description} />
       </Head>
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100 py-12 px-4 sm:px-6 lg:px-8 font-sans transition-colors duration-200">
         <div className="max-w-7xl mx-auto">
           <div className="min-h-screen">
             <Breadcrumbs items={breadcrumbItems} />
@@ -84,7 +88,9 @@ export default function Page() {
               />
             </div>
             <LoanChances />
-            <ContactSection />
+            <div className="mt-8">
+              <ContactSection />
+            </div>
           </div>
         </div>
       </div>

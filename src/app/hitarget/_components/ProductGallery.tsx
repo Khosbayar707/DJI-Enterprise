@@ -65,7 +65,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       <div
-        className="relative bg-white rounded-2xl shadow-lg overflow-hidden group transition-all duration-300"
+        className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 overflow-hidden group transition-all duration-300"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -74,7 +74,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
             src={selectedImage}
             alt={product.name}
             fill
-            className="object-contain transition-opacity duration-300 group-hover:opacity-90"
+            className="object-contain transition-opacity duration-300 group-hover:opacity-90 dark:brightness-95"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1200px) 50vw, 800px"
             priority
           />
@@ -84,7 +84,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
           <>
             <button
               onClick={handlePrev}
-              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-95 z-10"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full p-2 shadow-lg dark:shadow-gray-900/50 transition-all duration-200 hover:scale-110 active:scale-95 z-10 backdrop-blur-sm"
               aria-label="Previous image"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -92,7 +92,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
             <button
               onClick={handleNext}
-              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-95 z-10"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full p-2 shadow-lg dark:shadow-gray-900/50 transition-all duration-200 hover:scale-110 active:scale-95 z-10 backdrop-blur-sm"
               aria-label="Next image"
             >
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -101,7 +101,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
         )}
 
         {product.images.length > 1 && (
-          <div className="absolute top-4 left-4 bg-black/60 text-white text-xs sm:text-sm px-2.5 py-1 rounded-full backdrop-blur-sm z-10">
+          <div className="absolute top-4 left-4 bg-black/60 dark:bg-gray-900/80 text-white text-xs sm:text-sm px-2.5 py-1 rounded-full backdrop-blur-sm z-10">
             {currentThumbIndex + 1} / {product.images.length}
           </div>
         )}
@@ -124,9 +124,9 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
                   }}
                   className={`relative flex-shrink-0 rounded-xl overflow-hidden transition-all duration-200 border-2 ${
                     isActive
-                      ? 'border-blue-600 shadow-lg scale-105'
-                      : 'border-gray-200 hover:border-blue-400 hover:scale-105 active:scale-95'
-                  }`}
+                      ? 'border-blue-600 dark:border-blue-500 shadow-lg dark:shadow-blue-900/30 scale-105'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 hover:scale-105 active:scale-95'
+                  } dark:bg-gray-800`}
                   style={{
                     width: 'clamp(70px, 20vw, 90px)',
                     height: 'clamp(70px, 20vw, 90px)',
@@ -138,18 +138,18 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
                     src={img.url}
                     alt={`${product.name} thumbnail ${index + 1}`}
                     fill
-                    className="object-cover"
+                    className="object-cover dark:brightness-95"
                     sizes="(max-width: 640px) 20vw, 80px"
                   />
                   {isActive && (
-                    <div className="absolute inset-0 bg-blue-600/20 pointer-events-none" />
+                    <div className="absolute inset-0 bg-blue-600/20 dark:bg-blue-500/30 pointer-events-none" />
                   )}
                 </button>
               );
             })}
           </div>
 
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-l from-white to-transparent w-8 h-full pointer-events-none md:hidden" />
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-l from-white dark:from-gray-900 to-transparent w-8 h-full pointer-events-none md:hidden" />
         </div>
       )}
     </div>
