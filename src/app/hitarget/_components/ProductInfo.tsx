@@ -36,20 +36,20 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs sm:text-sm font-medium shadow-sm border';
     if (product.stock > 10) {
       return {
-        cls: `${base} bg-green-50 text-green-700 border-green-300`,
+        cls: `${base} bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-800`,
         text: `Бэлэн: ${product.stock} ш`,
         icon: 'check',
       };
     }
     if (product.stock > 0) {
       return {
-        cls: `${base} bg-amber-50 text-amber-700 border-amber-300`,
+        cls: `${base} bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800`,
         text: `Үлдэгдэл: ${product.stock} ш`,
         icon: 'warn',
       };
     }
     return {
-      cls: `${base} bg-red-50 text-red-700 border-red-300`,
+      cls: `${base} bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 border-red-300 dark:border-red-800`,
       text: 'Түр дууссан',
       icon: 'info',
     };
@@ -59,22 +59,22 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
     <div className="space-y-6 sm:space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
         <div className="min-w-0 space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight leading-tight line-clamp-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
             {product.name}
           </h1>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <p className="text-gray-600 text-[11px] sm:text-xs uppercase tracking-wider bg-gray-100 px-2 sm:px-2.5 py-0.5 rounded-full">
+            <p className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-xs uppercase tracking-wider bg-gray-100 dark:bg-gray-800 px-2 sm:px-2.5 py-0.5 rounded-full">
               {product.type.toLowerCase()}
             </p>
             {product.brand && (
-              <p className="text-gray-700 text-[11px] sm:text-xs tracking-wider bg-blue-50 px-2 sm:px-2.5 py-0.5 rounded-full">
+              <p className="text-gray-700 dark:text-gray-300 text-[11px] sm:text-xs tracking-wider bg-blue-50 dark:bg-blue-950/30 px-2 sm:px-2.5 py-0.5 rounded-full">
                 Брэнд: {product.brand}
               </p>
             )}
 
             {product.stock > 0 && product.stock <= 5 && (
-              <span className="sm:hidden inline-flex items-center gap-1 text-[10px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+              <span className="sm:hidden inline-flex items-center gap-1 text-[10px] font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-3 h-3"
@@ -106,7 +106,7 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
             {stockPill.icon === 'warn' && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4 text-amber-600"
+                className="w-4 h-4 text-amber-600 dark:text-amber-400"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -133,10 +133,10 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
           </span>
 
           {product.stock > 0 && product.stock <= 5 && (
-            <div className="hidden sm:flex items-center gap-1 text-xs text-amber-700 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full shadow-sm">
+            <div className="hidden sm:flex items-center gap-1 text-xs text-amber-700 dark:text-amber-400 font-medium bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded-full shadow-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-3.5 h-3.5 text-amber-600"
+                className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -149,14 +149,16 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       </div>
 
       <div className="space-y-1">
-        <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+        <span className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
           {formatTugrug(product.price)}
         </span>
       </div>
 
       {product.features.length > 0 && (
-        <div className="space-y-4 bg-gray-50 p-3 sm:p-4 rounded-xl">
-          <h3 className="font-semibold text-gray-900 text-base sm:text-lg">Гол онцлогууд:</h3>
+        <div className="space-y-4 bg-gray-50 dark:bg-gray-800/50 p-3 sm:p-4 rounded-xl">
+          <h3 className="font-semibold text-gray-900 dark:text-white text-base sm:text-lg">
+            Гол онцлогууд:
+          </h3>
           <ul className="space-y-2 sm:space-y-3">
             {(product.features.length > 3 ? product.features.slice(0, 3) : product.features).map(
               (feature, index) => (
@@ -167,10 +169,12 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.06 }}
                 >
-                  <span className="text-blue-500 mr-2 mt-1">
+                  <span className="text-blue-500 dark:text-blue-400 mr-2 mt-1">
                     <ChevronRight className="w-4 h-4" />
                   </span>
-                  <span className="text-gray-700 text-sm sm:text-base">{feature}</span>
+                  <span className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">
+                    {feature}
+                  </span>
                 </motion.li>
               )
             )}
@@ -185,10 +189,10 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: (idx + 3) * 0.04 }}
                     >
-                      <span className="text-blue-500 mr-2 mt-1">
+                      <span className="text-blue-500 dark:text-blue-400 mr-2 mt-1">
                         <ChevronRight className="w-4 h-4" />
                       </span>
-                      <span className="text-gray-700">{feature}</span>
+                      <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -206,58 +210,61 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
               whileTap={{ scale: 0.98 }}
               onClick={onContactClick}
               disabled={isLoading}
-              className="w-full px-5 sm:px-6 py-4 sm:py-5 gap-3 cursor-pointer bg-gradient-to-r from-blue-600 to-black text-white font-semibold text-base rounded-lg transition-all duration-500 ease-in-out shadow-md hover:shadow-lg hover:from-black hover:to-black active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
+              className="w-full px-5 sm:px-6 py-4 sm:py-5 gap-3 cursor-pointer bg-gradient-to-r from-blue-600 to-black dark:from-blue-600 dark:to-gray-900 text-white font-semibold text-base rounded-lg transition-all duration-500 ease-in-out shadow-md hover:shadow-lg hover:from-blue-700 hover:to-gray-800 dark:hover:from-blue-700 dark:hover:to-gray-800 active:scale-[0.98] disabled:opacity-70 flex items-center justify-center"
             >
               <MessageSquare className="w-5 h-5" />
               Худалдагчтай холбогдох
             </motion.button>
           </DialogTrigger>
 
-          <DialogContent className="sm:max-w-md rounded-lg">
+          <DialogContent className="sm:max-w-md rounded-lg dark:bg-gray-900 dark:border-gray-700">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-blue-600" />
+              <DialogTitle className="flex items-center gap-2 dark:text-white">
+                <MessageSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <span>Худалдагчийн мэдээлэл</span>
               </DialogTitle>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
               <div className="flex items-start gap-3">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <MapPin className="w-5 h-5 text-blue-600" />
+                <div className="bg-blue-100 dark:bg-blue-950/50 p-2 rounded-full">
+                  <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">{storeInfo.name}</h4>
-                  <p className="text-gray-600">{storeInfo.location}</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white">{storeInfo.name}</h4>
+                  <p className="text-gray-600 dark:text-gray-400">{storeInfo.location}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="bg-green-100 p-2 rounded-full">
-                  <Phone className="w-5 h-5 text-green-600" />
+                <div className="bg-green-100 dark:bg-green-950/50 p-2 rounded-full">
+                  <Phone className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">Холбогдох утас</h4>
-                  <a href={`tel:${storeInfo.phone}`} className="text-blue-600 hover:underline">
+                  <h4 className="font-medium text-gray-900 dark:text-white">Холбогдох утас</h4>
+                  <a
+                    href={`tel:${storeInfo.phone}`}
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                  >
                     {storeInfo.phone}
                   </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="bg-yellow-100 p-2 rounded-full">
-                  <Clock className="w-5 h-5 text-yellow-600" />
+                <div className="bg-yellow-100 dark:bg-yellow-950/50 p-2 rounded-full">
+                  <Clock className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">Ажиллах цаг</h4>
-                  <p className="text-gray-600">{storeInfo.workingHours}</p>
+                  <h4 className="font-medium text-gray-900 dark:text-white">Ажиллах цаг</h4>
+                  <p className="text-gray-600 dark:text-gray-400">{storeInfo.workingHours}</p>
                 </div>
               </div>
 
               <div className="pt-4">
                 <button
                   onClick={() => setIsContactModalOpen(false)}
-                  className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium transition-colors"
+                  className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium transition-colors"
                 >
                   Хаах
                 </button>
@@ -268,23 +275,25 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       </div>
 
       {product.specifications.length > 0 && (
-        <div className="pt-5 sm:pt-6 border-t border-gray-200">
-          <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-3 sm:mb-4">
+        <div className="pt-5 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+          <h3 className="font-semibold text-gray-900 dark:text-white text-base sm:text-lg mb-3 sm:mb-4">
             Техникийн үзүүлэлтүүд:
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {product.specifications.map((spec, index) => (
               <motion.div
                 key={index}
-                className="flex gap-3 items-baseline p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                className="flex gap-3 items-baseline p-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-colors"
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.04 }}
               >
-                <span className="text-gray-500 font-medium text-xs sm:text-sm min-w-[110px] sm:min-w-[120px]">
+                <span className="text-gray-500 dark:text-gray-400 font-medium text-xs sm:text-sm min-w-[110px] sm:min-w-[120px]">
                   {spec.label}:
                 </span>
-                <span className="text-gray-700 font-medium text-sm sm:text-base">{spec.value}</span>
+                <span className="text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
+                  {spec.value}
+                </span>
               </motion.div>
             ))}
           </div>
