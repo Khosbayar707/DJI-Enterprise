@@ -44,10 +44,11 @@ const UserProfileChangePassword = () => {
       console.error(Err);
     }
   };
+
   return (
-    <section className="p-6 border rounded-lg shadow-sm w-full">
+    <section className="p-6 border rounded-lg shadow-sm w-full dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/50">
       {response && <CustomSnackbar value={response} />}
-      <h2 className="text-xl font-semibold mb-4">🔐 Нууц үг солих</h2>
+      <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">🔐 Нууц үг солих</h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -63,6 +64,33 @@ const UserProfileChangePassword = () => {
                 variant="standard"
                 label="Хуучин нууц үг"
                 className="w-full"
+                sx={{
+                  '& .MuiInput-root': {
+                    color: 'var(--text-primary)',
+                    '&:before': {
+                      borderBottomColor: 'var(--border-color)',
+                    },
+                    '&:hover:not(.Mui-disabled):before': {
+                      borderBottomColor: 'var(--border-hover)',
+                    },
+                    '&.Mui-focused:after': {
+                      borderBottomColor: 'var(--primary-color)',
+                    },
+                  },
+                  '& .MuiInput-input': {
+                    color: 'var(--text-primary)',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'var(--text-secondary)',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: 'var(--primary-color)',
+                  },
+                  '& .Mui-disabled': {
+                    color: 'var(--text-disabled)',
+                    WebkitTextFillColor: 'var(--text-disabled)',
+                  },
+                }}
               />
             )}
           />
@@ -76,6 +104,33 @@ const UserProfileChangePassword = () => {
                 variant="standard"
                 label="Шинэ нууц үг"
                 className="w-full"
+                sx={{
+                  '& .MuiInput-root': {
+                    color: 'var(--text-primary)',
+                    '&:before': {
+                      borderBottomColor: 'var(--border-color)',
+                    },
+                    '&:hover:not(.Mui-disabled):before': {
+                      borderBottomColor: 'var(--border-hover)',
+                    },
+                    '&.Mui-focused:after': {
+                      borderBottomColor: 'var(--primary-color)',
+                    },
+                  },
+                  '& .MuiInput-input': {
+                    color: 'var(--text-primary)',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'var(--text-secondary)',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: 'var(--primary-color)',
+                  },
+                  '& .Mui-disabled': {
+                    color: 'var(--text-disabled)',
+                    WebkitTextFillColor: 'var(--text-disabled)',
+                  },
+                }}
               />
             )}
           />
@@ -89,18 +144,65 @@ const UserProfileChangePassword = () => {
                 variant="standard"
                 label="Шинэ нууц үгээ ахин оруулна уу!"
                 className="w-full"
+                sx={{
+                  '& .MuiInput-root': {
+                    color: 'var(--text-primary)',
+                    '&:before': {
+                      borderBottomColor: 'var(--border-color)',
+                    },
+                    '&:hover:not(.Mui-disabled):before': {
+                      borderBottomColor: 'var(--border-hover)',
+                    },
+                    '&.Mui-focused:after': {
+                      borderBottomColor: 'var(--primary-color)',
+                    },
+                  },
+                  '& .MuiInput-input': {
+                    color: 'var(--text-primary)',
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'var(--text-secondary)',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: 'var(--primary-color)',
+                  },
+                  '& .Mui-disabled': {
+                    color: 'var(--text-disabled)',
+                    WebkitTextFillColor: 'var(--text-disabled)',
+                  },
+                }}
               />
             )}
           />
           <button
             disabled={form.formState.isSubmitting}
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full dark:bg-blue-700 dark:hover:bg-blue-800 dark:disabled:bg-blue-900 dark:disabled:text-gray-300 transition-colors"
           >
             {form.formState.isSubmitting ? 'Түр хүлээнэ үү!' : 'Нууц үг солих'}
           </button>
         </form>
       </Form>
+
+      <style jsx global>{`
+        :root {
+          --text-primary: #1f2937;
+          --text-secondary: #6b7280;
+          --text-disabled: #9ca3af;
+          --border-color: #d1d5db;
+          --border-hover: #9ca3af;
+          --primary-color: #3b82f6;
+        }
+
+        .dark {
+          --text-primary: #f3f4f6;
+          --text-secondary: #9ca3af;
+          --text-disabled: #6b7280;
+          --border-color: #4b5563;
+          --border-hover: #6b7280;
+          --primary-color: #60a5fa;
+        }
+      `}</style>
     </section>
   );
 };
