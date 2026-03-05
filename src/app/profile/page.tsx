@@ -29,29 +29,29 @@ export default function ProfilePage() {
   }, [refresh]);
 
   return (
-    <main className="max-w-4xl w-full mx-auto px-4 py-10 space-y-10 flex flex-col">
+    <main className="max-w-4xl w-full mx-auto px-4 py-10 space-y-10 flex flex-col ">
       {loading ? (
         <UserProfileSkeleton />
       ) : user ? (
         <>
-          <section className="p-6 border rounded-lg shadow-sm w-full">
-            <h2 className="text-xl font-semibold mb-4">👤 Хувийн мэдээлэл</h2>
-            <p className="text-gray-700">
-              <strong>И-мэйл: {user.email}</strong>
+          <section className="p-6 border rounded-lg shadow-sm w-full dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/50">
+            <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">👤 Хувийн мэдээлэл</h2>
+            <p className="text-gray-700 dark:text-gray-300">
+              <strong className="dark:text-gray-200">И-мэйл: {user.email}</strong>
             </p>
           </section>
-          <section className="p-6 border rounded-lg shadow-sm w-full">
+          <section className="p-6 border rounded-lg shadow-sm w-full dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/50">
             <UserProfileChangeEmail user={user} setRefresh={setRefresh} />
           </section>
-          <section className="p-6 border rounded-lg shadow-sm w-full">
+          <section className="p-6 border rounded-lg shadow-sm w-full dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/50">
             <UserProfileChangePassword />
           </section>
-          <section className="p-6 border rounded-lg shadow-sm w-full">
+          <section className="p-6 border rounded-lg shadow-sm w-full dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-900/50">
             <UserProfileDroneBuyRequests requests={user.requests} />
           </section>
         </>
       ) : (
-        <div>Хэрэглэгч эхлээд нэвтрэх ёстой!</div>
+        <div className="dark:text-gray-300">Хэрэглэгч эхлээд нэвтрэх ёстой!</div>
       )}
     </main>
   );
