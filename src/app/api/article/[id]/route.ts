@@ -41,11 +41,13 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, context: { params: { id: string } }) {
   try {
+    const { id } = context.params;
+
     await prisma.article.delete({
       where: {
-        id: params.id,
+        id,
       },
     });
 

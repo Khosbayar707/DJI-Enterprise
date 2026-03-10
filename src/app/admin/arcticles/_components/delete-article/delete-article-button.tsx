@@ -15,7 +15,7 @@ export default function DeleteArticle({ articleId, setRefresh }: Props) {
     if (!confirmDelete) return;
 
     try {
-      const res = await axios.delete(`/api/articles/${articleId}`);
+      const res = await axios.delete(`/api/article/${articleId}`);
 
       if (res.data.success) {
         setRefresh((prev) => !prev);

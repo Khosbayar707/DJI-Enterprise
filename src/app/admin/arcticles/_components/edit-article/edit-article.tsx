@@ -19,7 +19,7 @@ export default function EditArticleDialog({ article, setRefresh, onClose }: Prop
 
   const handleUpdate = async () => {
     try {
-      const res = await axios.patch(`/api/articles/${article.id}`, {
+      const res = await axios.patch(`/api/article/${article.id}`, {
         title,
         summary,
         content,
