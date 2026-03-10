@@ -18,6 +18,7 @@ import axios from 'axios';
 import { Snackbar, Alert, Checkbox } from '@mui/material';
 import Image from 'next/image';
 import TipTapEditor from '../editor/tiptap-editor';
+import { useSession } from 'next-auth/react';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -39,6 +40,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const { data: session } = useSession();
 
   const [uploading, setUploading] = useState(false);
 
@@ -58,17 +60,24 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
 
   const onSubmit = async (data: ArticleFormType) => {
     try {
-      const response = await axios.post('/api/articles', data);
+      const payload = {
+        ...data,
+        authorId: session.user.id,
+      };
+
+      const response = await axios.post('/api/articles', payload);
 
       if (response.data.success) {
         setRefresh((prev) => !prev);
         form.reset();
+        setValue('image', undefined);
       }
 
       setSnackbarSeverity('success');
       setSnackbarMessage('Нийтлэл амжилттай үүслээ');
       setSnackbarOpen(true);
     } catch (error) {
+      console.error(error);
       setSnackbarSeverity('error');
       setSnackbarMessage('Алдаа гарлаа');
       setSnackbarOpen(true);
@@ -83,22 +92,22 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
 
       const file = event.target.files[0];
 
-      const response1 = await axios.get(`/api/auth/cloudinary-sign?folder=Articles`);
+      const response1 = await axios.get('/api/auth/cloudinary-sign?folder=Articles');
 
       if (!response1.data.success) return;
 
       const { timestamp, signature, api_key } = response1.data.data;
 
-      const data = new FormData();
-      data.append('file', file);
-      data.append('timestamp', timestamp.toString());
-      data.append('signature', signature);
-      data.append('api_key', api_key);
-      data.append('folder', 'Articles');
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('timestamp', timestamp.toString());
+      formData.append('signature', signature);
+      formData.append('api_key', api_key);
+      formData.append('folder', 'Articles');
 
       const response2 = await axios.post(
-        `https://api.cloudinary.com/v1_1/doluiuzq8/image/upload`,
-        data
+        'https://api.cloudinary.com/v1_1/doluiuzq8/image/upload',
+        formData
       );
 
       if (response2.data) {
@@ -126,6 +135,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
       </Snackbar>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* TITLE */}
         <FormField
           control={form.control}
           name="title"
@@ -140,6 +150,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* SUMMARY */}
         <FormField
           control={form.control}
           name="summary"
@@ -158,6 +169,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* CONTENT */}
         <FormField
           control={form.control}
           name="content"
@@ -172,6 +184,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* IMAGE */}
         <FormItem>
           <FormLabel>Нийтлэлийн зураг</FormLabel>
 
@@ -190,6 +203,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         </FormItem>
 
+        {/* FEATURED */}
         <FormField
           control={form.control}
           name="featured"
@@ -206,6 +220,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         />
 
+        {/* PUBLISHED */}
         <FormField
           control={form.control}
           name="published"
@@ -222,8 +237,8 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         />
 
-        <Button type="submit" className="w-full">
-          Нийтлэл үүсгэх
+        <Button type="submit" disabled={uploading} className="w-full">
+          {uploading ? 'Uploading...' : 'Нийтлэл үүсгэх'}
         </Button>
       </form>
     </Form>

@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 export async function GET() {
   try {
@@ -31,11 +33,27 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { title, summary, content, authorId, image } = body;
+    const { title, summary, content, image } = body;
+
+    const cookieStore = cookies();
+    const token = cookieStore.get('accessToken')?.value;
+
+    if (!token) {
+      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const decoded: any = jwt.decode(token);
+
+    const userId = decoded?.id;
+
+    if (!userId) {
+      return NextResponse.json({ success: false, message: 'Invalid token' }, { status: 401 });
+    }
 
     const slug = title
       .toLowerCase()
-      .replace(/ /g, '-')
+      .trim()
+      .replace(/\s+/g, '-')
       .replace(/[^\w-]+/g, '');
 
     const article = await prisma.article.create({
@@ -44,10 +62,9 @@ export async function POST(req: Request) {
         summary,
         content,
         slug,
+
         author: {
-          connect: {
-            id: authorId,
-          },
+          connect: { id: userId },
         },
 
         ...(image && {
@@ -68,9 +85,9 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to create article',
-    });
+    return NextResponse.json(
+      { success: false, message: 'Failed to create article' },
+      { status: 500 }
+    );
   }
 }
