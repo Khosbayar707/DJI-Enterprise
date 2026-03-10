@@ -21,7 +21,7 @@ export default function ArticlesTable() {
 
   const fetchArticles = async () => {
     try {
-      const res = await axios.get('/api/articles');
+      const res = await axios.get('/api/article');
 
       if (res.data.success) {
         setArticles(res.data.data.articles);
@@ -49,7 +49,6 @@ export default function ArticlesTable() {
   return (
     <div className="p-6 min-h-screen">
       <div className="mx-auto flex flex-col space-y-6">
-        {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -63,7 +62,6 @@ export default function ArticlesTable() {
           <AddArticle setRefresh={setRefresh} />
         </motion.div>
 
-        {/* LOADING */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
@@ -79,7 +77,6 @@ export default function ArticlesTable() {
             ))}
           </div>
         ) : articles.length === 0 ? (
-          /* EMPTY STATE */
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -92,7 +89,6 @@ export default function ArticlesTable() {
             <AddArticle setRefresh={setRefresh} />
           </motion.div>
         ) : (
-          /* ARTICLES GRID */
           <motion.div
             initial="hidden"
             animate="visible"
@@ -128,7 +124,6 @@ export default function ArticlesTable() {
                       </div>
                     </CardContent>
 
-                    {/* ACTIONS */}
                     <div className="p-4 border-t flex justify-between">
                       <Button variant="ghost" size="sm" onClick={() => setEditingArticle(article)}>
                         Засварлах
