@@ -21,7 +21,7 @@ export default function ArticlesTable() {
 
   const fetchArticles = async () => {
     try {
-      const res = await axios.get('/api/article');
+      const res = await axios.get('/api/articles');
 
       if (res.data.success) {
         setArticles(res.data.data.articles);

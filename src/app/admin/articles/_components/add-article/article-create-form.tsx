@@ -58,7 +58,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
 
   const onSubmit = async (data: ArticleFormType) => {
     try {
-      const response = await axios.post('/api/article', data);
+      const response = await axios.post('/api/articles', data);
 
       if (response.data.success) {
         setRefresh((prev) => !prev);
