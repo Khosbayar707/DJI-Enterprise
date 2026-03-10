@@ -23,6 +23,7 @@ model User {
   Otps       OTP[]
   reviewee   Review[]
   specs      Spec[]
+  articles   Article[]
 }
 
 model DroneBuyRequest {
@@ -112,6 +113,7 @@ model Drone {
   videos             Video[]            @relation("videos")
   rtk                rtkModule?
   categories         DroneCategory[]    @relation("DroneToDroneCategory")
+  articleImages      Article[]
 }
 
 model rtkModule {
@@ -239,6 +241,7 @@ model Image {
   payload            DronePayload?    @relation(fields: [payloadId], references: [id], onDelete: Cascade)
   spec               Spec?            @relation(fields: [specId], references: [id], onDelete: Cascade)
   survey             SurveyEquipment? @relation(fields: [surveyEquipmentId], references: [id], onDelete: Cascade)
+  articleImages      Article[]
 }
 
 model Video {
@@ -337,6 +340,27 @@ model SurveySpec {
   value       String
   equipmentId String
   equipment   SurveyEquipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+}
+
+model Article {
+  id          String   @id @default(nanoid())
+  title       String
+  slug        String   @unique
+  summary     String
+  content     String
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  imageId     String?
+  authorId    String
+  droneId     String?
+  views       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author      User     @relation(fields: [authorId], references: [id])
+  image       Image?   @relation(fields: [imageId], references: [id])
+  drone       Drone?   @relation(fields: [droneId], references: [id])
 }
 
 enum ProductType {

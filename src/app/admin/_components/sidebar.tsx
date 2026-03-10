@@ -1,7 +1,16 @@
 'use client';
 
 import { Dispatch, SetStateAction, useCallback, useMemo, useState, KeyboardEvent } from 'react';
-import { Boxes, Images, Users, LogOut, Home, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  Boxes,
+  Images,
+  Users,
+  LogOut,
+  Home,
+  ChevronLeft,
+  ChevronRight,
+  Newspaper,
+} from 'lucide-react';
 import { Button, IconButton, Tooltip, Divider } from '@mui/material';
 import { AdminSideBarOptions } from '@/lib/types';
 import Link from 'next/link';
@@ -27,17 +36,27 @@ const Sidebar = ({ activeSection, setActiveSection }: Props) => {
   const items = useMemo(
     () => [
       { label: 'Бүтээгдэхүүн', icon: Boxes, section: AdminSideBarOptions.products },
+
+      {
+        label: 'Нийтлэл / Мэдээ',
+        icon: Newspaper,
+        section: AdminSideBarOptions.articles,
+      },
+
       {
         label: 'Дрон худалдан авах хүсэлт',
         icon: Users,
         section: AdminSideBarOptions.DroneBuyRequest,
       },
+
       { label: 'Холбоо барих хүсэлт', icon: Users, section: AdminSideBarOptions.ContactRequest },
+
       {
         label: 'Сургалт авах хүсэлт',
         icon: Users,
         section: AdminSideBarOptions.InstructionRequest,
       },
+
       { label: 'Медиа', icon: Images, section: AdminSideBarOptions.images },
     ],
     []

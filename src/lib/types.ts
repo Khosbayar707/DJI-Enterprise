@@ -17,16 +17,18 @@ import {
   Video,
   Specification,
   SurveyEquipment,
+  Article,
 } from '@/generated/prisma';
 
 export type ResponseType = { success: boolean; code: string; message: string; data: any };
 
 export enum AdminSideBarOptions {
-  products,
-  images,
-  DroneBuyRequest,
-  ContactRequest,
-  InstructionRequest,
+  products = 'products',
+  images = 'images',
+  DroneBuyRequest = 'DroneBuyRequest',
+  ContactRequest = 'ContactRequest',
+  InstructionRequest = 'InstructionRequest',
+  articles = 'articles',
 }
 
 export enum ProductTabOptions {
@@ -119,3 +121,9 @@ export type CustomSpecClient = Spec & {
 };
 
 export type CustomDroneBuyRequestClient = DroneBuyRequest & { drone: Drone };
+
+export type CustomArticle = Article & {
+  author: User;
+  image: Image | null;
+  drone: Drone | null;
+};
