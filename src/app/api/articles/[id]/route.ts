@@ -1,25 +1,79 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function PATCH(req: Request, context: { params: { id: string } }) {
-  const { id } = context.params;
+type Params = {
+  params: Promise<{
+    id: string;
+  }>;
+};
 
-  const body = await req.json();
+export async function PATCH(req: Request, { params }: Params) {
+  try {
+    const { id } = await params;
 
-  const article = await prisma.article.update({
-    where: { id },
-    data: body,
-  });
+    const body = await req.json();
 
-  return NextResponse.json({ success: true, data: article });
+    const { title, summary, content, featured, published } = body;
+
+    let slug;
+
+    if (title) {
+      slug = title
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '');
+    }
+
+    const article = await prisma.article.update({
+      where: { id },
+      data: {
+        title,
+        summary,
+        content,
+        featured,
+        published,
+        ...(slug && { slug }),
+      },
+      include: {
+        author: true,
+        image: true,
+        drone: true,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: article,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { success: false, message: 'Failed to update article' },
+      { status: 500 }
+    );
+  }
 }
 
-export async function DELETE(req: Request, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function DELETE(req: Request, { params }: Params) {
+  try {
+    const { id } = await params;
 
-  await prisma.article.delete({
-    where: { id },
-  });
+    await prisma.article.delete({
+      where: { id },
+    });
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      message: 'Article deleted',
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { success: false, message: 'Failed to delete article' },
+      { status: 500 }
+    );
+  }
 }

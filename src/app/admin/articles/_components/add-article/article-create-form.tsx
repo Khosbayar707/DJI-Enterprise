@@ -18,7 +18,6 @@ import axios from 'axios';
 import { Snackbar, Alert, Checkbox } from '@mui/material';
 import Image from 'next/image';
 import TipTapEditor from '../editor/tiptap-editor';
-import { useSession } from 'next-auth/react';
 
 type Props = {
   setRefresh: Dispatch<SetStateAction<boolean>>;
@@ -40,7 +39,6 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-  const { data: session } = useSession();
 
   const [uploading, setUploading] = useState(false);
 
@@ -60,12 +58,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
 
   const onSubmit = async (data: ArticleFormType) => {
     try {
-      const payload = {
-        ...data,
-        authorId: session.user.id,
-      };
-
-      const response = await axios.post('/api/articles', payload);
+      const response = await axios.post('/api/articles', data);
 
       if (response.data.success) {
         setRefresh((prev) => !prev);
@@ -78,6 +71,7 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
       setSnackbarOpen(true);
     } catch (error) {
       console.error(error);
+
       setSnackbarSeverity('error');
       setSnackbarMessage('Алдаа гарлаа');
       setSnackbarOpen(true);
@@ -237,7 +231,11 @@ export default function ArticleCreateForm({ setRefresh }: Props) {
           )}
         />
 
-        <Button type="submit" disabled={uploading} className="w-full">
+        <Button
+          type="submit"
+          disabled={uploading || form.formState.isSubmitting}
+          className="w-full"
+        >
           {uploading ? 'Uploading...' : 'Нийтлэл үүсгэх'}
         </Button>
       </form>

@@ -1,7 +1,5 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
 
 export async function GET() {
   try {
@@ -12,6 +10,7 @@ export async function GET() {
       include: {
         author: true,
         image: true,
+        drone: true,
       },
     });
 
@@ -22,10 +21,13 @@ export async function GET() {
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json({
-      success: false,
-      message: 'Failed to fetch articles',
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Failed to fetch articles',
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -33,22 +35,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { title, summary, content, image } = body;
-
-    const cookieStore = cookies();
-    const token = cookieStore.get('accessToken')?.value;
-
-    if (!token) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    }
-
-    const decoded: any = jwt.decode(token);
-
-    const userId = decoded?.id;
-
-    if (!userId) {
-      return NextResponse.json({ success: false, message: 'Invalid token' }, { status: 401 });
-    }
+    const { title, summary, content, image, featured = false, published = true, droneId } = body;
 
     const slug = title
       .toLowerCase()
@@ -62,10 +49,15 @@ export async function POST(req: Request) {
         summary,
         content,
         slug,
+        featured,
+        published,
+        views: 0,
 
-        author: {
-          connect: { id: userId },
-        },
+        ...(droneId && {
+          drone: {
+            connect: { id: droneId },
+          },
+        }),
 
         ...(image && {
           image: {
@@ -75,6 +67,11 @@ export async function POST(req: Request) {
             },
           },
         }),
+      },
+      include: {
+        image: true,
+        author: true,
+        drone: true,
       },
     });
 
@@ -86,7 +83,10 @@ export async function POST(req: Request) {
     console.error(error);
 
     return NextResponse.json(
-      { success: false, message: 'Failed to create article' },
+      {
+        success: false,
+        message: 'Failed to create article',
+      },
       { status: 500 }
     );
   }

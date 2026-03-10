@@ -343,24 +343,27 @@ model SurveySpec {
 }
 
 model Article {
-  id          String   @id @default(nanoid())
-  title       String
-  slug        String   @unique
-  summary     String
-  content     String
-  featured    Boolean  @default(false)
-  published   Boolean  @default(true)
-  imageId     String?
-  authorId    String
-  droneId     String?
-  views       Int      @default(0)
+  id        String   @id @default(nanoid())
+  title     String
+  slug      String   @unique
+  summary   String
+  content   String
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  featured  Boolean  @default(false)
+  published Boolean  @default(true)
 
-  author      User     @relation(fields: [authorId], references: [id])
-  image       Image?   @relation(fields: [imageId], references: [id])
-  drone       Drone?   @relation(fields: [droneId], references: [id])
+  imageId   String?
+  droneId   String?
+  authorId  String?  
+
+  views     Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author    User?    @relation(fields: [authorId], references: [id]) 
+  image     Image?   @relation(fields: [imageId], references: [id])
+  drone     Drone?   @relation(fields: [droneId], references: [id])
 }
 
 enum ProductType {
