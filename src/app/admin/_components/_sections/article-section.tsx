@@ -1,6 +1,6 @@
 'use client';
 
-import ArticlesTable from '../../arcticles/page';
+import ArticlesTable from '../../articles/page';
 
 export default function ArticleSection() {
   return (

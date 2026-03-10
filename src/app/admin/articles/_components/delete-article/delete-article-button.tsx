@@ -10,18 +10,19 @@ type Props = {
 
 export default function DeleteArticle({ articleId, setRefresh }: Props) {
   const handleDelete = async () => {
-    const confirmDelete = confirm('Энэ нийтлэлийг устгах уу?');
-
-    if (!confirmDelete) return;
+    if (!confirm('Энэ нийтлэлийг устгах уу?')) return;
 
     try {
       const res = await axios.delete(`/api/articles/${articleId}`);
 
-      if (res.data.success) {
+      if (res.data?.success) {
         setRefresh((prev) => !prev);
+      } else {
+        alert('Устгах үед алдаа гарлаа');
       }
     } catch (err) {
       console.error(err);
+      alert('Server алдаа гарлаа');
     }
   };
 
