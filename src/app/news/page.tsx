@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: 'News | Your Site Name',
   description: 'Stay updated with our latest news and announcements',
@@ -21,7 +23,6 @@ export default async function NewsPage() {
     },
   });
 
-  // Format date function
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
@@ -32,7 +33,6 @@ export default async function NewsPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 py-16 md:py-24">
         <div className="absolute inset-0 bg-grid-white/[0.2] bg-[size:60px_60px]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -79,7 +79,6 @@ export default async function NewsPage() {
                 className="group transform hover:-translate-y-1 transition-all duration-300"
               >
                 <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden h-full flex flex-col">
-                  {/* Image Container */}
                   {article.image?.url ? (
                     <div className="relative h-48 sm:h-52 md:h-56 w-full overflow-hidden">
                       <Image
