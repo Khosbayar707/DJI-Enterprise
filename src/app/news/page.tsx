@@ -3,13 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'News | Your Site Name',
+  title: 'News | Djigeo.mn',
   description: 'Stay updated with our latest news and announcements',
 };
-
 export default async function NewsPage() {
   const articles = await prisma.article.findMany({
     where: {
@@ -23,12 +22,12 @@ export default async function NewsPage() {
     },
   });
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | string) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
-    }).format(date);
+    }).format(new Date(date));
   };
 
   return (
