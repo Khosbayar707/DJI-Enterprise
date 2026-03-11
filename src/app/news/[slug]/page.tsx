@@ -3,17 +3,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Calendar, User, Clock, ArrowLeft, Share2, Bookmark } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, Bookmark } from 'lucide-react';
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
   const article = await prisma.article.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
   });
 
   if (!article) {
@@ -42,9 +44,11 @@ function calculateReadTime(content: string): string {
 }
 
 export default async function ArticlePage({ params }: Props) {
+  const { slug } = await params;
+
   const article = await prisma.article.findUnique({
     where: {
-      slug: params.slug,
+      slug,
     },
     include: {
       image: true,
