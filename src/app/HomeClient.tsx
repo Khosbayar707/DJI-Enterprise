@@ -13,6 +13,7 @@ import ProductCardSkeleton from './_component/skeleton/search-skeleton';
 import { CustomDroneClient } from '@/lib/types';
 import { motion } from 'framer-motion';
 import DroneServiceTrainingSection from './_component/DroneServiceTrainingSection ';
+import NewsPreviewSection from './_component/NewsPreviewSection';
 
 export default function HomeClient() {
   const search = useSearchParams().get('search');
@@ -65,6 +66,7 @@ export default function HomeClient() {
       <ServicesSection />
       <DJIProductsSection />
       <DroneServiceTrainingSection />
+      <NewsPreviewSection />
       <AboutCompanySection />
       <ContactSection />
     </>
