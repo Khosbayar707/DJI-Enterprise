@@ -47,9 +47,7 @@ export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
 
   const article = await prisma.article.findUnique({
-    where: {
-      slug,
-    },
+    where: { slug },
     include: {
       image: true,
       author: true,
@@ -77,9 +75,7 @@ export default async function ArticlePage({ params }: Props) {
     },
     take: 3,
     orderBy: { createdAt: 'desc' },
-    include: {
-      image: true,
-    },
+    include: { image: true },
   });
 
   return (
@@ -101,16 +97,11 @@ export default async function ArticlePage({ params }: Props) {
             </Link>
 
             <div className="flex items-center gap-3">
-              <button
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Share article"
-              >
+              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                 <Share2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               </button>
-              <button
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Save article"
-              >
+
+              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                 <Bookmark className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               </button>
             </div>
@@ -120,7 +111,7 @@ export default async function ArticlePage({ params }: Props) {
 
       <header className="relative">
         {article.image?.url && (
-          <div className="relative h-[40vh] md:h-[50vh] lg:h-[60vh] w-full">
+          <div className="relative h-[35vh] md:h-[50vh] lg:h-[60vh] w-full">
             <Image
               src={article.image.url}
               alt={article.title}
@@ -136,7 +127,7 @@ export default async function ArticlePage({ params }: Props) {
         {article.image?.url ? (
           <div className="absolute bottom-0 left-0 right-0 text-white pb-8 md:pb-12">
             <div className="max-w-4xl mx-auto px-4 sm:px-6">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight md:leading-snug">
                 {article.title}
               </h1>
 
@@ -145,6 +136,7 @@ export default async function ArticlePage({ params }: Props) {
                   <Calendar className="w-4 h-4 mr-2" />
                   <time dateTime={article.createdAt.toISOString()}>{formattedDate}</time>
                 </div>
+
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
                   <span>{readTime}</span>
@@ -154,7 +146,7 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         ) : (
           <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight md:leading-snug">
               {article.title}
             </h1>
 
@@ -163,6 +155,7 @@ export default async function ArticlePage({ params }: Props) {
                 <Calendar className="w-4 h-4 mr-2" />
                 <time dateTime={article.createdAt.toISOString()}>{formattedDate}</time>
               </div>
+
               <div className="flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
                 <span>{readTime}</span>
@@ -175,34 +168,26 @@ export default async function ArticlePage({ params }: Props) {
       <article className="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12">
         {article.summary && (
           <div className="mb-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border-l-4 border-blue-600 dark:border-blue-500">
-            <p className="text-lg text-gray-700 dark:text-gray-300 italic leading-relaxed">
+            <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 italic leading-relaxed">
               {article.summary}
             </p>
           </div>
         )}
 
         <div
-          className="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-xl prose-img:shadow-lg max-w-none"
+          className="
+          prose prose-sm md:prose-base lg:prose-lg
+          leading-relaxed md:leading-loose
+          dark:prose-invert
+          prose-headings:font-bold
+          prose-a:text-blue-600 dark:prose-a:text-blue-400
+          prose-img:rounded-xl prose-img:shadow-lg
+          max-w-none
+          "
           dangerouslySetInnerHTML={{
             __html: article.content,
           }}
         />
-
-        <footer className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h4 className="font-semibold text-gray-900 dark:text-white">Share this article</h4>
-            <div className="flex gap-3">
-              {['Twitter', 'Facebook', 'LinkedIn', 'Email'].map((platform) => (
-                <button
-                  key={platform}
-                  className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors"
-                >
-                  {platform}
-                </button>
-              ))}
-            </div>
-          </div>
-        </footer>
       </article>
 
       {relatedArticles.length > 0 && (
@@ -229,10 +214,12 @@ export default async function ArticlePage({ params }: Props) {
                       />
                     </div>
                   )}
+
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                       {related.title}
                     </h3>
+
                     <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                       {related.summary}
                     </p>
