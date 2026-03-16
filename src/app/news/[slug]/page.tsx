@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${article.title} | Your Site Name`,
+    title: `${article.title} | DJIGEO`,
     description: article.summary || 'Read our latest article',
     openGraph: {
       title: article.title,
@@ -194,7 +194,7 @@ export default async function ArticlePage({ params }: Props) {
         <section className="bg-gray-100 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">
-              Related Articles
+              Холбоотой нийтлэлүүд
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
