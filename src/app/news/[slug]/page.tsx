@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const article = await prisma.article.findUnique({
     where: { slug },
+    include: { image: true },
   });
 
   if (!article) {
@@ -24,14 +25,41 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const baseUrl = 'https://www.djigeo.mn';
+
+  const imageUrl = article.image?.url
+    ? article.image.url.startsWith('http')
+      ? article.image.url
+      : `${baseUrl}${article.image.url}`
+    : `${baseUrl}/default-og.jpg`;
+
   return {
     title: `${article.title} | DJIGEO`,
     description: article.summary || 'Read our latest article',
+
     openGraph: {
       title: article.title,
       description: article.summary || '',
+      url: `${baseUrl}/news/${article.slug}`,
+      siteName: 'DJIGEO',
       type: 'article',
       publishedTime: article.createdAt.toISOString(),
+
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.summary || '',
+      images: [imageUrl],
     },
   };
 }
