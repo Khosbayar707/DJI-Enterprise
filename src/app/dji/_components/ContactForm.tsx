@@ -86,99 +86,113 @@ const ContactForm = () => {
         </h2>
 
         <div className="grid lg:grid-cols-2 gap-10">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-              {['name', 'phone', 'description'].map((fieldName) => (
-                <FormField
-                  key={fieldName}
-                  control={form.control}
-                  name={fieldName as any}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <TextField
-                          {...field}
-                          fullWidth
-                          multiline={fieldName === 'description'}
-                          rows={fieldName === 'description' ? 4 : undefined}
-                          label={
-                            fieldName === 'name'
-                              ? 'Нэр'
-                              : fieldName === 'phone'
-                                ? 'Утасны дугаар'
-                                : 'Нэмэлт тайлбар'
-                          }
-                          variant="outlined"
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '16px',
-                              color: 'white',
-                              backgroundColor: 'rgba(255,255,255,0.03)',
-                              '& fieldset': {
-                                borderColor: 'rgba(255,255,255,0.15)',
+          <div
+            className="p-6 rounded-2xl
+                  bg-gray-50 dark:bg-slate-800
+                  border border-gray-200 dark:border-gray-700
+                  hover:shadow-lg"
+          >
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                {['name', 'phone', 'description'].map((fieldName) => (
+                  <FormField
+                    key={fieldName}
+                    control={form.control}
+                    name={fieldName as any}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <TextField
+                            {...field}
+                            fullWidth
+                            multiline={fieldName === 'description'}
+                            rows={fieldName === 'description' ? 4 : undefined}
+                            label={
+                              fieldName === 'name'
+                                ? 'Нэр'
+                                : fieldName === 'phone'
+                                  ? 'Утасны дугаар'
+                                  : 'Нэмэлт тайлбар'
+                            }
+                            variant="outlined"
+                            sx={{
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: '16px',
+                                backgroundColor: 'white',
+                                color: 'black',
+                                '& fieldset': {
+                                  borderColor: '#e5e7eb',
+                                },
+                                '&:hover fieldset': {
+                                  borderColor: '#9ca3af',
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: '#3b82f6',
+                                },
                               },
-                              '&:hover fieldset': {
-                                borderColor: 'rgba(255,255,255,0.35)',
+                              '& .MuiInputLabel-root': {
+                                color: '#6b7280',
                               },
-                              '&.Mui-focused fieldset': {
-                                borderColor: '#3b82f6',
-                                boxShadow: '0 0 0 3px rgba(59,130,246,0.25)',
+                              '& .MuiInputLabel-root.Mui-focused': {
+                                color: '#2563eb',
                               },
-                            },
-                            '& .MuiInputLabel-root': {
-                              color: 'rgba(255,255,255,0.6)',
-                            },
-                            '& .MuiInputLabel-root.Mui-focused': {
-                              color: '#60a5fa',
-                            },
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
-                    </FormItem>
-                  )}
-                />
-              ))}
+                              '& .MuiInputBase-input': {
+                                color: 'black',
+                              },
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500 text-sm" />
+                      </FormItem>
+                    )}
+                  />
+                ))}
 
-              {loading ? (
-                <LoadingText />
-              ) : user ? (
-                <>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                    size="large"
-                    disabled={!form.formState.isValid || form.formState.isSubmitting}
-                    sx={{
-                      borderRadius: '16px',
-                      padding: '14px',
-                      background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-                    }}
+                {loading ? (
+                  <LoadingText />
+                ) : user ? (
+                  <>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                      size="large"
+                      disabled={!form.formState.isValid || form.formState.isSubmitting}
+                      sx={{
+                        borderRadius: '16px',
+                        padding: '14px',
+                        background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+                        color: 'white',
+                        '&:hover': {
+                          background: 'linear-gradient(to right, #1d4ed8, #1e3a8a)',
+                        },
+                        '&.Mui-disabled': {
+                          background: '#9ca3af',
+                        },
+                      }}
+                    >
+                      {form.formState.isSubmitting ? 'Илгээж байна...' : 'Илгээх'}
+                    </Button>
+
+                    <p className="text-gray-600 text-sm mt-2">Нэвтэрсэн: {user.email}</p>
+                  </>
+                ) : (
+                  <Link
+                    href={`/auth/login?redir=${pathname}`}
+                    className="
+                      block w-full py-4 text-center
+                      rounded-2xl
+                      bg-blue-600 hover:bg-blue-700
+                      text-white font-semibold
+                      transition
+                    "
                   >
-                    {form.formState.isSubmitting ? 'Илгээж байна...' : 'Илгээх'}
-                  </Button>
-
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
-                    Нэвтэрсэн: {user.email}
-                  </p>
-                </>
-              ) : (
-                <Link
-                  href={`/auth/login?redir=${pathname}`}
-                  className="
-                    block w-full py-4 text-center
-                    rounded-2xl
-                    bg-blue-600 hover:bg-blue-700
-                    text-white font-semibold
-                    transition
-                  "
-                >
-                  Нэвтрэх
-                </Link>
-              )}
-            </form>
-          </Form>
+                    Нэвтрэх
+                  </Link>
+                )}
+              </form>
+            </Form>
+          </div>
 
           <div className="space-y-6">
             {[

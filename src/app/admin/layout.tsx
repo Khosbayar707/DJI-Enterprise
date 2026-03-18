@@ -1,4 +1,5 @@
 'use client';
+
 import { Snackbar } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -9,6 +10,15 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
+    const html = document.documentElement;
+    const wasDark = html.classList.contains('dark');
+    if (wasDark) {
+      html.setAttribute('data-was-dark', 'true');
+    }
+
+    html.classList.remove('dark');
+    html.setAttribute('data-admin', 'true');
+
     const checkUser = async () => {
       try {
         await axios.get('/api/auth/refresh-token');
@@ -27,9 +37,19 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       }
     };
     checkUser();
+
+    return () => {
+      html.removeAttribute('data-admin');
+
+      if (html.getAttribute('data-was-dark') === 'true') {
+        html.classList.add('dark');
+      }
+      html.removeAttribute('data-was-dark');
+    };
   }, [router]);
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <Snackbar
         open={loading}
         message={'Админы эрхийг шалгаж байна!'}
