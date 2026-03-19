@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://djigeo.com';
+  const baseUrl = 'https://djigeo.mn';
 
   // Fetch dynamic content
   const news = await prisma.article.findMany({ select: { slug: true, updatedAt: true } });
