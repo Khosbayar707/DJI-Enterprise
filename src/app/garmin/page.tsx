@@ -33,7 +33,6 @@ export default function GarminProductListPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0B1120] transition-colors duration-300">
-      {/* HERO */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-gray-900 dark:from-black dark:via-slate-900 dark:to-black text-white">
         <div className="absolute inset-0 bg-black/40 dark:bg-black/60" />
 
@@ -52,10 +51,8 @@ export default function GarminProductListPage() {
         </div>
       </div>
 
-      {/* CONTENT */}
       <section className="py-10 sm:py-14 md:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          {/* FILTER */}
           <div className="mb-8 sm:mb-12">
             <div className="flex justify-center">
               <div className="w-full sm:w-auto overflow-x-auto scrollbar-hide">
@@ -75,8 +72,6 @@ export default function GarminProductListPage() {
               </div>
             </div>
           </div>
-
-          {/* GRID */}
           {garmin.length > 0 ? (
             <div
               className="
@@ -105,8 +100,6 @@ export default function GarminProductListPage() {
     </div>
   );
 }
-
-/* ---------------- FILTER BUTTON ---------------- */
 
 function FilterButton({
   href,
@@ -144,8 +137,6 @@ function FilterButton({
     </Link>
   );
 }
-
-/* ---------------- EMPTY STATE ---------------- */
 
 function EmptyState() {
   return (

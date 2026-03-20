@@ -6,7 +6,6 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://djigeo.mn';
 
-  // Fetch dynamic content
   const news = await prisma.article.findMany({ select: { slug: true, updatedAt: true } });
   const dji = await prisma.drone.findMany({ select: { id: true, updatedAt: true } });
   const garmin = await prisma.garminProduct.findMany({ select: { id: true, updatedAt: true } });
