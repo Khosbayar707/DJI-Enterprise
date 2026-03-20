@@ -71,12 +71,7 @@ export default function ProductListPage() {
               {filteredDrones.map((drone, i) => (
                 <div
                   key={drone.id}
-                  className="group bg-white dark:bg-slate-900 border border-transparent dark:border-gray-800 rounded-xl overflow-hidden hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg transition-all duration-300"
-                  style={{
-                    animation: 'fadeInUp 0.5s ease-out',
-                    animationDelay: `${i * 0.06}s`,
-                    animationFillMode: 'both',
-                  }}
+                  className="group hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg transition-all duration-300"
                 >
                   <ProductCard drone={drone} index={i} />
                 </div>
