@@ -3,7 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Calendar, Clock, ArrowLeft, Share2, Bookmark } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2 } from 'lucide-react';
+import ShareButton from '../_components/ShareButton';
 
 type Props = {
   params: Promise<{
@@ -125,13 +126,7 @@ export default async function ArticlePage({ params }: Props) {
             </Link>
 
             <div className="flex items-center gap-3">
-              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                <Share2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </button>
-
-              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                <Bookmark className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </button>
+              <ShareButton title={article.title} summary={article.summary} slug={article.slug} />
             </div>
           </div>
         </div>
