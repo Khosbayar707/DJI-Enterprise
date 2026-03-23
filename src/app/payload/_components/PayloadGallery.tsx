@@ -81,7 +81,7 @@ export default function PayloadGallery({
   return (
     <div className="space-y-4">
       <div
-        className="relative bg-white rounded-2xl shadow-lg overflow-hidden group"
+        className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg dark:shadow-gray-900/50 overflow-hidden group transition-colors duration-300"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -103,7 +103,7 @@ export default function PayloadGallery({
           {!isZoomed && (
             <button
               onClick={() => setIsZoomed(true)}
-              className="absolute bottom-4 right-4 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-200 hover:scale-110 z-10"
+              className="absolute bottom-4 right-4 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full p-2 shadow-md transition-all duration-200 hover:scale-110 z-10"
               aria-label="Zoom image"
             >
               <ZoomIn size={24} />
@@ -115,7 +115,7 @@ export default function PayloadGallery({
           <>
             <button
               onClick={handlePrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-200 hover:scale-110 z-10"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full p-2 shadow-md transition-all duration-200 hover:scale-110 z-10"
               aria-label="Өмнөх зураг"
             >
               <ChevronLeft size={24} />
@@ -123,13 +123,13 @@ export default function PayloadGallery({
 
             <button
               onClick={handleNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-200 hover:scale-110 z-10"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 hover:bg-white dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full p-2 shadow-md transition-all duration-200 hover:scale-110 z-10"
               aria-label="Дараагийн зураг"
             >
               <ChevronRight size={24} />
             </button>
 
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full z-10">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 dark:bg-black/70 text-white text-sm px-3 py-1 rounded-full z-10">
               {currentIndex + 1} / {images.length}
             </div>
           </>
@@ -148,8 +148,8 @@ export default function PayloadGallery({
                   className={cn(
                     'relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200',
                     isActive
-                      ? 'ring-2 ring-blue-600 shadow-md scale-105'
-                      : 'hover:ring-2 hover:ring-blue-400 hover:scale-105'
+                      ? 'ring-2 ring-blue-600 dark:ring-blue-500 shadow-md scale-105'
+                      : 'hover:ring-2 hover:ring-blue-400 dark:hover:ring-blue-600 hover:scale-105'
                   )}
                   aria-label={`${index + 1} дэх зураг харах`}
                   aria-current={isActive ? 'true' : 'false'}
@@ -161,7 +161,9 @@ export default function PayloadGallery({
                     className="object-cover"
                     sizes="80px"
                   />
-                  {isActive && <div className="absolute inset-0 bg-black/20 pointer-events-none" />}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-black/20 dark:bg-black/30 pointer-events-none" />
+                  )}
                 </button>
               );
             })}
