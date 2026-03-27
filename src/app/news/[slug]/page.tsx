@@ -199,14 +199,24 @@ export default async function ArticlePage({ params }: Props) {
 
         <div
           className="
-          prose prose-sm md:prose-base lg:prose-lg
-          leading-relaxed md:leading-loose
-          dark:prose-invert
-          prose-headings:font-bold
-          prose-a:text-blue-600 dark:prose-a:text-blue-400
-          prose-img:rounded-xl prose-img:shadow-lg
-          max-w-none
-          "
+  prose prose-sm md:prose-base lg:prose-lg
+  leading-7 md:leading-8
+  dark:prose-invert
+
+  prose-p:mb-6
+  prose-li:mb-3
+  prose-ul:mb-6
+  prose-ol:mb-6
+
+  prose-headings:font-bold
+  prose-headings:mt-10
+  prose-headings:mb-4
+
+  prose-a:text-blue-600 dark:prose-a:text-blue-400
+  prose-img:rounded-xl prose-img:shadow-lg
+
+  max-w-none
+  "
           dangerouslySetInnerHTML={{
             __html: article.content,
           }}
