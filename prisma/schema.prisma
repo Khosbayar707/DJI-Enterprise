@@ -24,6 +24,7 @@ model User {
   reviewee   Review[]
   specs      Spec[]
   articles   Article[]
+  cart Cart?
 }
 
 model DroneBuyRequest {
@@ -114,6 +115,8 @@ model Drone {
   rtk                rtkModule?
   categories         DroneCategory[]    @relation("DroneToDroneCategory")
   articleImages      Article[]
+  cartItems CartItem[]
+
 }
 
 model rtkModule {
@@ -292,6 +295,8 @@ model GarminProduct {
   type           ProductType
   images         Image[]
   specifications Specification[]
+  cartItems CartItem[]
+
 
   @@index([name])
 }
@@ -364,6 +369,33 @@ model Article {
   author    User?    @relation(fields: [authorId], references: [id]) 
   image     Image?   @relation(fields: [imageId], references: [id])
   drone     Drone?   @relation(fields: [droneId], references: [id])
+}
+
+model Cart {
+  id        String     @id @default(nanoid())
+  userId    String?    @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user      User?      @relation(fields: [userId], references: [id])
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(nanoid())
+  cartId    String
+  quantity  Int      @default(1)
+  price     Float
+
+  garminId  String?
+  droneId   String?
+
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  garmin    GarminProduct? @relation(fields: [garminId], references: [id])
+  drone     Drone?         @relation(fields: [droneId], references: [id])
+
+  @@unique([cartId, garminId])
+  @@unique([cartId, droneId])
 }
 
 enum ProductType {
