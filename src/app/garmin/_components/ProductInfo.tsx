@@ -285,7 +285,7 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-green-500" />
             <div>
-              <p className="text-xs text-gray-500">Батлан баталгаа</p>
+              <p className="text-xs text-gray-500">Баталгаат хугацаа</p>
               <p className="text-sm font-medium">1 жил</p>
             </div>
           </div>
