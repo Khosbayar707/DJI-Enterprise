@@ -18,7 +18,7 @@ import {
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
   UserIcon,
-  ShoppingCartIcon, // Add this import
+  ShoppingCartIcon,
 } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -50,7 +50,6 @@ const drawerVariants = {
   exit: { opacity: 0, y: -12, transition: { duration: 0.2 } },
 };
 
-// ThemeToggle Component
 function ThemeToggle({ size = 20 }: { size?: number }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -167,7 +166,6 @@ export default function HeaderMain() {
     }
   }, []);
 
-  // Fetch cart item count when user is logged in
   const fetchCartItemCount = useCallback(async () => {
     if (!user) return;
     try {
@@ -197,7 +195,6 @@ export default function HeaderMain() {
     fetchUser();
   }, [pathname]);
 
-  // Fetch cart count when user changes
   useEffect(() => {
     if (user) {
       fetchCartItemCount();
@@ -206,11 +203,9 @@ export default function HeaderMain() {
     }
   }, [user, fetchCartItemCount]);
 
-  // Optional: Set up real-time cart updates (if you have a cart context or event system)
   useEffect(() => {
     if (!user) return;
 
-    // Example: Listen for cart updates (you can implement this with your state management)
     const handleCartUpdate = () => {
       fetchCartItemCount();
     };
