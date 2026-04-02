@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
     const userId = verify.id;
 
     const body = await req.json();
-    const { garminId, droneId } = body;
+    const { garminId, droneId, quantity } = body;
+    const qty = quantity && quantity > 0 ? quantity : 1;
 
     if (!garminId && !droneId) {
       return CustomResponse(false, 'NO_PRODUCT', 'Бүтээгдэхүүн сонгоогүй байна', null);
@@ -81,14 +82,13 @@ export async function POST(req: NextRequest) {
       price = product.price;
     }
 
-    // ✅ 6. Create cart item
     const newItem = await prisma.cartItem.create({
       data: {
         cartId: cart.id,
         garminId,
         droneId,
         price,
-        quantity: 1,
+        quantity: qty,
       },
     });
 
