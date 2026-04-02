@@ -92,7 +92,7 @@ export default function HeaderMain() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showDesktopSearch, setShowDesktopSearch] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0); // Add cart item count state
+  const [cartItemCount, setCartItemCount] = useState(0);
   const debouncedSearchQuery = useSearchDebounce(searchQuery, 700);
 
   type SubItem = { label: string; path: string };
