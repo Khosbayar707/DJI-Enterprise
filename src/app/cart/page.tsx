@@ -99,6 +99,7 @@ export default function CartPage() {
       const data = await res.json();
       if (data.success) {
         fetchCart();
+        window.dispatchEvent(new Event('cart-updated'));
         setToast({
           open: true,
           message: 'Сагс шинэчлэгдлээ',
@@ -132,6 +133,7 @@ export default function CartPage() {
       const data = await res.json();
       if (data.success) {
         fetchCart();
+        window.dispatchEvent(new Event('cart-updated'));
         setToast({
           open: true,
           message: 'Бүтээгдэхүүн сагснаас хасагдлаа',
@@ -177,7 +179,7 @@ export default function CartPage() {
           <p className="text-gray-500 mb-6">
             Та бүтээгдэхүүн нэмж худалдан авалтаа эхлүүлэх боломжтой
           </p>
-          <Link href="/products">
+          <Link href="/garmin">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
