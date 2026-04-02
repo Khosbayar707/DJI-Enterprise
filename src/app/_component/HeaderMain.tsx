@@ -18,6 +18,7 @@ import {
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
   UserIcon,
+  ShoppingCartIcon,
 } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -49,7 +50,6 @@ const drawerVariants = {
   exit: { opacity: 0, y: -12, transition: { duration: 0.2 } },
 };
 
-// ThemeToggle Component
 function ThemeToggle({ size = 20 }: { size?: number }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -92,6 +92,7 @@ export default function HeaderMain() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showDesktopSearch, setShowDesktopSearch] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0); // Add cart item count state
   const debouncedSearchQuery = useSearchDebounce(searchQuery, 700);
 
   type SubItem = { label: string; path: string };
@@ -165,12 +166,26 @@ export default function HeaderMain() {
     }
   }, []);
 
+  const fetchCartItemCount = useCallback(async () => {
+    if (!user) return;
+    try {
+      const res = await axios.get('/api/cart/count');
+      if (res.data.success) {
+        setCartItemCount(res.data.data.count);
+      }
+    } catch (err) {
+      console.error('Failed to fetch cart count:', err);
+    }
+  }, [user]);
+
   useEffect(() => {
     const fetchUser = async () => {
       setLogging(true);
       try {
         const res = await axios.get('/api/auth/current-user');
-        if (res.data.success) setUser(res.data.data.user);
+        if (res.data.success) {
+          setUser(res.data.data.user);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -179,6 +194,25 @@ export default function HeaderMain() {
     };
     fetchUser();
   }, [pathname]);
+
+  useEffect(() => {
+    if (user) {
+      fetchCartItemCount();
+    } else {
+      setCartItemCount(0);
+    }
+  }, [user, fetchCartItemCount]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const handleCartUpdate = () => {
+      fetchCartItemCount();
+    };
+
+    window.addEventListener('cart-updated', handleCartUpdate);
+    return () => window.removeEventListener('cart-updated', handleCartUpdate);
+  }, [user, fetchCartItemCount]);
 
   useEffect(() => {
     if (!debouncedSearchQuery) return;
@@ -355,6 +389,22 @@ export default function HeaderMain() {
             {/* Dark Mode Toggle for Desktop */}
             <ThemeToggle size={20} />
 
+            {/* Cart Icon - Only show when user is logged in */}
+            {user && (
+              <motion.div whileHover="hover" variants={hoverVariants} className="relative">
+                <Link href="/cart" aria-label="Shopping cart">
+                  <button className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 relative">
+                    <ShoppingCartIcon className="h-5 w-5" />
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {cartItemCount > 99 ? '99+' : cartItemCount}
+                      </span>
+                    )}
+                  </button>
+                </Link>
+              </motion.div>
+            )}
+
             {logging ? (
               <LoadingText />
             ) : user ? (
@@ -382,6 +432,22 @@ export default function HeaderMain() {
                           onClick={() => setShowDesktopSearch(false)}
                         >
                           Профайл
+                        </Link>
+                      )}
+                    </MenuItem>
+                    <MenuItem>
+                      {({ active }) => (
+                        <Link
+                          href="/cart"
+                          className={`block px-3 py-2 rounded-md text-sm ${active ? 'bg-gray-100 dark:bg-zinc-800' : ''} text-gray-900 dark:text-white`}
+                          onClick={() => setShowDesktopSearch(false)}
+                        >
+                          Сагс
+                          {cartItemCount > 0 && (
+                            <span className="ml-2 bg-blue-600 text-white text-xs rounded-full px-2 py-0.5">
+                              {cartItemCount}
+                            </span>
+                          )}
                         </Link>
                       )}
                     </MenuItem>
@@ -424,6 +490,22 @@ export default function HeaderMain() {
             {/* Dark Mode Toggle for Medium Screens */}
             <ThemeToggle size={18} />
 
+            {/* Cart Icon for Medium Screens */}
+            {user && (
+              <motion.div whileHover="hover" variants={hoverVariants} className="relative">
+                <Link href="/cart">
+                  <button className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 relative">
+                    <ShoppingCartIcon className="h-4 w-4" />
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                        {cartItemCount > 99 ? '99+' : cartItemCount}
+                      </span>
+                    )}
+                  </button>
+                </Link>
+              </motion.div>
+            )}
+
             {user ? (
               <motion.div whileHover="hover" variants={hoverVariants}>
                 <Link
@@ -465,6 +547,22 @@ export default function HeaderMain() {
 
             {/* Dark Mode Toggle for Mobile */}
             <ThemeToggle size={18} />
+
+            {/* Cart Icon for Mobile */}
+            {user && (
+              <motion.div whileHover="hover" variants={hoverVariants} className="relative">
+                <Link href="/cart">
+                  <button className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-zinc-800 relative">
+                    <ShoppingCartIcon className="h-5 w-5" />
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {cartItemCount > 99 ? '99+' : cartItemCount}
+                      </span>
+                    )}
+                  </button>
+                </Link>
+              </motion.div>
+            )}
 
             <button
               onClick={() => setIsMobileMenuOpen((o) => !o)}
@@ -603,6 +701,27 @@ export default function HeaderMain() {
                         <span>{user.email.split('@')[0]}</span>
                       </div>
                       <span className="text-blue-600 dark:text-blue-400">Профайл</span>
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    whileHover="hover"
+                    variants={hoverVariants}
+                    className="w-full"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Link
+                      href="/cart"
+                      className="flex items-center justify-between w-full px-4 py-3 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-md"
+                    >
+                      <div className="flex items-center">
+                        <ShoppingCartIcon className="h-5 w-5 mr-2 text-gray-500 dark:text-gray-400" />
+                        <span>Сагс</span>
+                      </div>
+                      {cartItemCount > 0 && (
+                        <span className="bg-blue-600 text-white text-xs rounded-full px-2 py-0.5">
+                          {cartItemCount}
+                        </span>
+                      )}
                     </Link>
                   </motion.div>
                   <motion.button

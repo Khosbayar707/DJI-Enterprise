@@ -14,7 +14,6 @@ import {
   Package,
   Shield,
   Truck,
-  Heart,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
@@ -33,7 +32,6 @@ interface ProductInfoProps {
 export default function ProductInfo({ product, onContactClick, isLoading }: ProductInfoProps) {
   const [copiedPN, setCopiedPN] = useState(false);
   const [qty, setQty] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const [toast, setToast] = useState({
     open: false,
@@ -52,17 +50,45 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
   };
 
   const handleAddToCart = async () => {
-    const res = await fetch('/api/cart/add', {
-      method: 'POST',
-      body: JSON.stringify({
-        garminId: product.id,
-        quantity: qty,
-      }),
-    });
+    try {
+      const res = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          garminId: product.id,
+          quantity: qty,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (data.success) {
+      if (!data.success && data.code === 'NO_TOKEN') {
+        const currentPath = window.location.pathname;
+
+        setToast({
+          open: true,
+          message: 'Та эхлээд нэвтэрч орно уу',
+          severity: 'error',
+        });
+
+        setTimeout(() => {
+          window.location.href = `/auth/login?redir=${currentPath}`;
+        }, 1200);
+
+        return;
+      }
+
+      if (!data.success) {
+        setToast({
+          open: true,
+          message: data.message || 'Алдаа гарлаа',
+          severity: 'error',
+        });
+        return;
+      }
+
       setToast({
         open: true,
         message: 'Сагсанд нэмэгдлээ 🛒',
@@ -70,10 +96,10 @@ export default function ProductInfo({ product, onContactClick, isLoading }: Prod
       });
 
       window.dispatchEvent(new Event('cart-updated'));
-    } else {
+    } catch (error) {
       setToast({
         open: true,
-        message: 'Алдаа гарлаа',
+        message: 'Серверийн алдаа гарлаа',
         severity: 'error',
       });
     }
