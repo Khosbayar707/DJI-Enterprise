@@ -197,10 +197,9 @@ export default function CartPage() {
     <>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          {/* Header */}
           <div className="mb-8">
             <Link
-              href="/products"
+              href="/garmin"
               className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-4"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -218,6 +217,7 @@ export default function CartPage() {
 
           <div className="lg:grid lg:grid-cols-3 lg:gap-8">
             {/* Cart Items */}
+
             <div className="lg:col-span-2 space-y-4">
               <AnimatePresence mode="popLayout">
                 {cart.items.map((item: CartItem, index: number) => {
@@ -235,13 +235,14 @@ export default function CartPage() {
                     >
                       <div className="p-6">
                         <div className="flex gap-6">
-                          {/* Product Image */}
                           <div className="relative w-24 h-24 flex-shrink-0">
-                            <img
-                              src={product.images?.[0]?.url || '/placeholder-image.jpg'}
-                              alt={product.name}
-                              className="w-full h-full object-cover rounded-xl"
-                            />
+                            <Link href={`/garmin/${product.id}`}>
+                              <img
+                                src={product.images?.[0]?.url || '/placeholder-image.jpg'}
+                                alt={product.name}
+                                className="w-full h-full object-cover rounded-xl"
+                              />
+                            </Link>
                             {item.quantity > 1 && (
                               <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                                 {item.quantity}
@@ -249,7 +250,6 @@ export default function CartPage() {
                             )}
                           </div>
 
-                          {/* Product Info */}
                           <div className="flex-1">
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                               <div className="space-y-2">
