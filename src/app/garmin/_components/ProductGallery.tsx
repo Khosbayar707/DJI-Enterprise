@@ -1,3 +1,5 @@
+'use client';
+
 import { CustomGarminProduct } from '@/lib/types';
 import Image from 'next/image';
 import { useState, useCallback, useEffect } from 'react';
@@ -15,15 +17,18 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const selectedImage = images[currentIndex].url;
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
+    setLoading(true);
   }, [images.length]);
 
   const handlePrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setLoading(true);
   }, [images.length]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -50,150 +55,115 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
 
   return (
     <div className="space-y-4">
+      {/* MAIN IMAGE */}
       <div
-        className="
-          relative rounded-2xl overflow-hidden
-          bg-white dark:bg-slate-900
-          touch-pan-y
-        "
+        className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-800 dark:to-slate-900 touch-pan-y"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div
-          className="
-          relative w-full
-          aspect-[4/5]
-          sm:aspect-square
-          lg:aspect-[4/3]
-        "
-        >
+        <div className="relative w-full aspect-[4/5] sm:aspect-square lg:aspect-[4/3] group cursor-zoom-in">
+          {/* Skeleton */}
+          {loading && (
+            <div className="absolute inset-0 animate-pulse bg-gray-200 dark:bg-slate-700 z-10" />
+          )}
+
           <Image
+            key={selectedImage}
             src={selectedImage}
             alt={product.name}
             fill
             priority
-            className="object-contain p-4 transition-opacity duration-300"
+            onLoadingComplete={() => setLoading(false)}
+            className="
+              object-contain p-2
+              transition-transform duration-500
+              group-hover:scale-110
+            "
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 600px"
           />
         </div>
 
+        {/* NAV BUTTONS */}
         {images.length > 1 && (
           <>
             <button
               onClick={handlePrev}
               className="
-                absolute left-2 sm:left-4 top-1/2 -translate-y-1/2
-                bg-white/80 dark:bg-slate-800/80
-                hover:bg-white dark:hover:bg-slate-700
+                absolute left-3 top-1/2 -translate-y-1/2
+                bg-white/70 dark:bg-slate-800/70
+                backdrop-blur-md
+                border border-white/30
                 text-gray-800 dark:text-gray-100
-                rounded-full
-                p-2 sm:p-3
-                shadow-md
-                transition-all duration-200
-                hover:scale-110 active:scale-95
+                rounded-full p-3 shadow-lg
+                hover:scale-110 active:scale-95 transition
               "
               aria-label="Previous image"
             >
-              <ChevronLeft size={18} className="sm:size-6" />
+              <ChevronLeft size={20} />
             </button>
 
             <button
               onClick={handleNext}
               className="
-                absolute right-2 sm:right-4 top-1/2 -translate-y-1/2
-                bg-white/80 dark:bg-slate-800/80
-                hover:bg-white dark:hover:bg-slate-700
+                absolute right-3 top-1/2 -translate-y-1/2
+                bg-white/70 dark:bg-slate-800/70
+                backdrop-blur-md
+                border border-white/30
                 text-gray-800 dark:text-gray-100
-                rounded-full
-                p-2 sm:p-3
-                shadow-md
-                transition-all duration-200
-                hover:scale-110 active:scale-95
+                rounded-full p-3 shadow-lg
+                hover:scale-110 active:scale-95 transition
               "
               aria-label="Next image"
             >
-              <ChevronRight size={18} className="sm:size-6" />
+              <ChevronRight size={20} />
             </button>
-
-            <div
-              className="
-              absolute top-3 left-3
-              bg-black/60 dark:bg-black/70
-              text-white text-xs sm:text-sm
-              px-3 py-1 rounded-full
-              backdrop-blur-sm
-            "
-            >
-              {currentIndex + 1} / {images.length}
-            </div>
           </>
         )}
       </div>
 
+      {/* DOT INDICATOR */}
       {images.length > 1 && (
-        <div className="relative">
-          <div className="grid grid-cols-5 grid-rows-2 gap-2 sm:hidden">
-            {images.slice(0, 10).map((img, index) => {
-              const isActive = index === currentIndex;
+        <div className="flex justify-center gap-1">
+          {images.map((_, i) => (
+            <div
+              key={i}
+              className={`
+                h-1 rounded-full transition-all duration-300
+                ${i === currentIndex ? 'w-6 bg-blue-600' : 'w-2 bg-gray-300 dark:bg-gray-600'}
+              `}
+            />
+          ))}
+        </div>
+      )}
 
-              return (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`
-              relative rounded-lg overflow-hidden
-              border-2 transition-all duration-200
-              aspect-square
-              ${isActive ? 'border-blue-600' : 'border-gray-200 dark:border-gray-700'}
-            `}
-                >
-                  <Image src={img.url} alt="" fill className="object-cover" sizes="60px" />
-                </button>
-              );
-            })}
+      {/* THUMBNAILS */}
+      {images.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {images.map((img, index) => {
+            const isActive = index === currentIndex;
 
-            {images.length > 10 && (
-              <div
-                className="
-          flex items-center justify-center
-          bg-gray-200 dark:bg-slate-700
-          rounded-lg text-xs font-semibold
-        "
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  setLoading(true);
+                }}
+                className={`
+  relative flex-shrink-0
+  w-20 h-20 md:w-24 md:h-24
+  rounded-xl
+  p-[2px]  
+  bg-blue-500
+  ${isActive ? '' : 'bg-transparent'}
+`}
               >
-                +{images.length - 10}
-              </div>
-            )}
-          </div>
-
-          <div
-            className="
-      hidden sm:flex gap-3 overflow-x-auto
-      scrollbar-hide py-2
-    "
-          >
-            {images.map((img, index) => {
-              const isActive = index === currentIndex;
-
-              return (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`
-              relative flex-shrink-0 rounded-xl overflow-hidden
-              border-2 transition-all duration-200
-              w-20 h-20 md:w-24 md:h-24
-              ${
-                isActive
-                  ? 'border-blue-600 dark:border-blue-500 scale-105 shadow-lg'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:scale-105'
-              }
-            `}
-                >
-                  <Image src={img.url} alt="" fill className="object-cover" sizes="100px" />
-                </button>
-              );
-            })}
-          </div>
+                <div className="relative w-full h-full rounded-lg overflow-hidden bg-white dark:bg-slate-900">
+                  <Image src={img.url} alt="" fill className="object-cover" />
+                </div>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
