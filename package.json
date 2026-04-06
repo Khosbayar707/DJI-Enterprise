@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
-    "postbuild": "next-sitemap --config next-sitemap.config.cjs"
+    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+    "server": "node server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -42,6 +43,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "express": "^5.2.1",
     "framer-motion": "^12.10.5",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",

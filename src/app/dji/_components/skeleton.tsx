@@ -17,7 +17,6 @@ export default function ProductListSkeleton({
 }: ProductListSkeletonProps) {
   return (
     <div className={`bg-gray-50 dark:bg-gray-900 min-h-screen ${className}`}>
-      {/* HEADER */}
       {showHeader && (
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
           <div className="container mx-auto px-4 py-12 text-center">
@@ -29,7 +28,6 @@ export default function ProductListSkeleton({
 
       <section className="py-8">
         <div className="container mx-auto px-4">
-          {/* FILTER */}
           {showFilterBar && (
             <div className="mb-6 flex gap-3 overflow-x-auto">
               {[...Array(5)].map((_, i) => (
@@ -38,14 +36,12 @@ export default function ProductListSkeleton({
             </div>
           )}
 
-          {/* GRID */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[...Array(count)].map((_, i) => (
               <div
                 key={i}
                 className="rounded-xl bg-white dark:bg-gray-800 shadow-sm overflow-hidden animate-pulse"
               >
-                {/* IMAGE */}
                 <Skeleton variant="rectangular" height={180} />
 
                 <div className="p-4 space-y-2">
