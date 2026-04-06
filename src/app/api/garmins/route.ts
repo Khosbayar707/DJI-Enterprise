@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
       type,
       price,
       stock = 0,
+      discountPrice,
       description,
       images,
       features,
@@ -64,7 +65,13 @@ export async function POST(req: NextRequest) {
     if (!type || !['SMARTWATCH', 'GPS'].includes(type)) {
       return CustomResponse(false, 'INVALID_TYPE', 'Бүтээгдэхүүний төрөл буруу', null);
     }
+    if (discountPrice != null && (typeof discountPrice !== 'number' || discountPrice < 0)) {
+      return CustomResponse(false, 'INVALID_DISCOUNT_PRICE', 'Хямдрал буруу байна', null);
+    }
 
+    if (discountPrice != null && discountPrice > price) {
+      return CustomResponse(false, 'INVALID_DISCOUNT', 'Хямдрал үнэ их байж болохгүй', null);
+    }
     if (!Array.isArray(images) || !images.every((img) => img?.url && img?.public_id)) {
       return CustomResponse(false, 'INVALID_IMAGES', 'Зураг буруу форматтай', null);
     }
@@ -117,6 +124,7 @@ export async function POST(req: NextRequest) {
         stock,
         inStock: stock > 0,
         description,
+        discountPrice: discountPrice ?? null,
         features: Array.isArray(features) ? features : [],
         isNew: !!isNew,
         rating: rating ?? 0,
@@ -166,6 +174,7 @@ export async function PATCH(req: NextRequest) {
       name,
       type,
       price,
+      discountPrice,
       stock,
       description,
       images,
@@ -184,6 +193,7 @@ export async function PATCH(req: NextRequest) {
     if (price !== undefined && (price == null || Number.isNaN(Number(price)))) {
       return CustomResponse(false, 'INVALID_PRICE', 'Үнэ буруу байна', null);
     }
+
     if (type !== undefined && !['SMARTWATCH', 'GPS'].includes(type)) {
       return CustomResponse(false, 'INVALID_TYPE', 'Бүтээгдэхүүний төрөл буруу', null);
     }
@@ -230,6 +240,9 @@ export async function PATCH(req: NextRequest) {
       reviewCount,
     };
     if (price !== undefined) data.price = Number(price);
+    if (discountPrice !== undefined) {
+      data.discountPrice = discountPrice;
+    }
     if (stock !== undefined) {
       data.stock = stock;
       data.inStock = stock > 0;
