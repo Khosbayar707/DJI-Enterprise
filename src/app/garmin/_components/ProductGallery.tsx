@@ -150,17 +150,17 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
                   setLoading(true);
                 }}
                 className={`
-                  relative flex-shrink-0 rounded-xl overflow-hidden
-                  w-20 h-20 md:w-24 md:h-24
-                  transition-all duration-200
-                  ${
-                    isActive
-                      ? 'ring-2 ring-blue-500 scale-105 shadow-lg'
-                      : 'opacity-70 hover:opacity-100'
-                  }
-                `}
+  relative flex-shrink-0
+  w-20 h-20 md:w-24 md:h-24
+  rounded-xl
+  p-[2px]  
+  bg-blue-500
+  ${isActive ? '' : 'bg-transparent'}
+`}
               >
-                <Image src={img.url} alt="" fill className="object-cover" sizes="100px" />
+                <div className="relative w-full h-full rounded-lg overflow-hidden bg-white dark:bg-slate-900">
+                  <Image src={img.url} alt="" fill className="object-cover" />
+                </div>
               </button>
             );
           })}
