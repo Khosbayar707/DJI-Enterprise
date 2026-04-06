@@ -1,6 +1,9 @@
 import express from 'express';
 
 const app = express();
+
+app.set('trust proxy', true);
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -8,7 +11,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/ip', (req, res) => {
-  res.json({ ip: req.ip });
+  const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress;
+
+  res.json({ ip });
 });
 
 const PORT = process.env.PORT || 3001;
