@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
     const { garminId, droneId, quantity } = body;
+
     const qty = quantity && quantity > 0 ? quantity : 1;
 
     if (!garminId && !droneId) {
@@ -50,10 +51,12 @@ export async function POST(req: NextRequest) {
     if (existingItem) {
       const updated = await prisma.cartItem.update({
         where: { id: existingItem.id },
-        data: { quantity: existingItem.quantity + 1 },
+        data: { quantity: existingItem.quantity + qty }, // ✅ FIXED
       });
 
-      return CustomResponse(true, 'UPDATED', 'Сагс шинэчлэгдлээ', { item: updated });
+      return CustomResponse(true, 'UPDATED', 'Сагс шинэчлэгдлээ', {
+        item: updated,
+      });
     }
 
     let price = 0;
@@ -67,7 +70,16 @@ export async function POST(req: NextRequest) {
         return CustomResponse(false, 'NOT_FOUND', 'Бүтээгдэхүүн олдсонгүй', null);
       }
 
-      price = product.discountPrice ?? product.price;
+      const now = new Date();
+
+      const safeDiscount = product.discountPrice != null && product.discountPrice < product.price;
+
+      const isDiscountActive =
+        safeDiscount &&
+        (!product.discountStart || product.discountStart <= now) &&
+        (!product.discountEnd || product.discountEnd >= now);
+
+      price = isDiscountActive ? product.discountPrice! : product.price;
     }
 
     if (droneId) {
@@ -92,7 +104,9 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return CustomResponse(true, 'ADDED', 'Сагсанд нэмэгдлээ', { item: newItem });
+    return CustomResponse(true, 'ADDED', 'Сагсанд нэмэгдлээ', {
+      item: newItem,
+    });
   } catch (err) {
     return NextResponse_CatchError(err);
   }
